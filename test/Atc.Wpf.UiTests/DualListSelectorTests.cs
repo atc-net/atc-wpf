@@ -14,7 +14,7 @@ public sealed class DualListSelectorTests : IDisposable
 
     public DualListSelectorTests()
     {
-        application = AutoScrollTestHelpers.LaunchSample(out automation, out mainWindow);
+        application = AutoScrollTestHelpers.LaunchSample(out automation, out mainWindow, traceBindingErrors: true);
     }
 
     public void Dispose()
@@ -66,6 +66,33 @@ public sealed class DualListSelectorTests : IDisposable
             .Select(x => x.Name)
             .ToArray();
         Assert.Equal(["Apple", "Apricot", "Grape"], rows);
+    }
+
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Opening_the_page_and_moving_items_shows_no_binding_errors()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            "TabWpfComponents",
+            parentTreeNodeName: "Selectors",
+            leafTreeNodeName: "DualListSelector");
+
+        var selector = FindByAutomationId(mainWindow, "CheckBoxDualList");
+        Wait.UntilInputIsProcessed();
+        BindingErrorWindows.AssertNone(application, automation);
+
+        FindByAutomationId(selector, "AvailableSelectAll").Patterns.Toggle.Pattern.Toggle();
+        FindByAutomationId(selector, "MoveToSelectedButton").Patterns.Invoke.Pattern.Invoke();
+        Wait.UntilInputIsProcessed();
+        BindingErrorWindows.AssertNone(application, automation);
+
+        // Bulk moves reach the lists as one Reset, which throws the rows away.
+        FindByAutomationId(selector, "MoveAllToAvailableButton").Patterns.Invoke.Pattern.Invoke();
+        Wait.UntilInputIsProcessed();
+        FindByAutomationId(selector, "MoveAllToSelectedButton").Patterns.Invoke.Pattern.Invoke();
+        Wait.UntilInputIsProcessed();
+        BindingErrorWindows.AssertNone(application, automation);
     }
 
     private static AutomationElement FindByAutomationId(

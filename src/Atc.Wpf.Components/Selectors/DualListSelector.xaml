@@ -81,10 +81,10 @@
                 Focusable="False"
                 IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Mode=TwoWay}"
                 Visibility="Collapsed" />
-            <ContentPresenter Content="{Binding}" ContentTemplate="{Binding Path=ItemTemplate, RelativeSource={RelativeSource AncestorType={x:Type selectors:DualListSelector}}, TargetNullValue={StaticResource AtcApps.DataTemplate.DualListSelectorItem}}" />
+            <ContentPresenter Content="{Binding}" ContentTemplate="{Binding Path=(selectors:DualListSelector.RowItemTemplate), RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource AtcApps.DataTemplate.DualListSelectorItem}}" />
         </DockPanel>
         <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Path=ItemSelectionStyle, RelativeSource={RelativeSource AncestorType={x:Type selectors:DualListSelector}}}" Value="CheckBox">
+            <DataTrigger Binding="{Binding Path=(selectors:DualListSelector.RowSelectionStyle), ElementName=RowCheckBox}" Value="CheckBox">
                 <Setter TargetName="RowCheckBox" Property="Visibility" Value="Visible" />
             </DataTrigger>
         </DataTemplate.Triggers>
@@ -125,10 +125,10 @@
                 Stretch="Uniform"
                 ToolTip="{x:Static resources:DualListSelector.Locked}"
                 Visibility="Collapsed" />
-            <ContentPresenter Content="{Binding}" ContentTemplate="{Binding Path=ItemTemplate, RelativeSource={RelativeSource AncestorType={x:Type selectors:DualListSelector}}, TargetNullValue={StaticResource AtcApps.DataTemplate.DualListSelectorItem}}" />
+            <ContentPresenter Content="{Binding}" ContentTemplate="{Binding Path=(selectors:DualListSelector.RowItemTemplate), RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource AtcApps.DataTemplate.DualListSelectorItem}}" />
         </DockPanel>
         <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Path=ItemSelectionStyle, RelativeSource={RelativeSource AncestorType={x:Type selectors:DualListSelector}}}" Value="CheckBox">
+            <DataTrigger Binding="{Binding Path=(selectors:DualListSelector.RowSelectionStyle), ElementName=RowCheckBox}" Value="CheckBox">
                 <Setter TargetName="RowCheckBox" Property="Visibility" Value="Visible" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=IsLocked}" Value="True">
@@ -136,7 +136,7 @@
             </DataTrigger>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Path=IsOneWay, RelativeSource={RelativeSource AncestorType={x:Type selectors:DualListSelector}}}" Value="True" />
+                    <Condition Binding="{Binding Path=(selectors:DualListSelector.RowIsOneWay), ElementName=RowCheckBox}" Value="True" />
                     <Condition Binding="{Binding Path=IsLocked}" Value="False" />
                 </MultiDataTrigger.Conditions>
                 <Setter TargetName="RemoveButton" Property="Visibility" Value="Visible" />
@@ -186,14 +186,14 @@
                 <Setter Property="Opacity" Value="0.5" />
             </DataTrigger>
             <!--  CheckBox style: the check box shows the pick, so picked rows are not highlighted  -->
-            <DataTrigger Binding="{Binding Path=ItemSelectionStyle, RelativeSource={RelativeSource AncestorType={x:Type selectors:DualListSelector}}}" Value="CheckBox">
+            <Trigger Property="selectors:DualListSelector.RowSelectionStyle" Value="CheckBox">
                 <Setter Property="atc:ItemHelper.ActiveSelectionBackgroundBrush" Value="Transparent" />
                 <Setter Property="atc:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Text}" />
                 <Setter Property="atc:ItemHelper.SelectedBackgroundBrush" Value="Transparent" />
                 <Setter Property="atc:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Text}" />
                 <Setter Property="atc:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
                 <Setter Property="atc:ItemHelper.HoverSelectedForegroundBrush" Value="{DynamicResource AtcApps.Brushes.Text}" />
-            </DataTrigger>
+            </Trigger>
         </Style.Triggers>
     </Style>
 

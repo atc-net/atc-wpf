@@ -126,7 +126,7 @@ public sealed partial class DualListSelector : Control
     /// Custom item DataTemplate for both ListBoxes.
     /// When null, the built-in default template is used.
     /// </summary>
-    [DependencyProperty]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnItemTemplateChanged))]
     private DataTemplate? itemTemplate;
 
     /// <summary>
@@ -387,6 +387,14 @@ public sealed partial class DualListSelector : Control
             selectedSelectAll.Checked += OnSelectAllToggled;
             selectedSelectAll.Unchecked += OnSelectAllToggled;
             selectedSelectAll.Indeterminate += OnSelectAllToggled;
+        }
+
+        // Give the lists their final views before the first layout: swapping ItemsSource on Loaded would throw
+        // away the rows of the first pass, and their ancestor bindings would then fail.
+        if (availableView is null && selectedView is null)
+        {
+            ReplaceView(isAvailable: true, AvailableItems);
+            ReplaceView(isAvailable: false, SelectedItems);
         }
 
         if (availableListBox is not null)
@@ -1136,6 +1144,7 @@ public sealed partial class DualListSelector : Control
     {
         if (d is DualListSelector selector)
         {
+            selector.SyncRowValues();
             selector.UpdateItemCounts();
             CommandManager.InvalidateRequerySuggested();
         }

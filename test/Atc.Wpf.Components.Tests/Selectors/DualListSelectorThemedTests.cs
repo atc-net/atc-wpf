@@ -99,6 +99,111 @@ public sealed class DualListSelectorThemedTests : IDisposable
         }
     }
 
+    [StaTheory]
+    [InlineData(DualListItemSelectionStyle.Highlight, false)]
+    [InlineData(DualListItemSelectionStyle.CheckBox, false)]
+    [InlineData(DualListItemSelectionStyle.Highlight, true)]
+    public void Showing_transferring_and_reloading_logs_no_binding_errors(
+        DualListItemSelectionStyle style,
+        bool isOneWay)
+    {
+        using var capture = TestSupport.BindingTraceCapture.Start();
+        var sut = new DualListSelector
+        {
+            ItemSelectionStyle = style,
+            IsOneWay = isOneWay,
+            ListMaxHeight = 200,
+            AvailableItems = DualListSelectorTestHost.CreateItems("A", 20),
+        };
+
+        var window = CreateWindow(sut);
+        window.Show();
+        try
+        {
+            window.UpdateLayout();
+            Pump();
+            AssertNoBindingErrors(capture);
+
+            sut.MoveAllToSelected();
+            window.UpdateLayout();
+            Pump();
+            AssertNoBindingErrors(capture);
+
+            sut.MoveAllToAvailable();
+            window.UpdateLayout();
+            Pump();
+            AssertNoBindingErrors(capture);
+
+            // Unload and load again (a tab switch): the views are released and rebuilt.
+            window.Content = null;
+            Pump();
+            window.Content = sut;
+            window.UpdateLayout();
+            Pump();
+            AssertNoBindingErrors(capture);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [StaFact]
+    public void Rows_follow_the_selection_style_and_item_template_without_searching_for_the_selector()
+    {
+        var sut = new DualListSelector
+        {
+            ListMaxHeight = 200,
+            AvailableItems = DualListSelectorTestHost.CreateItems("A", 3),
+        };
+
+        var window = CreateWindow(sut);
+        window.Show();
+        try
+        {
+            window.UpdateLayout();
+            var list = (ListBox)sut.Template.FindName("PART_AvailableListBox", sut);
+            var row = (ListBoxItem)list.ItemContainerGenerator.ContainerFromIndex(0);
+            Assert.Equal(Visibility.Collapsed, FindVisualChild<CheckBox>(row)!.Visibility);
+
+            sut.ItemSelectionStyle = DualListItemSelectionStyle.CheckBox;
+            var template = new DataTemplate(typeof(DualListSelectorItem))
+            {
+                VisualTree = new FrameworkElementFactory(typeof(TextBlock), "Custom"),
+            };
+            sut.ItemTemplate = template;
+            window.UpdateLayout();
+
+            row = (ListBoxItem)list.ItemContainerGenerator.ContainerFromIndex(0);
+            Assert.Equal(Visibility.Visible, FindVisualChild<CheckBox>(row)!.Visibility);
+            Assert.Same(template, DualListSelector.GetRowItemTemplate(row));
+            Assert.Equal(DualListItemSelectionStyle.CheckBox, DualListSelector.GetRowSelectionStyle(row));
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    private static void AssertNoBindingErrors(
+        TestSupport.BindingTraceCapture capture)
+    {
+        // A bulk transfer is one Reset: WPF clears the item container style of the rows it throws away, and with
+        // no Application resources (as in this test) they fall back to the system ListBoxItem style, whose
+        // alignment bindings look for an ItemsControl. In an app the theme's ListBoxItem style is found instead.
+        var errors = capture.Events
+            .Select(x => x.Message)
+            .Where(x => !(x.Contains("target element is 'ListBoxItem'", StringComparison.Ordinal) &&
+                          x.Contains("AncestorType='System.Windows.Controls.ItemsControl'", StringComparison.Ordinal) &&
+                          x.Contains("ContentAlignment", StringComparison.Ordinal)))
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+        Assert.True(errors.Count == 0, string.Join(Environment.NewLine, errors));
+    }
+
+    private static void Pump()
+        => Dispatcher.CurrentDispatcher.Invoke(static () => { }, DispatcherPriority.ContextIdle);
+
     private static Window CreateWindow(DualListSelector sut)
     {
         var dualListStyles = LoadDualListSelectorStylesWithTheme();
