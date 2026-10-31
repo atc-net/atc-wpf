@@ -169,7 +169,7 @@ public sealed class DualListSelectorRulesTests : IDisposable
                 new DualListSelectorItem { Identifier = "3", Name = "Carrot", Group = "Vegetable", Description = "Orange" },
             ];
         });
-        var view = CollectionViewSource.GetDefaultView(host.Selector.AvailableItems);
+        var view = host.AvailableList.Items;
 
         Assert.Equal(2, view.Groups!.Count);
 
@@ -186,9 +186,50 @@ public sealed class DualListSelectorRulesTests : IDisposable
     {
         using var host = new DualListSelectorTestHost(s => s.AvailableItems = DualListSelectorTestHost.CreateItems("A", 3));
 
-        var view = CollectionViewSource.GetDefaultView(host.Selector.AvailableItems);
+        var view = host.AvailableList.Items;
 
         Assert.Null(view.Groups);
+    }
+
+    [StaFact]
+    public void Filter_And_Grouping_LeaveTheCollectionsDefaultView_Alone()
+    {
+        var items = new ObservableCollection<DualListSelectorItem>
+        {
+            new() { Identifier = "1", Name = "Apple", Group = "Fruit" },
+            new() { Identifier = "2", Name = "Banana", Group = "Fruit" },
+            new() { Identifier = "3", Name = "Carrot", Group = "Vegetable" },
+        };
+        using var host = new DualListSelectorTestHost(s =>
+        {
+            s.ShowFilter = true;
+            s.AvailableItems = items;
+        });
+        var other = new ListBox { ItemsSource = items };
+
+        host.AvailableFilter.Text = "an";
+
+        Assert.Single(host.AvailableList.Items);
+        Assert.Equal(3, other.Items.Count);
+        Assert.Null(CollectionViewSource.GetDefaultView(items).Filter);
+        Assert.Empty(CollectionViewSource.GetDefaultView(items).GroupDescriptions);
+    }
+
+    [StaFact]
+    public void SwappingTheCollection_WhileFiltered_LeavesNoFilterOnTheOldCollection()
+    {
+        var first = DualListSelectorTestHost.CreateItems("A", 3);
+        using var host = new DualListSelectorTestHost(s =>
+        {
+            s.ShowFilter = true;
+            s.AvailableItems = first;
+        });
+        host.AvailableFilter.Text = "A 1";
+
+        host.Selector.AvailableItems = DualListSelectorTestHost.CreateItems("B", 2);
+
+        Assert.Null(CollectionViewSource.GetDefaultView(first).Filter);
+        Assert.Equal(3, new ListBox { ItemsSource = first }.Items.Count);
     }
 
     private static string MaxText(

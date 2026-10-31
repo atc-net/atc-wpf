@@ -40,6 +40,8 @@ public sealed partial class DualListSelector : Control
 
     private ListBox? availableListBox;
     private ListBox? selectedListBox;
+    private ListCollectionView? availableView;
+    private ListCollectionView? selectedView;
     private TextBox? availableFilterTextBox;
     private TextBox? selectedFilterTextBox;
     private TextBlock? availableItemCount;
@@ -360,12 +362,14 @@ public sealed partial class DualListSelector : Control
 
         if (availableListBox is not null)
         {
+            availableListBox.ItemsSource = availableView;
             availableListBox.SelectionChanged += OnListBoxSelectionChanged;
             availableListBox.MouseDoubleClick += OnAvailableListBoxDoubleClick;
         }
 
         if (selectedListBox is not null)
         {
+            selectedListBox.ItemsSource = selectedView;
             selectedListBox.SelectionChanged += OnListBoxSelectionChanged;
             selectedListBox.MouseDoubleClick += OnSelectedListBoxDoubleClick;
         }
@@ -796,7 +800,7 @@ public sealed partial class DualListSelector : Control
     /// <summary>
     /// "Move all" moves the highlighted items when two or more are highlighted, otherwise every shown (filtered) item.
     /// </summary>
-    private static List<DualListSelectorItem> GetMoveAllCandidates(
+    private List<DualListSelectorItem> GetMoveAllCandidates(
         ListBox? listBox,
         ObservableCollection<DualListSelectorItem> items)
     {
@@ -805,7 +809,7 @@ public sealed partial class DualListSelector : Control
             return GetHighlighted(listBox);
         }
 
-        var view = CollectionViewSource.GetDefaultView(items);
+        var view = GetView(items);
         return view is not null && view.Filter is not null
             ? view.Cast<DualListSelectorItem>().ToList()
             : items.ToList();
@@ -1156,7 +1160,7 @@ public sealed partial class DualListSelector : Control
             return;
         }
 
-        var view = CollectionViewSource.GetDefaultView(items);
+        var view = GetView(items);
         if (view is null || !view.CanGroup)
         {
             return;
@@ -1187,25 +1191,6 @@ public sealed partial class DualListSelector : Control
         if (path is not null)
         {
             view.GroupDescriptions.Add(new OwnGroupDescription(path));
-        }
-    }
-
-    private static void RemoveGrouping(object? items)
-    {
-        if (items is null)
-        {
-            return;
-        }
-
-        var view = CollectionViewSource.GetDefaultView(items);
-        if (view?.CanGroup != true)
-        {
-            return;
-        }
-
-        foreach (var description in view.GroupDescriptions.OfType<OwnGroupDescription>().ToList())
-        {
-            view.GroupDescriptions.Remove(description);
         }
     }
 
@@ -1306,10 +1291,10 @@ public sealed partial class DualListSelector : Control
         }
     }
 
-    private static (int Shown, int ShownEnabled) CountShown(
+    private (int Shown, int ShownEnabled) CountShown(
         ObservableCollection<DualListSelectorItem> items)
     {
-        var filter = CollectionViewSource.GetDefaultView(items)?.Filter;
+        var filter = GetView(items)?.Filter;
         var shown = 0;
         var shownEnabled = 0;
         foreach (var item in items)
@@ -1367,11 +1352,11 @@ public sealed partial class DualListSelector : Control
         UpdateItemCounts();
     }
 
-    private static void ApplyFilter(
+    private void ApplyFilter(
         ObservableCollection<DualListSelectorItem> items,
         string? filterText)
     {
-        var view = CollectionViewSource.GetDefaultView(items);
+        var view = GetView(items);
         if (view is null)
         {
             return;
@@ -1738,7 +1723,6 @@ public sealed partial class DualListSelector : Control
         if (e.OldValue is INotifyCollectionChanged oldItems)
         {
             CollectionChangedEventManager.RemoveHandler(oldItems, selector.OnItemsChanged);
-            RemoveGrouping(oldItems);
         }
 
         if (e.NewValue is INotifyCollectionChanged newItems)
@@ -1746,8 +1730,62 @@ public sealed partial class DualListSelector : Control
             CollectionChangedEventManager.AddHandler(newItems, selector.OnItemsChanged);
         }
 
-        selector.ApplyGrouping(e.NewValue as ObservableCollection<DualListSelectorItem>);
+        selector.ReplaceView(
+            isAvailable: e.Property == AvailableItemsProperty,
+            e.NewValue as ObservableCollection<DualListSelectorItem>);
         selector.UpdateItemCounts();
+    }
+
+    /// <summary>
+    /// Gives a list its own collection view, so the filter and the grouping never touch the collection's
+    /// default view (shared with every other control bound to the same collection).
+    /// </summary>
+    private void ReplaceView(
+        bool isAvailable,
+        ObservableCollection<DualListSelectorItem>? items)
+    {
+        var oldView = isAvailable ? availableView : selectedView;
+        var newView = items is null ? null : new ListCollectionView(items);
+        if (isAvailable)
+        {
+            availableView = newView;
+        }
+        else
+        {
+            selectedView = newView;
+        }
+
+        if (items is not null)
+        {
+            ApplyGrouping(items);
+            ApplyFilter(items, isAvailable ? availableFilterTextBox?.Text : selectedFilterTextBox?.Text);
+        }
+
+        var listBox = isAvailable ? availableListBox : selectedListBox;
+        if (listBox is not null)
+        {
+            listBox.ItemsSource = newView;
+        }
+
+        oldView?.DetachFromSourceCollection();
+    }
+
+    private ListCollectionView? GetView(
+        ObservableCollection<DualListSelectorItem>? items)
+    {
+        if (items is null)
+        {
+            return null;
+        }
+
+        if (availableView is not null && ReferenceEquals(availableView.SourceCollection, items))
+        {
+            return availableView;
+        }
+
+        return selectedView is not null && ReferenceEquals(selectedView.SourceCollection, items)
+            ? selectedView
+            : null;
     }
 
     private void OnItemsChanged(
@@ -1761,7 +1799,7 @@ public sealed partial class DualListSelector : Control
 
         if (added?.OfType<DualListSelectorItem>().Any(i => i.Group is not null) == true &&
             sender is ObservableCollection<DualListSelectorItem> items &&
-            CollectionViewSource.GetDefaultView(items)?.GroupDescriptions.OfType<OwnGroupDescription>().Any() == false)
+            GetView(items)?.GroupDescriptions.OfType<OwnGroupDescription>().Any() == false)
         {
             ScheduleGroupingCheck();
         }
@@ -1798,7 +1836,7 @@ public sealed partial class DualListSelector : Control
 
         if (availableItemCount is not null)
         {
-            var view = CollectionViewSource.GetDefaultView(AvailableItems);
+            var view = GetView(AvailableItems);
             availableItemCount.Visibility = ShowItemCount
                 ? Visibility.Visible
                 : Visibility.Collapsed;
@@ -1822,7 +1860,7 @@ public sealed partial class DualListSelector : Control
 
         if (selectedItemCount is not null)
         {
-            var view = CollectionViewSource.GetDefaultView(SelectedItems);
+            var view = GetView(SelectedItems);
             selectedItemCount.Visibility = ShowItemCount || MaxSelectedCount is not null
                 ? Visibility.Visible
                 : Visibility.Collapsed;
@@ -1857,7 +1895,7 @@ public sealed partial class DualListSelector : Control
         UpdateHeaderCounts();
     }
 
-    private static void UpdateEmptyText(
+    private void UpdateEmptyText(
         ObservableCollection<DualListSelectorItem> items,
         TextBlock? emptyText)
     {
@@ -1866,7 +1904,7 @@ public sealed partial class DualListSelector : Control
             return;
         }
 
-        var view = CollectionViewSource.GetDefaultView(items);
+        var view = GetView(items);
         if (view?.Filter is not null && items.Count > 0)
         {
             var filteredCount = view.Cast<object>().Count();

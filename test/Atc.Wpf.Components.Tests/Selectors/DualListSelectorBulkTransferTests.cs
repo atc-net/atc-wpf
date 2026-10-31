@@ -185,7 +185,7 @@ public sealed class DualListSelectorBulkTransferTests : IDisposable
         host.Selector.MoveAllToSelected();
         host.Flush();
 
-        var view = CollectionViewSource.GetDefaultView(host.Selector.SelectedItems);
+        var view = host.SelectedList.Items;
         Assert.NotNull(view.Groups);
         Assert.Equal(["Even", "Odd"], view.Groups.Cast<CollectionViewGroup>().Select(g => g.Name));
     }
