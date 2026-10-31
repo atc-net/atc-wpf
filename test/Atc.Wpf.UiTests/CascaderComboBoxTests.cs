@@ -109,6 +109,49 @@ public sealed class CascaderComboBoxTests : IDisposable
         Assert.Equal(ExpandCollapseState.Collapsed, expandCollapse.ExpandCollapseState.Value);
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Rows_raise_toggle_and_expand_collapse_state_changes_for_screen_readers()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            "TabWpfControls",
+            parentTreeNodeName: string.Empty,
+            leafTreeNodeName: "CascaderComboBox");
+
+        var box = FindByAutomationId(mainWindow, "InteractiveBox", ControlType.ComboBox);
+        var expandCollapse = box.Patterns.ExpandCollapse.Pattern;
+        expandCollapse.Expand();
+        WaitUntil(() => expandCollapse.ExpandCollapseState.Value == ExpandCollapseState.Expanded);
+
+        var denmark = FindRow(box, "Column0", "Denmark");
+        WaitForPopupAnimation(denmark);
+
+        var toggled = new System.Collections.Concurrent.ConcurrentQueue<string>();
+        var expanded = new System.Collections.Concurrent.ConcurrentQueue<string>();
+        using var toggleHandler = denmark.RegisterPropertyChangedEvent(
+            TreeScope.Element,
+            (element, _, _) => toggled.Enqueue(element.Properties.Name.ValueOrDefault ?? string.Empty),
+            automation.PropertyLibrary.Toggle.ToggleState);
+        using var expandHandler = denmark.RegisterPropertyChangedEvent(
+            TreeScope.Element,
+            (element, _, _) => expanded.Enqueue(element.Properties.Name.ValueOrDefault ?? string.Empty),
+            automation.PropertyLibrary.ExpandCollapse.ExpandCollapseState);
+
+        denmark.Patterns.ExpandCollapse.Pattern.Expand();
+        WaitUntil(() => !expanded.IsEmpty);
+
+        denmark.Patterns.Toggle.Pattern.Toggle();
+        WaitUntil(() => !toggled.IsEmpty);
+
+        Assert.Contains("Denmark", expanded, StringComparer.Ordinal);
+        Assert.Contains("Denmark", toggled, StringComparer.Ordinal);
+
+        denmark.Patterns.Toggle.Pattern.Toggle();
+        expandCollapse.Collapse();
+        WaitUntil(() => expandCollapse.ExpandCollapseState.Value == ExpandCollapseState.Collapsed);
+    }
+
     /// <summary>
     /// Waits until the pop-up's opening (slide) animation is over: the row's bounds are final before the animation
     /// ends, so the wait also gives the animation a second.

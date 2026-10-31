@@ -89,6 +89,35 @@ internal sealed class CascaderRowAutomationPeer : ItemAutomationPeer, ITogglePro
         View.Deactivate(node);
     }
 
+    /// <summary>
+    /// Raises the toggle-state change of the row.
+    /// </summary>
+    internal void RaiseToggleStateChanged(
+        bool? oldValue,
+        bool? newValue)
+        => RaisePropertyChangedEvent(
+            TogglePatternIdentifiers.ToggleStateProperty,
+            ToToggleState(oldValue),
+            ToToggleState(newValue));
+
+    /// <summary>
+    /// Raises the expand/collapse-state change of the row (active means expanded).
+    /// </summary>
+    internal void RaiseExpandCollapseStateChanged(
+        bool wasActive,
+        bool isActive)
+    {
+        if (Node is not { } node || List.IsFilterResults || !CascaderColumnView.HasChildren(node))
+        {
+            return;
+        }
+
+        RaisePropertyChangedEvent(
+            ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+            wasActive ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed,
+            isActive ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed);
+    }
+
     /// <inheritdoc />
     protected override AutomationControlType GetAutomationControlTypeCore()
         => Node is { } node && View.IsPlaceholder(node)
@@ -113,6 +142,14 @@ internal sealed class CascaderRowAutomationPeer : ItemAutomationPeer, ITogglePro
         => List.IsFilterResults && Node is { } node
             ? View.GetFullPath(node)
             : base.GetHelpTextCore();
+
+    private static ToggleState ToToggleState(bool? value)
+        => value switch
+        {
+            true => ToggleState.On,
+            false => ToggleState.Off,
+            _ => ToggleState.Indeterminate,
+        };
 
     private void EnsureEnabled(
         CheckTreeNode node,

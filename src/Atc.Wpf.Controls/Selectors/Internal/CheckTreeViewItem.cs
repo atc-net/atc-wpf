@@ -7,6 +7,8 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </summary>
 internal sealed class CheckTreeViewItem : TreeViewItem
 {
+    private bool? lastIsChecked;
+
     public CheckTreeViewItem(CheckTreeView owner)
     {
         OwnerView = owner;
@@ -20,9 +22,32 @@ internal sealed class CheckTreeViewItem : TreeViewItem
     public CheckTreeView OwnerView { get; }
 
     /// <summary>
-    /// Gets or sets the node shown by this row.
+    /// Gets or sets the node shown by this row. While a node is shown, its check-state changes are raised as UI
+    /// Automation toggle-state changes of the row.
     /// </summary>
-    public CheckTreeNode? Node { get; set; }
+    public CheckTreeNode? Node
+    {
+        get;
+        set
+        {
+            if (ReferenceEquals(field, value))
+            {
+                return;
+            }
+
+            if (field is not null)
+            {
+                PropertyChangedEventManager.RemoveHandler(field, OnNodePropertyChanged, nameof(CheckTreeNode.IsChecked));
+            }
+
+            field = value;
+            lastIsChecked = value?.IsChecked;
+            if (value is not null)
+            {
+                PropertyChangedEventManager.AddHandler(value, OnNodePropertyChanged, nameof(CheckTreeNode.IsChecked));
+            }
+        }
+    }
 
     /// <summary>
     /// Gets or sets a value indicating whether this row is the "please wait" row of a node whose children are loading.
@@ -94,6 +119,44 @@ internal sealed class CheckTreeViewItem : TreeViewItem
         }
 
         base.OnKeyDown(e);
+    }
+
+    private void OnNodePropertyChanged(
+        object? sender,
+        PropertyChangedEventArgs e)
+    {
+        if (sender is not CheckTreeNode node || !ReferenceEquals(node, Node))
+        {
+            return;
+        }
+
+        var oldValue = lastIsChecked;
+        lastIsChecked = node.IsChecked;
+        if (IsPlaceholder ||
+            oldValue == node.IsChecked ||
+            !AutomationPeer.ListenerExists(AutomationEvents.PropertyChanged))
+        {
+            return;
+        }
+
+        FindNodePeer(node)?.RaiseToggleStateChanged(oldValue, node.IsChecked);
+    }
+
+    /// <summary>
+    /// Returns the data-item peer of the row's node (the one UI Automation clients see), or <see langword="null"/> when
+    /// no peer exists yet.
+    /// </summary>
+    private CheckTreeNodeAutomationPeer? FindNodePeer(CheckTreeNode node)
+    {
+        if (UIElementAutomationPeer.FromElement(this)?.EventsSource is CheckTreeNodeAutomationPeer eventsSource)
+        {
+            return eventsSource;
+        }
+
+        return ItemsControl.ItemsControlFromItemContainer(this) is { } parent &&
+               UIElementAutomationPeer.FromElement(parent) is ItemsControlAutomationPeer parentPeer
+            ? parentPeer.GetChildren()?.OfType<CheckTreeNodeAutomationPeer>().FirstOrDefault(x => ReferenceEquals(x.Item, node))
+            : null;
     }
 
     private bool IsFromOwnRow(DependencyObject? source)

@@ -15,7 +15,7 @@ internal sealed class CascaderColumnItem : ContentControl
         nameof(IsActive),
         typeof(bool),
         typeof(CascaderColumnItem),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+        new PropertyMetadata(BooleanBoxes.FalseBox, OnIsActiveChanged));
 
     /// <summary>
     /// Identifies the <see cref="IsFilterResult"/> dependency property.
@@ -35,6 +35,8 @@ internal sealed class CascaderColumnItem : ContentControl
         typeof(CascaderColumnItem),
         new PropertyMetadata(defaultValue: null));
 
+    private bool? lastIsChecked;
+
     public CascaderColumnItem(CascaderColumnList owner)
     {
         OwnerList = owner;
@@ -46,9 +48,32 @@ internal sealed class CascaderColumnItem : ContentControl
     public CascaderColumnList OwnerList { get; }
 
     /// <summary>
-    /// Gets or sets the node shown by this row.
+    /// Gets or sets the node shown by this row. While a node is shown, its check-state changes are raised as UI
+    /// Automation toggle-state changes of the row.
     /// </summary>
-    public CheckTreeNode? Node { get; set; }
+    public CheckTreeNode? Node
+    {
+        get;
+        set
+        {
+            if (ReferenceEquals(field, value))
+            {
+                return;
+            }
+
+            if (field is not null)
+            {
+                PropertyChangedEventManager.RemoveHandler(field, OnNodePropertyChanged, nameof(CheckTreeNode.IsChecked));
+            }
+
+            field = value;
+            lastIsChecked = value?.IsChecked;
+            if (value is not null)
+            {
+                PropertyChangedEventManager.AddHandler(value, OnNodePropertyChanged, nameof(CheckTreeNode.IsChecked));
+            }
+        }
+    }
 
     /// <summary>
     /// Gets or sets a value indicating whether this row is the "please wait" row of a column whose nodes are loading.
@@ -145,5 +170,57 @@ internal sealed class CascaderColumnItem : ContentControl
         }
 
         return false;
+    }
+
+    private static void OnIsActiveChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var item = (CascaderColumnItem)d;
+        if (item.IsPlaceholder ||
+            item.Node is not { } node ||
+            !AutomationPeer.ListenerExists(AutomationEvents.PropertyChanged))
+        {
+            return;
+        }
+
+        item.FindRowPeer(node)?.RaiseExpandCollapseStateChanged((bool)e.OldValue, (bool)e.NewValue);
+    }
+
+    private void OnNodePropertyChanged(
+        object? sender,
+        PropertyChangedEventArgs e)
+    {
+        if (sender is not CheckTreeNode node || !ReferenceEquals(node, Node))
+        {
+            return;
+        }
+
+        var oldValue = lastIsChecked;
+        lastIsChecked = node.IsChecked;
+        if (IsPlaceholder ||
+            oldValue == node.IsChecked ||
+            !AutomationPeer.ListenerExists(AutomationEvents.PropertyChanged))
+        {
+            return;
+        }
+
+        FindRowPeer(node)?.RaiseToggleStateChanged(oldValue, node.IsChecked);
+    }
+
+    /// <summary>
+    /// Returns the row peer of the node (the one UI Automation clients see), or <see langword="null"/> when no peer
+    /// exists yet.
+    /// </summary>
+    private CascaderRowAutomationPeer? FindRowPeer(CheckTreeNode node)
+    {
+        if (UIElementAutomationPeer.FromElement(this)?.EventsSource is CascaderRowAutomationPeer eventsSource)
+        {
+            return eventsSource;
+        }
+
+        return UIElementAutomationPeer.FromElement(OwnerList) is ItemsControlAutomationPeer listPeer
+            ? listPeer.GetChildren()?.OfType<CascaderRowAutomationPeer>().FirstOrDefault(x => ReferenceEquals(x.Item, node))
+            : null;
     }
 }

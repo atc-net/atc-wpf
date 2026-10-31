@@ -65,6 +65,38 @@ public sealed class CheckTreeViewTests : IDisposable
         Assert.EndsWith("[admin.settings] -> [admin.settings.view]", lines[1], StringComparison.Ordinal);
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Ticking_a_row_raises_toggle_state_changes_for_screen_readers()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            "TabWpfControls",
+            parentTreeNodeName: string.Empty,
+            leafTreeNodeName: "CheckTreeView");
+
+        var tree = FindByAutomationId(mainWindow, "InteractiveBox");
+        var settings = FindTreeItem(tree, "Settings");
+        settings.Patterns.ExpandCollapse.Pattern.Expand();
+        Wait.UntilInputIsProcessed();
+        var editSettings = FindTreeItem(tree, "Edit settings");
+
+        var changedNames = new System.Collections.Concurrent.ConcurrentQueue<string>();
+        using var handler = tree.RegisterPropertyChangedEvent(
+            TreeScope.Subtree,
+            (element, _, _) => changedNames.Enqueue(element.Properties.Name.ValueOrDefault ?? string.Empty),
+            automation.PropertyLibrary.Toggle.ToggleState);
+
+        editSettings.Patterns.Toggle.Pattern.Toggle();
+
+        Retry.WhileFalse(
+            () => changedNames.Contains("Edit settings", StringComparer.Ordinal) && changedNames.Contains("Settings", StringComparer.Ordinal),
+            timeout: TimeSpan.FromSeconds(5),
+            interval: TimeSpan.FromMilliseconds(200));
+        Assert.Contains("Edit settings", changedNames, StringComparer.Ordinal);
+        Assert.Contains("Settings", changedNames, StringComparer.Ordinal);
+    }
+
     private static string[] Lines(string text)
         => text.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
 
