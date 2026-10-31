@@ -27,7 +27,9 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </para>
 /// <para>
 /// The engine tracks <see cref="CheckTreeNode.Children"/> changes: the changed parent's sub-tree is re-applied from the
-/// current keys and <see cref="StructureChanged"/> is raised.
+/// current keys and <see cref="StructureChanged"/> is raised. It works on the children it indexed: a node refused for a
+/// duplicate key (or the same node twice) is left out, the rest of the change is applied, and then an
+/// <see cref="InvalidOperationException"/> names the key, so the engine stays usable.
 /// </para>
 /// </remarks>
 internal sealed class CheckTreeState
@@ -37,6 +39,8 @@ internal sealed class CheckTreeState
     private readonly HashSet<CheckTreeNode> deferredParents = new(ReferenceEqualityComparer.Instance);
     private readonly Dictionary<object, CheckTreeNode> childrenOwners = new(ReferenceEqualityComparer.Instance);
     private readonly HashSet<CheckTreeNode> prunedNodes = new(ReferenceEqualityComparer.Instance);
+    private readonly List<string> indexErrors = [];
+    private List<CheckTreeNode> indexedRoots = [];
     private ObservableCollection<CheckTreeNode>? roots;
     private List<string> keys = [];
     private HashSet<string> keySet = new(StringComparer.Ordinal);
@@ -104,16 +108,15 @@ internal sealed class CheckTreeState
         UnindexAll();
         prunedNodes.Clear();
         roots = newRoots;
+        indexedRoots = [];
         if (roots is not null)
         {
             CollectionChangedEventManager.AddHandler(roots, OnRootsCollectionChanged);
-            foreach (var root in roots)
-            {
-                Index(root, parent: null);
-            }
+            indexedRoots = roots.Where(x => Index(x, parent: null)).ToList();
         }
 
         ApplyKeys(keys);
+        ThrowIndexErrors();
     }
 
     /// <summary>
@@ -161,18 +164,19 @@ internal sealed class CheckTreeState
         }
 
         var stack = new Stack<CheckTreeNode>();
-        for (var i = roots.Count - 1; i >= 0; i--)
+        for (var i = indexedRoots.Count - 1; i >= 0; i--)
         {
-            stack.Push(roots[i]);
+            stack.Push(indexedRoots[i]);
         }
 
         while (stack.Count > 0)
         {
             var node = stack.Pop();
             yield return node;
-            for (var i = node.Children.Count - 1; i >= 0; i--)
+            var children = ChildrenOf(node);
+            for (var i = children.Count - 1; i >= 0; i--)
             {
-                stack.Push(node.Children[i]);
+                stack.Push(children[i]);
             }
         }
     }
@@ -195,7 +199,7 @@ internal sealed class CheckTreeState
             return;
         }
 
-        foreach (var root in roots)
+        foreach (var root in indexedRoots)
         {
             ApplyRecursive(root, inherited: false);
         }
@@ -220,7 +224,7 @@ internal sealed class CheckTreeState
         var result = new List<string>();
         if (roots is not null)
         {
-            foreach (var root in roots)
+            foreach (var root in indexedRoots)
             {
                 CollectKeys(root, result);
             }
@@ -344,7 +348,7 @@ internal sealed class CheckTreeState
             return isKeptKeyDropped || StateWriteCount != before;
         }
 
-        foreach (var root in roots)
+        foreach (var root in indexedRoots)
         {
             if (root.IsEnabled && (isShown is null || isShown(root)))
             {
@@ -426,11 +430,33 @@ internal sealed class CheckTreeState
         }
 
         UnindexAll();
+        indexedRoots = [];
         prunedNodes.Clear();
     }
 
-    private static bool HasChildren(CheckTreeNode node)
-        => node.Children.Count > 0;
+    private bool HasChildren(CheckTreeNode node)
+        => ChildrenOf(node).Count > 0;
+
+    /// <summary>
+    /// Returns the children the engine indexed for a node (without refused duplicates; the snapshot from before a
+    /// deferred change).
+    /// </summary>
+    private IReadOnlyList<CheckTreeNode> ChildrenOf(CheckTreeNode node)
+        => infos.TryGetValue(node, out var info)
+            ? info.IndexedChildren
+            : [];
+
+    private void ThrowIndexErrors()
+    {
+        if (indexErrors.Count == 0)
+        {
+            return;
+        }
+
+        var message = indexErrors[0];
+        indexErrors.Clear();
+        throw new InvalidOperationException(message);
+    }
 
     private static bool IsStateOf(
         bool? state,
@@ -447,7 +473,7 @@ internal sealed class CheckTreeState
         {
             info.CheckedChildren = 0;
             info.PartialChildren = 0;
-            foreach (var child in node.Children)
+            foreach (var child in ChildrenOf(node))
             {
                 ApplyRecursive(child, inherited: false);
                 Count(info, child.IsChecked, +1);
@@ -468,13 +494,13 @@ internal sealed class CheckTreeState
 
         info.CheckedChildren = 0;
         info.PartialChildren = 0;
-        foreach (var child in node.Children)
+        foreach (var child in ChildrenOf(node))
         {
             ApplyRecursive(child, isOn);
             Count(info, child.IsChecked, +1);
         }
 
-        WriteRaw(node, StateFromCounters(node, info));
+        WriteRaw(node, StateFromCounters(info));
     }
 
     private void CollectKeys(
@@ -488,7 +514,7 @@ internal sealed class CheckTreeState
                 result.Add(node.Key);
             }
 
-            foreach (var child in node.Children)
+            foreach (var child in ChildrenOf(node))
             {
                 CollectKeys(child, result);
             }
@@ -523,7 +549,7 @@ internal sealed class CheckTreeState
             }
         }
 
-        foreach (var child in node.Children)
+        foreach (var child in ChildrenOf(node))
         {
             CollectKeys(child, result);
         }
@@ -554,7 +580,7 @@ internal sealed class CheckTreeState
                 }
             }
 
-            foreach (var child in current.Children)
+            foreach (var child in ChildrenOf(current))
             {
                 if (child.IsEnabled && (isShown is null || isShown(child)))
                 {
@@ -576,7 +602,7 @@ internal sealed class CheckTreeState
         }
 
         var isChanged = false;
-        var stack = new Stack<CheckTreeNode>(parent.Children);
+        var stack = new Stack<CheckTreeNode>(ChildrenOf(parent));
         while (stack.Count > 0)
         {
             var current = stack.Pop();
@@ -586,7 +612,7 @@ internal sealed class CheckTreeState
                 prunedNodes.Add(current);
             }
 
-            foreach (var child in current.Children)
+            foreach (var child in ChildrenOf(current))
             {
                 stack.Push(child);
             }
@@ -607,7 +633,7 @@ internal sealed class CheckTreeState
             return node.IsChecked == true;
         }
 
-        foreach (var child in node.Children)
+        foreach (var child in ChildrenOf(node))
         {
             if (child.IsEnabled &&
                 (isShown is null || isShown(child)) &&
@@ -631,7 +657,7 @@ internal sealed class CheckTreeState
             return;
         }
 
-        foreach (var child in node.Children)
+        foreach (var child in ChildrenOf(node))
         {
             if (child.IsEnabled && (isShown is null || isShown(child)))
             {
@@ -639,14 +665,14 @@ internal sealed class CheckTreeState
             }
         }
 
-        WriteState(node, StateFromCounters(node, infos[node]));
+        WriteState(node, StateFromCounters(infos[node]));
     }
 
     private void Propagate(CheckTreeNode? node)
     {
         while (node is not null)
         {
-            var newState = StateFromCounters(node, infos[node]);
+            var newState = StateFromCounters(infos[node]);
             if (IsStateOf(node.IsChecked, newState))
             {
                 return;
@@ -657,11 +683,9 @@ internal sealed class CheckTreeState
         }
     }
 
-    private static bool? StateFromCounters(
-        CheckTreeNode node,
-        NodeInfo info)
+    private static bool? StateFromCounters(NodeInfo info)
     {
-        var count = node.Children.Count;
+        var count = info.IndexedChildren.Count;
         if (count > 0 && info.CheckedChildren >= count)
         {
             return true;
@@ -725,35 +749,39 @@ internal sealed class CheckTreeState
         StateWriteCount++;
     }
 
-    private void Index(
+    /// <summary>
+    /// Indexes a node and its sub-tree; returns <see langword="false"/> (and records the error) when the node is refused:
+    /// the same node is already in the tree, or another node has its key.
+    /// </summary>
+    private bool Index(
         CheckTreeNode node,
         CheckTreeNode? parent)
     {
         if (infos.ContainsKey(node))
         {
-            throw new InvalidOperationException($"The node '{node.Key}' is in the tree more than once.");
+            indexErrors.Add($"The node '{node.Key}' is in the tree more than once.");
+            return false;
         }
 
         if (nodesByKey.TryGetValue(node.Key, out var existing) && !ReferenceEquals(existing, node))
         {
             // Keys identify the nodes in SelectedKeys: two nodes with one key could not be ticked independently.
-            throw new InvalidOperationException(
-                $"Another node with the key '{node.Key}' is already in the tree; every node needs a unique key.");
+            indexErrors.Add($"Another node with the key '{node.Key}' is already in the tree; every node needs a unique key.");
+            return false;
         }
 
         var info = new NodeInfo
         {
             Parent = parent,
-            IndexedChildren = node.Children.ToList(),
         };
         infos[node] = info;
         nodesByKey[node.Key] = node;
         childrenOwners[node.Children] = node;
         CollectionChangedEventManager.AddHandler(node.Children, OnChildrenCollectionChanged);
-        foreach (var child in info.IndexedChildren)
-        {
-            Index(child, node);
-        }
+        info.IndexedChildren = node.Children
+            .Where(child => Index(child, node))
+            .ToList();
+        return true;
     }
 
     private void Unindex(CheckTreeNode node)
@@ -806,17 +834,14 @@ internal sealed class CheckTreeState
     {
         var currentRoots = roots;
         UnindexAll();
-        if (currentRoots is not null)
-        {
-            foreach (var root in currentRoots)
-            {
-                Index(root, parent: null);
-            }
-        }
+        indexedRoots = currentRoots is null
+            ? []
+            : currentRoots.Where(x => Index(x, parent: null)).ToList();
 
         prunedNodes.RemoveWhere(x => !infos.ContainsKey(x));
         ApplyKeys(keys);
         StructureChanged?.Invoke(null);
+        ThrowIndexErrors();
     }
 
     private void OnChildrenCollectionChanged(
@@ -849,11 +874,9 @@ internal sealed class CheckTreeState
             Unindex(child);
         }
 
-        info.IndexedChildren = parent.Children.ToList();
-        foreach (var child in info.IndexedChildren)
-        {
-            Index(child, parent);
-        }
+        info.IndexedChildren = parent.Children
+            .Where(child => Index(child, parent))
+            .ToList();
 
         DropKeysUnderPrunedNode(parent);
         prunedNodes.RemoveWhere(x => !infos.ContainsKey(x));
@@ -872,6 +895,7 @@ internal sealed class CheckTreeState
         }
 
         StructureChanged?.Invoke(parent);
+        ThrowIndexErrors();
     }
 
     private bool IsAnyAncestorKeyed(CheckTreeNode node)

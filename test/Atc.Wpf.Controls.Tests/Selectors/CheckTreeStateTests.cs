@@ -363,6 +363,43 @@ public sealed class CheckTreeStateTests
     }
 
     [Fact]
+    public void A_refused_duplicate_child_leaves_the_engine_usable()
+    {
+        var sut = CreateRegions();
+        var sweden = sut.Find("se")!;
+
+        Assert.Throws<InvalidOperationException>(
+            () => sweden.Children.Add(new CheckTreeNode("dk-cph", "Copenhagen")));
+
+        sut.ApplyKeys(["se-sto", "dk-cph"]);
+
+        Assert.Equal(["dk-cph", "se-sto"], sut.GetKeys());
+        Assert.True(sut.Toggle(sweden));
+        Assert.True(sweden.IsChecked);
+        Assert.Equal(["dk-cph", "se-sto", "se-got"], sut.CommitKeys());
+        Assert.Same(sut.Find("dk")!.Children[1], sut.Find("dk-cph"));
+    }
+
+    [Fact]
+    public void A_refused_duplicate_root_leaves_the_engine_usable()
+    {
+        var sut = new CheckTreeState();
+        var roots = new System.Collections.ObjectModel.ObservableCollection<CheckTreeNode>
+        {
+            new("dk", "Denmark") { Children = { new CheckTreeNode("cph", "Copenhagen") } },
+            new("se", "Sweden") { Children = { new CheckTreeNode("cph", "Copenhagen (SE)") } },
+        };
+
+        Assert.Throws<InvalidOperationException>(() => sut.SetRoots(roots));
+
+        sut.ApplyKeys(["cph"]);
+
+        Assert.Equal(["cph"], sut.GetKeys());
+        Assert.True(sut.Find("dk")!.IsChecked);
+        Assert.False(sut.Find("se")!.IsChecked);
+    }
+
+    [Fact]
     public void Lazy_children_and_a_node_moved_back_into_the_tree_keep_their_keys()
     {
         var lazy = new CheckTreeNode("lazy", "Lazy") { HasUnloadedChildren = true };
