@@ -154,11 +154,30 @@ public sealed partial class DockPanelPro
             Height = bounds.Height,
         };
 
+        // The window becomes the logical parent of the pane: keep the DataContext of the pane's region flowing in.
+        window.SetBinding(DataContextProperty, new Binding(nameof(DataContext)) { Source = pane.Region });
+
         if (ownerWindow is not null && ownerWindow.IsLoaded && !ReferenceEquals(ownerWindow, window))
         {
             window.Owner = ownerWindow;
         }
 
+        AddFloatingWindowCommandBindings(window, pane);
+
+        window.BoundsChanged += OnFloatingWindowBoundsChanged;
+        window.Closing += OnFloatingWindowClosing;
+        window.Closed += OnFloatingWindowClosed;
+        floatingWindows[pane] = window;
+        window.Show();
+    }
+
+    /// <summary>
+    /// Routes the Dock and Close commands of a floating window (outside the panel's element tree) to this panel.
+    /// </summary>
+    private void AddFloatingWindowCommandBindings(
+        DockFloatingWindow window,
+        DockPane pane)
+    {
         window.CommandBindings.Add(new CommandBinding(
             DockPanelProCommands.RedockPane,
             (_, e) =>
@@ -183,12 +202,6 @@ public sealed partial class DockPanelPro
                 e.CanExecute = CanClosePane(pane);
                 e.Handled = true;
             }));
-
-        window.BoundsChanged += OnFloatingWindowBoundsChanged;
-        window.Closing += OnFloatingWindowClosing;
-        window.Closed += OnFloatingWindowClosed;
-        floatingWindows[pane] = window;
-        window.Show();
     }
 
     private void CloseFloatingWindow(DockPane pane)

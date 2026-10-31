@@ -12,6 +12,8 @@ internal sealed class DockFloatingWindow : Atc.Wpf.Theming.Controls.Windows.Nice
     public const double TitleBarExtent = 32;
 
     private readonly Button dockButton;
+    private readonly MenuItem dockMenuItem;
+    private readonly MenuItem closeMenuItem;
 
     public DockFloatingWindow(DockPane pane)
     {
@@ -36,6 +38,14 @@ internal sealed class DockFloatingWindow : Atc.Wpf.Theming.Controls.Windows.Nice
         var commands = new Atc.Wpf.Theming.Controls.Windows.WindowCommands();
         commands.Items.Add(dockButton);
         RightWindowCommands = commands;
+
+        // Shift+F10 (or a right-click) inside the pane: Dock / Close by keyboard.
+        dockMenuItem = new MenuItem { Command = DockPanelProCommands.RedockPane, CommandParameter = pane, CommandTarget = this };
+        closeMenuItem = new MenuItem { Command = DockPanelProCommands.ClosePane, CommandParameter = pane, CommandTarget = this };
+        var menu = new ContextMenu();
+        menu.Items.Add(dockMenuItem);
+        menu.Items.Add(closeMenuItem);
+        ContextMenu = menu;
 
         Content = pane;
         ApplyTexts();
@@ -63,6 +73,8 @@ internal sealed class DockFloatingWindow : Atc.Wpf.Theming.Controls.Windows.Nice
         var name = string.Format(CultureInfo.CurrentCulture, Atc.Wpf.Resources.Miscellaneous.Dock1, Pane.HeaderText);
         AutomationProperties.SetName(dockButton, name);
         dockButton.ToolTip = name;
+        dockMenuItem.Header = name;
+        closeMenuItem.Header = Atc.Wpf.Resources.Word.Close;
     }
 
     /// <summary>

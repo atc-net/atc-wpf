@@ -210,6 +210,118 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
     }
 
     [StaFact]
+    public void LoadLayout_keeps_an_already_floating_pane_in_its_window_and_moves_it_to_the_saved_bounds()
+    {
+        var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
+        var host = Show(panel);
+        try
+        {
+            var output = panel.FindPane("output")!;
+            output.FloatingBounds = new Rect(100, 110, 300, 200);
+            panel.FloatPane(output);
+            var json = panel.SaveLayout();
+            var window = panel.GetFloatingWindow(output)!;
+            window.Left = 180;
+            window.Width = 340;
+
+            panel.LoadLayout(json);
+
+            var reloaded = panel.GetFloatingWindow(output);
+            Assert.NotNull(reloaded);
+            Assert.True(reloaded.IsVisible);
+            Assert.Same(output, reloaded.Content);
+            Assert.Equal(100, reloaded.Left);
+            Assert.Equal(110, reloaded.Top);
+            Assert.Equal(300, reloaded.Width);
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
+    public void LoadLayout_opens_windows_for_panes_that_float_in_the_layout()
+    {
+        var (source, _, _) = DockPanelProPaneTests.CreatePanel();
+        source.FindPane("find")!.FloatingBounds = new Rect(50, 60, 280, 190);
+        source.FloatPane(source.FindPane("find")!);
+        var json = source.SaveLayout();
+        var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();
+        var host = Show(panel);
+        try
+        {
+            panel.LoadLayout(json);
+
+            var window = panel.GetFloatingWindow(panel.FindPane("find")!);
+            Assert.NotNull(window);
+            Assert.True(window.IsVisible);
+            Assert.Equal("output,errors", string.Join(",", bottom.DockedPanes.Select(x => x.PaneId)));
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
+    public void A_floating_pane_keeps_the_DataContext_of_its_region()
+    {
+        var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
+        var host = Show(panel);
+        try
+        {
+            panel.DataContext = "model";
+            var output = panel.FindPane("output")!;
+
+            panel.FloatPane(output);
+
+            Assert.Equal("model", output.DataContext);
+            panel.DataContext = "changed";
+            Assert.Equal("changed", output.DataContext);
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
+    public void The_floating_window_context_menu_docks_and_closes_the_pane()
+    {
+        var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();
+        var host = Show(panel);
+        try
+        {
+            var output = panel.FindPane("output")!;
+            var find = panel.FindPane("find")!;
+            panel.FloatPane(output);
+            panel.FloatPane(find);
+            var outputMenu = panel.GetFloatingWindow(output)!.ContextMenu;
+            var findMenu = panel.GetFloatingWindow(find)!.ContextMenu;
+
+            var dock = (MenuItem)outputMenu.Items[0];
+            ((RoutedCommand)dock.Command).Execute(dock.CommandParameter, dock.CommandTarget);
+            var close = (MenuItem)findMenu.Items[1];
+            ((RoutedCommand)close.Command).Execute(close.CommandParameter, close.CommandTarget);
+
+            Assert.Equal(DockPaneState.Docked, output.State);
+            Assert.Equal(DockPaneState.Closed, find.State);
+            Assert.Null(panel.GetFloatingWindow(output));
+            Assert.Null(panel.GetFloatingWindow(find));
+            Assert.Same(output, bottom.ActivePane);
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
     public void The_tab_strip_exposes_the_panes_as_selectable_tabs_with_named_float_and_close_buttons()
     {
         var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();

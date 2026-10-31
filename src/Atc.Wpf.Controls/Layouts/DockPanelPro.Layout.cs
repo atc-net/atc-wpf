@@ -48,6 +48,35 @@ public sealed partial class DockPanelPro
         LoadPaneGroups(layout);
         LoadPaneStateList(layout);
         LoadActivePanes(layout);
+        ApplyFloatingWindows();
+    }
+
+    /// <summary>
+    /// Opens a window for every floating pane that has none, and moves the open windows to the (clamped) restored bounds.
+    /// </summary>
+    private void ApplyFloatingWindows()
+    {
+        foreach (var pane in GetPanes().Where(x => x.State == DockPaneState.Floating))
+        {
+            if (!floatingWindows.TryGetValue(pane, out var window))
+            {
+                OpenFloatingWindow(pane);
+                continue;
+            }
+
+            if (pane.FloatingBounds.IsEmpty)
+            {
+                continue;
+            }
+
+            var bounds = DockScreenHelper.ClampToWorkAreas(pane.FloatingBounds, DockScreenHelper.GetWorkAreas(this));
+            window.WindowState = WindowState.Normal;
+            window.Left = bounds.Left;
+            window.Top = bounds.Top;
+            window.Width = bounds.Width;
+            window.Height = bounds.Height;
+            pane.FloatingBounds = bounds;
+        }
     }
 
     /// <summary>
@@ -72,7 +101,6 @@ public sealed partial class DockPanelPro
                     continue;
                 }
 
-                CloseFloatingWindow(pane);
                 if (!ReferenceEquals(pane.Region, region))
                 {
                     pane.Region!.Panes.Remove(pane);
@@ -127,10 +155,6 @@ public sealed partial class DockPanelPro
 
             CloseFloatingWindow(pane);
             ChangePaneState(pane, state);
-            if (state == DockPaneState.Floating)
-            {
-                OpenFloatingWindow(pane);
-            }
         }
     }
 
