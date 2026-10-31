@@ -299,8 +299,11 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         set => SetValue(ZoomKeyBindingsProperty, value);
     }
 
+    private static readonly IList<ZoomKeyBinding> DefaultZoomKeyBindings
+        = new ReadOnlyCollection<ZoomKeyBinding>(ZoomKeyBinding.CreateDefaults());
+
     internal IList<ZoomKeyBinding> EffectiveZoomKeyBindings
-        => ZoomKeyBindings ?? ZoomKeyBinding.CreateDefaults();
+        => ZoomKeyBindings ?? DefaultZoomKeyBindings;
 
     private static readonly DependencyProperty InternalViewportZoomProperty = DependencyProperty.Register(
         nameof(InternalViewportZoom),

@@ -100,6 +100,8 @@ using Atc.Wpf.Controls.Zoom;
 | `Ctrl+Alt` + `9` | Zoom to fit |
 | `Ctrl+Alt` + `0` | Zoom to 100% |
 
+Shortcuts (and `Space` for panning) are ignored while a text input inside the content (a `TextBox`, `RichTextBox`, `PasswordBox` or an editable `ComboBox`) has the keyboard focus, so typing a space or an AltGr character such as `[`, `]` or `}` (AltGr+8/9/0 on Danish and German keyboards) works there.
+
 ## 🖱️ Mouse Interactions
 
 | Interaction | Action |

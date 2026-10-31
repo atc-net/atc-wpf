@@ -75,4 +75,34 @@ public sealed class ZoomBoxTests : IDisposable
         Assert.InRange(centerY, 1000, 1400);
         Assert.InRange(zoomBox.ViewportZoom, 1.5, 1.7);
     }
+
+    [StaFact]
+    public void PreviewKeyDown_SpaceFromATextBoxInTheContent_IsLeftForTheTextBox()
+    {
+        var textBox = new TextBox { Width = 100 };
+        var canvas = new Canvas { Width = 800, Height = 600 };
+        canvas.Children.Add(textBox);
+        var zoomBox = ZoomBoxFactory.CreateTemplated(canvas, 400, 400);
+
+        var args = KeyPress.CreateArgs(Keyboard.PreviewKeyDownEvent, Key.Space);
+        textBox.RaiseEvent(args);
+
+        Assert.False(args.Handled);
+        Assert.Null(zoomBox.Cursor);
+    }
+
+    [StaFact]
+    public void PreviewKeyDown_SpaceOnTheZoomBox_StartsSpacebarPanning()
+    {
+        var zoomBox = ZoomBoxFactory.CreateTemplated(new Canvas { Width = 800, Height = 600 }, 400, 400);
+
+        var args = KeyPress.CreateArgs(Keyboard.PreviewKeyDownEvent, Key.Space);
+        zoomBox.RaiseEvent(args);
+
+        Assert.True(args.Handled);
+        Assert.Equal(Cursors.Hand, zoomBox.Cursor);
+
+        zoomBox.RaiseEvent(KeyPress.CreateArgs(Keyboard.PreviewKeyUpEvent, Key.Space));
+        Assert.Null(zoomBox.Cursor);
+    }
 }

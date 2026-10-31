@@ -189,10 +189,17 @@ public partial class ZoomBox
     /// <summary>
     /// Attempts to handle key down events and execute corresponding zoom commands.
     /// Also handles spacebar for temporary pan mode.
+    /// Keys typed into a text input (e.g. a TextBox in the content) are left alone, so Space and
+    /// AltGr characters (reported as Ctrl+Alt, e.g. AltGr+8/9/0 on Danish and German keyboards) still reach it.
     /// </summary>
     public bool TryHandleKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
+
+        if (IsTextInput(e.OriginalSource))
+        {
+            return false;
+        }
 
         if (IsSpacebarPanEnabled && e.Key == Key.Space && !isSpacebarHeld)
         {
@@ -259,6 +266,9 @@ public partial class ZoomBox
 
         return false;
     }
+
+    private static bool IsTextInput(object? source)
+        => source is TextBoxBase or PasswordBox;
 
     private ICommand? GetCommandForAction(ZoomActionType action)
         => action switch
