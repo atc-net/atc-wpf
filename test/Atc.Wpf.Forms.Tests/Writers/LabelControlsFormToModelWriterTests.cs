@@ -326,6 +326,23 @@ public sealed class LabelControlsFormToModelWriterTests
     }
 
     [StaFact]
+    public void GetKeyValues_IntegerBox_KeepsAnIntValue()
+    {
+        // Arrange
+        var model = new IntegersModel { ShortValue = 42 };
+
+        var labelControlsForm = CreateForm(model);
+
+        // Act
+        var actual = labelControlsForm.GetKeyValues();
+
+        // Assert
+        Assert.IsType<int>(actual["IntegersModel.ShortValue"]);
+        Assert.Equal(42, actual["IntegersModel.ShortValue"]);
+        Assert.IsType<long>(actual["IntegersModel.LongValue"]);
+    }
+
+    [StaFact]
     public void Update_IntegersModel_EditedLargeValues_AreWritten()
     {
         // Arrange

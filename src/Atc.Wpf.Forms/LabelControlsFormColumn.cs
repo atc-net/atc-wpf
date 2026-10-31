@@ -290,7 +290,10 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
 
         if (IntegralTypeHelper.TryGetWholeNumber(value, control.InputDataType, out var integralValue))
         {
-            result.Add(control.GetFullIdentifier(), integralValue);
+            // An int control value fits every type it edits; keep it so the dictionary still holds an int.
+            result.Add(
+                control.GetFullIdentifier(),
+                controlValue is int ? controlValue : integralValue);
         }
     }
 
