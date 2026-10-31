@@ -141,7 +141,9 @@ internal static class DragDropManager
         ItemsControl itemsControl,
         object item)
     {
-        var sourceIndex = itemsControl.Items.IndexOf(item);
+        var sourceIndex = itemsControl.ItemsSource is IList sourceList
+            ? sourceList.IndexOf(item)
+            : itemsControl.Items.IndexOf(item);
 
         var dragInfo = new DragInfo
         {
@@ -200,7 +202,7 @@ internal static class DragDropManager
             return;
         }
 
-        var dropInfo = CreateDropInfo(targetElement, e);
+        var dropInfo = CreateDropInfo(targetElement, e.Data, e.GetPosition(targetElement));
         var handler = GetDropHandler(targetElement);
         handler.DragOver(dropInfo);
 
@@ -259,7 +261,7 @@ internal static class DragDropManager
             return;
         }
 
-        var dropInfo = CreateDropInfo(targetElement, e);
+        var dropInfo = CreateDropInfo(targetElement, e.Data, e.GetPosition(targetElement));
         var handler = GetDropHandler(targetElement);
 
         handler.DragOver(dropInfo);
@@ -274,17 +276,24 @@ internal static class DragDropManager
         RemoveHighlightAdorner();
     }
 
-    private static DropInfo CreateDropInfo(
+    /// <summary>
+    /// Builds the <see cref="DropInfo"/> for a drag over <paramref name="targetElement"/> at
+    /// <paramref name="position"/> (relative to the target). <see cref="DropInfo.InsertIndex"/> is an
+    /// index in the target collection: the slot under the pointer in the shown items (the view, which
+    /// may be filtered, sorted or grouped) is mapped to the source collection through its neighbour.
+    /// </summary>
+    internal static DropInfo CreateDropInfo(
         UIElement targetElement,
-        DragEventArgs e)
+        IDataObject dataObject,
+        Point position)
     {
-        var isFileDrop = e.Data.GetDataPresent(DataFormats.FileDrop);
+        var isFileDrop = dataObject.GetDataPresent(DataFormats.FileDrop);
         StringCollection? fileDropList = null;
         object data;
 
         if (isFileDrop)
         {
-            var files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            var files = dataObject.GetData(DataFormats.FileDrop) as string[];
             fileDropList = [];
             if (files is not null)
             {
@@ -298,13 +307,16 @@ internal static class DragDropManager
         }
         else
         {
-            data = currentDragInfo?.SourceItem ?? e.Data;
+            data = currentDragInfo?.SourceItem ?? dataObject;
         }
 
         var itemsControl = targetElement as ItemsControl;
-        var insertIndex = itemsControl is not null
-            ? DragDropHelper.GetInsertIndex(itemsControl, e)
+        var viewInsertIndex = itemsControl is not null
+            ? DragDropHelper.GetInsertIndex(itemsControl, position)
             : 0;
+        var insertIndex = itemsControl?.ItemsSource is IList targetList
+            ? DragDropHelper.ToSourceInsertIndex(itemsControl, targetList, viewInsertIndex)
+            : viewInsertIndex;
 
         return new DropInfo
         {
@@ -312,6 +324,7 @@ internal static class DragDropManager
             TargetCollection = itemsControl?.ItemsSource,
             VisualTarget = targetElement,
             InsertIndex = insertIndex,
+            ViewInsertIndex = viewInsertIndex,
             DragInfo = currentDragInfo,
             IsFileDrop = isFileDrop,
             FileDropList = fileDropList,
@@ -346,8 +359,15 @@ internal static class DragDropManager
             adornerLayer.Add(insertionAdorner);
         }
 
-        var yPosition = DragDropHelper.GetDropIndicatorY(itemsControl, dropInfo.InsertIndex);
-        insertionAdorner.UpdatePosition(yPosition);
+        // The line is drawn at the slot in the shown items, not at the index in the source collection.
+        if (DragDropHelper.GetDropIndicatorLine(itemsControl, dropInfo.ViewInsertIndex) is { } line)
+        {
+            insertionAdorner.UpdateLine(line.Start, line.End);
+        }
+        else
+        {
+            insertionAdorner.UpdatePosition(0);
+        }
     }
 
     private static IDropHandler GetDropHandler(UIElement element)

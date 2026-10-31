@@ -23,7 +23,18 @@ public sealed class DropInfo
     /// <summary>
     /// Gets the computed insertion index in the target collection.
     /// </summary>
+    /// <remarks>
+    /// This is an index in <see cref="TargetCollection"/>, not in the shown items: when the target
+    /// shows a filtered, sorted or grouped view, the slot under the pointer is mapped to the
+    /// collection through the neighbouring shown item.
+    /// </remarks>
     public int InsertIndex { get; init; }
+
+    /// <summary>
+    /// Gets the insertion slot in the items shown by the target (its view), used to place the
+    /// drop indicator.
+    /// </summary>
+    internal int ViewInsertIndex { get; init; }
 
     /// <summary>
     /// Gets or sets the drag-drop effects. Set in <see cref="IDropHandler.DragOver"/>
