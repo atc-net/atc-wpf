@@ -115,7 +115,7 @@ The floating window is a themed `NiceWindow` owned by the panel's window, so it 
 - a double-click on its title bar,
 - `dockPanel.RedockPane(pane)` or the `DockPanelProCommands.RedockPane` command.
 
-The window's close button **closes** the pane when `CanClose` is `true` (restore it with `RestorePane`), otherwise it docks the pane back. When the owner window closes, the floating windows close with it but the panes keep their floating state, so a layout saved afterwards still has them floating. When the panel is unloaded (for example its view is swapped out) its floating windows close; they open again at the same place when the panel is loaded again.
+The window's close button **closes** the pane when `CanClose` is `true` (restore it with `RestorePane`), otherwise it docks the pane back. When the owner window closes, the floating windows close with it but the panes keep their floating state, so a layout saved afterwards still has them floating. When the panel is unloaded (for example its tab in a `TabControl` is no longer selected, or its view is swapped out) its floating windows are hidden, not closed; the same windows show again when the panel is loaded again (in another window they are re-owned by it). A hidden window keeps the panel alive until the owner window closes, so call `RedockAllPanes()` before discarding a panel for good.
 
 ```csharp
 var output = dockPanel.FindPane("output")!;

@@ -76,6 +76,12 @@ public sealed partial class DockPanelPro
         CultureManager.UiCultureChanged -= OnUiCultureChanged;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
 
+        // Windows hidden while the panel was unloaded (e.g. on another tab) come back with it.
+        foreach (var window in floatingWindows.Values.ToList())
+        {
+            ShowHiddenFloatingWindow(window);
+        }
+
         foreach (var pane in GetPanes().Where(x => x.State == DockPaneState.Floating))
         {
             OpenFloatingWindow(pane);
@@ -89,13 +95,40 @@ public sealed partial class DockPanelPro
         CultureManager.UiCultureChanged -= OnUiCultureChanged;
         FlushLayoutChanged();
 
-        // The panes stay floating; their windows open again when the panel is loaded again.
-        foreach (var pane in floatingWindows.Keys.ToList())
+        // The panes stay floating and their windows are only hidden, so switching to another tab (or swapping the view
+        // out and back) keeps them as they are. The owner subscription stays: when the owner window closes, it closes the
+        // hidden windows and the panes keep their floating state.
+        foreach (var window in floatingWindows.Values)
         {
-            CloseFloatingWindow(pane);
+            if (!window.IsClosed)
+            {
+                window.Hide();
+            }
         }
 
-        AttachOwnerWindow(null);
+        if (floatingWindows.Count == 0)
+        {
+            AttachOwnerWindow(null);
+        }
+    }
+
+    private void ShowHiddenFloatingWindow(DockFloatingWindow window)
+    {
+        if (window.IsClosed || window.IsVisible)
+        {
+            return;
+        }
+
+        if (ownerWindow is not null &&
+            ownerWindow.IsLoaded &&
+            !ReferenceEquals(window.Owner, ownerWindow) &&
+            !ReferenceEquals(ownerWindow, window))
+        {
+            window.Owner = ownerWindow;
+        }
+
+        window.ApplyTexts();
+        window.Show();
     }
 
     private void OnUiCultureChanged(

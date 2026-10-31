@@ -149,7 +149,7 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
     }
 
     [StaFact]
-    public void Unloading_the_panel_closes_the_windows_and_loading_it_again_reopens_them()
+    public void Unloading_the_panel_hides_the_windows_and_loading_it_again_shows_the_same_windows()
     {
         var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
         var host = Show(panel);
@@ -163,21 +163,74 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
             DispatchPending();
 
             Assert.False(first.IsVisible);
-            Assert.Null(panel.GetFloatingWindow(output));
+            Assert.Same(first, panel.GetFloatingWindow(output));
+            Assert.Same(output, first.Content);
             Assert.Equal(DockPaneState.Floating, output.State);
 
             host.Content = panel;
             DispatchPending();
 
-            var second = panel.GetFloatingWindow(output);
-            Assert.NotNull(second);
-            Assert.True(second.IsVisible);
+            Assert.Same(first, panel.GetFloatingWindow(output));
+            Assert.True(first.IsVisible);
         }
         finally
         {
             panel.RedockAllPanes();
             host.Close();
         }
+    }
+
+    [StaFact]
+    public void Switching_away_from_the_tab_of_the_panel_hides_its_floating_windows_until_it_is_shown_again()
+    {
+        var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
+        var tabs = new TabControl();
+        tabs.Items.Add(new TabItem { Header = "Dock", Content = panel });
+        tabs.Items.Add(new TabItem { Header = "Other", Content = new TextBlock { Text = "other" } });
+        var host = Show(panel, tabs);
+        try
+        {
+            var output = panel.FindPane("output")!;
+            panel.FloatPane(output);
+            var window = panel.GetFloatingWindow(output)!;
+
+            tabs.SelectedIndex = 1;
+            DispatchPending();
+
+            Assert.False(panel.IsLoaded);
+            Assert.False(window.IsVisible);
+            Assert.Equal(DockPaneState.Floating, output.State);
+
+            tabs.SelectedIndex = 0;
+            DispatchPending();
+
+            Assert.Same(window, panel.GetFloatingWindow(output));
+            Assert.True(window.IsVisible);
+            Assert.Same(host, window.Owner);
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
+    public void Closing_the_owner_while_the_panel_is_unloaded_closes_the_hidden_windows_and_keeps_the_floating_state()
+    {
+        var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
+        var host = Show(panel);
+        var output = panel.FindPane("output")!;
+        panel.FloatPane(output);
+        var window = panel.GetFloatingWindow(output)!;
+        host.Content = null;
+        DispatchPending();
+
+        host.Close();
+
+        Assert.True(((Atc.Wpf.Controls.Layouts.Internal.DockFloatingWindow)window).IsClosed);
+        Assert.Equal(DockPaneState.Floating, output.State);
+        Assert.Null(panel.GetFloatingWindow(output));
     }
 
     [StaFact]
@@ -426,7 +479,13 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
     }
 
     internal static Window Show(DockPanelPro panel)
+        => Show(panel, panel);
+
+    internal static Window Show(
+        DockPanelPro panel,
+        object content)
     {
+        _ = panel;
         var dictionary = new ResourceDictionary
         {
             Source = new Uri("pack://application:,,,/Atc.Wpf.Controls;component/Layouts/DockPanelPro.xaml", UriKind.Absolute),
@@ -440,7 +499,7 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
         var window = new Window
         {
             Resources = resources,
-            Content = panel,
+            Content = content,
             Width = 800,
             Height = 600,
             Left = -10000,
