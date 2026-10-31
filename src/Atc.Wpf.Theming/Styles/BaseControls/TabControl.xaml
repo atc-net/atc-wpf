@@ -55,12 +55,28 @@
         <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style>
 
+    <!--  Keyboard focus outline for tab headers  -->
+    <Style x:Key="AtcApps.Styles.TabItem.FocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle
+                        Margin="1"
+                        SnapsToDevicePixels="True"
+                        Stroke="{DynamicResource AtcApps.Brushes.SystemControlFocusVisualPrimary}"
+                        StrokeDashArray="1 2"
+                        StrokeThickness="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--  ItemBase  -->
     <Style x:Key="AtcApps.Styles.TabItem" TargetType="{x:Type TabItem}">
         <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=(atc:HeaderedControlHelper.HeaderBackground), Mode=OneWay, FallbackValue={x:Static Brushes.Transparent}}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource AtcApps.Styles.TabItem.FocusVisual}" />
         <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabControl}}, Path=HorizontalContentAlignment, Mode=OneWay, FallbackValue={x:Static HorizontalAlignment.Stretch}}" />
         <Setter Property="IsTabStop" Value="False" />
