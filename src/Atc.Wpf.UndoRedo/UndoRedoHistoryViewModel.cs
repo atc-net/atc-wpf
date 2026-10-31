@@ -112,6 +112,10 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
                 undoRedoService.UndoTo(item.Command);
                 undoRedoService.Redo();
             }
+
+            // The service raises StateChanged for every step; the rows are refreshed once, here,
+            // still inside the guard so a selection change caused by the refresh can't navigate again.
+            ApplyStateChange();
         }
         finally
         {
@@ -140,6 +144,16 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
     private void OnStateChanged(
         object? sender,
         EventArgs e)
+    {
+        if (isNavigating)
+        {
+            return;
+        }
+
+        ApplyStateChange();
+    }
+
+    private void ApplyStateChange()
     {
         RefreshHistory();
         RaiseCanExecuteChanged();
@@ -171,33 +185,98 @@ public sealed partial class UndoRedoHistoryViewModel : ViewModelBase
         var redoCommands = undoRedoService.RedoCommands;
         var undoCount = undoCommands.Count;
 
-        var items = new List<UndoRedoHistoryItem>(undoCount + redoCommands.Count + 1)
+        // Rows are reused by command, so the list keeps its selection, focus and scroll position
+        // while the history moves; only the IsRedo/IsHighlighted flags change.
+        UndoRedoHistoryItem? rootItem = null;
+        var existingByCommand = new Dictionary<IUndoCommand, UndoRedoHistoryItem>(ReferenceEqualityComparer.Instance);
+        foreach (var existing in HistoryItems)
+        {
+            if (existing.Command is null)
+            {
+                rootItem ??= existing;
+            }
+            else
+            {
+                existingByCommand.TryAdd(existing.Command, existing);
+            }
+        }
+
+        if (rootItem is null)
         {
             // Root row: "Initial state"
-            new()
+            rootItem = new UndoRedoHistoryItem
             {
                 Description = SharedMisc.InitialState,
                 IsHighlighted = undoCount == 0,
                 Command = null,
-            },
-        };
+            };
+        }
+        else
+        {
+            rootItem.UpdateState(redo: false, highlighted: undoCount == 0);
+        }
+
+        var items = new List<UndoRedoHistoryItem>(undoCount + redoCommands.Count + 1) { rootItem };
 
         // Undo commands in chronological order (reversed from stack which is most-recent-first)
         for (var i = undoCount - 1; i >= 0; i--)
         {
-            var cmd = undoCommands[i];
-            items.Add(BuildHistoryItem(cmd, isRedo: false, isHighlighted: i == 0));
+            items.Add(GetOrBuildHistoryItem(existingByCommand, undoCommands[i], isRedo: false, isHighlighted: i == 0));
         }
 
         // Redo commands in stack order (most-recent-first = next to redo first)
         foreach (var cmd in redoCommands)
         {
-            items.Add(BuildHistoryItem(cmd, isRedo: true, isHighlighted: false));
+            items.Add(GetOrBuildHistoryItem(existingByCommand, cmd, isRedo: true, isHighlighted: false));
         }
 
-        var collection = new ObservableCollectionEx<UndoRedoHistoryItem>();
-        collection.AddRange(items);
-        HistoryItems = collection;
+        SyncHistoryItems(items);
+    }
+
+    private void SyncHistoryItems(List<UndoRedoHistoryItem> items)
+    {
+        var target = HistoryItems;
+        var wanted = new HashSet<UndoRedoHistoryItem>(items, ReferenceEqualityComparer.Instance);
+        for (var i = target.Count - 1; i >= 0; i--)
+        {
+            if (!wanted.Contains(target[i]))
+            {
+                target.RemoveAt(i);
+            }
+        }
+
+        for (var i = 0; i < items.Count; i++)
+        {
+            if (i < target.Count && ReferenceEquals(target[i], items[i]))
+            {
+                continue;
+            }
+
+            var currentIndex = target.IndexOf(items[i]);
+            if (currentIndex >= 0)
+            {
+                target.Move(currentIndex, i);
+            }
+            else
+            {
+                target.Insert(i, items[i]);
+            }
+        }
+    }
+
+    private static UndoRedoHistoryItem GetOrBuildHistoryItem(
+        Dictionary<IUndoCommand, UndoRedoHistoryItem> existingByCommand,
+        IUndoCommand cmd,
+        bool isRedo,
+        bool isHighlighted)
+    {
+        if (existingByCommand.TryGetValue(cmd, out var existing))
+        {
+            existing.UpdateState(isRedo, isHighlighted);
+            return existing;
+        }
+
+        return BuildHistoryItem(cmd, isRedo, isHighlighted);
     }
 
     private static UndoRedoHistoryItem BuildHistoryItem(
