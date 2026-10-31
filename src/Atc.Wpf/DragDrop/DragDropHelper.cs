@@ -7,6 +7,69 @@ namespace Atc.Wpf.DragDrop;
 internal static class DragDropHelper
 {
     /// <summary>
+    /// Gets the parent of <paramref name="element"/>: the visual parent for visuals, otherwise
+    /// the logical parent (a <see cref="Run"/> or <see cref="Hyperlink"/> inside a TextBlock is
+    /// a <see cref="ContentElement"/>, which <see cref="VisualTreeHelper.GetParent"/> rejects).
+    /// </summary>
+    internal static DependencyObject? GetParent(DependencyObject element)
+        => element is Visual or System.Windows.Media.Media3D.Visual3D
+            ? VisualTreeHelper.GetParent(element)
+            : LogicalTreeHelper.GetParent(element);
+
+    /// <summary>
+    /// Determines whether a press on <paramref name="source"/> must not start a drag, because it
+    /// sits in a control that uses the mouse itself (text selection, scrolling, sliding, a drop-down,
+    /// a resize thumb or a column header) somewhere between <paramref name="source"/> and
+    /// <paramref name="boundary"/> (the drag source, exclusive).
+    /// </summary>
+    internal static bool IsDragExcludedSource(
+        DependencyObject? source,
+        DependencyObject boundary)
+    {
+        for (var element = source;
+             element is not null && !ReferenceEquals(element, boundary);
+             element = GetParent(element))
+        {
+            if (element is TextBoxBase or PasswordBox or ComboBox or RangeBase or Thumb
+                or GridViewColumnHeader or DataGridColumnHeader)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Finds the data item of the <paramref name="itemsControl"/> container that holds
+    /// <paramref name="element"/>, or <see langword="null"/> when the element is not inside an item
+    /// (for example on the scroll bar or the empty area below the items).
+    /// </summary>
+    internal static object? GetItemFromElement(
+        ItemsControl itemsControl,
+        DependencyObject? element)
+    {
+        ArgumentNullException.ThrowIfNull(itemsControl);
+
+        // Climb out of content elements (Run, Hyperlink) to the first visual.
+        while (element is not null and not Visual)
+        {
+            element = GetParent(element);
+        }
+
+        if (element is null ||
+            ItemsControl.ContainerFromElement(itemsControl, element) is not { } container)
+        {
+            return null;
+        }
+
+        var item = itemsControl.ItemContainerGenerator.ItemFromContainer(container);
+        return item == DependencyProperty.UnsetValue
+            ? null
+            : item;
+    }
+
+    /// <summary>
     /// Calculates the insertion index within an <see cref="ItemsControl"/>
     /// based on the vertical position of the drag event.
     /// </summary>

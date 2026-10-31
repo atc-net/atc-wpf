@@ -9,6 +9,8 @@ internal static class DragDropManager
     private static readonly DefaultDropHandler FallbackDropHandler = new();
 
     private static Point? dragStartPoint;
+    private static ItemsControl? pressedItemsControl;
+    private static object? pressedItem;
     private static DragInfo? currentDragInfo;
     private static DragDropAdorner? dragAdorner;
     private static DropTargetInsertionAdorner? insertionAdorner;
@@ -50,15 +52,37 @@ internal static class DragDropManager
         object sender,
         MouseButtonEventArgs e)
     {
+        ClearPendingDrag();
+
+        if (sender is not UIElement sourceElement)
+        {
+            return;
+        }
+
+        var itemsControl = sourceElement as ItemsControl
+            ?? FindVisualParent<ItemsControl>(sourceElement);
+
+        if (itemsControl is null)
+        {
+            return;
+        }
+
+        // Resolve the item at the press point, not later at the point where the drag threshold is passed.
+        var item = ResolvePressedItem(itemsControl, e.OriginalSource as DependencyObject);
+        if (item is null)
+        {
+            return;
+        }
+
         dragStartPoint = e.GetPosition(null);
+        pressedItemsControl = itemsControl;
+        pressedItem = item;
     }
 
     private static void OnPreviewMouseLeftButtonUp(
         object sender,
         MouseButtonEventArgs e)
-    {
-        dragStartPoint = null;
-    }
+        => ClearPendingDrag();
 
     private static void OnPreviewMouseMove(
         object sender,
@@ -66,7 +90,8 @@ internal static class DragDropManager
     {
         if (e.LeftButton != MouseButtonState.Pressed ||
             dragStartPoint is null ||
-            sender is not UIElement sourceElement)
+            pressedItemsControl is null ||
+            pressedItem is null)
         {
             return;
         }
@@ -80,21 +105,32 @@ internal static class DragDropManager
             return;
         }
 
-        var itemsControl = sourceElement as ItemsControl
-            ?? FindVisualParent<ItemsControl>(sourceElement);
+        BeginDrag(pressedItemsControl, pressedItem);
+    }
 
-        if (itemsControl is null)
+    /// <summary>
+    /// Resolves the item a press on <paramref name="originalSource"/> would drag, or
+    /// <see langword="null"/> when the press is not on an item or starts inside a control
+    /// that uses the mouse itself (a TextBox, ScrollBar, Slider, ComboBox, Thumb, ...).
+    /// </summary>
+    internal static object? ResolvePressedItem(
+        ItemsControl itemsControl,
+        DependencyObject? originalSource)
+    {
+        if (originalSource is null ||
+            DragDropHelper.IsDragExcludedSource(originalSource, itemsControl))
         {
-            return;
+            return null;
         }
 
-        var item = GetDraggedItem(itemsControl, e);
-        if (item is null)
-        {
-            return;
-        }
+        return DragDropHelper.GetItemFromElement(itemsControl, originalSource);
+    }
 
-        BeginDrag(itemsControl, item);
+    private static void ClearPendingDrag()
+    {
+        dragStartPoint = null;
+        pressedItemsControl = null;
+        pressedItem = null;
     }
 
     /// <summary>
@@ -123,12 +159,12 @@ internal static class DragDropManager
         {
             // The handler cancelled this drag; forget the press so the next
             // mouse move does not ask the handler again until a new press.
-            dragStartPoint = null;
+            ClearPendingDrag();
             return;
         }
 
         currentDragInfo = dragInfo;
-        dragStartPoint = null;
+        ClearPendingDrag();
 
         if (DragDropAttach.GetShowDragAdorner(itemsControl))
         {
@@ -312,30 +348,6 @@ internal static class DragDropManager
 
         var yPosition = DragDropHelper.GetDropIndicatorY(itemsControl, dropInfo.InsertIndex);
         insertionAdorner.UpdatePosition(yPosition);
-    }
-
-    private static object? GetDraggedItem(
-        ItemsControl itemsControl,
-        MouseEventArgs e)
-    {
-        var position = e.GetPosition(itemsControl);
-        var element = itemsControl.InputHitTest(position) as DependencyObject;
-
-        while (element is not null)
-        {
-            if (element is FrameworkElement fe)
-            {
-                var item = itemsControl.ItemContainerGenerator.ItemFromContainer(fe);
-                if (item != DependencyProperty.UnsetValue)
-                {
-                    return item;
-                }
-            }
-
-            element = VisualTreeHelper.GetParent(element);
-        }
-
-        return null;
     }
 
     private static IDropHandler GetDropHandler(UIElement element)
