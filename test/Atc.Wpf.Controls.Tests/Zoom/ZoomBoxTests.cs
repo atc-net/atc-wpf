@@ -105,4 +105,26 @@ public sealed class ZoomBoxTests : IDisposable
         zoomBox.RaiseEvent(KeyPress.CreateArgs(Keyboard.PreviewKeyUpEvent, Key.Space));
         Assert.Null(zoomBox.Cursor);
     }
+
+    [StaFact]
+    public void ZoomCommandMessage_ZoomToFit_BeforeAnyCommandWasUsed_ZoomsToFit()
+    {
+        var zoomBox = ZoomBoxFactory.CreateTemplated(new Canvas { Width = 800, Height = 600 }, 400, 400);
+        zoomBox.UseAnimations = false;
+
+        zoomBox.OnZoomCommandMessageHandler(new Atc.Wpf.Controls.Zoom.Messages.ZoomCommandMessage(ZoomCommandMessageType.ZoomToFit));
+
+        Assert.Equal(zoomBox.FitZoomValue, zoomBox.ViewportZoom, 6);
+    }
+
+    [StaFact]
+    public void ZoomCommandMessage_ZoomToPercentage_BeforeAnyCommandWasUsed_ZoomsToThePercentage()
+    {
+        var zoomBox = ZoomBoxFactory.CreateTemplated(new Canvas { Width = 800, Height = 600 }, 400, 400);
+        zoomBox.UseAnimations = false;
+
+        zoomBox.OnZoomCommandMessageHandler(new Atc.Wpf.Controls.Zoom.Messages.ZoomCommandMessage(ZoomCommandMessageType.ZoomToPercentage, 200));
+
+        Assert.Equal(2.0, zoomBox.ViewportZoom, 6);
+    }
 }

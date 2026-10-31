@@ -571,19 +571,21 @@ public partial class ZoomBox
         e.Handled = true;
     }
 
-    private void OnZoomCommandMessageHandler(ZoomCommandMessage obj)
+    internal void OnZoomCommandMessageHandler(ZoomCommandMessage obj)
     {
+        // Use the command properties, not their lazily created backing fields: the message may come
+        // before anything (a button binding or a key press) has created the command.
         switch (obj.CommandType)
         {
             case ZoomCommandMessageType.ZoomToFill:
             {
-                zoomFillCommand?.Execute(parameter: null);
+                ExecuteIfPossible(ZoomFillCommand, parameter: null);
                 break;
             }
 
             case ZoomCommandMessageType.ZoomToFit:
             {
-                zoomFitCommand?.Execute(parameter: null);
+                ExecuteIfPossible(ZoomFitCommand, parameter: null);
                 break;
             }
 
@@ -591,7 +593,7 @@ public partial class ZoomBox
             {
                 if (obj.Percentage is > 0 and <= 1000)
                 {
-                    zoomPercentCommand?.Execute(obj.Percentage);
+                    ExecuteIfPossible(ZoomPercentCommand, (double)obj.Percentage);
                 }
 
                 break;
@@ -599,6 +601,16 @@ public partial class ZoomBox
 
             default:
                 throw new SwitchCaseDefaultException(obj.CommandType);
+        }
+    }
+
+    private static void ExecuteIfPossible(
+        ICommand command,
+        object? parameter)
+    {
+        if (command.CanExecute(parameter))
+        {
+            command.Execute(parameter);
         }
     }
 
