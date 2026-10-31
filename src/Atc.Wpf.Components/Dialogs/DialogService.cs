@@ -217,9 +217,35 @@ public class DialogService : IDialogService
             .ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// The owner for a dialog: the window from the owner resolver when there is one, otherwise the application's
+    /// active window (so a dialog raised from a second window is owned by and centred on that window), otherwise
+    /// the main window.
+    /// </summary>
+    /// <param name="resolvedOwner">The window returned by the owner resolver, if any.</param>
+    /// <param name="openWindows">The application's open windows.</param>
+    /// <param name="mainWindow">The application's main window, if any.</param>
+    /// <param name="isActive">Whether a window is the active window.</param>
+    /// <returns>The owner window, or <see langword="null"/> when there is none.</returns>
+    internal static Window? ResolveOwnerWindow(
+        Window? resolvedOwner,
+        IEnumerable<Window> openWindows,
+        Window? mainWindow,
+        Func<Window, bool> isActive)
+        => resolvedOwner
+           ?? openWindows.FirstOrDefault(window => window.IsVisible && isActive(window))
+           ?? mainWindow;
+
     private Window GetOwnerWindow()
     {
-        var owner = ownerResolver?.Invoke();
-        return owner ?? Application.Current?.MainWindow ?? throw new InvalidOperationException("No owner window available.");
+        var application = Application.Current;
+        var openWindows = application?.Windows.OfType<Window>() ?? [];
+
+        return ResolveOwnerWindow(
+                   ownerResolver?.Invoke(),
+                   openWindows,
+                   application?.MainWindow,
+                   window => window.IsActive)
+               ?? throw new InvalidOperationException("No owner window available.");
     }
 }
