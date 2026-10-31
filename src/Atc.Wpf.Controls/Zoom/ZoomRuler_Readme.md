@@ -47,7 +47,7 @@ using Atc.Wpf.Controls.Zoom;
 | `Orientation` | `ZoomRulerOrientation` | `Horizontal` | Horizontal (top) or Vertical (left) |
 | `TickBrush` | `Brush` | `Gray` | Brush for tick marks |
 | `LabelBrush` | `Brush` | `Gray` | Brush for position labels |
-| `FontSize` | `double` | `8.0` | Font size for position labels |
+| `FontSize` | `double` | `10.0` | Font size for position labels |
 
 ## 🔗 Related Controls
 

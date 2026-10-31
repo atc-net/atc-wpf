@@ -127,4 +127,45 @@ public sealed class ZoomBoxTests : IDisposable
 
         Assert.Equal(2.0, zoomBox.ViewportZoom, 6);
     }
+
+    [StaFact]
+    public void ZoomInitialPositionFitScreen_ContentResizedBeforeTheUserZooms_FitsAgain()
+    {
+        var canvas = new Canvas { Width = 800, Height = 600 };
+        var zoomBox = ZoomBoxFactory.CreateTemplated(canvas, 400, 400);
+        zoomBox.ZoomInitialPosition = ZoomInitialPositionType.FitScreen;
+
+        Resize(zoomBox, canvas, 800, 800);
+        Assert.Equal(0.5, zoomBox.ViewportZoom, 6);
+
+        Resize(zoomBox, canvas, 1600, 1600);
+        Assert.Equal(0.25, zoomBox.ViewportZoom, 6);
+    }
+
+    [StaFact]
+    public void ZoomInitialPositionFitScreen_ContentResizedAfterTheUserZoomed_KeepsTheUsersZoom()
+    {
+        var canvas = new Canvas { Width = 800, Height = 600 };
+        var zoomBox = ZoomBoxFactory.CreateTemplated(canvas, 400, 400);
+        zoomBox.ZoomInitialPosition = ZoomInitialPositionType.FitScreen;
+        Resize(zoomBox, canvas, 800, 800);
+
+        zoomBox.ViewportZoom = 2.0;
+        Resize(zoomBox, canvas, 1600, 1600);
+
+        Assert.Equal(2.0, zoomBox.ViewportZoom, 6);
+    }
+
+    private static void Resize(
+        ZoomBox zoomBox,
+        FrameworkElement content,
+        double width,
+        double height)
+    {
+        content.Width = width;
+        content.Height = height;
+        zoomBox.Measure(new Size(400, 400));
+        zoomBox.Arrange(new Rect(0, 0, 400, 400));
+        zoomBox.UpdateLayout();
+    }
 }

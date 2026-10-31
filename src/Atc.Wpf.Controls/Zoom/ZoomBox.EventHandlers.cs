@@ -13,6 +13,7 @@ public partial class ZoomBox
     private Point contentMouseDownPoint;
     private MouseButton mouseButtonDown;
     private bool isSpacebarHeld;
+    private ViewportState? appliedInitialViewport;
     private Cursor? cursorBeforeSpacebar;
 
     private RelayCommand? zoomFillCommand;
@@ -492,6 +493,8 @@ public partial class ZoomBox
             oldElement.SizeChanged -= SetZoomInitialPosition;
         }
 
+        appliedInitialViewport = null;
+
         if (newContent is FrameworkElement newElement)
         {
             newElement.SizeChanged += SetZoomInitialPosition;
@@ -623,10 +626,18 @@ public partial class ZoomBox
             return;
         }
 
+        // Re-apply the initial position while the content settles (e.g. an image that loads), but never
+        // once the user has zoomed or panned away from it: a later resize must not wipe their view.
+        if (appliedInitialViewport is not null &&
+            !IsSameViewport(appliedInitialViewport, CurrentViewportState, compareOffsets: ZoomInitialPosition != ZoomInitialPositionType.FitScreen))
+        {
+            return;
+        }
+
         switch (ZoomInitialPosition)
         {
             case ZoomInitialPositionType.Default:
-                break;
+                return;
             case ZoomInitialPositionType.FitScreen:
                 InternalViewportZoom = FitZoomValue;
                 break;
@@ -643,7 +654,19 @@ public partial class ZoomBox
             default:
                 throw new SwitchCaseDefaultException(ZoomInitialPosition);
         }
+
+        appliedInitialViewport = CurrentViewportState;
     }
+
+    // Fit only sets the zoom (the offsets follow the layout), so only the zoom tells whether the user moved away.
+    private static bool IsSameViewport(
+        ViewportState a,
+        ViewportState b,
+        bool compareOffsets)
+        => System.Math.Abs(a.Zoom - b.Zoom) < 1e-9 &&
+           (!compareOffsets ||
+            (System.Math.Abs(a.OffsetX - b.OffsetX) < 1e-6 &&
+             System.Math.Abs(a.OffsetY - b.OffsetY) < 1e-6));
 
     private void ZoomOut(Point contentZoomCenter)
         => ZoomAboutPoint(InternalViewportZoom * 0.90909090909, contentZoomCenter);

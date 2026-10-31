@@ -49,7 +49,7 @@ using Atc.Wpf.Controls.Zoom;
 |----------|------|---------|-------------|
 | `UseAnimations` | `bool` | `true` | Enable/disable zoom animations |
 | `AnimationDuration` | `double` | `0.4` | Animation duration in seconds |
-| `ZoomInitialPosition` | `ZoomInitialPositionType` | `Default` | Initial zoom position on load |
+| `ZoomInitialPosition` | `ZoomInitialPositionType` | `Default` | Initial zoom position on load; re-applied when the content resizes until the user zooms or pans |
 | `ViewportZoom` | `double` | `1.0` | Current zoom level |
 | `MinimumZoom` | `double` | `0.1` | Minimum zoom level |
 | `MaximumZoom` | `double` | `10.0` | Maximum zoom level |
