@@ -107,8 +107,6 @@ public partial class LanguageSelector
     {
         InitializeComponent();
 
-        DataContext = this;
-
         Loaded += OnLoaded;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }

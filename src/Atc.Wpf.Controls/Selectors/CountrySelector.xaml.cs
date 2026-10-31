@@ -106,8 +106,6 @@ public partial class CountrySelector
     {
         InitializeComponent();
 
-        DataContext = this;
-
         Loaded += OnLoaded;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }

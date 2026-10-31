@@ -15,7 +15,7 @@ using Atc.Wpf.Controls.Selectors;
 ## 🚀 Usage
 
 ```xml
-<selectors:FontFamilySelector SelectedKey="{Binding SelectedFontFamily}" />
+<selectors:FontFamilySelector SelectedKey="{Binding SelectedFontFamily, Mode=TwoWay}" />
 ```
 
 ## ⚙️ Properties

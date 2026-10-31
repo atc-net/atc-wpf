@@ -16,7 +16,7 @@ using Atc.Wpf.Controls.Selectors;
 
 ```xml
 <selectors:LanguageSelector
-    SelectedKey="{Binding SelectedLanguageCode}"
+    SelectedKey="{Binding SelectedLanguageCode, Mode=TwoWay}"
     UseOnlySupportedLanguages="True"
     UpdateUiCultureOnChangeEvent="True" />
 ```
@@ -40,6 +40,7 @@ using Atc.Wpf.Controls.Selectors;
 
 ## 📝 Notes
 
+- The control keeps the inherited `DataContext`, so bindings on it resolve against your view model. `SelectedKey` binds one-way by default; use `Mode=TwoWay` to get the user's pick back
 - When `UpdateUiCultureOnChangeEvent` is true, selecting a language changes the application's UI culture
 - Language names are localized based on the current UI culture
 
