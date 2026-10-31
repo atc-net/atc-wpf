@@ -221,7 +221,10 @@ public partial class TokenBox
         if (createdKeys.Remove(key))
         {
             knownValues.Remove(key);
-            Items?.Remove(key);
+            if (AddNewValuesToItems)
+            {
+                Items?.Remove(key);
+            }
         }
 
         RegisterCreated(newKey, newText);
@@ -575,9 +578,12 @@ public partial class TokenBox
             }
             else if (Items is null || !Items.ContainsKey(pair.Key))
             {
-                // A value from the suggestions provider: remember it, so SelectedKeys stays consistent with Items.
+                // A value from the suggestions provider: remember it, so its token keeps its display value.
                 knownValues[pair.Key] = pair.Value;
-                Items?.TryAdd(pair.Key, pair.Value);
+                if (AddNewValuesToItems)
+                {
+                    Items?.TryAdd(pair.Key, pair.Value);
+                }
             }
 
             keys.Add(pair.Key);
@@ -604,7 +610,10 @@ public partial class TokenBox
     {
         createdKeys.Add(key);
         knownValues[key] = display;
-        Items?.TryAdd(key, display);
+        if (AddNewValuesToItems)
+        {
+            Items?.TryAdd(key, display);
+        }
     }
 
     private void RemoveKeys(IReadOnlyList<string> keys)

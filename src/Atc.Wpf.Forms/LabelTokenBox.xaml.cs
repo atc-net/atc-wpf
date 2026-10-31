@@ -52,6 +52,13 @@ public partial class LabelTokenBox : ILabelTokenBox
     private bool allowCreate;
 
     /// <summary>
+    /// Whether created values and values picked from the suggestions provider are also written into <c>Items</c>
+    /// (off by default, so a shared catalog is not changed).
+    /// </summary>
+    [DependencyProperty]
+    private bool addNewValuesToItems;
+
+    /// <summary>
     /// The characters that commit the typed text; pasted text is split on them and on new lines.
     /// </summary>
     [DependencyProperty(DefaultValue = ",;")]
@@ -172,6 +179,7 @@ public partial class LabelTokenBox : ILabelTokenBox
         Forward(TextBoxHelper.WatermarkProperty, WatermarkTextProperty);
         Forward(TokenBox.MaxDropDownHeightProperty, MaxDropDownHeightProperty);
         Forward(TokenBox.AllowCreateProperty, AllowCreateProperty);
+        Forward(TokenBox.AddNewValuesToItemsProperty, AddNewValuesToItemsProperty);
         Forward(TokenBox.CreateValidatorProperty, CreateValidatorProperty);
         Forward(TokenBox.SeparatorsProperty, SeparatorsProperty);
         Forward(TokenBox.FilterModeProperty, FilterModeProperty);

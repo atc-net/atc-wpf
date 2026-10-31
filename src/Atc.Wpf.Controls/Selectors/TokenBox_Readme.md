@@ -89,7 +89,7 @@ public Func<string, CancellationToken, Task<IReadOnlyList<KeyValuePair<string, s
     => async (text, cancellationToken) => await userService.SearchAsync(text, cancellationToken);
 ```
 
-While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke cancels the previous lookup, and a result for older text is dropped even if the provider ignores the token. A picked suggestion is added to `Items`.
+While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke cancels the previous lookup, and a result for older text is dropped even if the provider ignores the token. The box remembers a picked suggestion itself; with `AddNewValuesToItems="True"` it is also added to `Items`.
 
 ### One line
 
@@ -109,6 +109,7 @@ While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The token keys in token order; two-way by default, updated in place |
 | `Text` | `string` | `""` | The typed text (two-way) |
 | `AllowCreate` | `bool` | `false` | Text that matches no item becomes a new token on `Enter`, `Tab` or a separator |
+| `AddNewValuesToItems` | `bool` | `false` | Also write created values and values picked from `SuggestionsProvider` into `Items` (off: the box keeps them itself and `Items` is never changed) |
 | `CreateValidator` | `Func<string, string?>?` | `null` | Returns an error text to refuse a new value |
 | `Separators` | `string` | `",;"` | Typing one commits the typed text; pasted text is split on them and on new lines |
 | `FilterMode` | `TokenFilterMode` | `Contains` | `StartsWith`, `Contains` or `Custom` |
@@ -167,7 +168,7 @@ While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke
 - **Matching typed text:** a part matches an item when it equals its display value (case-insensitive) or its key.
 - **Highlight:** without `AllowCreate` the first suggestion is highlighted, so `Enter` picks it. With `AllowCreate` only a suggestion equal to the typed text is highlighted, so `Enter` creates the typed value instead of picking a longer one (use `↓` to pick a suggestion).
 - **Unknown text:** without `AllowCreate`, text that matches nothing stays in the field; pasted parts that match nothing stay there too (joined by the first separator).
-- **Created values:** the key is the text itself unless `TokenCreating` sets another; the pair is added to `Items`. While `AllowCreate` is set, keys in `SelectedKeys` that are not in `Items` show as their key.
+- **Created values:** the key is the text itself unless `TokenCreating` sets another. The box remembers the pair itself and leaves `Items` alone, so an `Items` dictionary shared between boxes (a catalog) is not changed; set `AddNewValuesToItems="True"` to have created and provider-picked values written into `Items` as well (the behaviour before this option). While `AllowCreate` is set, keys in `SelectedKeys` that are not in `Items` show as their key.
 - **Duplicates** are ignored (by key, or by display value ignoring case); pasting "a, a, b" adds a and b.
 - **Items changes** drop tokens whose keys are gone (one event), except created values and values picked from `SuggestionsProvider`. Keys that were never in `Items` (free values, or keys restored before the items load) are kept too.
 - **Closing the suggestions:** like the other drop-downs, the box holds the mouse capture while the suggestions are open, so a click anywhere outside the box and its pop-up closes them (also on empty space that cannot take focus; as in a combo box, that click only closes them). They also close when a scroll viewer around the box scrolls, when the window moves or is deactivated, and when focus leaves the box.

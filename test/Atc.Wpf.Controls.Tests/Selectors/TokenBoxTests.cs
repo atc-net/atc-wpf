@@ -223,7 +223,7 @@ public sealed class TokenBoxTests : IDisposable
     [StaFact]
     public void Paste_with_AllowCreate_creates_the_values_with_one_event()
     {
-        var sut = new TokenBox { AllowCreate = true };
+        var sut = new TokenBox { AllowCreate = true, AddNewValuesToItems = true };
         var events = Record(sut);
 
         sut.Paste("a; b\r\nc, a");
@@ -267,6 +267,7 @@ public sealed class TokenBoxTests : IDisposable
     {
         var sut = Create();
         sut.AllowCreate = true;
+        sut.AddNewValuesToItems = true;
         var events = Record(sut);
 
         sut.Text = "Ord";
@@ -323,7 +324,7 @@ public sealed class TokenBoxTests : IDisposable
     [StaFact]
     public void TokenCreating_can_set_the_key_or_cancel()
     {
-        var sut = new TokenBox { AllowCreate = true };
+        var sut = new TokenBox { AllowCreate = true, AddNewValuesToItems = true };
         var events = Record(sut);
         sut.TokenCreating += (_, e) =>
         {
@@ -594,6 +595,7 @@ public sealed class TokenBoxTests : IDisposable
     {
         var sut = Create();
         sut.AllowCreate = true;
+        sut.AddNewValuesToItems = true;
         sut.AllowEditTokens = true;
         sut.SelectedKeys = ["orders"];
         sut.Paste("drafts, misc,");
@@ -678,7 +680,8 @@ public sealed class TokenBoxTests : IDisposable
         sut.HandleKey(Key.Enter, ModifierKeys.None);
 
         Assert.Equal(["u1"], sut.SelectedKeys);
-        Assert.Equal("jenn one", sut.Items["u1"]);
+        Assert.Equal(["jenn one"], sut.GetTokenItems().Select(x => x.DisplayValue).ToList());
+        Assert.False(sut.Items.ContainsKey("u1"));
     }
 
     [StaFact]
@@ -839,6 +842,39 @@ public sealed class TokenBoxTests : IDisposable
             ShowInTaskbar = false,
             WindowStyle = WindowStyle.None,
         };
+
+    [StaFact]
+    public void Created_values_leave_a_shared_Items_catalog_unchanged_by_default()
+    {
+        var catalog = new Dictionary<string, string>(StringComparer.Ordinal) { ["orders"] = "Orders" };
+        var first = new TokenBox { AllowCreate = true, Items = catalog };
+        var second = new TokenBox { AllowCreate = true, Items = catalog };
+        var creating = 0;
+        first.TokenCreating += (_, _) => creating++;
+
+        first.Text = "ledger";
+        first.HandleKey(Key.Enter, ModifierKeys.None);
+
+        Assert.Equal(1, creating);
+        Assert.Equal(["ledger"], first.SelectedKeys);
+        Assert.Equal(["ledger"], first.GetTokenItems().Select(x => x.DisplayValue).ToList());
+        Assert.Equal(["orders"], catalog.Keys.ToList());
+
+        second.Text = "led";
+        Assert.DoesNotContain(second.Suggestions, x => string.Equals(x.Key, "ledger", StringComparison.Ordinal));
+    }
+
+    [StaFact]
+    public void AddNewValuesToItems_writes_created_values_into_Items()
+    {
+        var catalog = new Dictionary<string, string>(StringComparer.Ordinal) { ["orders"] = "Orders" };
+        var sut = new TokenBox { AllowCreate = true, AddNewValuesToItems = true, Items = catalog };
+
+        sut.Text = "ledger";
+        sut.HandleKey(Key.Enter, ModifierKeys.None);
+
+        Assert.Equal("ledger", catalog["ledger"]);
+    }
 
     private static TokenBox Create()
         => new()

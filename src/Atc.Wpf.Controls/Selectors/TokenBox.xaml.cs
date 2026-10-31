@@ -86,10 +86,20 @@ public partial class TokenBox
 
     /// <summary>
     /// Whether text that matches no item becomes a new token on <c>Enter</c>, <c>Tab</c> or a separator. The key of a
-    /// new token is its text unless <see cref="TokenCreating"/> sets another; the pair is added to <see cref="Items"/>.
+    /// new token is its text unless <see cref="TokenCreating"/> sets another; the box remembers the pair itself (see
+    /// <see cref="AddNewValuesToItems"/>).
     /// </summary>
     [DependencyProperty(PropertyChangedCallback = nameof(OnTokensInputChanged))]
     private bool allowCreate;
+
+    /// <summary>
+    /// Whether created values and values picked from <see cref="SuggestionsProvider"/> are also written into
+    /// <see cref="Items"/>. Off by default: the box keeps them in its own list, so an <see cref="Items"/> dictionary
+    /// shared between boxes (a catalog) is never changed. Turn it on when the view model wants <see cref="Items"/> to
+    /// collect the new values.
+    /// </summary>
+    [DependencyProperty]
+    private bool addNewValuesToItems;
 
     /// <summary>
     /// The characters that commit the typed text; pasted text is split on them and on new lines.

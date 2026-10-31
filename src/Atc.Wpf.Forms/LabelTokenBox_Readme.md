@@ -57,6 +57,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The token keys; two-way by default, updated in place |
 | `WatermarkText` | `string` | `""` | Shown in the empty field |
 | `AllowCreate` | `bool` | `false` | Text that matches no item becomes a new token |
+| `AddNewValuesToItems` | `bool` | `false` | Also write created and provider-picked values into `Items` (off: `Items` is never changed) |
 | `CreateValidator` | `Func<string, string?>?` | `null` | Returns an error text to refuse a new value |
 | `Separators` | `string` | `",;"` | Commit characters; pasted text is split on them and on new lines |
 | `FilterMode` | `TokenFilterMode` | `Contains` | `StartsWith`, `Contains` or `Custom` |
