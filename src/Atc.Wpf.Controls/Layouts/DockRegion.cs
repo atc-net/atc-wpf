@@ -177,5 +177,11 @@ public sealed partial class DockRegion : HeaderedContentControl
         {
             region.OnCollapsed();
         }
+
+        if (AutomationPeer.ListenerExists(AutomationEvents.PropertyChanged) &&
+            UIElementAutomationPeer.FromElement(region) is DockRegionAutomationPeer peer)
+        {
+            peer.RaiseExpandCollapseStateChanged(!isExpanded, isExpanded);
+        }
     }
 }

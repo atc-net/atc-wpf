@@ -31,11 +31,28 @@ public sealed class DockRegionAutomationPeer : FrameworkElementAutomationPeer, I
 
     /// <inheritdoc />
     public void Expand()
-        => OwnerRegion.SetCurrentValue(DockRegion.IsExpandedProperty, true);
+    {
+        EnsureEnabled();
+        OwnerRegion.SetCurrentValue(DockRegion.IsExpandedProperty, true);
+    }
 
     /// <inheritdoc />
     public void Collapse()
-        => OwnerRegion.SetCurrentValue(DockRegion.IsExpandedProperty, false);
+    {
+        EnsureEnabled();
+        OwnerRegion.SetCurrentValue(DockRegion.IsExpandedProperty, false);
+    }
+
+    /// <summary>
+    /// Raises the expand/collapse state change for a new <see cref="DockRegion.IsExpanded"/> value.
+    /// </summary>
+    internal void RaiseExpandCollapseStateChanged(
+        bool oldValue,
+        bool newValue)
+        => RaisePropertyChangedEvent(
+            ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+            oldValue ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed,
+            newValue ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed);
 
     /// <inheritdoc />
     protected override string GetClassNameCore()
@@ -69,5 +86,13 @@ public sealed class DockRegionAutomationPeer : FrameworkElementAutomationPeer, I
         return string.IsNullOrEmpty(id)
             ? OwnerRegion.RegionId ?? string.Empty
             : id;
+    }
+
+    private void EnsureEnabled()
+    {
+        if (!IsEnabled())
+        {
+            throw new ElementNotEnabledException();
+        }
     }
 }

@@ -19,6 +19,21 @@ public sealed class DockRegionTests
     }
 
     [StaFact]
+    public void The_automation_peer_refuses_to_expand_or_collapse_a_disabled_region()
+    {
+        var region = new DockRegion { IsCollapsible = true, IsEnabled = false };
+        var peer = (IExpandCollapseProvider)new DockRegionAutomationPeer(region).GetPattern(PatternInterface.ExpandCollapse)!;
+
+        Assert.Throws<System.Windows.Automation.ElementNotEnabledException>(peer.Collapse);
+        Assert.True(region.IsExpanded);
+
+        region.IsEnabled = true;
+        peer.Collapse();
+
+        Assert.False(region.IsExpanded);
+    }
+
+    [StaFact]
     public void IsExpanded_Changed_RaisesExpandedEvent()
     {
         // Arrange

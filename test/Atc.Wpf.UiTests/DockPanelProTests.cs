@@ -73,6 +73,34 @@ public sealed class DockPanelProTests : IDisposable
         Assert.Contains("Active: Errors", log.Name, StringComparison.Ordinal);
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Collapsing_a_region_through_ExpandCollapse_raises_the_state_change()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            "TabWpfControls",
+            parentTreeNodeName: string.Empty,
+            leafTreeNodeName: "DockPanelPro");
+
+        var region = FindByAutomationId(mainWindow, "Left");
+        var states = new System.Collections.Concurrent.ConcurrentQueue<object>();
+        using var handler = region.RegisterPropertyChangedEvent(
+            TreeScope.Element,
+            (_, _, value) => states.Enqueue(value),
+            automation.PropertyLibrary.ExpandCollapse.ExpandCollapseState);
+
+        region.Patterns.ExpandCollapse.Pattern.Collapse();
+        Retry.WhileFalse(
+            () => !states.IsEmpty,
+            timeout: TimeSpan.FromSeconds(5),
+            interval: TimeSpan.FromMilliseconds(200));
+        region.Patterns.ExpandCollapse.Pattern.Expand();
+
+        Assert.False(states.IsEmpty);
+        Assert.Equal(ExpandCollapseState.Collapsed, (ExpandCollapseState)Convert.ToInt32(states.First(), CultureInfo.InvariantCulture));
+    }
+
     private AutomationElement? FindFloatingWindow(string automationId)
         => mainWindow.FindFirstChild(cf => cf.ByAutomationId(automationId))
            ?? automation.GetDesktop().FindFirstChild(cf => cf.ByAutomationId(automationId));
