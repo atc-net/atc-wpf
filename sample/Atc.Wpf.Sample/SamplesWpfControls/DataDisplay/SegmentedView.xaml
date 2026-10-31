@@ -23,6 +23,7 @@
 
                 <!--  Interactive demo  -->
                 <dataDisplay:Segmented
+                    AutomationProperties.AutomationId="ViewSwitcher"
                     CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
                     EqualSegmentWidth="{Binding EqualSegmentWidth}"
                     IsJoined="{Binding IsJoined}"

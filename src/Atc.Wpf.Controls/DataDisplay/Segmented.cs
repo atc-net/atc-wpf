@@ -20,6 +20,7 @@ public sealed partial class Segmented : Control
     private readonly HashSet<SegmentedItem> hookedItems = [];
     private readonly List<Border> separators = [];
     private readonly SelectedKeysCleanup modeTrim;
+    private SegmentedItem? lastFocusedItem;
     private Panel? itemsHost;
     private bool isUpdatingSelection;
     private bool isWritingSelectedKeys;
@@ -178,6 +179,7 @@ public sealed partial class Segmented : Control
         modeTrim = new SelectedKeysCleanup(this, SelectedKeysProperty, (_, _) => TrimToSingleSelection());
         CornerRadius = new CornerRadius(4);
         Items.CollectionChanged += OnItemsCollectionChanged;
+        AddHandler(GotKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(OnGotKeyboardFocusWithin), handledEventsToo: true);
         Loaded += OnLoaded;
         SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
     }
@@ -238,8 +240,55 @@ public sealed partial class Segmented : Control
                 break;
         }
 
+        // Focus follows the selection (as in a radio group), so a following Space acts on the new segment.
+        if (IsKeyboardFocusWithin && SelectedIndex >= 0 && SelectedIndex < Items.Count)
+        {
+            Items[SelectedIndex].Focus();
+        }
+
         e.Handled = true;
     }
+
+    /// <summary>
+    /// Makes one segment the tab stop of the control (roving tab stop): in the single modes the selected segment (or
+    /// the first enabled one), in <see cref="SegmentedSelectionMode.Multiple"/> the segment focused last (or the first
+    /// selected, or the first enabled one). Tab enters and leaves the control once; arrow keys move within it.
+    /// </summary>
+    internal void UpdateTabStops()
+    {
+        SegmentedItem? active;
+        if (SelectionMode == SegmentedSelectionMode.Multiple)
+        {
+            active = lastFocusedItem is { IsEnabled: true } focused && Items.Contains(focused)
+                ? focused
+                : Items.FirstOrDefault(x => x.IsSelected && x.IsEnabled) ?? FindEnabled(-1, 1);
+        }
+        else
+        {
+            active = Items.FirstOrDefault(x => x.IsSelected && x.IsEnabled) ?? FindEnabled(-1, 1);
+        }
+
+        foreach (var item in Items)
+        {
+            item.IsTabStop = ReferenceEquals(item, active);
+        }
+    }
+
+    private void OnGotKeyboardFocusWithin(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
+    {
+        if (e.NewFocus is SegmentedItem item && Items.Contains(item))
+        {
+            lastFocusedItem = item;
+            UpdateTabStops();
+        }
+    }
+
+    private void OnItemIsEnabledChanged(
+        object sender,
+        DependencyPropertyChangedEventArgs e)
+        => UpdateTabStops();
 
     private static void OnSelectedIndexChanged(
         DependencyObject d,
@@ -381,6 +430,8 @@ public sealed partial class Segmented : Control
         foreach (var item in hookedItems.Where(x => !current.Contains(x)).ToList())
         {
             item.Click -= OnItemClick;
+            item.IsEnabledChanged -= OnItemIsEnabledChanged;
+            item.ClearValue(IsTabStopProperty);
             if (ReferenceEquals(item.Owner, this))
             {
                 item.Owner = null;
@@ -394,6 +445,7 @@ public sealed partial class Segmented : Control
             if (hookedItems.Add(item))
             {
                 item.Click += OnItemClick;
+                item.IsEnabledChanged += OnItemIsEnabledChanged;
             }
 
             item.Owner = this;
@@ -488,6 +540,7 @@ public sealed partial class Segmented : Control
         }
 
         RefreshSelectedItems();
+        UpdateTabStops();
     }
 
     private void ApplyMultipleSelectionFlags()
@@ -499,6 +552,7 @@ public sealed partial class Segmented : Control
         }
 
         RefreshSelectedItems();
+        UpdateTabStops();
     }
 
     private void RefreshSelectedItems()

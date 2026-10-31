@@ -63,6 +63,47 @@ public sealed class SegmentedMultipleTests : IDisposable
         Assert.EndsWith("[mon, wed] -> [wed]", Lines(log.Name)[2], StringComparison.Ordinal);
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    public void In_a_single_mode_arrows_move_the_focus_with_the_selection_and_Tab_leaves_the_control()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            "TabWpfControls",
+            parentTreeNodeName: string.Empty,
+            leafTreeNodeName: "Segmented");
+
+        var switcher = FindByAutomationId(mainWindow, "ViewSwitcher");
+        var day = FindDay(switcher, "Day");
+        day.Click();
+        day.Focus();
+        Wait.UntilInputIsProcessed();
+        Retry.WhileFalse(
+            () => day.Patterns.SelectionItem.Pattern.IsSelected.Value,
+            timeout: TimeSpan.FromSeconds(5),
+            interval: TimeSpan.FromMilliseconds(200));
+
+        Keyboard.Type(VirtualKeyShort.RIGHT);
+        Keyboard.Type(VirtualKeyShort.RIGHT);
+        Keyboard.Type(VirtualKeyShort.SPACE);
+        Wait.UntilInputIsProcessed();
+
+        var month = FindDay(switcher, "Month");
+        Retry.WhileFalse(
+            () => month.Properties.HasKeyboardFocus.Value,
+            timeout: TimeSpan.FromSeconds(5),
+            interval: TimeSpan.FromMilliseconds(200));
+        Assert.True(month.Patterns.SelectionItem.Pattern.IsSelected.Value);
+        Assert.True(month.Properties.HasKeyboardFocus.Value);
+
+        Keyboard.Type(VirtualKeyShort.TAB);
+        Wait.UntilInputIsProcessed();
+
+        var names = new[] { "Day", "Week", "Month", "Year" };
+        Assert.DoesNotContain(names, name => FindDay(switcher, name).Properties.HasKeyboardFocus.Value);
+        Assert.True(month.Patterns.SelectionItem.Pattern.IsSelected.Value);
+    }
+
     private static string[] Lines(string text)
         => text.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
 

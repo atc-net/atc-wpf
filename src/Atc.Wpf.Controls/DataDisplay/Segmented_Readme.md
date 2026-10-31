@@ -206,8 +206,9 @@ The text ("Bold") is hidden; it becomes the tooltip (unless the segment has its 
 
 | Key | `Single` / `SingleOrNone` | `Multiple` |
 |-----|---------------------------|------------|
-| `Left` / `Right` (`Up` / `Down` when vertical) | Select the previous / next enabled segment | Move focus to the previous / next enabled segment |
-| `Home` / `End` | Select the first / last enabled segment | Move focus to the first / last enabled segment |
+| `Tab` / `Shift+Tab` | Enter or leave the control in one step; focus lands on the selected segment (or the first enabled one) | Enter or leave the control in one step; focus lands on the segment focused last (or the first selected or enabled one) |
+| `Left` / `Right` (`Up` / `Down` when vertical) | Select the previous / next enabled segment; focus moves with the selection | Move focus to the previous / next enabled segment |
+| `Home` / `End` | Select the first / last enabled segment; focus moves with the selection | Move focus to the first / last enabled segment |
 | `Space` / `Enter` | Select the focused segment (`SingleOrNone`: clear it when selected) | Toggle the focused segment |
 
 ## 📝 Notes

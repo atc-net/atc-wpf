@@ -568,6 +568,49 @@ public sealed class SegmentedTests : IDisposable
         Assert.Same(sut, items[1].Owner);
     }
 
+    [StaFact]
+    public void A_single_mode_has_one_tab_stop_on_the_selected_segment()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Single);
+
+        Assert.Equal([true, false, false, false, false], sut.Items.Select(x => x.IsTabStop).ToList());
+
+        sut.SelectedIndex = 3;
+
+        Assert.Equal([false, false, false, true, false], sut.Items.Select(x => x.IsTabStop).ToList());
+
+        KeyPress.Send(sut, Key.Left);
+
+        Assert.Equal(2, sut.SelectedIndex);
+        Assert.Equal([false, false, true, false, false], sut.Items.Select(x => x.IsTabStop).ToList());
+    }
+
+    [StaFact]
+    public void Multiple_mode_has_one_tab_stop_on_the_first_selected_segment()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Multiple);
+
+        Assert.Equal(1, sut.Items.Count(x => x.IsTabStop));
+        Assert.True(sut.Items[0].IsTabStop);
+
+        sut.Items[3].PerformClick();
+
+        Assert.Equal(1, sut.Items.Count(x => x.IsTabStop));
+        Assert.True(sut.Items[3].IsTabStop);
+    }
+
+    [StaFact]
+    public void A_disabled_selected_segment_hands_the_tab_stop_to_the_first_enabled_one()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Single);
+        sut.SelectedIndex = 2;
+
+        sut.Items[2].IsEnabled = false;
+
+        Assert.True(sut.Items[0].IsTabStop);
+        Assert.Equal(1, sut.Items.Count(x => x.IsTabStop));
+    }
+
     private static Segmented CreateWeekdays(SegmentedSelectionMode mode)
     {
         var sut = new Segmented { SelectionMode = mode };
