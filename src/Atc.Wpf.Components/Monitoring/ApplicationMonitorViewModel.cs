@@ -9,25 +9,28 @@ namespace Atc.Wpf.Components.Monitoring;
 public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDisposable
 {
     private const string ClipboardFieldSeparator = " | ";
+    private const int DefaultMaxEntries = 10000;
 
     private static readonly object SyncLock = new();
 
     private readonly ICollectionView view;
-    private readonly Channel<ApplicationEventEntry> entryChannel =
-        Channel.CreateUnbounded<ApplicationEventEntry>(
-            new UnboundedChannelOptions
-            {
-                SingleReader = true,
-                SingleWriter = false,
-                AllowSynchronousContinuations = false,
-            });
+
+    // Entries received but not yet shown. Any thread writes; only the drain loop takes. It holds at most
+    // MaxEntries entries (older ones would be trimmed on display anyway), so a paused monitor cannot grow
+    // without limit.
+    private readonly BoundedBatchQueue<ApplicationEventEntry> pendingEntries = new(DefaultMaxEntries);
 
     private readonly CancellationTokenSource cts = new();
     private readonly Task? queueProcessingTask;
+
+    // The dispatcher of the thread that created the view model, used when there is no Application (hosted in
+    // another UI framework, or tests).
+    private readonly Dispatcher? creatorDispatcher;
     private bool isDisposed;
+    private bool isCommittingBatch;
 
     private ListSortDirection sortDirection;
-    private int maxEntries = 10000;
+    private int maxEntries = DefaultMaxEntries;
 
     [ObservableProperty]
     private ApplicationFilterViewModel filter = new();
@@ -73,8 +76,11 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
         Entries.CollectionChanged += (_, _) =>
         {
-            CopyAllCommand.RaiseCanExecuteChanged();
-            ExportCommand.RaiseCanExecuteChanged();
+            // A batch raises these once when it is done, not once per added or trimmed entry.
+            if (!isCommittingBatch)
+            {
+                RaiseEntriesCommandsCanExecuteChanged();
+            }
         };
 
         FilterChange();
@@ -88,6 +94,8 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
             Entries.AddRange(DesignModeHelper.CreateApplicationEventEntryList());
             return;
         }
+
+        creatorDispatcher = Dispatcher.FromThread(Thread.CurrentThread);
 
         queueProcessingTask = Task.Run(
             () => ProcessQueueContinuouslyAsync(cts.Token),
@@ -105,17 +113,18 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     public ObservableCollectionEx<ApplicationEventEntry> SelectedEntries { get; }
 
     /// <summary>
-    /// Number of entries currently sitting in the ingest channel waiting to be
-    /// dispatched to <see cref="Entries"/>. Non-zero only while
+    /// Number of entries currently waiting to be dispatched to <see cref="Entries"/>
+    /// (at most <see cref="MaxEntries"/>). Non-zero only while
     /// <see cref="IsPaused"/> is <c>true</c> or under sustained burst load.
     /// </summary>
     public int BufferedCount
-        => entryChannel.Reader.CanCount ? entryChannel.Reader.Count : 0;
+        => pendingEntries.Count;
 
     /// <summary>
     /// Caps the number of entries kept in <see cref="Entries"/>. When new
     /// entries push the count past this value, the oldest entries (by
-    /// insertion order) are dropped. <c>0</c> disables the cap. Negative
+    /// insertion order) are dropped, and while paused at most this many
+    /// received entries are kept. <c>0</c> disables the cap. Negative
     /// values are clamped to <c>0</c>, which is why this stays a hand-rolled
     /// setter rather than an <c>[ObservableProperty]</c>.
     /// </summary>
@@ -135,6 +144,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
             }
 
             maxEntries = value;
+            pendingEntries.Capacity = value;
             RaisePropertyChanged();
             lock (SyncLock)
             {
@@ -234,7 +244,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
             return;
         }
 
-        entryChannel.Writer.TryWrite(entry);
+        pendingEntries.Enqueue(entry);
     }
 
     /// <summary>
@@ -246,8 +256,6 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     /// </summary>
     private async Task ProcessQueueContinuouslyAsync(CancellationToken token)
     {
-        var reader = entryChannel.Reader;
-
         try
         {
             while (!token.IsCancellationRequested)
@@ -259,12 +267,12 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
                     continue;
                 }
 
-                if (!await reader.WaitToReadAsync(token).ConfigureAwait(false))
+                if (!await pendingEntries.WaitToReadAsync(token).ConfigureAwait(false))
                 {
                     return;
                 }
 
-                if (!await DrainAndDispatchBatchAsync(reader, token).ConfigureAwait(false))
+                if (!await DrainAndDispatchBatchAsync(token).ConfigureAwait(false))
                 {
                     return;
                 }
@@ -277,42 +285,34 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     }
 
     /// <summary>
-    /// Drains everything currently in the channel, dispatches it as a single
-    /// batch on the UI thread, and emits one scroll event for the batch when
-    /// auto-scroll is on. Returns <c>false</c> when the loop should exit
-    /// (Application is tearing down or token was cancelled mid-dispatch).
+    /// Takes everything currently waiting, dispatches it as a single batch on
+    /// the UI thread, and emits one scroll event for the batch when auto-scroll
+    /// is on. Returns <c>false</c> when the loop should exit (the dispatcher is
+    /// shutting down or the token was cancelled mid-dispatch).
     /// </summary>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive transient dispatch failures during shutdown.")]
-    private async Task<bool> DrainAndDispatchBatchAsync(
-        ChannelReader<ApplicationEventEntry> reader,
-        CancellationToken token)
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive a failing batch and stop cleanly on shutdown.")]
+    private async Task<bool> DrainAndDispatchBatchAsync(CancellationToken token)
     {
         if (isPaused)
         {
             return true;
         }
 
-        var batch = new List<ApplicationEventEntry>(capacity: 32);
-        while (reader.TryRead(out var entry))
-        {
-            batch.Add(entry);
-        }
-
-        if (batch.Count == 0)
-        {
-            return true;
-        }
-
-        var app = Application.Current;
-        if (app is null)
+        var dispatcher = GetDispatcher();
+        if (dispatcher is null || dispatcher.HasShutdownStarted)
         {
             return false;
         }
 
+        if (!pendingEntries.TryTakeAll(out var batch))
+        {
+            return true;
+        }
+
         try
         {
-            await app.Dispatcher.InvokeAsync(
-                () => CommitBatchOnUiThread(batch),
+            await dispatcher.InvokeAsync(
+                () => CommitBatchOnUiThread(batch.Items),
                 DispatcherPriority.Background,
                 token);
 
@@ -323,24 +323,45 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         {
             return false;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Application is tearing down; give up cleanly rather than spinning the loop.
-            return false;
+            if (isDisposed || token.IsCancellationRequested || dispatcher.HasShutdownStarted)
+            {
+                // Tearing down; give up cleanly rather than spinning the loop.
+                return false;
+            }
+
+            // One failing batch must not stop the monitor for good: drop it and keep draining.
+            Trace.TraceWarning($"ApplicationMonitorViewModel dropped a batch of {batch.Items.Count} entries: {ex.Message}");
+            return true;
         }
     }
 
-    private void CommitBatchOnUiThread(List<ApplicationEventEntry> batch)
-    {
-        lock (SyncLock)
-        {
-            foreach (var entry in batch)
-            {
-                Entries.Add(entry);
-            }
+    private Dispatcher? GetDispatcher()
+        => Application.Current?.Dispatcher ?? creatorDispatcher;
 
-            TrimToCap();
+    private void CommitBatchOnUiThread(
+        IReadOnlyList<ApplicationEventEntry> batch)
+    {
+        isCommittingBatch = true;
+        try
+        {
+            lock (SyncLock)
+            {
+                foreach (var entry in batch)
+                {
+                    Entries.Add(entry);
+                }
+
+                TrimToCap();
+            }
         }
+        finally
+        {
+            isCommittingBatch = false;
+        }
+
+        RaiseEntriesCommandsCanExecuteChanged();
 
         if (AutoScroll)
         {
@@ -348,21 +369,27 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
         }
     }
 
+    private void RaiseEntriesCommandsCanExecuteChanged()
+    {
+        CopyAllCommand.RaiseCanExecuteChanged();
+        ExportCommand.RaiseCanExecuteChanged();
+    }
+
     private void NotifyBufferedCountChanged()
     {
-        var app = Application.Current;
-        if (app is null)
+        var dispatcher = GetDispatcher();
+        if (dispatcher is null || dispatcher.HasShutdownStarted)
         {
             return;
         }
 
-        if (app.Dispatcher.CheckAccess())
+        if (dispatcher.CheckAccess())
         {
             RaisePropertyChanged(nameof(BufferedCount));
         }
         else
         {
-            _ = app.Dispatcher.BeginInvoke(
+            _ = dispatcher.BeginInvoke(
                 () => RaisePropertyChanged(nameof(BufferedCount)),
                 DispatcherPriority.Background);
         }
@@ -427,7 +454,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
             this,
             OnToastNotificationMessageHandler);
 
-        entryChannel.Writer.TryComplete();
+        pendingEntries.Complete();
         cts.Cancel();
 
         // Dispose the CTS only after the drain loop has actually exited, to avoid
