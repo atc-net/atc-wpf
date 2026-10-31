@@ -324,6 +324,47 @@ public sealed class DataGridFilterPopupTests : IDisposable
     }
 
     [StaFact]
+    public void A_header_template_set_after_the_filter_wraps_the_header_keeps_the_button()
+    {
+        var grid = Show(CreateGrid());
+        var column = Column(grid, "Status");
+        var template = new DataTemplate();
+        var factory = new FrameworkElementFactory(typeof(TextBlock));
+        factory.SetBinding(TextBlock.TextProperty, new Binding { StringFormat = "[{0}]" });
+        template.VisualTree = factory;
+
+        column.HeaderTemplate = template;
+        grid.UpdateLayout();
+        DispatcherHelper.DoEvents();
+
+        Assert.True(DataGridFilter.IsHeaderWrapped(column));
+        var header = FindAncestor<DataGridColumnHeader>(FindButton(grid, "Status"))!;
+        Assert.Contains("[Status]", FindVisuals<TextBlock>(header).Select(x => x.Text), StringComparer.Ordinal);
+
+        DataGridFilter.SetIsEnabled(grid, value: false);
+        Assert.Same(template, column.HeaderTemplate);
+    }
+
+    [StaFact]
+    public void A_header_template_selector_set_after_the_filter_wraps_the_header_keeps_the_button()
+    {
+        var grid = Show(CreateGrid());
+        var column = Column(grid, "Status");
+        var template = new DataTemplate();
+        var factory = new FrameworkElementFactory(typeof(TextBlock));
+        factory.SetBinding(TextBlock.TextProperty, new Binding { StringFormat = "<{0}>" });
+        template.VisualTree = factory;
+
+        column.HeaderTemplateSelector = new FixedTemplateSelector(template);
+        grid.UpdateLayout();
+        DispatcherHelper.DoEvents();
+
+        Assert.True(DataGridFilter.IsHeaderWrapped(column));
+        var header = FindAncestor<DataGridColumnHeader>(FindButton(grid, "Status"))!;
+        Assert.Contains("<Status>", FindVisuals<TextBlock>(header).Select(x => x.Text), StringComparer.Ordinal);
+    }
+
+    [StaFact]
     public void Funnel_follows_the_header_foreground_and_turns_accent_when_active()
     {
         var headerForeground = new SolidColorBrush(Colors.WhiteSmoke);
@@ -400,6 +441,14 @@ public sealed class DataGridFilterPopupTests : IDisposable
 
         TestContext.Current.TestOutputHelper?.WriteLine(
             $"100k rows: open Id filter (100,000 values) {idMs} ms, OK {okMs} ms, open Status filter (5 values) {statusMs} ms");
+    }
+
+    private sealed class FixedTemplateSelector(DataTemplate template) : DataTemplateSelector
+    {
+        public override DataTemplate SelectTemplate(
+            object item,
+            DependencyObject container)
+            => template;
     }
 
     private DataGrid Show(DataGrid grid)

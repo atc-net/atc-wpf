@@ -153,6 +153,18 @@ public static partial class DataGridFilter
         typeof(DataGridFilter),
         new PropertyMetadata(defaultValue: null));
 
+    private static readonly DependencyProperty ObservedHeaderTemplateProperty = DependencyProperty.RegisterAttached(
+        "ObservedHeaderTemplate",
+        typeof(DataTemplate),
+        typeof(DataGridFilter),
+        new PropertyMetadata(defaultValue: null, OnObservedHeaderTemplateChanged));
+
+    private static readonly DependencyProperty ObservedHeaderTemplateSelectorProperty = DependencyProperty.RegisterAttached(
+        "ObservedHeaderTemplateSelector",
+        typeof(DataTemplateSelector),
+        typeof(DataGridFilter),
+        new PropertyMetadata(defaultValue: null, OnObservedHeaderTemplateSelectorChanged));
+
     /// <summary>Gets whether the column filter buttons are shown on the grid.</summary>
     /// <param name="element">The grid.</param>
     /// <returns>The value.</returns>
@@ -575,7 +587,8 @@ public static partial class DataGridFilter
            ReferenceEquals(column.HeaderTemplate, wrapper);
 
     /// <summary>
-    /// Gives a column the filter header template around its own header template.
+    /// Gives a column the filter header template around its own header template. A header template or template
+    /// selector the column gets later is wrapped in turn.
     /// </summary>
     internal static void WrapHeader(DataGridColumn column)
     {
@@ -584,7 +597,25 @@ public static partial class DataGridFilter
             return;
         }
 
-        var original = column.HeaderTemplate;
+        SetWrapper(column, column.HeaderTemplate);
+        if (BindingOperations.GetBindingBase(column, ObservedHeaderTemplateProperty) is null)
+        {
+            // Bindings to the column's own properties (not a property descriptor, which would root the column).
+            BindingOperations.SetBinding(
+                column,
+                ObservedHeaderTemplateProperty,
+                new Binding { Source = column, Path = new PropertyPath(DataGridColumn.HeaderTemplateProperty) });
+            BindingOperations.SetBinding(
+                column,
+                ObservedHeaderTemplateSelectorProperty,
+                new Binding { Source = column, Path = new PropertyPath(DataGridColumn.HeaderTemplateSelectorProperty) });
+        }
+    }
+
+    private static void SetWrapper(
+        DataGridColumn column,
+        DataTemplate? original)
+    {
         var factory = new FrameworkElementFactory(typeof(DataGridFilterHeader));
         factory.SetBinding(DataGridFilterHeader.HeaderContentProperty, new Binding());
         factory.SetValue(DataGridFilterHeader.HeaderTemplateProperty, original);
@@ -592,6 +623,7 @@ public static partial class DataGridFilter
         var wrapper = new DataTemplate { VisualTree = factory };
         wrapper.Seal();
 
+        // The marker is set first: the header template change below is then recognised as the wrapper.
         column.SetValue(OriginalHeaderTemplateProperty, original);
         column.SetValue(WrapperHeaderTemplateProperty, wrapper);
         column.HeaderTemplate = wrapper;
@@ -604,9 +636,35 @@ public static partial class DataGridFilter
             return;
         }
 
-        column.HeaderTemplate = (DataTemplate?)column.GetValue(OriginalHeaderTemplateProperty);
+        // The marker is cleared first, so the original template is not wrapped again.
+        var original = (DataTemplate?)column.GetValue(OriginalHeaderTemplateProperty);
         column.ClearValue(OriginalHeaderTemplateProperty);
         column.ClearValue(WrapperHeaderTemplateProperty);
+        column.HeaderTemplate = original;
+    }
+
+    private static void OnObservedHeaderTemplateChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        // The consumer set a header template while the header is wrapped: wrap the new one.
+        if (d is DataGridColumn column &&
+            column.GetValue(WrapperHeaderTemplateProperty) is DataTemplate wrapper &&
+            !ReferenceEquals(e.NewValue, wrapper))
+        {
+            SetWrapper(column, (DataTemplate?)e.NewValue);
+        }
+    }
+
+    private static void OnObservedHeaderTemplateSelectorChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        // The wrapper template wins over a selector: give the selector to the wrapped header instead.
+        if (d is DataGridColumn column && IsHeaderWrapped(column))
+        {
+            SetWrapper(column, (DataTemplate?)column.GetValue(OriginalHeaderTemplateProperty));
+        }
     }
 
     private static DataGridFilterState? GetState(DataGrid grid)
