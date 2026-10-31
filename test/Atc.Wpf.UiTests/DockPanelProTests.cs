@@ -101,6 +101,68 @@ public sealed class DockPanelProTests : IDisposable
         Assert.Equal(ExpandCollapseState.Collapsed, (ExpandCollapseState)Convert.ToInt32(states.First(), CultureInfo.InvariantCulture));
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    [SuppressMessage("Major Bug", "S2925:Do not use Thread.Sleep", Justification = "The system move loop follows real mouse moves over wall time.")]
+    public void Dragging_a_floating_window_onto_the_bottom_guide_docks_it_there()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            "TabWpfControls",
+            parentTreeNodeName: string.Empty,
+            leafTreeNodeName: "DockPanelPro");
+
+        var log = FindByAutomationId(mainWindow, "DockLog");
+        var panel = FindByAutomationId(mainWindow, "InteractiveDockPanel");
+
+        // The splitter is SplitterThickness (5) device-independent units high: it gives the DPI scale.
+        var scale = FindByAutomationId(mainWindow, "Splitter_Bottom").BoundingRectangle.Height / 5d;
+
+        FindByAutomationId(mainWindow, "FloatPane_Right").Patterns.Invoke.Pattern.Invoke();
+        var floatingWindow = Retry.WhileNull(
+            () => FindFloatingWindow("FloatingPane_properties"),
+            timeout: TimeSpan.FromSeconds(10),
+            interval: TimeSpan.FromMilliseconds(200)).Result;
+        Assert.NotNull(floatingWindow);
+        Wait.UntilInputIsProcessed();
+
+        var windowBounds = floatingWindow.BoundingRectangle;
+        var start = new System.Drawing.Point(windowBounds.Left + (windowBounds.Width / 3), windowBounds.Top + (int)(12 * scale));
+        var panelBounds = panel.BoundingRectangle;
+        var target = new System.Drawing.Point(
+            panelBounds.Left + (panelBounds.Width / 2),
+            panelBounds.Top + (panelBounds.Height / 2) + (int)(36 * scale));
+
+        Mouse.MoveTo(start);
+        Mouse.Down(MouseButton.Left);
+        try
+        {
+            for (var i = 1; i <= 10; i++)
+            {
+                Mouse.MoveTo(
+                    start.X + ((target.X - start.X) * i / 10),
+                    start.Y + ((target.Y - start.Y) * i / 10));
+                Thread.Sleep(30);
+            }
+
+            Mouse.MoveTo(target);
+            Thread.Sleep(200);
+        }
+        finally
+        {
+            Mouse.Up(MouseButton.Left);
+        }
+
+        Retry.WhileFalse(
+            () => FindFloatingWindow("FloatingPane_properties") is null,
+            timeout: TimeSpan.FromSeconds(10),
+            interval: TimeSpan.FromMilliseconds(200));
+        Assert.Null(FindFloatingWindow("FloatingPane_properties"));
+        Assert.Contains("Properties: Floating -> Docked", log.Name, StringComparison.Ordinal);
+        var bottomRegion = FindByAutomationId(mainWindow, "Bottom");
+        Assert.NotNull(bottomRegion.FindFirstDescendant(cf => cf.ByAutomationId("properties")));
+    }
+
     private AutomationElement? FindFloatingWindow(string automationId)
         => mainWindow.FindFirstChild(cf => cf.ByAutomationId(automationId))
            ?? automation.GetDesktop().FindFirstChild(cf => cf.ByAutomationId(automationId));

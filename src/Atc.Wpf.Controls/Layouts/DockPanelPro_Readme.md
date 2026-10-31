@@ -115,6 +115,8 @@ The floating window is a themed `NiceWindow` owned by the panel's window, so it 
 - a double-click on its title bar,
 - `dockPanel.RedockPane(pane)` or the `DockPanelProCommands.RedockPane` command.
 
+**Drag to dock:** while a floating window is moved (by its title bar, or right after dragging a tab out), a compass of dock guides appears in the middle of the panel with one target per expanded region that holds panes (a region with plain content is not offered). The target under the cursor is highlighted and the region it docks into is tinted; releasing the window there docks the pane into that region as its active tab.
+
 The window's close button **closes** the pane when `CanClose` is `true` (restore it with `RestorePane`), otherwise it docks the pane back. When the owner window closes, the floating windows close with it but the panes keep their floating state, so a layout saved afterwards still has them floating. When the panel is unloaded (for example its tab in a `TabControl` is no longer selected, or its view is swapped out) its floating windows are hidden, not closed; the same windows show again when the panel is loaded again (in another window they are re-owned by it). A hidden window keeps the panel alive until the owner window closes, so call `RedockAllPanes()` before discarding a panel for good.
 
 ```csharp
@@ -441,7 +443,8 @@ The styles are `AtcApps.Styles.DockPanelPro`, `AtcApps.Styles.DockRegion`, `AtcA
 Current limitations (may be addressed in future versions):
 
 - Only one region per dock position (Left, Right, Top, Bottom)
-- Dragging a floating window back onto the panel does not dock it (use the Dock button or a title-bar double-click)
+- No auto-hide (pinned side strips with slide-out panes)
+- The dock guides offer one target per region (no splitting a region into a new one)
 - No snap points during resize
 - No drag-and-drop reordering of tabs or regions
 

@@ -94,6 +94,7 @@ public sealed partial class DockPanelPro
     {
         CultureManager.UiCultureChanged -= OnUiCultureChanged;
         FlushLayoutChanged();
+        HideDockGuides();
 
         // The panes stay floating and their windows are only hidden, so switching to another tab (or swapping the view
         // out and back) keeps them as they are. The owner subscription stays: when the owner window closes, it closes the
@@ -221,6 +222,7 @@ public sealed partial class DockPanelPro
         window.Closed += OnFloatingWindowClosed;
         floatingWindows[pane] = window;
         window.Show();
+        HookFloatingWindow(window);
 
         // A window created at the DPI of one monitor and placed on a monitor with another DPI is rescaled by WPF when it
         // gets there; now that it has that monitor's DPI, apply the bounds again (a no-op when nothing moved).
@@ -311,6 +313,7 @@ public sealed partial class DockPanelPro
 
     private void DetachFloatingWindow(DockFloatingWindow window)
     {
+        UnhookFloatingWindow(window);
         window.BoundsChanged -= OnFloatingWindowBoundsChanged;
         window.Closing -= OnFloatingWindowClosing;
         window.Closed -= OnFloatingWindowClosed;
