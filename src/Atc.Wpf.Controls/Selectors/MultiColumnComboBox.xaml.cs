@@ -253,7 +253,7 @@ public partial class MultiColumnComboBox
     /// </summary>
     public MultiColumnComboBox()
     {
-        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, DropStaleKeys);
+        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, (oldItemKeys, _) => DropStaleKeys(oldItemKeys));
         InitializeComponent();
 
         summaryTextBlock = new TextBlock
@@ -471,6 +471,8 @@ public partial class MultiColumnComboBox
         {
             CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
+
+        control.selectionCleanup.NotifySelectedKeysReplaced();
 
         control.OnSelectionChanged();
     }

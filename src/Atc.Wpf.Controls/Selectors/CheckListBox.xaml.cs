@@ -303,12 +303,14 @@ public partial class CheckListBox
     /// Drops the keys of items that are gone (and ticks new ones with <see cref="SelectNewItems"/>) after
     /// <see cref="Items"/> changed, in one <see cref="SelectedKeysChanged"/>.
     /// </summary>
-    private void CleanUpSelection(IReadOnlySet<string> oldItemKeys)
+    private void CleanUpSelection(
+        IReadOnlySet<string> oldItemKeys,
+        bool canSelectNewItems)
         => Commit(KeySelectionHelper.GetSelectionAfterItemsChanged(
             GetCurrentSelection(),
             oldItemKeys,
             Items,
-            SelectNewItems,
+            SelectNewItems && canSelectNewItems,
             MaxSelectionCount));
 
     private static void OnItemGroupsChanged(
@@ -331,6 +333,8 @@ public partial class CheckListBox
         {
             CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
+
+        control.selectionCleanup.NotifySelectedKeysReplaced();
 
         if (!control.isWritingSelectedKeys)
         {

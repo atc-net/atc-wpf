@@ -160,7 +160,9 @@ public partial class MultiSelectComboBox
     /// <summary>
     /// Drops the keys gone from <see cref="Items"/> from the real selection while a deferred draft is open.
     /// </summary>
-    private void CleanUpSelection(IReadOnlySet<string> oldItemKeys)
+    private void CleanUpSelection(
+        IReadOnlySet<string> oldItemKeys,
+        bool canSelectNewItems)
     {
         if (SelectedKeys is not { } target)
         {
@@ -172,7 +174,7 @@ public partial class MultiSelectComboBox
             oldKeys,
             oldItemKeys,
             Items,
-            SelectNewItems,
+            SelectNewItems && canSelectNewItems,
             MaxSelectionCount);
         if (KeySelectionHelper.SetEquals(oldKeys, newKeys))
         {

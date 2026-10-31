@@ -215,7 +215,7 @@ public partial class TokenBox
     /// </summary>
     public TokenBox()
     {
-        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, CleanUpSelection);
+        selectionCleanup = new SelectedKeysCleanup(this, SelectedKeysProperty, (oldItemKeys, _) => CleanUpSelection(oldItemKeys));
         InitializeComponent();
 
         PartTextBox = new TextBox
@@ -582,6 +582,8 @@ public partial class TokenBox
         {
             CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
+
+        control.selectionCleanup.NotifySelectedKeysReplaced();
 
         control.UpdateTokens();
     }

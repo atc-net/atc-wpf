@@ -431,6 +431,8 @@ public partial class MultiSelectComboBox
             CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
 
+        control.selectionCleanup.NotifySelectedKeysReplaced();
+
         control.UpdateSummary();
     }
 

@@ -174,7 +174,7 @@ public sealed partial class Segmented : Control
     public Segmented()
     {
         SelectedItems = new ReadOnlyObservableCollection<SegmentedItem>(selectedItemsSource);
-        modeTrim = new SelectedKeysCleanup(this, SelectedKeysProperty, _ => TrimToSingleSelection());
+        modeTrim = new SelectedKeysCleanup(this, SelectedKeysProperty, (_, _) => TrimToSingleSelection());
         CornerRadius = new CornerRadius(4);
         Items.CollectionChanged += OnItemsCollectionChanged;
         Loaded += OnLoaded;

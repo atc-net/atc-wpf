@@ -275,6 +275,8 @@ public sealed partial class ChipGroup : UserControl
             CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
 
+        control.selectionCleanup.NotifySelectedKeysReplaced();
+
         if (!control.isWritingSelectedKeys)
         {
             control.RefreshStates();
@@ -327,7 +329,9 @@ public sealed partial class ChipGroup : UserControl
     /// <see cref="Items"/> changed, and keeps only the most recently selected key after switching to a single mode;
     /// one <see cref="SelectedKeysChanged"/> for both.
     /// </summary>
-    private void CleanUpSelection(IReadOnlySet<string> oldItemKeys)
+    private void CleanUpSelection(
+        IReadOnlySet<string> oldItemKeys,
+        bool canSelectNewItems)
     {
         var current = GetCurrentSelection();
         var newSelection = current;
@@ -337,7 +341,7 @@ public sealed partial class ChipGroup : UserControl
                 newSelection,
                 oldItemKeys,
                 Items,
-                SelectNewItems && SelectionMode == ChipSelectionMode.Multiple,
+                SelectNewItems && canSelectNewItems && SelectionMode == ChipSelectionMode.Multiple,
                 MaxSelectionCount);
         }
 

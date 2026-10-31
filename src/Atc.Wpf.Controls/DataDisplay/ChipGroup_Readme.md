@@ -127,7 +127,7 @@ chipGroup.SelectedKeysChanged += (_, e) =>
 
 ## 📝 Notes
 
-- When `SelectedKeys` is data-bound, the keys dropped (or ticked) because `Items` changed are written once the bindings have settled (one dispatcher pass later), so a DataContext swap never writes into the previous view model's collection; unbound, it happens at once.
+- When `SelectedKeys` is data-bound, the keys dropped (or ticked) because `Items` changed are written once the bindings have settled (one dispatcher pass later), so a DataContext swap never writes into the previous view model's collection; unbound, it happens at once. After a DataContext swap `SelectNewItems` ticks nothing in the new view model (its keys were never shown against the old items), and a cleanup requested while the control is unloaded runs when it is loaded again.
 - Only the keys of items that disappear from `Items` are dropped; keys that were never among the items are kept, so a selection restored before the items load (an empty `Items` first, the loaded items later) survives. The whole family follows this rule.
 - Material guidance: a chip set is either single- or multi-select, never mixed — so `ShowAllChip`, `MaxSelectionCount` and `SelectNewItems` only apply in `Multiple` mode.
 - Switching from `Multiple` to a single mode keeps only the most recently selected key (one `SelectedKeysChanged`; with a data-bound `SelectedKeys`, once the bindings have settled), like `Segmented`.

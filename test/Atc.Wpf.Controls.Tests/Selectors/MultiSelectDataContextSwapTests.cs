@@ -271,6 +271,125 @@ public sealed class MultiSelectDataContextSwapTests : IDisposable
         Assert.Equal(1, events);
     }
 
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CheckListBox_with_SelectNewItems_ticks_nothing_in_the_new_view_model(
+        bool itemsFirst)
+    {
+        var sut = new CheckListBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, CheckListBox.ItemsProperty, CheckListBox.SelectedKeysProperty, itemsFirst, () => events, afterBind: () => sut.SelectNewItems = true);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void ChipGroup_with_SelectNewItems_ticks_nothing_in_the_new_view_model(
+        bool itemsFirst)
+    {
+        var sut = new ChipGroup();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, ChipGroup.ItemsProperty, ChipGroup.SelectedKeysProperty, itemsFirst, () => events, afterBind: () => sut.SelectNewItems = true);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void MultiSelectComboBox_with_SelectNewItems_ticks_nothing_in_the_new_view_model(
+        bool itemsFirst)
+    {
+        var sut = new MultiSelectComboBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, MultiSelectComboBox.ItemsProperty, MultiSelectComboBox.SelectedKeysProperty, itemsFirst, () => events, afterBind: () => sut.SelectNewItems = true);
+    }
+
+    [StaFact]
+    public void Chained_swaps_with_SelectNewItems_tick_nothing_in_the_last_view_model()
+    {
+        var first = CreateFirst();
+        var second = CreateSecond();
+        var third = new ViewModel(
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["c1"] = "C1", ["c2"] = "C2" },
+            ["c1"]);
+        var sut = new CheckListBox { DataContext = first };
+        Bind(sut, CheckListBox.ItemsProperty, nameof(ViewModel.Items));
+        Bind(sut, CheckListBox.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        Pump();
+        sut.SelectNewItems = true;
+
+        sut.DataContext = second;
+        sut.DataContext = third;
+        Pump();
+
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(["c1"], third.SelectedKeys);
+    }
+
+    [StaFact]
+    public void A_bound_SelectNewItems_cleanup_still_ticks_new_items_of_the_same_view_model()
+    {
+        var first = CreateFirst();
+        var sut = new CheckListBox { DataContext = first };
+        Bind(sut, CheckListBox.ItemsProperty, nameof(ViewModel.Items));
+        Bind(sut, CheckListBox.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        Pump();
+        sut.SelectNewItems = true;
+
+        sut.Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["a1"] = "A1", ["a2"] = "A2", ["a3"] = "A3", ["a4"] = "A4" };
+        Pump();
+
+        Assert.Equal(["a1", "a2", "a4"], first.SelectedKeys);
+    }
+
+    [StaFact]
+    public void A_cleanup_waits_while_the_control_is_unloaded()
+    {
+        var first = CreateFirst();
+        var sut = new CheckListBox { DataContext = first };
+        Bind(sut, CheckListBox.ItemsProperty, nameof(ViewModel.Items));
+        Bind(sut, CheckListBox.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        var window = new Window
+        {
+            Content = sut,
+            Left = -10000,
+            Top = -10000,
+            Width = 200,
+            Height = 200,
+            ShowActivated = false,
+            ShowInTaskbar = false,
+        };
+        window.Show();
+        try
+        {
+            Pump();
+            sut.SelectNewItems = true;
+            window.Content = null;
+            Pump();
+
+            sut.Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["a1"] = "A1", ["a4"] = "A4" };
+            Pump();
+
+            Assert.Equal(["a1", "a2"], first.SelectedKeys);
+
+            window.Content = sut;
+            Pump();
+
+            Assert.Equal(["a1", "a4"], first.SelectedKeys);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
     private static void AssertSwapKeepsViewModels(
         FrameworkElement sut,
         DependencyProperty itemsProperty,

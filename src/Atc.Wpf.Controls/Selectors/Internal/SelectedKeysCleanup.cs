@@ -10,29 +10,49 @@ namespace Atc.Wpf.Controls.Selectors;
 /// items before <c>SelectedKeys</c>; running at once would then drop or add keys in the previous view model's
 /// collection. Posted, it runs on whatever <c>SelectedKeys</c> the bindings have settled on. Several item changes
 /// before it runs are coalesced: the item keys from before the first change are kept.
+/// <para>
+/// The <c>SelectedKeys</c> instance that belonged to the old items is recorded as well. When the instance differs by the
+/// time the cleanup runs (a DataContext swap, in either binding order, or a chain of swaps), the new keys were never
+/// shown against the old items, so "tick new items" is skipped: only the keys of items that disappeared are dropped.
+/// A posted cleanup does not run while the control is unloaded: it is cancelled on <c>Unloaded</c> and posted again on
+/// the next <c>Loaded</c>, so it runs against the bindings of the reloaded control.
+/// </para>
 /// </remarks>
 internal sealed class SelectedKeysCleanup
 {
     private readonly DependencyObject owner;
     private readonly DependencyProperty selectedKeysProperty;
-    private readonly Action<IReadOnlySet<string>> cleanup;
+    private readonly Action<IReadOnlySet<string>, bool> cleanup;
     private IReadOnlySet<string>? pendingOldItemKeys;
+    private object? pendingSelection;
     private DispatcherOperation? operation;
+    private DispatcherOperation? baselineOperation;
+    private bool hasBaseline;
+    private bool isUnloaded;
+    private object? baselineSelection;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SelectedKeysCleanup"/> class.
     /// </summary>
     /// <param name="owner">The control.</param>
     /// <param name="selectedKeysProperty">The control's <c>SelectedKeys</c> property.</param>
-    /// <param name="cleanup">Cleans the current selection, given the item keys from before the change.</param>
+    /// <param name="cleanup">
+    /// Cleans the current selection, given the item keys from before the change and whether new items may be ticked
+    /// (<see langword="false"/> when <c>SelectedKeys</c> was replaced since the old items were shown).
+    /// </param>
     public SelectedKeysCleanup(
         DependencyObject owner,
         DependencyProperty selectedKeysProperty,
-        Action<IReadOnlySet<string>> cleanup)
+        Action<IReadOnlySet<string>, bool> cleanup)
     {
         this.owner = owner;
         this.selectedKeysProperty = selectedKeysProperty;
         this.cleanup = cleanup;
+        if (owner is FrameworkElement element)
+        {
+            element.Unloaded += (_, _) => OnUnloaded();
+            element.Loaded += (_, _) => OnLoaded();
+        }
     }
 
     /// <summary>
@@ -66,7 +86,7 @@ internal sealed class SelectedKeysCleanup
     /// <summary>
     /// Gets a value indicating whether a cleanup is waiting for the bindings to settle.
     /// </summary>
-    public bool IsPending => operation is not null;
+    public bool IsPending => pendingOldItemKeys is not null;
 
     /// <summary>
     /// Runs the cleanup now, or posts it when <c>SelectedKeys</c> is data-bound (or a cleanup is already waiting).
@@ -76,24 +96,89 @@ internal sealed class SelectedKeysCleanup
     {
         ArgumentNullException.ThrowIfNull(oldItemKeys);
 
-        if (operation is null && !IsBoundToOutsideSource(owner, selectedKeysProperty, depth: 0))
+        if (pendingOldItemKeys is null && !IsBoundToOutsideSource(owner, selectedKeysProperty, depth: 0))
         {
-            cleanup(oldItemKeys);
+            cleanup(oldItemKeys, true);
+            SetBaseline(owner.GetValue(selectedKeysProperty));
             return;
         }
 
-        pendingOldItemKeys ??= oldItemKeys;
-        operation ??= owner.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, Run);
+        if (pendingOldItemKeys is null)
+        {
+            pendingOldItemKeys = oldItemKeys;
+            pendingSelection = hasBaseline ? baselineSelection : owner.GetValue(selectedKeysProperty);
+        }
+
+        if (!isUnloaded)
+        {
+            operation ??= owner.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, Run);
+        }
+    }
+
+    /// <summary>
+    /// Tells the cleanup that <c>SelectedKeys</c> was replaced from outside. The new instance becomes the one that
+    /// belongs to the current items after the bindings have settled, so an items change in the same binding pass
+    /// (a DataContext swap that updates <c>SelectedKeys</c> first) still counts as a swap.
+    /// </summary>
+    public void NotifySelectedKeysReplaced()
+    {
+        if (!hasBaseline || baselineOperation is not null)
+        {
+            return;
+        }
+
+        baselineOperation = owner.Dispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            () =>
+            {
+                baselineOperation = null;
+                SetBaseline(owner.GetValue(selectedKeysProperty));
+            });
+    }
+
+    private void SetBaseline(object? selection)
+    {
+        hasBaseline = true;
+        baselineSelection = selection;
+    }
+
+    private void OnUnloaded()
+    {
+        isUnloaded = true;
+        operation?.Abort();
+        operation = null;
+    }
+
+    private void OnLoaded()
+    {
+        isUnloaded = false;
+        if (pendingOldItemKeys is not null)
+        {
+            operation ??= owner.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, Run);
+        }
     }
 
     private void Run()
     {
-        var oldItemKeys = pendingOldItemKeys;
-        pendingOldItemKeys = null;
         operation = null;
-        if (oldItemKeys is not null)
+        if (isUnloaded)
         {
-            cleanup(oldItemKeys);
+            // Kept pending: posted again when the control is loaded.
+            return;
         }
+
+        var oldItemKeys = pendingOldItemKeys;
+        var selection = pendingSelection;
+        pendingOldItemKeys = null;
+        pendingSelection = null;
+        if (oldItemKeys is null)
+        {
+            return;
+        }
+
+        // With no old items there is nothing to swap from: the first items may be ticked into whatever selection is bound.
+        var current = owner.GetValue(selectedKeysProperty);
+        cleanup(oldItemKeys, oldItemKeys.Count == 0 || ReferenceEquals(selection, current));
+        SetBaseline(owner.GetValue(selectedKeysProperty));
     }
 }
