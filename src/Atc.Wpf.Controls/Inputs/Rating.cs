@@ -267,6 +267,11 @@ public partial class Rating : Control
 
         control.UpdateVisualState();
         control.OnValueChanged((double)e.OldValue, newValue);
+
+        // Lets screen readers announce the new rating, whether it came from a click, a key or a binding.
+        (UIElementAutomationPeer.FromElement(control) as RatingAutomationPeer)?.RaiseValuePropertyChangedEvent(
+            (double)e.OldValue,
+            newValue);
     }
 
     private static void OnMaximumChanged(

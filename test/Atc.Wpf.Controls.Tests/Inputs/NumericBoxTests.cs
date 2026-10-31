@@ -602,6 +602,36 @@ public sealed class NumericBoxTests : IDisposable
     }
 
     [StaFact]
+    public void AutomationPeer_UpButtonClick_RaisesRangeValueChange()
+    {
+        // Arrange
+        var (numericBox, _, up, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Value = 4;
+        var peer = (NumericBoxAutomationPeer)UIElementAutomationPeer.CreatePeerForElement(numericBox);
+
+        // Act
+        Click(up);
+
+        // Assert
+        Assert.Equal((4d, 5d), peer.LastRaisedValueChange);
+    }
+
+    [StaFact]
+    public void AutomationPeer_BoundValueChange_RaisesRangeValueChange()
+    {
+        // Arrange
+        var (numericBox, _, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Value = 1;
+        var peer = (NumericBoxAutomationPeer)UIElementAutomationPeer.CreatePeerForElement(numericBox);
+
+        // Act
+        numericBox.Value = 7;
+
+        // Assert
+        Assert.Equal((1d, 7d), peer.LastRaisedValueChange);
+    }
+
+    [StaFact]
     public void ArrowKeySpeedup_AfterReadOnlyRoundTrip_IsReset()
     {
         // Arrange

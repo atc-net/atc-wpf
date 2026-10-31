@@ -414,7 +414,17 @@ public partial class NumericBox : Control
             return;
         }
 
-        (d as NumericBox)?.OnValueChanged(
+        if (d is not NumericBox numericBox)
+        {
+            return;
+        }
+
+        numericBox.OnValueChanged(
+            (double?)e.OldValue,
+            (double?)e.NewValue);
+
+        // Lets Narrator / NVDA announce values changed by spin, keys, wheel, typing or binding.
+        (UIElementAutomationPeer.FromElement(numericBox) as NumericBoxAutomationPeer)?.RaiseValuePropertyChangedEvent(
             (double?)e.OldValue,
             (double?)e.NewValue);
     }

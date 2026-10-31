@@ -76,9 +76,13 @@ public class NumericBoxAutomationPeer : FrameworkElementAutomationPeer, IRangeVa
             return;
         }
 
+        LastRaisedValueChange = (oldValue ?? 0, newValue ?? 0);
         RaisePropertyChangedEvent(
             RangeValuePatternIdentifiers.ValueProperty,
             oldValue ?? 0,
             newValue ?? 0);
     }
+
+    /// <summary>Gets the last value change raised to UI Automation; null until one is raised.</summary>
+    internal (double OldValue, double NewValue)? LastRaisedValueChange { get; private set; }
 }

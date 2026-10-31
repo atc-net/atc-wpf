@@ -36,6 +36,20 @@ public sealed class RatingTests
     }
 
     [StaFact]
+    public void AutomationPeer_ValueChange_RaisesRangeValueChange()
+    {
+        // Arrange
+        var control = new Rating { Value = 2 };
+        var peer = (RatingAutomationPeer)UIElementAutomationPeer.CreatePeerForElement(control);
+
+        // Act
+        control.Value = 4;
+
+        // Assert
+        Assert.Equal((2d, 4d), peer.LastRaisedValueChange);
+    }
+
+    [StaFact]
     public void Value_IsCoercedToMinimum_WhenBelowZero()
     {
         // Arrange
