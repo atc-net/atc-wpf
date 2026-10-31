@@ -262,10 +262,41 @@ public partial class NumericBox : Control
     protected override AutomationPeer OnCreateAutomationPeer()
         => new NumericBoxAutomationPeer(this);
 
+    /// <summary>
+    /// Seeds <see cref="Culture"/> with the current UI culture as a current value, so the box starts in the UI culture
+    /// and keeps following it, while a local value, a style setter or a binding still takes precedence.
+    /// </summary>
+    private protected void UseUiCultureUntilSet()
+        => SetCurrentValue(
+            CultureProperty,
+            CultureInfo.CurrentUICulture);
+
     private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
-        => Culture = Thread.CurrentThread.CurrentUICulture;
+    {
+        if (!Dispatcher.CheckAccess())
+        {
+            _ = Dispatcher.BeginInvoke(new Action(() => FollowUiCulture(e.NewCulture)));
+            return;
+        }
+
+        FollowUiCulture(e.NewCulture);
+    }
+
+    private void FollowUiCulture(CultureInfo newCulture)
+    {
+        // Only a Culture nobody has set follows the UI culture: a local value, a style setter or a binding is kept.
+        // SetCurrentValue leaves the value source at Default, so the box keeps following later switches too.
+        if (DependencyPropertyHelper.GetValueSource(this, CultureProperty).BaseValueSource != BaseValueSource.Default)
+        {
+            return;
+        }
+
+        SetCurrentValue(
+            CultureProperty,
+            newCulture);
+    }
 
     private static void OnDelayPropertyChanged(
         DependencyObject d,
