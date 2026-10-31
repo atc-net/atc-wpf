@@ -42,7 +42,7 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsy
     public event EventHandler<CameraFormatsAvailableEventArgs>? FormatsAvailable;
 
     private readonly DeviceSessionCoordinator session;
-    private readonly LatestFrameSlot frameSlot = new();
+    private readonly LatestFrameSlot<CameraPreviewFrame> frameSlot = new();
     [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Disposed by the teardown Dispose starts (StopAsync / DisposeMediaAsync).")]
     private Windows.Media.Capture.MediaCapture? mediaCapture;
     private Windows.Media.Capture.Frames.MediaFrameReader? frameReader;
@@ -178,7 +178,7 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsy
 
             await TryApplyPreferredFormatAsync(colorSource);
 
-            var reader = await capture.CreateFrameReaderAsync(colorSource);
+            var reader = await CreateFrameReaderAsync(capture, colorSource);
             reader.FrameArrived += OnFrameArrived;
             var status = await reader.StartAsync();
             if (status is not Windows.Media.Capture.Frames.MediaFrameReaderStartStatus.Success)
@@ -229,6 +229,9 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsy
             }
         }
 
+        // Release a frame still waiting for the UI before the capture device goes away.
+        frameSlot.Clear();
+
         await DisposeMediaAsync().ConfigureAwait(false);
 
         LiveDeviceTeardown.OnUiThread(Dispatcher, () =>
@@ -264,60 +267,86 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsy
         Windows.Media.Capture.Frames.MediaFrameReader sender,
         Windows.Media.Capture.Frames.MediaFrameArrivedEventArgs args)
     {
+        // The UI has not shown the previous frame yet: leave this one to the reader, which drops it, instead of
+        // acquiring and holding a frame that would only replace the pending one.
+        if (frameSlot.HasPendingFrame)
+        {
+            return;
+        }
+
+        CameraPreviewFrame? preview = null;
         try
         {
-            using var frame = sender.TryAcquireLatestFrame();
-            var softwareBitmap = frame?.VideoMediaFrame?.SoftwareBitmap;
-            if (softwareBitmap is null)
+            var frame = sender.TryAcquireLatestFrame();
+            preview = frame is null ? null : CameraPreviewFrame.From(frame);
+            if (preview is null)
             {
                 return;
             }
 
-            var converted = NormalizeBitmap(softwareBitmap);
-            try
+            // Only one render is queued at a time; frames arriving meanwhile replace the pending one.
+            var scheduleRender = frameSlot.Publish(preview);
+            preview = null; // Owned by the slot now.
+            if (scheduleRender)
             {
-                var width = converted.PixelWidth;
-                var height = converted.PixelHeight;
-                var bytes = frameSlot.RentWriteBuffer(width * height * 4);
-
-                converted.CopyToBuffer(System.Runtime.InteropServices.WindowsRuntime
-                    .WindowsRuntimeBufferExtensions.AsBuffer(bytes));
-
-                // Only one render is queued at a time; frames arriving meanwhile replace the pending one.
-                if (frameSlot.Publish(bytes, width, height))
-                {
-                    _ = Dispatcher.BeginInvoke(new Action(RenderLatestFrame));
-                }
-            }
-            finally
-            {
-                if (!ReferenceEquals(converted, softwareBitmap))
-                {
-                    converted.Dispose();
-                }
+                _ = Dispatcher.BeginInvoke(new Action(RenderLatestFrame));
             }
         }
         catch (Exception)
         {
             // Skip this frame.
         }
-    }
-
-    private static Windows.Graphics.Imaging.SoftwareBitmap NormalizeBitmap(
-        Windows.Graphics.Imaging.SoftwareBitmap source)
-    {
-        if (source.BitmapPixelFormat is Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8 &&
-            source.BitmapAlphaMode is Windows.Graphics.Imaging.BitmapAlphaMode.Premultiplied)
+        finally
         {
-            return source;
+            preview?.Dispose();
         }
-
-        return Windows.Graphics.Imaging.SoftwareBitmap.Convert(
-            source,
-            Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8,
-            Windows.Graphics.Imaging.BitmapAlphaMode.Premultiplied);
     }
 
+    /// <summary>
+    /// Asks the capture pipeline for BGRA8 frames at the preview's size, so neither the pixel conversion nor
+    /// the downscale of every full-resolution frame runs on the CPU here. Falls back to the camera's own
+    /// format when the device refuses.
+    /// </summary>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Fall back to the native format on any device error.")]
+    private async Task<Windows.Media.Capture.Frames.MediaFrameReader> CreateFrameReaderAsync(
+        Windows.Media.Capture.MediaCapture capture,
+        Windows.Media.Capture.Frames.MediaFrameSource colorSource)
+    {
+        try
+        {
+            var format = colorSource.CurrentFormat?.VideoFormat;
+            var size = format is null
+                ? null
+                : CameraPreviewFormat.GetReaderSize(format.Width, format.Height, GetPreviewPixelHeight());
+
+            return size is { } readerSize
+                ? await capture.CreateFrameReaderAsync(
+                    colorSource,
+                    Windows.Media.MediaProperties.MediaEncodingSubtypes.Bgra8,
+                    new Windows.Graphics.Imaging.BitmapSize { Width = readerSize.Width, Height = readerSize.Height })
+                : await capture.CreateFrameReaderAsync(
+                    colorSource,
+                    Windows.Media.MediaProperties.MediaEncodingSubtypes.Bgra8);
+        }
+        catch (Exception)
+        {
+            return await capture.CreateFrameReaderAsync(colorSource);
+        }
+    }
+
+    private double GetPreviewPixelHeight()
+        => Dispatcher.Invoke(() =>
+        {
+            var height = ActualHeight > 0
+                ? ActualHeight
+                : double.IsNaN(Height) ? 0 : Height;
+
+            return height > 0
+                ? height * VisualTreeHelper.GetDpi(this).DpiScaleY
+                : CameraPreviewFormat.FallbackPreviewPixelHeight;
+        });
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Frame copy must not crash on transient errors.")]
     private void RenderLatestFrame()
     {
         if (!frameSlot.TryTake(out var frame))
@@ -325,36 +354,41 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsy
             return;
         }
 
-        try
+        using (frame)
         {
-            RenderFrame(frame.Buffer, frame.Width, frame.Height);
-        }
-        finally
-        {
-            frameSlot.Return(frame.Buffer);
+            try
+            {
+                RenderFrame(frame);
+            }
+            catch (Exception)
+            {
+                // Skip this frame.
+            }
         }
     }
 
-    private void RenderFrame(
-        byte[] bytes,
-        int width,
-        int height)
+    private void RenderFrame(CameraPreviewFrame frame)
     {
         if (disposed)
         {
             return;
         }
 
+        var width = frame.Bitmap.PixelWidth;
+        var height = frame.Bitmap.PixelHeight;
+        var pixelFormat = CameraPreviewFormat.ToWpfPixelFormat(frame.Bitmap.BitmapAlphaMode);
+
         if (renderTarget is null ||
             renderTarget.PixelWidth != width ||
-            renderTarget.PixelHeight != height)
+            renderTarget.PixelHeight != height ||
+            renderTarget.Format != pixelFormat)
         {
             renderTarget = new WriteableBitmap(
                 width,
                 height,
                 dpiX: 96,
                 dpiY: 96,
-                pixelFormat: PixelFormats.Bgra32,
+                pixelFormat: pixelFormat,
                 palette: null);
 
             PartImage.Source = renderTarget;
@@ -363,8 +397,11 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsy
         renderTarget.Lock();
         try
         {
-            Marshal.Copy(bytes, 0, renderTarget.BackBuffer, bytes.Length);
-            renderTarget.AddDirtyRect(new Int32Rect(0, 0, width, height));
+            // The only copy of the frame: from the capture buffer straight into the back buffer.
+            if (frame.CopyTo(renderTarget))
+            {
+                renderTarget.AddDirtyRect(new Int32Rect(0, 0, width, height));
+            }
         }
         finally
         {
