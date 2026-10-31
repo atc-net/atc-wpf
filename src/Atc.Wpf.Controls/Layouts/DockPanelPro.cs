@@ -108,13 +108,16 @@ public sealed partial class DockPanelPro : Panel
     }
 
     /// <summary>
-    /// Saves the current layout to a JSON string.
+    /// Saves the current layout to a JSON string: region sizes and expanded states, and (since layout version 2)
+    /// the panes of each region in tab order, the active tab, and which panes are closed or floating, with the
+    /// floating window bounds.
     /// </summary>
     /// <returns>A JSON string representing the current layout.</returns>
     public string SaveLayout()
     {
         var layout = new Internal.DockPanelLayout
         {
+            Version = Internal.DockPanelLayout.CurrentVersion,
             LayoutId = LayoutId,
             Regions = [],
         };
@@ -141,14 +144,16 @@ public sealed partial class DockPanelPro : Panel
                 Width = width,
                 Height = height,
                 IsExpanded = region.IsExpanded,
+                PaneIds = region.HasPanes
+                    ? region.Panes.Where(x => !string.IsNullOrEmpty(x.PaneId)).Select(x => x.PaneId!).ToList()
+                    : null,
+                ActivePaneId = region.ActivePane?.PaneId,
             });
         }
 
-        return JsonSerializer.Serialize(layout, new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        });
+        SavePaneStates(layout);
+
+        return JsonSerializer.Serialize(layout, LayoutWriteOptions);
     }
 
     /// <summary>
@@ -158,6 +163,9 @@ public sealed partial class DockPanelPro : Panel
     /// Only the docking dimension of each side region is restored: the width of left and right
     /// regions and the height of top and bottom regions. The other dimension and the center
     /// region keep following the panel size, so a saved layout never pins them.
+    /// A layout of version 2 also restores the panes of each region, the active tabs, closed panes and floating
+    /// panes, whose window bounds are moved onto the visible screens. A layout without a version (version 1)
+    /// leaves the panes as they are. Regions and panes that the layout does not know are left alone.
     /// </remarks>
     /// <param name="json">The JSON string containing the layout.</param>
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
@@ -171,10 +179,7 @@ public sealed partial class DockPanelPro : Panel
         Internal.DockPanelLayout? layout;
         try
         {
-            layout = JsonSerializer.Deserialize<Internal.DockPanelLayout>(json, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            });
+            layout = JsonSerializer.Deserialize<Internal.DockPanelLayout>(json, LayoutReadOptions);
         }
         catch (JsonException)
         {
@@ -220,6 +225,8 @@ public sealed partial class DockPanelPro : Panel
 
             region.IsExpanded = regionState.IsExpanded;
         }
+
+        LoadPaneStates(layout);
 
         InvalidateMeasure();
         InvalidateArrange();
