@@ -5,6 +5,7 @@ namespace Atc.Wpf.Tests.Documents.TextFormatters;
 /// Each run is written as <c>text|brush</c>, with line breaks shown as <c>\n</c> and
 /// <c>-</c> for a run without its own foreground.
 /// </summary>
+[Collection(nameof(JsonColorSchemaTestGroup))]
 public sealed class JsonFormatterOutputTests
 {
     [StaFact]
@@ -99,12 +100,14 @@ public sealed class JsonFormatterOutputTests
     }
 
     [StaFact]
-    public void ColorizeJson_EscapedKeyAndValue_ShowsThemUnescaped()
+    public void ColorizeJson_EscapedKeyAndValue_ShowsThemAsValidJsonEscapes()
     {
         var runs = Colorize("""{"k\u00e9\"y":"v\u00e9\"\\\n<&>"}""");
 
-        Assert.Contains("\"ké\"y\": |Key", runs, StringComparer.Ordinal);
-        Assert.Contains("vé\"\\" + @"\n" + "<&>|String", runs, StringComparer.Ordinal);
+        // Quotes, backslashes and control characters stay escaped, so the text is valid JSON;
+        // other characters (non-ASCII letters, < & >) are shown as they are.
+        Assert.Contains("\"ké\\\"y\": |Key", runs, StringComparer.Ordinal);
+        Assert.Contains("""vé\"\\\n<&>|String""", runs, StringComparer.Ordinal);
     }
 
     [StaFact]

@@ -92,6 +92,13 @@ public sealed class JsonFormatter : ITextFormatter
         return document;
     }
 
+    /// <summary>
+    /// Escapes a string for display inside JSON quotes: quotes, backslashes and control characters
+    /// are escaped, other characters (incl. non-ASCII letters, <c>&lt;</c>, <c>&amp;</c>) are kept as they are.
+    /// </summary>
+    private static string Escape(string value)
+        => JsonEncodedText.Encode(value, JavaScriptEncoder.UnsafeRelaxedJsonEscaping).Value;
+
     private static void TrimTrailingComma(InlineCollection inlines)
     {
         if (inlines.LastInline is Run run &&
@@ -154,7 +161,7 @@ public sealed class JsonFormatter : ITextFormatter
             }
 
             AddIndent(inlines, indentLevel);
-            inlines.Add(new Run($"\"{property.Name}\": ") { Foreground = JsonColorSchema.KeyBrush });
+            inlines.Add(new Run($"\"{Escape(property.Name)}\": ") { Foreground = JsonColorSchema.KeyBrush });
             ParseJsonElement(property.Value, inlines, ref indentLevel);
             inlines.Add(new Run(",\n") { Foreground = JsonColorSchema.DefaultBrush });
         }
@@ -194,24 +201,26 @@ public sealed class JsonFormatter : ITextFormatter
         {
             case JsonValueKind.String:
 
+                // Classify on the value, but show it escaped, so the document text stays valid JSON.
                 var strValue = jsonValue.GetString() ?? string.Empty;
+                var escapedValue = Escape(strValue);
                 inlines.Add(new Run("\"") { Foreground = JsonColorSchema.StringBrush });
 
                 if (DateTimeHelper.TryParseUsingSpecificCulture(strValue, GlobalizationConstants.EnglishCultureInfo, out _))
                 {
-                    inlines.Add(new Run(strValue) { Foreground = JsonColorSchema.DateBrush });
+                    inlines.Add(new Run(escapedValue) { Foreground = JsonColorSchema.DateBrush });
                 }
                 else if (Guid.TryParse(strValue, out _))
                 {
-                    inlines.Add(new Run(strValue) { Foreground = JsonColorSchema.GuidBrush });
+                    inlines.Add(new Run(escapedValue) { Foreground = JsonColorSchema.GuidBrush });
                 }
                 else if (Uri.IsWellFormedUriString(strValue, UriKind.Absolute))
                 {
-                    inlines.Add(new Run(strValue) { Foreground = JsonColorSchema.UriBrush });
+                    inlines.Add(new Run(escapedValue) { Foreground = JsonColorSchema.UriBrush });
                 }
                 else
                 {
-                    inlines.Add(new Run(strValue) { Foreground = JsonColorSchema.StringBrush });
+                    inlines.Add(new Run(escapedValue) { Foreground = JsonColorSchema.StringBrush });
                 }
 
                 inlines.Add(new Run("\"") { Foreground = JsonColorSchema.StringBrush });
