@@ -89,7 +89,7 @@
                     Text="{Binding Path=Value, Converter={x:Static valueConverters:JsonValueDisplayConverter.Instance}}"
                     TextWrapping="Wrap">
                     <TextBlock.Width>
-                        <MultiBinding Converter="{x:Static atcValueConverters:MathSubtractValueConverter.Instance}">
+                        <MultiBinding Converter="{x:Static viewers:JsonValueWidthValueConverter.Instance}">
                             <Binding ElementName="UcJsonTreeViewer" Path="ActualWidth" />
                             <Binding Source="250" />
                         </MultiBinding>
@@ -118,7 +118,7 @@
                     Text="{Binding Converter={x:Static valueConverters:JsonValueDisplayConverter.Instance}}"
                     TextWrapping="Wrap">
                     <TextBlock.Width>
-                        <MultiBinding Converter="{x:Static atcValueConverters:MathSubtractValueConverter.Instance}">
+                        <MultiBinding Converter="{x:Static viewers:JsonValueWidthValueConverter.Instance}">
                             <Binding ElementName="UcJsonTreeViewer" Path="ActualWidth" />
                             <Binding Source="250" />
                         </MultiBinding>
