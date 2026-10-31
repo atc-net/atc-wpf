@@ -73,8 +73,14 @@ public sealed partial class DockPanelPro
             return false;
         }
 
+        var hadFocus = HasFocusWithin(pane);
         CloseFloatingWindow(pane);
         ChangePaneState(pane, DockPaneState.Closed);
+        if (hadFocus)
+        {
+            FocusAfterLeaving(pane.Region);
+        }
+
         return true;
     }
 
@@ -120,8 +126,22 @@ public sealed partial class DockPanelPro
             return false;
         }
 
+        var hadFocus = HasFocusWithin(pane);
         ChangePaneState(pane, DockPaneState.Floating);
         OpenFloatingWindow(pane);
+        if (floatingWindows.TryGetValue(pane, out var window))
+        {
+            if (hadFocus)
+            {
+                window.Activate();
+                FocusPane(pane);
+            }
+        }
+        else if (hadFocus)
+        {
+            FocusAfterLeaving(pane.Region);
+        }
+
         return true;
     }
 
@@ -139,8 +159,15 @@ public sealed partial class DockPanelPro
             return false;
         }
 
+        var hadFocus = HasFocusWithin(pane);
         CloseFloatingWindow(pane);
         ChangePaneState(pane, DockPaneState.Docked, activate: true);
+        if (hadFocus)
+        {
+            ownerWindow?.Activate();
+            FocusPane(pane);
+        }
+
         return true;
     }
 
@@ -226,6 +253,103 @@ public sealed partial class DockPanelPro
         else
         {
             region.Panes.Insert(index, pane);
+        }
+    }
+
+    /// <summary>
+    /// Whether the keyboard focus, or the logical focus of its focus scope (an inactive window), is inside the pane
+    /// (or its floating window is the active window).
+    /// </summary>
+    private bool HasFocusWithin(DockPane pane)
+    {
+        if (pane.IsKeyboardFocusWithin ||
+            (floatingWindows.TryGetValue(pane, out var window) && window.IsActive))
+        {
+            return true;
+        }
+
+        return FocusManager.GetFocusScope(pane) is { } scope &&
+               FocusManager.GetFocusedElement(scope) is Visual focused &&
+               pane.IsAncestorOf(focused);
+    }
+
+    /// <summary>
+    /// Moves the focus into a pane: its first focusable element, else its tab, else the region header buttons.
+    /// </summary>
+    private static void FocusPane(DockPane pane)
+    {
+        var region = pane.Region;
+        (Window.GetWindow(pane) ?? (UIElement)pane).UpdateLayout();
+
+        if (FocusFirstIn(pane))
+        {
+            return;
+        }
+
+        if (region is not null &&
+            FindVisualDescendants<DockPaneTabItem>(region).FirstOrDefault(x => ReferenceEquals(x.Pane, pane)) is { } tab &&
+            tab.IsVisible &&
+            tab.Focus())
+        {
+            return;
+        }
+
+        if (region is not null)
+        {
+            FocusFirstIn(region);
+        }
+    }
+
+    /// <summary>
+    /// After a pane with the focus left its region (closed or floated without a window): focus the region's
+    /// new active pane, or the first focusable element of the panel.
+    /// </summary>
+    private void FocusAfterLeaving(DockRegion? region)
+    {
+        UpdateLayout();
+        if (region?.ActivePane is { } next && next.State == DockPaneState.Docked)
+        {
+            FocusPane(next);
+            return;
+        }
+
+        FocusFirstIn(this);
+    }
+
+    private static bool FocusFirstIn(DependencyObject root)
+    {
+        foreach (var element in FindVisualDescendants<UIElement>(root))
+        {
+            if (element.Focusable &&
+                element.IsEnabled &&
+                element.IsVisible &&
+                KeyboardNavigation.GetIsTabStop(element) &&
+                element.Focus())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static IEnumerable<T> FindVisualDescendants<T>(
+        DependencyObject root)
+        where T : DependencyObject
+    {
+        var count = VisualTreeHelper.GetChildrenCount(root);
+        for (var i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(root, i);
+            if (child is T match)
+            {
+                yield return match;
+            }
+
+            foreach (var nested in FindVisualDescendants<T>(child))
+            {
+                yield return nested;
+            }
         }
     }
 

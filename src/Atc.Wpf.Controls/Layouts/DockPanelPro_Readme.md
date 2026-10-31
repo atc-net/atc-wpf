@@ -225,6 +225,8 @@ dockPanel.RedockAllPanes();
 | `Shift+F10` or the context-menu key on a tab or the region header | **Float** / **Close** menu for the pane |
 | `Shift+F10` inside a floating pane | **Dock** / **Close** menu |
 | `Tab` | Reaches the header float and close buttons, and the splitters |
+
+When the pane with the focus is closed, the focus moves to the region's next active pane (or the first focusable element of the panel); when it is floated, the focus moves into its window; when it is docked back, the main window is activated and the focus returns to the pane. A pane without the focus leaves the focus where it is.
 | `←` / `→` (`↑` / `↓`) on a focused splitter | Moves the splitter by 10 (mirrored in right-to-left); the focused splitter is shown in the accent colour |
 
 ## ♿ UI Automation

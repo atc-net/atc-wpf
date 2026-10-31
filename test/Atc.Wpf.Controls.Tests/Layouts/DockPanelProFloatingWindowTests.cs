@@ -387,6 +387,77 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
     }
 
     [StaFact]
+    public void Closing_the_focused_pane_moves_the_focus_to_the_next_active_pane()
+    {
+        var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();
+        var (outputBox, errorsBox) = UseTextBoxes(panel);
+        var host = Show(panel);
+        try
+        {
+            outputBox.Focus();
+
+            panel.ClosePane(panel.FindPane("output")!);
+
+            Assert.Equal("errors", bottom.ActivePane?.PaneId);
+            Assert.Same(errorsBox, FocusManager.GetFocusedElement(host));
+        }
+        finally
+        {
+            host.Close();
+        }
+    }
+
+    [StaFact]
+    public void Floating_the_focused_pane_moves_the_focus_into_its_window_and_redocking_brings_it_back()
+    {
+        var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
+        var (outputBox, _) = UseTextBoxes(panel);
+        var host = Show(panel);
+        try
+        {
+            var output = panel.FindPane("output")!;
+            outputBox.Focus();
+
+            panel.FloatPane(output);
+            var window = panel.GetFloatingWindow(output)!;
+
+            Assert.Same(outputBox, FocusManager.GetFocusedElement(window));
+
+            panel.RedockPane(output);
+
+            Assert.Same(outputBox, FocusManager.GetFocusedElement(host));
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
+    public void Floating_a_pane_without_the_focus_leaves_the_focus_where_it_is()
+    {
+        var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
+        UseTextBoxes(panel);
+        var other = new TextBox();
+        panel.FindPane("properties")!.Content = other;
+        var host = Show(panel);
+        try
+        {
+            other.Focus();
+
+            panel.FloatPane(panel.FindPane("output")!);
+
+            Assert.Same(other, FocusManager.GetFocusedElement(host));
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
     public void The_floating_window_context_menu_docks_and_closes_the_pane()
     {
         var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();
@@ -476,6 +547,16 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
         {
             host.Close();
         }
+    }
+
+    internal static (TextBox Output, TextBox Errors) UseTextBoxes(
+        DockPanelPro panel)
+    {
+        var output = new TextBox { Text = "output" };
+        var errors = new TextBox { Text = "errors" };
+        panel.FindPane("output")!.Content = output;
+        panel.FindPane("errors")!.Content = errors;
+        return (output, errors);
     }
 
     internal static Window Show(DockPanelPro panel)
