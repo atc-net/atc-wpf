@@ -35,6 +35,7 @@ internal sealed class DataGridFilterState
         grid.PreviewKeyDown += OnGridPreviewKeyDown;
         grid.ContextMenuOpening += OnGridContextMenuOpening;
         grid.RowEditEnding += OnGridRowEditEnding;
+        UpdateActiveFlags();
     }
 
     /// <summary>
@@ -202,14 +203,14 @@ internal sealed class DataGridFilterState
         UpdateActiveFlags();
 
         var currentView = EnsureView();
-        if (currentView is not { CanFilter: true })
+        if (!IsFilterable(currentView))
         {
             return;
         }
 
         if (HasAnything)
         {
-            owner = DataGridViewFilterOwner.GetOrCreate(currentView);
+            owner = DataGridViewFilterOwner.GetOrCreate(currentView!);
             owner.ApplyDeferred(this);
         }
         else
@@ -245,11 +246,11 @@ internal sealed class DataGridFilterState
     private void ApplyToView()
     {
         var currentView = EnsureView();
-        if (currentView is { CanFilter: true })
+        if (IsFilterable(currentView))
         {
             if (HasAnything)
             {
-                owner = DataGridViewFilterOwner.GetOrCreate(currentView);
+                owner = DataGridViewFilterOwner.GetOrCreate(currentView!);
                 owner.Apply(this);
             }
             else
@@ -333,6 +334,50 @@ internal sealed class DataGridFilterState
     /// </summary>
     public bool Passes(object item)
         => PassesOthers(item, consumer: null, matchers);
+
+    /// <summary>
+    /// Returns this grid's column filters and search as a row filter expression of a
+    /// <see cref="System.Data.DataTable"/> source, or <see langword="null"/> when they let every row pass.
+    /// </summary>
+    public string? BuildRowFilter(System.Data.DataTable table)
+    {
+        var parts = new List<string?>(matchers.Count + 1);
+        foreach (var matcher in matchers)
+        {
+            if (DataGridRowFilterBuilder.GetColumn(table, matcher.Accessor) is { } dataColumn)
+            {
+                parts.Add(DataGridRowFilterBuilder.BuildColumnExpression(dataColumn, matcher.MatchesValue));
+            }
+        }
+
+        if (appliedSearchText.Length > 0)
+        {
+            parts.Add(BuildSearchRowFilter(table));
+        }
+
+        return DataGridRowFilterBuilder.And(parts);
+    }
+
+    /// <summary>
+    /// Returns whether the grid's source can apply a filter of the column: any column of a predicate-filterable
+    /// view, a column of the table of a <see cref="System.Data.DataView"/> source, and nothing of other sources.
+    /// </summary>
+    public bool IsColumnSupported(DataGridColumn column)
+    {
+        var currentView = EnsureView();
+        if (currentView is null || currentView.CanFilter)
+        {
+            return true;
+        }
+
+        if (DataGridRowFilterBuilder.GetDataView(currentView) is not { Table: { } table })
+        {
+            return false;
+        }
+
+        var accessor = DataGridColumnValueAccessor.Create(column, DataGridFilter.GetGridCulture(grid));
+        return accessor is not null && DataGridRowFilterBuilder.GetColumn(table, accessor) is not null;
+    }
 
     /// <summary>
     /// Opens the filter pop-up of a column under <paramref name="placementTarget"/> (the header button, or the grid).
@@ -428,6 +473,10 @@ internal sealed class DataGridFilterState
         {
             Apply();
         }
+        else
+        {
+            UpdateActiveFlags();
+        }
     }
 
     /// <summary>
@@ -436,6 +485,40 @@ internal sealed class DataGridFilterState
     /// </summary>
     public void RestoreConsumerFilter()
         => DetachFromOwner();
+
+    private static bool IsFilterable(ICollectionView? targetView)
+        => targetView is not null &&
+           (targetView.CanFilter || DataGridRowFilterBuilder.GetDataView(targetView) is not null);
+
+    private string? BuildSearchRowFilter(System.Data.DataTable table)
+    {
+        var alternatives = new List<string>();
+        foreach (var accessor in searchAccessors)
+        {
+            if (DataGridRowFilterBuilder.GetColumn(table, accessor) is not { } dataColumn)
+            {
+                continue;
+            }
+
+            var expression = DataGridRowFilterBuilder.BuildColumnExpression(
+                dataColumn,
+                value => accessor.Format(value).Contains(appliedSearchText, StringComparison.OrdinalIgnoreCase));
+            if (expression is null)
+            {
+                // Every row has a match in this column.
+                return null;
+            }
+
+            if (!string.Equals(expression, DataGridRowFilterBuilder.None, StringComparison.Ordinal))
+            {
+                alternatives.Add(expression);
+            }
+        }
+
+        return alternatives.Count == 0
+            ? DataGridRowFilterBuilder.None
+            : string.Join(" OR ", alternatives.Select(x => $"({x})"));
+    }
 
     private static ICollectionView? GetView(IEnumerable? itemsSource)
         => itemsSource is null
@@ -671,7 +754,20 @@ internal sealed class DataGridFilterState
     }
 
     private IEnumerable GetSourceItems()
-        => EnsureView()?.SourceCollection ?? grid.Items;
+    {
+        var currentView = EnsureView();
+        if (DataGridRowFilterBuilder.GetDataView(currentView) is { Table: { } table } dataView)
+        {
+            // The data view itself holds only the rows that pass the filters: read a copy with the consumer's own.
+            var consumerRowFilter = DataGridViewFilterOwner.Find(currentView) is { IsRowFilterInstalled: true } viewOwner
+                ? viewOwner.ConsumerRowFilter
+                : dataView.RowFilter;
+            using var copy = new System.Data.DataView(table, consumerRowFilter, dataView.Sort, dataView.RowStateFilter);
+            return copy.Cast<object>().ToList();
+        }
+
+        return currentView?.SourceCollection ?? grid.Items;
+    }
 
     private ICollectionView? EnsureView()
     {
@@ -680,6 +776,7 @@ internal sealed class DataGridFilterState
         {
             RestoreConsumerFilter();
             view = current;
+            UpdateActiveFlags();
         }
 
         return view;
@@ -693,7 +790,8 @@ internal sealed class DataGridFilterState
         foreach (var column in grid.Columns)
         {
             var accessor = (DataGridColumnValueAccessor?)null;
-            if (filters.TryGetValue(DataGridFilter.ResolveColumnKey(column), out var filter))
+            if (filters.TryGetValue(DataGridFilter.ResolveColumnKey(column), out var filter) &&
+                IsColumnSupported(column))
             {
                 accessor = DataGridColumnValueAccessor.Create(column, culture);
                 if (accessor is not null)
@@ -722,7 +820,10 @@ internal sealed class DataGridFilterState
     {
         foreach (var column in grid.Columns)
         {
-            var isActive = filters.ContainsKey(DataGridFilter.ResolveColumnKey(column));
+            // A source that cannot apply the column's filter shows no active funnel (the button is disabled).
+            var isSupported = IsColumnSupported(column);
+            DataGridFilter.SetIsColumnFilterSupported(column, isSupported);
+            var isActive = isSupported && filters.ContainsKey(DataGridFilter.ResolveColumnKey(column));
             if (DataGridFilter.GetIsColumnFilterActive(column) != isActive)
             {
                 column.SetValue(DataGridFilter.IsColumnFilterActivePropertyKey, isActive);
@@ -771,6 +872,11 @@ internal sealed class DataGridFilterState
             }
         }
 
+        if (e.NewItems is not null)
+        {
+            UpdateActiveFlags();
+        }
+
         // An added column (e.g. auto-generated after a new ItemsSource) may be one a filter refers to.
         if (e.Action != NotifyCollectionChangedAction.Move && HasAnything && !isReapplyQueued)
         {
@@ -813,6 +919,11 @@ internal sealed class DataGridFilterState
 
         if (originalSource is DataGridFilterButton { Column: { } buttonColumn } button)
         {
+            if (!DataGridFilter.CanFilterColumn(grid, buttonColumn))
+            {
+                return false;
+            }
+
             OpenPopup(buttonColumn, button);
             return true;
         }

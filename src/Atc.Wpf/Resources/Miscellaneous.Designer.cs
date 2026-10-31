@@ -313,6 +313,15 @@ namespace Atc.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This data source cannot be filtered.
+        /// </summary>
+        public static string FilterNotSupported {
+            get {
+                return ResourceManager.GetString("FilterNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (Blanks).
         /// </summary>
         public static string Blanks {

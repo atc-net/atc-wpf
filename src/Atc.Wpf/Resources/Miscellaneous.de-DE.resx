@@ -142,6 +142,9 @@
   <data name="FilterColumn1" xml:space="preserve">
     <value>{0} filtern</value>
   </data>
+  <data name="FilterNotSupported" xml:space="preserve">
+    <value>Diese Datenquelle kann nicht gefiltert werden</value>
+  </data>
   <data name="Blanks" xml:space="preserve">
     <value>(Leer)</value>
   </data>

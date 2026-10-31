@@ -34,6 +34,8 @@ internal sealed class DataGridFilterButton : Button
         VerticalAlignment = VerticalAlignment.Center;
         Cursor = Cursors.Hand;
         IsTabStop = true;
+        ToolTipService.SetShowOnDisabled(this, value: true);
+        IsEnabledChanged += (_, _) => UpdateName();
         UpdateFunnel();
     }
 
@@ -76,7 +78,8 @@ internal sealed class DataGridFilterButton : Button
             : null;
 
     /// <summary>
-    /// Updates the automation name ("Filter {column}") and tool tip from the column header.
+    /// Updates the automation name ("Filter {column}") and tool tip from the column header; a disabled button
+    /// (the grid's source cannot apply the filter) says so in its tool tip.
     /// </summary>
     internal void UpdateName()
     {
@@ -90,7 +93,9 @@ internal sealed class DataGridFilterButton : Button
             Atc.Wpf.Resources.Miscellaneous.FilterColumn1,
             DataGridFilter.GetColumnTitle(Column));
         AutomationProperties.SetName(this, text);
-        ToolTip = text;
+        ToolTip = IsEnabled
+            ? text
+            : Atc.Wpf.Resources.Miscellaneous.FilterNotSupported;
     }
 
     /// <inheritdoc />

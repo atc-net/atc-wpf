@@ -145,6 +145,43 @@
                 </DockPanel>
             </atc:GroupBoxExpander>
 
+            <!--  DataTable  -->
+            <atc:GroupBoxExpander Header="DataTable source (the filters become the DataView's RowFilter)">
+                <DockPanel Margin="10">
+                    <TextBlock
+                        x:Name="TableRowCount"
+                        Margin="0,0,0,8"
+                        AutomationProperties.AutomationId="TableRowCount"
+                        DockPanel.Dock="Top" />
+                    <DataGrid
+                        x:Name="TableGrid"
+                        Height="300"
+                        atc:DataGridFilter.IsEnabled="True"
+                        AutoGenerateColumns="False"
+                        AutomationProperties.AutomationId="TableGrid"
+                        CanUserAddRows="False"
+                        IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn
+                                Width="180"
+                                Binding="{Binding Customer}"
+                                Header="Customer" />
+                            <DataGridTextColumn
+                                Width="110"
+                                Binding="{Binding Country}"
+                                Header="Country" />
+                            <DataGridTextColumn
+                                Width="110"
+                                Binding="{Binding Status}"
+                                Header="Status" />
+                            <DataGridTextColumn Binding="{Binding Amount, StringFormat=N2}" Header="Amount" />
+                            <DataGridTextColumn Binding="{Binding Date, StringFormat=yyyy-MM-dd}" Header="Date" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </atc:GroupBoxExpander>
+
         </atc:UniformSpacingPanel>
     </ScrollViewer>
 

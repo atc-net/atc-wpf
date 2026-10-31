@@ -119,6 +119,16 @@ public static partial class DataGridFilter
         typeof(DataGridFilterChangedEventHandler),
         typeof(DataGridFilter));
 
+    /// <summary>
+    /// Identifies the internal <c>IsColumnFilterSupported</c> attached property: <see langword="false"/> on a column
+    /// whose grid source cannot apply its filter (the filter button is disabled).
+    /// </summary>
+    internal static readonly DependencyProperty IsColumnFilterSupportedProperty = DependencyProperty.RegisterAttached(
+        "IsColumnFilterSupported",
+        typeof(bool),
+        typeof(DataGridFilter),
+        new PropertyMetadata(BooleanBoxes.TrueBox));
+
     private static readonly DependencyProperty StateProperty = DependencyProperty.RegisterAttached(
         "State",
         typeof(DataGridFilterState),
@@ -393,14 +403,37 @@ public static partial class DataGridFilter
     }
 
     /// <summary>
-    /// Returns whether a column can be filtered: the filter is enabled for it and its values can be read
-    /// (a binding path, or a <see cref="DataGridColumn.SortMemberPath"/> for template columns).
+    /// Returns whether a column can be filtered: the filter is enabled for it, its values can be read
+    /// (see <see cref="CanReadColumn"/>) and the grid's source can apply its filter.
     /// </summary>
     internal static bool CanFilterColumn(
         DataGrid grid,
         DataGridColumn column)
+        => CanReadColumn(grid, column) &&
+           GetState(grid)?.IsColumnSupported(column) != false;
+
+    /// <summary>
+    /// Returns whether a column gets a filter button: the filter is enabled for it and its values can be read
+    /// (a binding path, or a <see cref="DataGridColumn.SortMemberPath"/> for template columns).
+    /// </summary>
+    internal static bool CanReadColumn(
+        DataGrid grid,
+        DataGridColumn column)
         => GetIsColumnFilterEnabled(column) &&
            DataGridColumnValueAccessor.Create(column, GetGridCulture(grid)) is not null;
+
+    /// <summary>
+    /// Sets whether the grid's source can apply the filter of a column.
+    /// </summary>
+    internal static void SetIsColumnFilterSupported(
+        DataGridColumn column,
+        bool value)
+    {
+        if ((bool)column.GetValue(IsColumnFilterSupportedProperty) != value)
+        {
+            column.SetValue(IsColumnFilterSupportedProperty, BooleanBoxes.Box(value));
+        }
+    }
 
     /// <summary>
     /// Returns the culture the grid's cells format their values in (its <see cref="FrameworkElement.Language"/>).

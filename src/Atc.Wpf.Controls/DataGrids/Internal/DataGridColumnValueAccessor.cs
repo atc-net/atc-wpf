@@ -10,6 +10,7 @@ internal sealed class DataGridColumnValueAccessor
     private static readonly ConcurrentPropertyCache PropertyCache = new();
 
     private readonly string[] segments;
+    private readonly DescriptorCache?[] descriptorCaches;
     private readonly IValueConverter? converter;
     private readonly object? converterParameter;
     private readonly string? stringFormat;
@@ -25,6 +26,7 @@ internal sealed class DataGridColumnValueAccessor
         segments = string.IsNullOrEmpty(path) || path == "."
             ? []
             : path.Split('.');
+        descriptorCaches = new DescriptorCache?[segments.Length];
         this.converter = converter;
         this.converterParameter = converterParameter;
         this.stringFormat = stringFormat;
@@ -66,25 +68,31 @@ internal sealed class DataGridColumnValueAccessor
     }
 
     /// <summary>
+    /// Gets the property name of a one-step path (the column name of a <see cref="System.Data.DataView"/> row),
+    /// or <see langword="null"/> for a longer or empty path.
+    /// </summary>
+    public string? SinglePropertyName
+        => segments.Length == 1 ? segments[0] : null;
+
+    /// <summary>
     /// Reads the raw value of the column from a row item; <see langword="null"/> when a step of the path is missing.
     /// </summary>
+    /// <remarks>
+    /// A step reads a <see cref="System.Data.DataRowView"/> column, a dictionary entry (e.g. an
+    /// <see cref="System.Dynamic.ExpandoObject"/>), a public property, or a property the item describes through
+    /// <see cref="TypeDescriptor"/> (e.g. a <see cref="ICustomTypeDescriptor"/>), in that order.
+    /// </remarks>
     public object? GetValue(object? item)
     {
         var current = item;
-        foreach (var segment in segments)
+        for (var i = 0; i < segments.Length; i++)
         {
             if (current is null || current == DBNull.Value)
             {
                 return null;
             }
 
-            var property = PropertyCache.Get(current.GetType(), segment);
-            if (property is null)
-            {
-                return null;
-            }
-
-            current = property.GetValue(current);
+            current = GetStep(current, i);
         }
 
         return current == DBNull.Value ? null : current;
@@ -136,6 +144,47 @@ internal sealed class DataGridColumnValueAccessor
     public string GetText(object? item)
         => Format(GetValue(item));
 
+    private object? GetStep(
+        object current,
+        int index)
+    {
+        var segment = segments[index];
+        switch (current)
+        {
+            case System.Data.DataRowView rowView:
+            {
+                var columns = rowView.Row.Table.Columns;
+                return columns.Contains(segment)
+                    ? rowView.Row[segment]
+                    : GetDescribedValue(current, index);
+            }
+
+            case IDictionary<string, object?> dictionary:
+                return dictionary.TryGetValue(segment, out var value) ? value : null;
+        }
+
+        var property = PropertyCache.Get(current.GetType(), segment);
+        return property is not null
+            ? property.GetValue(current)
+            : GetDescribedValue(current, index);
+    }
+
+    private object? GetDescribedValue(
+        object current,
+        int index)
+    {
+        // Items of one type usually share one descriptor collection: look the property up once per collection.
+        var properties = TypeDescriptor.GetProperties(current);
+        var cache = descriptorCaches[index];
+        if (!ReferenceEquals(cache?.Properties, properties))
+        {
+            cache = new DescriptorCache(properties, properties.Find(segments[index], ignoreCase: false));
+            descriptorCaches[index] = cache;
+        }
+
+        return cache.Descriptor?.GetValue(current);
+    }
+
     private static Binding? GetBinding(DataGridColumn column)
         => column switch
         {
@@ -143,6 +192,10 @@ internal sealed class DataGridColumnValueAccessor
             DataGridComboBoxColumn combo => (combo.TextBinding ?? combo.SelectedValueBinding ?? combo.SelectedItemBinding) as Binding,
             _ => null,
         };
+
+    private sealed record DescriptorCache(
+        PropertyDescriptorCollection Properties,
+        PropertyDescriptor? Descriptor);
 
     private sealed class ConcurrentPropertyCache
     {

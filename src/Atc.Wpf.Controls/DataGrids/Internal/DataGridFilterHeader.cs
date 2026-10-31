@@ -94,7 +94,7 @@ internal sealed class DataGridFilterHeader : Grid
         columnHeader = FindAncestor<DataGridColumnHeader>(this);
         var column = columnHeader?.Column;
         var grid = FindAncestor<DataGrid>(columnHeader);
-        if (columnHeader is null || column is null || grid is null || !DataGridFilter.CanFilterColumn(grid, column))
+        if (columnHeader is null || column is null || grid is null || !DataGridFilter.CanReadColumn(grid, column))
         {
             Button.Visibility = Visibility.Collapsed;
             return;
@@ -120,6 +120,13 @@ internal sealed class DataGridFilterHeader : Grid
                 Source = column,
                 Path = new PropertyPath(DataGridFilter.IsColumnFilterEnabledProperty),
                 Converter = BooleanToVisibilityConverterInstance,
+            });
+        Button.SetBinding(
+            UIElement.IsEnabledProperty,
+            new Binding
+            {
+                Source = column,
+                Path = new PropertyPath(DataGridFilter.IsColumnFilterSupportedProperty),
             });
         Button.SetBinding(
             DataGridFilterButton.IsFilterActiveProperty,

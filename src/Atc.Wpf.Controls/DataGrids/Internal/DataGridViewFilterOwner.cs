@@ -6,9 +6,16 @@ namespace Atc.Wpf.Controls.DataGrids.Internal;
 /// view filter, and only this class assigns or refreshes the view filter.
 /// </summary>
 /// <remarks>
+/// <para>
+/// A <see cref="BindingListCollectionView"/> of a <see cref="System.Data.DataView"/> cannot filter with a predicate:
+/// there the owner writes the combined filters as its <see cref="BindingListCollectionView.CustomFilter"/> (the
+/// view's <c>RowFilter</c>), ANDed with the consumer's own row filter.
+/// </para>
+/// <para>
 /// The owner lives as long as its predicate is installed on the view (the view's filter delegate points at it) and
 /// holds the grids' filter states weakly, so a long-lived view does not keep a dropped grid alive; without any live
 /// grid only the consumer's own filter applies.
+/// </para>
 /// </remarks>
 internal sealed class DataGridViewFilterOwner
 {
@@ -17,13 +24,17 @@ internal sealed class DataGridViewFilterOwner
     private readonly ICollectionView view;
     private readonly List<WeakReference<DataGridFilterState>> participants = [];
     private readonly Predicate<object> predicate;
+    private readonly System.Data.DataView? dataView;
     private Predicate<object>? consumerFilter;
+    private string? consumerRowFilter;
+    private string? installedRowFilter;
     private bool isInstalled;
 
     private DataGridViewFilterOwner(ICollectionView view)
     {
         this.view = view;
         predicate = Evaluate;
+        dataView = DataGridRowFilterBuilder.GetDataView(view);
     }
 
     /// <summary>
@@ -50,9 +61,25 @@ internal sealed class DataGridViewFilterOwner
     /// owner's predicate is not installed.
     /// </summary>
     public Predicate<object>? ConsumerFilter
-        => ReferenceEquals(view.Filter, predicate)
-            ? consumerFilter
-            : view.Filter;
+        => dataView is not null
+            ? null
+            : ReferenceEquals(view.Filter, predicate)
+                ? consumerFilter
+                : view.Filter;
+
+    /// <summary>
+    /// Gets the consumer's own row filter of a <see cref="System.Data.DataView"/> source while the owner's filter is
+    /// installed, else <see langword="null"/>.
+    /// </summary>
+    public string? ConsumerRowFilter
+        => dataView is not null && isInstalled ? consumerRowFilter : null;
+
+    /// <summary>
+    /// Gets a value indicating whether the owner's row filter is installed on a <see cref="System.Data.DataView"/>
+    /// source.
+    /// </summary>
+    public bool IsRowFilterInstalled
+        => dataView is not null && isInstalled;
 
     /// <summary>
     /// Adds a grid's filter state, combines the filters and refreshes the view once.
@@ -90,12 +117,22 @@ internal sealed class DataGridViewFilterOwner
             return;
         }
 
-        if (isInstalled && ReferenceEquals(view.Filter, predicate))
+        if (dataView is not null)
+        {
+            var listView = (BindingListCollectionView)view;
+            if (isInstalled && string.Equals(listView.CustomFilter, installedRowFilter, StringComparison.Ordinal))
+            {
+                listView.CustomFilter = consumerRowFilter;
+            }
+        }
+        else if (isInstalled && ReferenceEquals(view.Filter, predicate))
         {
             view.Filter = consumerFilter;
         }
 
         consumerFilter = null;
+        consumerRowFilter = null;
+        installedRowFilter = null;
         isInstalled = false;
         Owners.Remove(view);
     }
@@ -140,6 +177,12 @@ internal sealed class DataGridViewFilterOwner
 
     private void Install(bool refresh)
     {
+        if (dataView is not null)
+        {
+            InstallRowFilter();
+            return;
+        }
+
         if (isInstalled && ReferenceEquals(view.Filter, predicate))
         {
             if (refresh)
@@ -160,4 +203,40 @@ internal sealed class DataGridViewFilterOwner
         isInstalled = true;
         view.Filter = predicate;
     }
+
+    private void InstallRowFilter()
+    {
+        // Assigning the custom filter refreshes the view, or marks a deferred view for its one refresh.
+        var listView = (BindingListCollectionView)view;
+        var current = listView.CustomFilter;
+        if (!isInstalled)
+        {
+            consumerRowFilter = string.IsNullOrEmpty(current)
+                ? NullIfEmpty(dataView!.RowFilter)
+                : current;
+        }
+        else if (!string.Equals(current, installedRowFilter, StringComparison.Ordinal))
+        {
+            // The consumer replaced the filter since: keep theirs and AND it.
+            consumerRowFilter = NullIfEmpty(current);
+        }
+
+        var table = dataView!.Table!;
+        var expressions = new List<string?> { consumerRowFilter };
+        participants.RemoveAll(x => !x.TryGetTarget(out _));
+        foreach (var reference in participants)
+        {
+            if (reference.TryGetTarget(out var state))
+            {
+                expressions.Add(state.BuildRowFilter(table));
+            }
+        }
+
+        installedRowFilter = DataGridRowFilterBuilder.And(expressions);
+        isInstalled = true;
+        listView.CustomFilter = installedRowFilter;
+    }
+
+    private static string? NullIfEmpty(string? text)
+        => string.IsNullOrEmpty(text) ? null : text;
 }

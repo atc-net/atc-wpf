@@ -2,6 +2,7 @@ namespace Atc.Wpf.Sample.SamplesWpfControls.DataGrids;
 
 public partial class DataGridFilterView
 {
+    private readonly System.Data.DataTable ordersTable = CreateOrdersTable();
     private string? savedLayout;
 
     public DataGridFilterView()
@@ -10,10 +11,12 @@ public partial class DataGridFilterView
 
         OrdersGrid.ItemsSource = SampleOrder.Create(5_000, seed: 42);
         BigGrid.ItemsSource = SampleOrder.Create(100_000, seed: 7);
+        TableGrid.ItemsSource = ordersTable.DefaultView;
         UpdateCounts();
 
         DataGridFilter.AddFilterChangedHandler(OrdersGrid, OnOrdersFilterChanged);
         DataGridFilter.AddFilterChangedHandler(BigGrid, OnBigFilterChanged);
+        DataGridFilter.AddFilterChangedHandler(TableGrid, OnBigFilterChanged);
     }
 
     private void OnOrdersFilterChanged(
@@ -37,6 +40,7 @@ public partial class DataGridFilterView
     {
         OrdersRowCount.Text = string.Create(CultureInfo.InvariantCulture, $"{OrdersGrid.Items.Count} rows");
         BigRowCount.Text = string.Create(CultureInfo.InvariantCulture, $"{BigGrid.Items.Count:N0} rows");
+        TableRowCount.Text = string.Create(CultureInfo.InvariantCulture, $"{TableGrid.Items.Count} rows");
     }
 
     private void OnColumnsClick(
@@ -78,6 +82,24 @@ public partial class DataGridFilterView
             .Append(line)
             .TakeLast(12);
         FilterLog.Text = string.Join(Environment.NewLine, lines);
+    }
+
+    private static System.Data.DataTable CreateOrdersTable()
+    {
+        var table = new System.Data.DataTable("Orders") { Locale = CultureInfo.InvariantCulture };
+        table.Columns.Add(nameof(SampleOrder.Id), typeof(int));
+        table.Columns.Add(nameof(SampleOrder.Customer), typeof(string));
+        table.Columns.Add(nameof(SampleOrder.Country), typeof(string));
+        table.Columns.Add(nameof(SampleOrder.Status), typeof(string));
+        table.Columns.Add(nameof(SampleOrder.Amount), typeof(decimal));
+        table.Columns.Add(nameof(SampleOrder.Date), typeof(DateTime));
+        foreach (var order in SampleOrder.Create(500, seed: 3))
+        {
+            table.Rows.Add(order.Id, (object?)order.Customer ?? DBNull.Value, order.Country, order.Status, order.Amount, order.Date);
+        }
+
+        table.AcceptChanges();
+        return table;
     }
 
     private static string Describe(DataGridColumnFilter filter)

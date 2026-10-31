@@ -49,12 +49,18 @@ internal sealed class DataGridColumnFilterMatcher
     /// Returns whether the item passes the filter.
     /// </summary>
     public bool Matches(object? item)
+        => MatchesValue(Accessor.GetValue(item));
+
+    /// <summary>
+    /// Returns whether a raw cell value passes the filter.
+    /// </summary>
+    public bool MatchesValue(object? value)
         => filter.Kind switch
         {
-            DataGridColumnFilterKind.Values => values!.Contains(Accessor.GetText(item)),
-            DataGridColumnFilterKind.Text => MatchesText(Accessor.GetText(item)),
-            DataGridColumnFilterKind.NumberRange => MatchesNumber(Accessor.GetValue(item)),
-            DataGridColumnFilterKind.DateRange => MatchesDate(Accessor.GetValue(item)),
+            DataGridColumnFilterKind.Values => values!.Contains(Accessor.Format(value)),
+            DataGridColumnFilterKind.Text => MatchesText(Accessor.Format(value)),
+            DataGridColumnFilterKind.NumberRange => MatchesNumber(value),
+            DataGridColumnFilterKind.DateRange => MatchesDate(value),
             _ => true,
         };
 
