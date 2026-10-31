@@ -47,6 +47,13 @@ public partial class LabelCascaderComboBox : ILabelCascaderComboBox
     private bool isCheckLinked;
 
     /// <summary>
+    /// Whether several nodes can be ticked; <see langword="false"/> picks one leaf: the check boxes are hidden and a
+    /// click (or <c>Enter</c>) on a leaf selects it and closes the pop-up.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true)]
+    private bool isMultiSelect;
+
+    /// <summary>
     /// What makes a row active (its children shown in the next column): a click, or also resting the mouse on it.
     /// </summary>
     [DependencyProperty(DefaultValue = CascaderExpandTrigger.Click)]
@@ -188,6 +195,7 @@ public partial class LabelCascaderComboBox : ILabelCascaderComboBox
         Forward(CascaderComboBox.CountFormatProperty, CountFormatProperty);
         Forward(CascaderComboBox.CheckedKeysStrategyProperty, CheckedKeysStrategyProperty);
         Forward(CascaderComboBox.IsCheckLinkedProperty, IsCheckLinkedProperty);
+        Forward(CascaderComboBox.IsMultiSelectProperty, IsMultiSelectProperty);
         Forward(CascaderComboBox.ExpandTriggerProperty, ExpandTriggerProperty);
         Forward(CascaderComboBox.ColumnWidthProperty, ColumnWidthProperty);
         Forward(CascaderComboBox.IsFilterVisibleProperty, IsFilterVisibleProperty);

@@ -78,6 +78,7 @@ public sealed class LabelCascaderComboBoxTests : IDisposable
 
         sut.CheckedKeysStrategy = CheckedKeysStrategy.Leaves;
         sut.IsCheckLinked = false;
+        sut.IsMultiSelect = false;
         sut.ExpandTrigger = CascaderExpandTrigger.Hover;
         sut.ColumnWidth = 220;
         sut.IsFilterVisible = true;
@@ -101,6 +102,7 @@ public sealed class LabelCascaderComboBoxTests : IDisposable
         var inner = sut.ComboBox;
         Assert.Equal(CheckedKeysStrategy.Leaves, inner.CheckedKeysStrategy);
         Assert.False(inner.IsCheckLinked);
+        Assert.False(inner.IsMultiSelect);
         Assert.Equal(CascaderExpandTrigger.Hover, inner.ExpandTrigger);
         Assert.Equal(220, inner.ColumnWidth);
         Assert.True(inner.IsFilterVisible);

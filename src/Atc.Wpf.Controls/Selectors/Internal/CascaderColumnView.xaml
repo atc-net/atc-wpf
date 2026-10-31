@@ -130,6 +130,17 @@
                 <DataTrigger Binding="{Binding Path=Icon}" Value="{x:Null}">
                     <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CascaderColumnView}}, Path=IsMultiSelect}" Value="False">
+                    <Setter TargetName="CheckArea" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CascaderColumnView}}, Path=IsMultiSelect}" Value="False" />
+                        <Condition Binding="{Binding Path=IsChecked}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="Text" Property="TextElement.FontWeight" Value="SemiBold" />
+                    <Setter TargetName="FilterText" Property="TextElement.FontWeight" Value="SemiBold" />
+                </MultiDataTrigger>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding Path=Children.Count}" Value="0" />

@@ -28,6 +28,7 @@ public sealed class CascaderComboBoxTests : IDisposable
         Assert.Null(sut.ItemTemplate);
         Assert.Equal(MultiSelectDisplayMode.Text, sut.DisplayMode);
         Assert.Equal(2, sut.MaxNamesInSummary);
+        Assert.True(sut.IsMultiSelect);
         Assert.False(sut.IsDropDownOpen);
         Assert.Equal(string.Empty, sut.SummaryText);
     }
@@ -114,6 +115,70 @@ public sealed class CascaderComboBoxTests : IDisposable
         view.OnRowClicked(view.ColumnLists[2], sut.FindNode("dk-jut-aar")!, isCheckArea: false);
 
         Assert.Equal(["se", "dk-jut-aar"], sut.SelectedKeys);
+    }
+
+    [StaFact]
+    public void Single_select_picks_one_leaf_replaces_it_on_the_next_pick_and_closes_the_pop_up()
+    {
+        var sut = Create();
+        sut.IsMultiSelect = false;
+        sut.IsDropDownOpen = true;
+        var view = sut.PartColumns;
+        var events = Record(sut);
+
+        view.OnRowClicked(view.ColumnLists[0], sut.FindNode("dk")!, isCheckArea: true);
+
+        Assert.Empty(sut.SelectedKeys);
+        Assert.Equal(["dk"], Keys(view.ActivePath));
+        Assert.True(sut.IsDropDownOpen);
+
+        view.Activate(sut.FindNode("dk-jut")!);
+        view.OnRowClicked(view.ColumnLists[2], sut.FindNode("dk-jut-aar")!, isCheckArea: false);
+
+        Assert.Equal(["dk-jut-aar"], sut.SelectedKeys);
+        Assert.False(sut.IsDropDownOpen);
+        Assert.True(sut.FindNode("dk-jut-aar")!.IsChecked);
+        Assert.False(sut.FindNode("dk-jut")!.IsChecked);
+
+        sut.IsDropDownOpen = true;
+        view.OnRowClicked(view.ColumnLists[2], sut.FindNode("dk-jut-aal")!, isCheckArea: false);
+
+        Assert.Equal(["dk-jut-aal"], sut.SelectedKeys);
+        Assert.False(sut.FindNode("dk-jut-aar")!.IsChecked);
+        Assert.Equal(2, events.Count);
+        Assert.Equal(["dk-jut-aar"], events[1].OldValue);
+    }
+
+    [StaFact]
+    public void Single_select_keyboard_space_on_a_parent_activates_and_enter_on_a_leaf_picks()
+    {
+        var sut = Create();
+        sut.IsMultiSelect = false;
+        var view = sut.PartColumns;
+        view.FocusNode(sut.FindNode("dk")!);
+
+        Assert.True(view.HandleKey(Key.Space));
+
+        Assert.Empty(sut.SelectedKeys);
+        Assert.Equal(["dk"], Keys(view.ActivePath));
+
+        view.Activate(sut.FindNode("dk-jut")!);
+        view.FocusNode(sut.FindNode("dk-jut-aal")!);
+        Assert.True(view.HandleKey(Key.Enter));
+
+        Assert.Equal(["dk-jut-aal"], sut.SelectedKeys);
+    }
+
+    [StaFact]
+    public void Switching_to_single_select_keeps_only_the_first_key()
+    {
+        var sut = Create();
+        sut.SelectedKeys.Add("se");
+        sut.SelectedKeys.Add("dk-zea");
+
+        sut.IsMultiSelect = false;
+
+        Assert.Equal(["se"], sut.SelectedKeys);
     }
 
     [StaFact]

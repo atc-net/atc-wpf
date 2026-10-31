@@ -85,6 +85,12 @@ internal partial class CascaderColumnView
     private bool isCheckLinked;
 
     /// <summary>
+    /// Whether several nodes can be ticked; <see langword="false"/> picks one leaf (no check boxes, no linking).
+    /// </summary>
+    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnIsMultiSelectChanged))]
+    private bool isMultiSelect;
+
+    /// <summary>
     /// Whether the filter box is shown; <see langword="null"/> shows it when the tree has more than 20 nodes.
     /// </summary>
     [DependencyProperty(PropertyChangedCallback = nameof(OnChromeChanged))]
@@ -150,6 +156,12 @@ internal partial class CascaderColumnView
     /// Occurs after the check states, the keys or the tree changed and the chrome was refreshed.
     /// </summary>
     public event EventHandler? StateRefreshed;
+
+    /// <summary>
+    /// Occurs when a leaf is picked in single-select mode (<see cref="IsMultiSelect"/> is <see langword="false"/>),
+    /// also when it was already the selected one.
+    /// </summary>
+    public event EventHandler? LeafPicked;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CascaderColumnView"/> class.
@@ -328,14 +340,52 @@ internal partial class CascaderColumnView
     {
         ArgumentNullException.ThrowIfNull(node);
 
+        if (!IsMultiSelect)
+        {
+            return PickNode(node);
+        }
+
         return RunUserAction(() => state.Toggle(node));
+    }
+
+    /// <summary>
+    /// Single-select: a leaf becomes the one selected key (and <see cref="LeafPicked"/> is raised); a parent is made
+    /// active instead.
+    /// </summary>
+    private bool PickNode(CheckTreeNode node)
+    {
+        if (CanActivate(node) && !IsShowingFilterResults)
+        {
+            if (state.Contains(node))
+            {
+                Activate(node);
+            }
+
+            return false;
+        }
+
+        if (HasChildren(node) || !node.IsEnabled || !state.Contains(node))
+        {
+            return false;
+        }
+
+        var keys = new[] { node.Key };
+        state.ReplaceKeys(keys);
+        var isChanged = Commit(keys);
+        LeafPicked?.Invoke(this, EventArgs.Empty);
+        return isChanged;
     }
 
     /// <summary>
     /// Ticks every enabled node in one change.
     /// </summary>
     internal void SelectAll()
-        => RunUserAction(() => state.SetAll(value: true));
+    {
+        if (IsMultiSelect)
+        {
+            RunUserAction(() => state.SetAll(value: true));
+        }
+    }
 
     /// <summary>
     /// Unticks every enabled node in one change.
@@ -817,9 +867,28 @@ internal partial class CascaderColumnView
         DependencyPropertyChangedEventArgs e)
     {
         var control = (CascaderColumnView)d;
-        control.state.IsCheckLinked = (bool)e.NewValue;
+        control.state.IsCheckLinked = (bool)e.NewValue && control.IsMultiSelect;
         control.RefreshChrome();
         control.keysReshape.Request(KeySelectionHelper.EmptyKeySet);
+    }
+
+    private static void OnIsMultiSelectChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var control = (CascaderColumnView)d;
+        var isMulti = (bool)e.NewValue;
+        control.state.IsCheckLinked = control.IsCheckLinked && isMulti;
+        if (!isMulti && control.SelectedKeys is { Count: > 1 } keys)
+        {
+            var first = new[] { keys[0] };
+            control.state.ReplaceKeys(first);
+            control.Commit(first);
+            return;
+        }
+
+        control.state.ReplaceKeys((IEnumerable<string>?)control.SelectedKeys ?? []);
+        control.RefreshChrome();
     }
 
     /// <summary>

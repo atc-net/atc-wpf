@@ -129,6 +129,7 @@ As `TreeSelectComboBox`: `NoneText` (or the watermark) when nothing is ticked, "
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The ticked keys. Two-way by default; updated in place; setting it from code recomputes every state, with no event. |
 | `CheckedKeysStrategy` | `CheckedKeysStrategy` | `Parents` | `Parents`, `Leaves` or `All`. Note: `CheckTreeView` and `TreeSelectComboBox` default to `Leaves`. |
 | `IsCheckLinked` | `bool` | `true` | `false`: every node is independent. |
+| `IsMultiSelect` | `bool` | `true` | `false`: single-select cascader. No check boxes; a click or `Enter` on a leaf makes `SelectedKeys` that one key (shown in bold) and closes the pop-up; a parent only opens its column. Switching to single keeps the first key. |
 | `ExpandTrigger` | `CascaderExpandTrigger` | `Click` | `Click` or `Hover`. |
 | `ColumnWidth` | `double` | `180` | The width of each column. |
 | `MaxDropDownHeight` | `double` | as `ComboBox` | The pop-up's maximum height; each column scrolls (virtualized) beyond it. |

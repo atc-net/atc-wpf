@@ -51,6 +51,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The ticked keys (two-way). |
 | `CheckedKeysStrategy` | `CheckedKeysStrategy` | `Parents` | `Parents`, `Leaves` or `All`. |
 | `IsCheckLinked` | `bool` | `true` | `false`: every node is independent. |
+| `IsMultiSelect` | `bool` | `true` | `false`: single-select cascader. No check boxes; a click or `Enter` on a leaf makes `SelectedKeys` that one key (shown in bold) and closes the pop-up; a parent only opens its column. Switching to single keeps the first key. |
 | `ExpandTrigger` | `CascaderExpandTrigger` | `Click` | `Click` or `Hover`. |
 | `ColumnWidth` | `double` | `180` | The width of each column. |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = shown above 20 nodes. |

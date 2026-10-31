@@ -80,6 +80,14 @@ public partial class CascaderComboBox
     private bool isCheckLinked;
 
     /// <summary>
+    /// Whether several nodes can be ticked (the default). <see langword="false"/> is the single-select cascader: the
+    /// check boxes are hidden, a click (or <c>Enter</c>) on a leaf makes <see cref="SelectedKeys"/> that one key and
+    /// closes the pop-up, and a parent only opens its column. Switching to single keeps the first key.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true)]
+    private bool isMultiSelect;
+
+    /// <summary>
     /// What makes a row active (its children shown in the next column): a click
     /// (<see cref="CascaderExpandTrigger.Click"/>, the default) or also resting the mouse on it
     /// (<see cref="CascaderExpandTrigger.Hover"/>).
@@ -258,6 +266,7 @@ public partial class CascaderComboBox
         // Options first, then SelectedKeys and Nodes last, so the first nodes are handled with the final options.
         Forward(CascaderColumnView.CheckedKeysStrategyProperty, CheckedKeysStrategyProperty);
         Forward(CascaderColumnView.IsCheckLinkedProperty, IsCheckLinkedProperty);
+        Forward(CascaderColumnView.IsMultiSelectProperty, IsMultiSelectProperty);
         Forward(CascaderColumnView.ExpandTriggerProperty, ExpandTriggerProperty);
         Forward(CascaderColumnView.ColumnWidthProperty, ColumnWidthProperty);
         Forward(CascaderColumnView.IsFilterVisibleProperty, IsFilterVisibleProperty);
@@ -270,6 +279,7 @@ public partial class CascaderComboBox
         Forward(CascaderColumnView.NodesProperty, NodesProperty);
 
         PartColumns.SelectedKeysChanged += OnColumnsSelectedKeysChanged;
+        PartColumns.LeafPicked += OnColumnsLeafPicked;
         PartColumns.StateRefreshed += OnColumnsStateRefreshed;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
 
@@ -612,6 +622,11 @@ public partial class CascaderComboBox
         PartColumns.UpdateLayout();
         PartColumns.FocusFirstElement();
     }
+
+    private void OnColumnsLeafPicked(
+        object? sender,
+        EventArgs e)
+        => SetCurrentValue(IsDropDownOpenProperty, false);
 
     private void OnColumnsSelectedKeysChanged(
         object? sender,
