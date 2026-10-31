@@ -1,8 +1,10 @@
 global using System.Collections.ObjectModel;
 global using System.Collections.Specialized;
 global using System.ComponentModel;
+global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
+global using System.IO.Compression;
 global using System.Reflection;
 global using System.Runtime.CompilerServices;
 global using System.Text;
@@ -17,6 +19,7 @@ global using System.Windows.Markup;
 global using System.Windows.Media;
 global using System.Windows.Media.Imaging;
 global using System.Windows.Threading;
+global using System.Xml;
 
 global using Atc.Serialization;
 global using Atc.Wpf.Animation;

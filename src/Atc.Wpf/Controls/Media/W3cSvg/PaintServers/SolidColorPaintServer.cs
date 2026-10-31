@@ -42,11 +42,14 @@ internal sealed class SolidColorPaintServer : PaintServer
             return cachedBrush;
         }
 
+        // The brush is shared by every shape in this color, so it is frozen: WPF tracks each parent of an
+        // unfrozen brush, which gets slower with every shape that uses it.
         var brush = new SolidColorBrush(Color.FromArgb(alpha, Color.R, Color.G, Color.B));
+        brush.Freeze();
         brushesByAlpha[alpha] = brush;
 
-        // The first brush is the one exposed through the custom brushes of the image.
-        Brush ??= brush;
+        // The first brush is the one exposed through the custom brushes of the image, as an editable copy.
+        Brush ??= brush.Clone();
         return brush;
     }
 

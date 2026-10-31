@@ -24,6 +24,9 @@ internal sealed class SvgRender
 
     private readonly HashSet<Shape> expandingUseTargets = new();
 
+    private int renderedElementCount;
+    private int renderDepth;
+
     private Dictionary<string, Brush>? customBrushes;
 
     public Dictionary<string, Brush>? CustomBrushes
@@ -96,6 +99,7 @@ internal sealed class SvgRender
             svg.CustomBrushes = customBrushes;
         }
 
+        ResetRenderBudget();
         return LoadGroup(
             svg.Elements,
             svg.ViewBox,
@@ -103,10 +107,19 @@ internal sealed class SvgRender
     }
 
     public DrawingGroup CreateDrawing(Shape shape)
-        => LoadGroup(
+    {
+        ResetRenderBudget();
+        return LoadGroup(
             new[] { shape },
             viewBox: null,
             isSwitch: false);
+    }
+
+    private void ResetRenderBudget()
+    {
+        renderedElementCount = 0;
+        renderDepth = 0;
+    }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     private GeometryDrawing NewDrawingItem(
@@ -254,7 +267,6 @@ internal sealed class SvgRender
         return geometryDrawing;
     }
 
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     internal DrawingGroup LoadGroup(
         IEnumerable<Shape> elements,
         Rect? viewBox,
@@ -266,8 +278,45 @@ internal sealed class SvgRender
             drawingGroup.ClipGeometry = new RectangleGeometry(viewBox.Value);
         }
 
+        // Nesting deeper than the limit (e.g. a long chain of use elements) is not rendered,
+        // so the recursion below stays shallow.
+        if (renderDepth >= SvgLimits.MaxNestingDepth)
+        {
+            return drawingGroup;
+        }
+
+        renderDepth++;
+        try
+        {
+            LoadGroupElements(
+                drawingGroup,
+                elements,
+                isSwitch);
+        }
+        finally
+        {
+            renderDepth--;
+        }
+
+        return drawingGroup;
+    }
+
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
+    private void LoadGroupElements(
+        DrawingGroup drawingGroup,
+        IEnumerable<Shape> elements,
+        bool isSwitch)
+    {
         foreach (var shape in elements)
         {
+            // Every element counts against the budget, also those a use element expands to,
+            // so a small SVG that fans out to billions of elements stops in time.
+            if (renderedElementCount >= SvgLimits.MaxDrawings)
+            {
+                break;
+            }
+
+            renderedElementCount++;
             shape.RealParent = null;
             if (!shape.Display)
             {
@@ -694,8 +743,6 @@ internal sealed class SvgRender
                 }
             }
         }
-
-        return drawingGroup;
     }
 
     /// <summary>
