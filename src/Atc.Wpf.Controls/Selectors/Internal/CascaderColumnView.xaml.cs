@@ -45,6 +45,7 @@ internal partial class CascaderColumnView
     private static readonly TimeSpan HoverDelay = TimeSpan.FromMilliseconds(150);
 
     private readonly CheckTreeState state = new();
+    private readonly SelectedKeysCleanup keysReshape;
     private readonly List<CheckTreeNode> activePath = [];
     private readonly List<ObservableCollectionEx<CheckTreeNode>> columnItems = [];
     private readonly List<CascaderColumnList> columnLists = [];
@@ -156,6 +157,7 @@ internal partial class CascaderColumnView
     public CascaderColumnView()
     {
         InitializeComponent();
+        keysReshape = new SelectedKeysCleanup(this, SelectedKeysProperty, (_, isSameSelection) => ReshapeKeys(isSameSelection));
 
         // The generated callbacks do not run for the default value, so the engine gets the default strategy here.
         state.Strategy = CheckedKeysStrategy.Parents;
@@ -787,6 +789,8 @@ internal partial class CascaderColumnView
             CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
 
+        control.keysReshape.NotifySelectedKeysReplaced();
+
         if (!control.isWritingSelectedKeys)
         {
             control.ApplySelectedKeys();
@@ -796,7 +800,11 @@ internal partial class CascaderColumnView
     private static void OnCheckedKeysStrategyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
-        => ((CascaderColumnView)d).state.Strategy = (CheckedKeysStrategy)e.NewValue;
+    {
+        var control = (CascaderColumnView)d;
+        control.state.Strategy = (CheckedKeysStrategy)e.NewValue;
+        control.keysReshape.Request(KeySelectionHelper.EmptyKeySet);
+    }
 
     private static void OnIsCheckLinkedChanged(
         DependencyObject d,
@@ -805,6 +813,30 @@ internal partial class CascaderColumnView
         var control = (CascaderColumnView)d;
         control.state.IsCheckLinked = (bool)e.NewValue;
         control.RefreshChrome();
+        control.keysReshape.Request(KeySelectionHelper.EmptyKeySet);
+    }
+
+    /// <summary>
+    /// Re-reads the keys after <see cref="CheckedKeysStrategy"/> or <see cref="IsCheckLinked"/> changed: the ticks stay,
+    /// <see cref="SelectedKeys"/> is rewritten in the new shape (one <see cref="SelectedKeysChanged"/>). When
+    /// <see cref="SelectedKeys"/> is data-bound this waits for the bindings to settle and is skipped when the keys were
+    /// replaced meanwhile (a DataContext swap brings keys already in the new shape).
+    /// </summary>
+    private void ReshapeKeys(bool isSameSelection)
+    {
+        if (!isSameSelection)
+        {
+            return;
+        }
+
+        var newKeys = state.GetKeys();
+        if (KeySelectionHelper.SetEquals(GetCurrentKeys(), newKeys))
+        {
+            return;
+        }
+
+        state.CommitKeys();
+        Commit(newKeys);
     }
 
     private static void OnChromeChanged(

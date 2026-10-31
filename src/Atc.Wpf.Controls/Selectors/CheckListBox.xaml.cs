@@ -310,7 +310,7 @@ public partial class CheckListBox
             GetCurrentSelection(),
             oldItemKeys,
             Items,
-            SelectNewItems && canSelectNewItems,
+            SelectNewItems && (canSelectNewItems || oldItemKeys.Count == 0),
             MaxSelectionCount));
 
     private static void OnItemGroupsChanged(

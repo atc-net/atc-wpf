@@ -18,6 +18,11 @@ internal static class KeySelectionHelper
     public static readonly TimeSpan FilterDebounceDelay = TimeSpan.FromMilliseconds(150);
 
     /// <summary>
+    /// An empty key set (for a <see cref="SelectedKeysCleanup"/> request that is not about items).
+    /// </summary>
+    public static readonly IReadOnlySet<string> EmptyKeySet = new HashSet<string>(StringComparer.Ordinal);
+
+    /// <summary>
     /// Returns the selection after <c>Items</c> changed from <paramref name="oldItemKeys"/> to <paramref name="newItems"/>:
     /// keys of items that disappeared (present in <paramref name="oldItemKeys"/>, gone from <paramref name="newItems"/>)
     /// are dropped, while keys that were never among the items are kept (a restored selection survives an empty first

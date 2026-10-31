@@ -37,8 +37,8 @@ internal sealed class SelectedKeysCleanup
     /// <param name="owner">The control.</param>
     /// <param name="selectedKeysProperty">The control's <c>SelectedKeys</c> property.</param>
     /// <param name="cleanup">
-    /// Cleans the current selection, given the item keys from before the change and whether new items may be ticked
-    /// (<see langword="false"/> when <c>SelectedKeys</c> was replaced since the old items were shown).
+    /// Cleans the current selection, given the item keys from before the change and whether <c>SelectedKeys</c> is still
+    /// the instance that belonged to the old items (<see langword="false"/> after a DataContext swap).
     /// </param>
     public SelectedKeysCleanup(
         DependencyObject owner,
@@ -176,9 +176,8 @@ internal sealed class SelectedKeysCleanup
             return;
         }
 
-        // With no old items there is nothing to swap from: the first items may be ticked into whatever selection is bound.
         var current = owner.GetValue(selectedKeysProperty);
-        cleanup(oldItemKeys, oldItemKeys.Count == 0 || ReferenceEquals(selection, current));
+        cleanup(oldItemKeys, ReferenceEquals(selection, current));
         SetBaseline(owner.GetValue(selectedKeysProperty));
     }
 }

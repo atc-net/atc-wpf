@@ -761,6 +761,20 @@ public sealed class CascaderComboBoxTests : IDisposable
         sut.IsDropDownOpen = false;
     }
 
+    [StaFact]
+    public void Changing_the_strategy_at_runtime_reshapes_SelectedKeys_with_one_event()
+    {
+        var sut = Create();
+        sut.ToggleNode(sut.FindNode("dk-jut")!);
+        Assert.Equal(["dk-jut"], sut.SelectedKeys);
+        var events = Record(sut);
+
+        sut.CheckedKeysStrategy = CheckedKeysStrategy.Leaves;
+
+        Assert.Equal(["dk-jut-aar", "dk-jut-aal"], sut.SelectedKeys);
+        Assert.Single(events);
+    }
+
     internal static System.Collections.ObjectModel.ObservableCollection<CheckTreeNode> CreateCascaderRegions()
     {
         var jutland = new CheckTreeNode("dk-jut", "Jutland");

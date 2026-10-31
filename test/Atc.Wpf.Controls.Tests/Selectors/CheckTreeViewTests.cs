@@ -571,6 +571,82 @@ public sealed class CheckTreeViewTests : IDisposable
         Assert.Equal(["dk-jut-aar"], sut.SelectedKeys);
     }
 
+    [StaFact]
+    public void Changing_the_strategy_at_runtime_reshapes_SelectedKeys_with_one_event()
+    {
+        var sut = CreateRegions();
+        sut.ToggleNode(sut.FindNode("dk")!);
+        Assert.Equal(["dk-aarhus", "dk-cph", "dk-odense"], sut.SelectedKeys);
+        var keys = sut.SelectedKeys;
+        var events = Record(sut);
+
+        sut.CheckedKeysStrategy = CheckedKeysStrategy.Parents;
+
+        Assert.Same(keys, sut.SelectedKeys);
+        Assert.Equal(["dk"], sut.SelectedKeys);
+        var change = Assert.Single(events);
+        Assert.Equal(["dk-aarhus", "dk-cph", "dk-odense"], change.OldValue);
+
+        sut.CheckedKeysStrategy = CheckedKeysStrategy.All;
+
+        Assert.Equal(["dk", "dk-aarhus", "dk-cph", "dk-odense"], sut.SelectedKeys);
+        Assert.Equal(2, events.Count);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void A_bound_strategy_swapped_with_the_DataContext_keeps_both_view_models_unchanged(
+        bool strategyFirst)
+    {
+        var first = new StrategyViewModel(CheckedKeysStrategy.Parents, ["dk"]);
+        var second = new StrategyViewModel(CheckedKeysStrategy.Leaves, ["dk-aarhus", "dk-cph", "dk-odense"]);
+        var sut = new CheckTreeView { DataContext = first };
+        if (strategyFirst)
+        {
+            BindingOperations.SetBinding(sut, CheckTreeView.CheckedKeysStrategyProperty, new Binding(nameof(StrategyViewModel.Strategy)));
+        }
+
+        BindingOperations.SetBinding(sut, CheckTreeView.NodesProperty, new Binding(nameof(StrategyViewModel.Nodes)));
+        BindingOperations.SetBinding(sut, CheckTreeView.SelectedKeysProperty, new Binding(nameof(StrategyViewModel.SelectedKeys)));
+        if (!strategyFirst)
+        {
+            BindingOperations.SetBinding(sut, CheckTreeView.CheckedKeysStrategyProperty, new Binding(nameof(StrategyViewModel.Strategy)));
+        }
+
+        PumpDispatcher();
+        var events = Record(sut);
+
+        sut.DataContext = second;
+        PumpDispatcher();
+        sut.DataContext = first;
+        PumpDispatcher();
+
+        Assert.Equal(["dk"], first.SelectedKeys);
+        Assert.Equal(["dk-aarhus", "dk-cph", "dk-odense"], second.SelectedKeys);
+        Assert.Empty(events);
+    }
+
+    private static void PumpDispatcher()
+    {
+        var frame = new DispatcherFrame();
+        _ = Dispatcher.CurrentDispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            () => frame.Continue = false);
+        Dispatcher.PushFrame(frame);
+    }
+
+    private sealed class StrategyViewModel(
+        CheckedKeysStrategy strategy,
+        IEnumerable<string> keys)
+    {
+        public CheckedKeysStrategy Strategy { get; set; } = strategy;
+
+        public System.Collections.ObjectModel.ObservableCollection<CheckTreeNode> Nodes { get; set; } = CheckTreeStateTests.CreateRegionNodes();
+
+        public System.Collections.ObjectModel.ObservableCollection<string> SelectedKeys { get; set; } = new(keys);
+    }
+
     private static CheckTreeView CreateLazy()
     {
         var dk = new CheckTreeNode("dk", "Denmark");

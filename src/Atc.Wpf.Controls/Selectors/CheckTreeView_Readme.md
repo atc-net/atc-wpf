@@ -76,7 +76,7 @@ A node belongs to one tree: give each control its own nodes.
 | `Parents` | a fully ticked branch collapses to its top-most fully ticked node | `dk` |
 | `All` | every ticked node, parents and leaves | `dk`, `dk-aarhus`, `dk-cph`, `dk-odense` |
 
-`Parents` suits permissions: "all of Denmark" stays "all of Denmark" when a site is added later (a node added under a parent key comes up ticked). With `IsCheckLinked="False"` the strategy is ignored and every ticked node is a key.
+`Parents` suits permissions: "all of Denmark" stays "all of Denmark" when a site is added later (a node added under a parent key comes up ticked). With `IsCheckLinked="False"` the strategy is ignored and every ticked node is a key. Changing `CheckedKeysStrategy` or `IsCheckLinked` at runtime keeps the ticks and rewrites `SelectedKeys` in the new shape (one `SelectedKeysChanged`); when `SelectedKeys` is data-bound this waits for the bindings to settle and is skipped after a DataContext swap.
 
 ### Lazy loading
 

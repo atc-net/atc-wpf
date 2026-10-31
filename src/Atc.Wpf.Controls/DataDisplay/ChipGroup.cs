@@ -341,7 +341,7 @@ public sealed partial class ChipGroup : UserControl
                 newSelection,
                 oldItemKeys,
                 Items,
-                SelectNewItems && canSelectNewItems && SelectionMode == ChipSelectionMode.Multiple,
+                SelectNewItems && (canSelectNewItems || oldItemKeys.Count == 0) && SelectionMode == ChipSelectionMode.Multiple,
                 MaxSelectionCount);
         }
 

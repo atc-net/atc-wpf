@@ -174,7 +174,7 @@ public partial class MultiSelectComboBox
             oldKeys,
             oldItemKeys,
             Items,
-            SelectNewItems && canSelectNewItems,
+            SelectNewItems && (canSelectNewItems || oldItemKeys.Count == 0),
             MaxSelectionCount);
         if (KeySelectionHelper.SetEquals(oldKeys, newKeys))
         {

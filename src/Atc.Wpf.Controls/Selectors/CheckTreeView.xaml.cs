@@ -43,6 +43,7 @@ public partial class CheckTreeView
     private const int AutoFilterNodeCount = 20;
 
     private readonly CheckTreeState state = new();
+    private readonly SelectedKeysCleanup keysReshape;
 
     /// <summary>
     /// The root nodes.
@@ -149,6 +150,7 @@ public partial class CheckTreeView
     public CheckTreeView()
     {
         InitializeComponent();
+        keysReshape = new SelectedKeysCleanup(this, SelectedKeysProperty, (_, isSameSelection) => ReshapeKeys(isSameSelection));
 
         PartTree = new CheckTreeViewTree(this)
         {
@@ -368,6 +370,8 @@ public partial class CheckTreeView
             CollectionChangedEventManager.AddHandler(control.subscribedSelectedKeys, control.OnSelectedKeysCollectionChanged);
         }
 
+        control.keysReshape.NotifySelectedKeysReplaced();
+
         if (!control.isWritingSelectedKeys)
         {
             control.ApplySelectedKeys();
@@ -377,7 +381,11 @@ public partial class CheckTreeView
     private static void OnCheckedKeysStrategyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
-        => ((CheckTreeView)d).state.Strategy = (CheckedKeysStrategy)e.NewValue;
+    {
+        var control = (CheckTreeView)d;
+        control.state.Strategy = (CheckedKeysStrategy)e.NewValue;
+        control.keysReshape.Request(KeySelectionHelper.EmptyKeySet);
+    }
 
     private static void OnIsCheckLinkedChanged(
         DependencyObject d,
@@ -386,6 +394,30 @@ public partial class CheckTreeView
         var control = (CheckTreeView)d;
         control.state.IsCheckLinked = (bool)e.NewValue;
         control.RefreshChrome();
+        control.keysReshape.Request(KeySelectionHelper.EmptyKeySet);
+    }
+
+    /// <summary>
+    /// Re-reads the keys after <see cref="CheckedKeysStrategy"/> or <see cref="IsCheckLinked"/> changed: the ticks stay,
+    /// <see cref="SelectedKeys"/> is rewritten in the new shape (one <see cref="SelectedKeysChanged"/>). When
+    /// <see cref="SelectedKeys"/> is data-bound this waits for the bindings to settle and is skipped when the keys were
+    /// replaced meanwhile (a DataContext swap brings keys already in the new shape).
+    /// </summary>
+    private void ReshapeKeys(bool isSameSelection)
+    {
+        if (!isSameSelection)
+        {
+            return;
+        }
+
+        var newKeys = state.GetKeys();
+        if (KeySelectionHelper.SetEquals(GetCurrentKeys(), newKeys))
+        {
+            return;
+        }
+
+        state.CommitKeys();
+        Commit(newKeys);
     }
 
     private static void OnChromeChanged(
