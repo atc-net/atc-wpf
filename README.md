@@ -250,6 +250,7 @@ A quick reference of all controls organized by category:
 | **Progress** | BusyOverlay, LoadingIndicator, Overlay, Skeleton | Atc.Wpf.Controls |
 | **Drag & Drop** | DragDropAttach | Atc.Wpf |
 | **Selectors** | CountrySelector, LanguageSelector, FontFamilySelector | Atc.Wpf.Controls |
+| **DataGrid** | DataGridFilter (Excel-style column filters, search, column chooser and layout persistence for the stock DataGrid) | Atc.Wpf.Controls |
 | **Multi-Select** | CheckListBox, MultiSelectComboBox, TokenBox, CheckTreeView, TreeSelectComboBox, CascaderComboBox, MultiColumnComboBox, CardSelector (see [Which control when](#-which-multi-select-control-when)) | Atc.Wpf.Controls |
 | **Selectors** | DualListSelector (check boxes, one-way mode, locked items, limit, grouping, virtualization) | Atc.Wpf.Components |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
@@ -519,6 +520,12 @@ A family of multi-select controls sharing one contract: bind `Items` (or `ItemsS
 | Building an ordered list out of a pool | **DualListSelector** |
 
 For a labeled form field with a mandatory marker and validation, use the `Label*` wrapper (see [Multi-select form fields](#-label-controls-25-controls)).
+
+### DataGrid Behaviours
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **DataGridFilter** | Attached behaviours for the stock `DataGrid`: Excel-style column filter drop-downs (distinct values, text and range filters), a debounced search, a column chooser and saving/restoring the column layout and filters | [Readme](src/Atc.Wpf.Controls/DataGrids/DataGridFilter_Readme.md) |
 
 ### Progress Controls
 

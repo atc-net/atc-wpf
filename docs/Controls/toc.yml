@@ -101,6 +101,10 @@
       href: ../../src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md
     - name: Timeline
       href: ../../src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md
+  - name: DataGrids
+    items:
+    - name: DataGridFilter
+      href: ../../src/Atc.Wpf.Controls/DataGrids/DataGridFilter_Readme.md
   - name: Inputs
     items:
     - name: Overview

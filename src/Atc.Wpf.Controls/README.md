@@ -10,6 +10,7 @@ Atomic / primitive WPF controls that act as the building blocks for the higher-l
 | Buttons (variants: standard, chromeless, icon, badge, …) | `Buttons/` | per-control `_Readme.md` |
 | Color controls (`HueSlider`, `SaturationBrightnessPicker`, `TransparencySlider`, `WellKnownColorPicker`, `ColorBox`) | `Colors/` | per-control `_Readme.md` |
 | Data-display controls (`Avatar`, `AvatarGroup`, `Badge`, `Breadcrumb`, `Card`, `Carousel`, `Chip`, `ChipGroup`, `Divider`, `Popover`, `Segmented`, `Timeline`) | `DataDisplay/` | [`docs/DataDisplay/@Readme.md`](../../docs/DataDisplay/@Readme.md) |
+| DataGrid behaviours (`DataGridFilter`: Excel-style column filters, search, column chooser, layout persistence for the stock `DataGrid`) | `DataGrids/` | [`DataGridFilter_Readme.md`](DataGrids/DataGridFilter_Readme.md) |
 | Layouts (`VirtualizingStaggeredPanel`, `MasonryPanel`, …) | `Layouts/` | [`docs/Layouts/@Readme.md`](../../docs/Layouts/@Readme.md) |
 | Progressing (`BusyOverlay`, `LoadingIndicator`, `Skeleton`, `Overlay`) | `Progressing/` | per-control `_Readme.md` |
 | Selectors (`AccentColorSelector`, `CardSelector`, `CascaderComboBox`, `CheckListBox`, `CheckTreeView`, `CountrySelector`, `LanguageSelector`, `MultiColumnComboBox`, `MultiSelectComboBox`, `ThemeSelector`, `TokenBox`, `TreeSelectComboBox`, `WellKnownColorSelector`, …) | `Selectors/` | per-control `_Readme.md` |

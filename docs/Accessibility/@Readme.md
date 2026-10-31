@@ -35,6 +35,8 @@ These controls override `OnCreateAutomationPeer` and expose the listed patterns,
 | `TokenBox` | Combo box | `Value` (the typed text), `ExpandCollapse`; a token list (AutomationId `Tokens`) and a suggestion list (AutomationId `Suggestions`) |
 | `DockPanelPro` / `DockRegion` / `DockPane` | Pane / group / pane | regions `ExpandCollapse` when collapsible; tabs are tab items with `SelectionItem`; the float, close and (in a floating window) dock buttons are `Invoke` buttons named "Float *pane*", "Close *pane*", "Dock *pane*". AutomationIds come from `LayoutId`, `RegionId` and `PaneId` |
 
+| `DataGridFilter` column filter button | Button | `Invoke`; named "Filter *column*" (class name `DataGridFilterButton`). While its pop-up is open, the pop-up content (mode radio buttons, the value rows as check boxes with `Toggle`, Clear filter, OK, Cancel) is a child of the button |
+
 `CheckListBox` and the pop-up list of `MultiSelectComboBox` have no custom peer: each row is a real WPF `CheckBox`, so it is a check box with the `Toggle` pattern.
 
 ### Atc.Wpf.Forms
@@ -63,8 +65,8 @@ The `Label*` wrappers host these controls (and the ones from Atc.Wpf.Controls) u
 
 ### 🧪 How this is tested
 
-- Unit tests in `Atc.Wpf.Controls.Tests`, `Atc.Wpf.Forms.Tests` and `Atc.Wpf.Components.Tests` call the peers of the selection controls, `ChipGroup`, `Segmented`, `NavigationView` and `DualListSelector` directly.
-- `Atc.Wpf.UiTests` drives the sample application with FlaUI (UI Automation) for `CardSelector`, `CascaderComboBox`, `CheckListBox`, `CheckTreeView`, `ChipGroup`, `DualListSelector`, `MultiColumnComboBox`, `MultiSelectComboBox`, `NavigationView`, `Segmented`, `TokenBox`, `TreeSelectComboBox` and the `NiceWindow` title bar. These tests are tagged `Category=UI` and are not part of the default CI run.
+- Unit tests in `Atc.Wpf.Controls.Tests`, `Atc.Wpf.Forms.Tests` and `Atc.Wpf.Components.Tests` call the peers of the selection controls, `ChipGroup`, `Segmented`, `NavigationView`, the `DataGridFilter` button and `DualListSelector` directly.
+- `Atc.Wpf.UiTests` drives the sample application with FlaUI (UI Automation) for `CardSelector`, `CascaderComboBox`, `CheckListBox`, `CheckTreeView`, `ChipGroup`, `DataGridFilter`, `DualListSelector`, `MultiColumnComboBox`, `MultiSelectComboBox`, `NavigationView`, `Segmented`, `TokenBox`, `TreeSelectComboBox` and the `NiceWindow` title bar. These tests are tagged `Category=UI` and are not part of the default CI run.
 
 ## ⌨️ Keyboard
 
@@ -90,6 +92,7 @@ Exceptions, as documented by each control:
 - `ChipGroup`: `Tab` enters and leaves the group as one stop; in the single modes the group is a radio group and the arrow keys move and select.
 - `Segmented`: in the single modes the arrow keys and `Home` / `End` select; in `Multiple` they only move the focus.
 - `DualListSelector`: `Enter` transfers, `Ctrl+Up` / `Ctrl+Down` reorder, `Delete` removes from the selected list.
+- `DataGridFilter`: stock column headers cannot take the focus, so `Alt+Down` opens the filter of the focused filter button or of the current cell's column; in the pop-up `Enter` is OK and `Esc` is Cancel, and closing it gives the focus back to the filter button.
 
 ## 🌗 High contrast
 
@@ -133,4 +136,4 @@ WPF mirrors a layout when `FlowDirection="RightToLeft"` is set. On top of that:
 ## 🔗 Related
 
 - [Theming](../Theming/@Readme.md) - Light, Dark and accent themes
-- `CheckListBox_Readme.md`, `MultiSelectComboBox_Readme.md`, `TokenBox_Readme.md`, `CheckTreeView_Readme.md`, `TreeSelectComboBox_Readme.md`, `CascaderComboBox_Readme.md` - keyboard and UI Automation per control
+- `CheckListBox_Readme.md`, `MultiSelectComboBox_Readme.md`, `TokenBox_Readme.md`, `CheckTreeView_Readme.md`, `TreeSelectComboBox_Readme.md`, `CascaderComboBox_Readme.md`, `DataGridFilter_Readme.md` - keyboard and UI Automation per control
