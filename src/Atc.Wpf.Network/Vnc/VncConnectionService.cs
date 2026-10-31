@@ -8,6 +8,8 @@ public sealed class VncConnectionService : IDisposable
 {
     private readonly Func<string, int, IVncClient> clientFactory;
     private readonly Dispatcher dispatcher;
+    private readonly ConcurrentQueue<PendingUpdate> pendingUpdates = new();
+    private int renderScheduled;
     private IVncClient? vnc;
     private WriteableBitmap? framebuffer;
 
@@ -61,8 +63,12 @@ public sealed class VncConnectionService : IDisposable
     public event EventHandler<VncConnectionFailedEventArgs>? ConnectionFailed;
 
     /// <summary>
-    /// Occurs when a region of <see cref="CurrentFrame"/> has been updated.
+    /// Occurs when <see cref="CurrentFrame"/> has been updated.
     /// </summary>
+    /// <remarks>
+    /// Raised on the UI thread once per batch: the rectangles that arrive before the UI thread gets to
+    /// render them are drawn together, and the event is raised once if any of them changed pixels.
+    /// </remarks>
     public event EventHandler? FramebufferUpdated;
 
     /// <summary>
@@ -227,7 +233,7 @@ public sealed class VncConnectionService : IDisposable
         object? sender,
         VncFramebufferUpdateEventArgs e)
     {
-        // Updates arrive on the client's receive thread; read the field once so a Cleanup()
+        // Updates arrive on the client's receive thread; capture the bitmap now so a Cleanup()
         // or reconnect racing with the queued render can neither null it nor swap in a
         // bitmap of another size underneath it.
         var target = framebuffer;
@@ -236,27 +242,61 @@ public sealed class VncConnectionService : IDisposable
             return;
         }
 
-        var source = e.Framebuffer;
-        var rect = e.Rectangle;
+        pendingUpdates.Enqueue(new PendingUpdate(target, e.Framebuffer, e.Rectangle));
 
-        _ = dispatcher.BeginInvoke(() =>
+        // One dispatcher callback renders every rectangle queued until it runs.
+        if (Interlocked.Exchange(ref renderScheduled, 1) == 0)
         {
-            if (!ReferenceEquals(target, framebuffer))
-            {
-                // Disconnected or reconnected since the update was queued.
-                return;
-            }
+            _ = dispatcher.BeginInvoke(RenderPendingUpdates);
+        }
+    }
 
-            if (RenderUpdate(target, source, rect))
+    private void RenderPendingUpdates()
+    {
+        // Reset before draining: an update queued after this point schedules a new callback.
+        Interlocked.Exchange(ref renderScheduled, 0);
+
+        var target = framebuffer;
+        var locked = false;
+        var rendered = false;
+
+        try
+        {
+            while (pendingUpdates.TryDequeue(out var update))
             {
-                FramebufferUpdated?.Invoke(this, EventArgs.Empty);
+                if (target is null ||
+                    !ReferenceEquals(update.Target, target))
+                {
+                    // Disconnected or reconnected since the update was queued.
+                    continue;
+                }
+
+                if (!locked)
+                {
+                    target.Lock();
+                    locked = true;
+                }
+
+                rendered |= RenderUpdate(target, update.Source, update.Rectangle);
             }
-        });
+        }
+        finally
+        {
+            if (locked)
+            {
+                target!.Unlock();
+            }
+        }
+
+        if (rendered)
+        {
+            FramebufferUpdated?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     /// <summary>
-    /// Copies <paramref name="rect"/> of <paramref name="source"/> into <paramref name="target"/>,
-    /// clipped to both the source and the target, and always releases the bitmap lock again.
+    /// Copies <paramref name="rect"/> of <paramref name="source"/> into the locked <paramref name="target"/>,
+    /// clipped to both the source and the target, and marks the copied region dirty.
     /// </summary>
     /// <returns><see langword="true"/> when pixels were copied; otherwise <see langword="false"/>.</returns>
     private static bool RenderUpdate(
@@ -278,7 +318,6 @@ public sealed class VncConnectionService : IDisposable
         var width = right - left;
         var sourceData = source.PixelData;
 
-        target.Lock();
         try
         {
             var stride = target.BackBufferStride;
@@ -297,10 +336,6 @@ public sealed class VncConnectionService : IDisposable
             // The source pixel buffer is shorter than its stated size; drop this update
             // rather than fault the dispatcher - the next update repaints the region.
             return false;
-        }
-        finally
-        {
-            target.Unlock();
         }
     }
 
@@ -327,5 +362,11 @@ public sealed class VncConnectionService : IDisposable
         }
 
         framebuffer = null;
+        pendingUpdates.Clear();
     }
+
+    private readonly record struct PendingUpdate(
+        WriteableBitmap Target,
+        VncFramebuffer Source,
+        VncRectangle Rectangle);
 }
