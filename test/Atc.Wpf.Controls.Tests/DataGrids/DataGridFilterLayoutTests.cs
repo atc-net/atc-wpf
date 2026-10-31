@@ -42,6 +42,40 @@ public sealed class DataGridFilterLayoutTests : IDisposable
     }
 
     [StaFact]
+    public void Values_filters_saved_in_one_grid_language_match_in_another()
+    {
+        var source = CreateGrid();
+        DataGridFilter.SetColumnFilter(source, DataGridColumnFilter.ForValues("Amount", ["1,234.50", "2.00"]));
+        DataGridFilter.SetColumnFilter(source, DataGridColumnFilter.ForValues("Status", ["Open", "Closed"]));
+        var json = DataGridFilter.SaveLayout(source);
+
+        var target = CreateGrid();
+        target.Language = XmlLanguage.GetLanguage("da-DK");
+        Assert.True(DataGridFilter.LoadLayout(target, json));
+
+        var amount = DataGridFilter.GetColumnFilters(target).Single(x => x.ColumnKey == "Amount");
+        Assert.Equal(["1.234,50", "2,00"], amount.Values, StringComparer.Ordinal);
+        Assert.Equal([2, 3, 5], VisibleIds(target));
+    }
+
+    [StaFact]
+    public void A_layout_without_a_culture_loads_its_values_unchanged()
+    {
+        const string json = """
+            {
+              "version": 1,
+              "filters": [ { "columnKey": "Amount", "kind": "Values", "values": [ "2,00" ] } ]
+            }
+            """;
+        var target = CreateGrid();
+        target.Language = XmlLanguage.GetLanguage("da-DK");
+
+        Assert.True(DataGridFilter.LoadLayout(target, json));
+
+        Assert.Equal([2, 5], VisibleIds(target));
+    }
+
+    [StaFact]
     public void Saved_layout_is_versioned_json()
     {
         var json = DataGridFilter.SaveLayout(CreateGrid());

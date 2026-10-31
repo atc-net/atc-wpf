@@ -81,6 +81,7 @@ DataGridFilter.LoadLayout(grid, json);           // returns false for unreadable
 ```json
 {
   "version": 1,
+  "culture": "en-US",
   "columns": [ { "key": "Status", "displayIndex": 0, "width": 110, "widthUnit": "Pixel", "isVisible": true } ],
   "sorts": [ { "propertyName": "Amount", "direction": "Descending" } ],
   "filters": [ { "columnKey": "Status", "kind": "Values", "values": [ "Open", "Pending" ] } ]
@@ -164,7 +165,7 @@ The column key is the `ColumnKey`, else the `SortMemberPath`, else the binding p
 - **Row types**: values are read from plain properties, `DataRowView` columns, dictionaries (`ExpandoObject`) and `TypeDescriptor` properties (`ICustomTypeDescriptor`).
 - **DataTable / DataView sources**: their `BindingListCollectionView` cannot filter with a predicate, so the filters are written as the view's `CustomFilter` (the `DataView.RowFilter`), ANDed with a row filter you set yourself, which you get back when the filters are cleared. Each column filter is translated by testing the column's distinct values, so a value that appears in the table later is matched only when the filters are applied again. A table that is not `CaseSensitive` compares text ignoring case. Columns need a one-step path to a table column of a simple type (text, number, `bool`, `DateTime`, `Guid`).
 - **Sources that cannot be filtered** (e.g. a `BindingList<T>`): the filter buttons are disabled with a tool tip saying so, and filters set in code are not shown as active.
-- **Values filters store the formatted text**, so a saved values filter depends on the column's `StringFormat` and the grid's `Language`. Range and text filters do not.
+- **Values filters store the formatted text**, so a saved values filter depends on the column's `StringFormat` and the grid's `Language`. A saved layout records the grid's culture (`culture`), and loading it into a grid with another `Language` translates the texts through the grid's current rows (a text no row has stays as it is; layouts without a culture load unchanged). Range and text filters do not depend on the culture.
 - **Performance** (100,000 rows, Release build): the distinct values of a column take about 20-40 ms; the pop-up opens in about 0.1 s for a column with 5 values and about 0.3 s for one with 100,000 distinct values; OK applies the filter in about 0.1 s including the grid's re-layout (one `Refresh`); the search over six columns takes about 50 ms. Row and column virtualization stay on.
 - **Leaks**: the predicate on the (possibly long-lived) view holds the grid weakly; a dropped grid leaves only your own filter on the view.
 - Theme brushes only: the button and pop-up follow the Light and Dark themes. The funnel takes the header's foreground (accent when active). The pop-up is a separate window, so its brushes come from the application resources, where the Atc theme is merged (`App.xaml`). Texts are translated (English, Danish, German).

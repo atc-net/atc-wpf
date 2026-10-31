@@ -17,6 +17,14 @@ public sealed class DataGridLayout
     public int Version { get; set; } = CurrentVersion;
 
     /// <summary>
+    /// Gets or sets the name of the culture the grid formatted its values in when the layout was captured (its
+    /// <see cref="FrameworkElement.Language"/>). <see cref="DataGridFilter.ApplyLayout"/> translates the texts of
+    /// values filters to the grid's culture when it differs; <see langword="null"/> (older layouts) keeps them as
+    /// they are.
+    /// </summary>
+    public string? Culture { get; set; }
+
+    /// <summary>
     /// Gets or sets the column states, keyed by column key.
     /// </summary>
     [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Used for JSON serialization")]

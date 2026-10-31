@@ -146,6 +146,57 @@ internal sealed class DataGridFilterState
     }
 
     /// <summary>
+    /// Translates the texts of a values filter formatted in <paramref name="fromCulture"/> to the grid's culture,
+    /// through the rows the grid has (a text no row formats to stays as it is). Other filters are returned as they are.
+    /// </summary>
+    public DataGridColumnFilter TranslateValues(
+        DataGridColumn column,
+        DataGridColumnFilter filter,
+        CultureInfo fromCulture)
+    {
+        if (filter.Kind != DataGridColumnFilterKind.Values || filter.Values.Count == 0)
+        {
+            return filter;
+        }
+
+        var to = DataGridColumnValueAccessor.Create(column, DataGridFilter.GetGridCulture(grid));
+        var from = DataGridColumnValueAccessor.Create(column, fromCulture);
+        if (to is null || from is null)
+        {
+            return filter;
+        }
+
+        var wanted = new HashSet<string>(filter.Values, StringComparer.Ordinal);
+        var translated = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var item in GetSourceItems())
+        {
+            if (item is null)
+            {
+                continue;
+            }
+
+            var raw = to.GetValue(item);
+            var saved = from.Format(raw);
+            if (wanted.Contains(saved))
+            {
+                translated.TryAdd(saved, to.Format(raw));
+                if (translated.Count == wanted.Count)
+                {
+                    break;
+                }
+            }
+        }
+
+        return translated.Count == 0
+            ? filter
+            : DataGridColumnFilter.ForValues(
+                filter.ColumnKey,
+                filter.Values
+                    .Select(x => translated.GetValueOrDefault(x, x))
+                    .Distinct(StringComparer.Ordinal));
+    }
+
+    /// <summary>
     /// Takes a new search text: applies it after the grid's search delay (or at once for a zero delay).
     /// </summary>
     public void OnSearchTextChanged()

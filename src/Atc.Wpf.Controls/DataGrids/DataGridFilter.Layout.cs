@@ -31,7 +31,7 @@ public static partial class DataGridFilter
     {
         ArgumentNullException.ThrowIfNull(grid);
 
-        var layout = new DataGridLayout();
+        var layout = new DataGridLayout { Culture = GetGridCulture(grid).Name };
         foreach (var column in grid.Columns)
         {
             var key = ResolveColumnKey(column);
@@ -63,6 +63,11 @@ public static partial class DataGridFilter
     /// Restores a layout captured by <see cref="GetLayout"/>: columns are matched by key and columns the layout
     /// does not know (or keys the grid does not have) are ignored. Sorting and filters are applied in one refresh.
     /// </summary>
+    /// <remarks>
+    /// Values filters list formatted texts: when the layout's <see cref="DataGridLayout.Culture"/> differs from the
+    /// grid's, each text is translated to the grid's culture through the rows the grid has when the layout is
+    /// applied (a text no row formats to stays as it is).
+    /// </remarks>
     /// <param name="grid">The grid.</param>
     /// <param name="layout">The layout.</param>
     public static void ApplyLayout(
@@ -96,12 +101,40 @@ public static partial class DataGridFilter
             column.SortDirection = sort?.Direction;
         }
 
+        var savedCulture = GetLayoutCulture(grid, layout.Culture);
         state.ReplaceFilters(
             (layout.Filters ?? [])
-                .Where(x => x is not null && !string.IsNullOrEmpty(x.ColumnKey) && columnsByKey.ContainsKey(x.ColumnKey)));
+                .Where(x => x is not null && !string.IsNullOrEmpty(x.ColumnKey) && columnsByKey.ContainsKey(x.ColumnKey))
+                .Select(x => savedCulture is null
+                    ? x
+                    : state.TranslateValues(columnsByKey[x.ColumnKey], x, savedCulture))
+                .ToList());
 
         // Sorting and filtering are refused during an edit or add transaction: they wait for it to end.
         state.RunViewWork(LayoutWorkKey, () => ApplySortsAndFilters(grid, state, sorts));
+    }
+
+    /// <summary>
+    /// Returns the culture a layout was saved in when it differs from the grid's, else <see langword="null"/>.
+    /// </summary>
+    private static CultureInfo? GetLayoutCulture(
+        DataGrid grid,
+        string? name)
+    {
+        if (string.IsNullOrEmpty(name) ||
+            string.Equals(name, GetGridCulture(grid).Name, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        try
+        {
+            return CultureInfo.GetCultureInfo(name);
+        }
+        catch (CultureNotFoundException)
+        {
+            return null;
+        }
     }
 
     private static void ApplySortsAndFilters(
