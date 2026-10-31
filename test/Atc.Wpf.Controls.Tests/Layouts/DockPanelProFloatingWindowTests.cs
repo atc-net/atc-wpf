@@ -408,6 +408,62 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
     }
 
     [StaFact]
+    public void Closing_a_pane_from_its_focused_tab_moves_the_focus_to_the_next_pane()
+    {
+        var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();
+        var (_, errorsBox) = UseTextBoxes(panel);
+        var host = Show(panel);
+        try
+        {
+            var output = panel.FindPane("output")!;
+            var tab = FindVisualChildren<Atc.Wpf.Controls.Layouts.Internal.DockPaneTabItem>(bottom).First(x => ReferenceEquals(x.Pane, output));
+            tab.Focus();
+            Assert.Same(tab, FocusManager.GetFocusedElement(host));
+
+            panel.ClosePane(output);
+
+            Assert.Equal("errors", bottom.ActivePane?.PaneId);
+            Assert.Same(errorsBox, FocusManager.GetFocusedElement(host));
+        }
+        finally
+        {
+            host.Close();
+        }
+    }
+
+    [StaFact]
+    public void Floating_a_pane_from_its_focused_tab_or_header_button_moves_the_focus_into_its_window()
+    {
+        var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();
+        var (outputBox, errorsBox) = UseTextBoxes(panel);
+        var host = Show(panel);
+        try
+        {
+            var output = panel.FindPane("output")!;
+            var tab = FindVisualChildren<Atc.Wpf.Controls.Layouts.Internal.DockPaneTabItem>(bottom).First(x => ReferenceEquals(x.Pane, output));
+            tab.Focus();
+
+            panel.FloatPane(output);
+
+            Assert.Same(outputBox, FocusManager.GetFocusedElement(panel.GetFloatingWindow(output)!));
+
+            var errors = panel.FindPane("errors")!;
+            var floatButton = (UIElement)bottom.Template.FindName("PART_FloatButton", bottom);
+            floatButton.Focus();
+            Assert.Same(errors, bottom.ActivePane);
+
+            panel.FloatPane(errors);
+
+            Assert.Same(errorsBox, FocusManager.GetFocusedElement(panel.GetFloatingWindow(errors)!));
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            host.Close();
+        }
+    }
+
+    [StaFact]
     public void Floating_the_focused_pane_moves_the_focus_into_its_window_and_redocking_brings_it_back()
     {
         var (panel, _, _) = DockPanelProPaneTests.CreatePanel();

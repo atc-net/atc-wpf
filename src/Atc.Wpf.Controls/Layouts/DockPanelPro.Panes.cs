@@ -257,8 +257,9 @@ public sealed partial class DockPanelPro
     }
 
     /// <summary>
-    /// Whether the keyboard focus, or the logical focus of its focus scope (an inactive window), is inside the pane
-    /// (or its floating window is the active window).
+    /// Whether the focus belongs to the pane: the keyboard focus, or the logical focus of its focus scope (an inactive
+    /// window), is inside the pane, on its tab (incl. the tab's close button), or on the region header buttons while it
+    /// is the active pane; or its floating window is the active window.
     /// </summary>
     private bool HasFocusWithin(DockPane pane)
     {
@@ -268,9 +269,41 @@ public sealed partial class DockPanelPro
             return true;
         }
 
-        return FocusManager.GetFocusScope(pane) is { } scope &&
-               FocusManager.GetFocusedElement(scope) is Visual focused &&
-               pane.IsAncestorOf(focused);
+        if (FocusManager.GetFocusScope(pane) is not { } scope ||
+            FocusManager.GetFocusedElement(scope) is not Visual focused)
+        {
+            return false;
+        }
+
+        if (pane.IsAncestorOf(focused))
+        {
+            return true;
+        }
+
+        var region = pane.Region;
+        if (region is null || pane.State != DockPaneState.Docked || !region.IsAncestorOf(focused))
+        {
+            return false;
+        }
+
+        DependencyObject? current = focused;
+        while (current is not null && !ReferenceEquals(current, region))
+        {
+            if (current is DockPaneTabItem tab)
+            {
+                return ReferenceEquals(tab.Pane, pane);
+            }
+
+            if (current is DockPane other)
+            {
+                return ReferenceEquals(other, pane);
+            }
+
+            current = VisualTreeHelper.GetParent(current);
+        }
+
+        // The region header (float / close buttons) acts on the active pane.
+        return ReferenceEquals(region.ActivePane, pane);
     }
 
     /// <summary>
