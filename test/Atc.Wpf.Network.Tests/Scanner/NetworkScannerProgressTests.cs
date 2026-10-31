@@ -63,6 +63,61 @@ public sealed class NetworkScannerProgressTests
         Assert.StartsWith("1 /", sut.EntryCountInfo, StringComparison.Ordinal);
     }
 
+    [StaFact]
+    public void ProgressReports_FromAWorkerThread_AreAppliedInOneDispatcherCallback()
+    {
+        using var sut = CreateSutShowingEverything();
+        var results = Enumerable.Range(0, 1000)
+            .Select(i => Result(new IPAddress([10, 1, (byte)(i / 256), (byte)(i % 256)]), IPStatus.TimedOut))
+            .ToList();
+
+        // The scanner reports from worker threads while the UI thread is busy.
+        Task.Run(() =>
+        {
+            for (var i = 0; i < results.Count; i++)
+            {
+                sut.EnqueueProgress(results[i], results.Count, i + 1, (i + 1) / 10.0);
+            }
+        }).GetAwaiter().GetResult();
+
+        DrainDispatcher();
+
+        Assert.Equal(1000, sut.Entries.Count);
+        Assert.Equal(1000, sut.BusyIndicatorCurrentValue);
+        Assert.Equal(1, sut.ProgressDispatchCount);
+    }
+
+    [StaFact]
+    public void ProgressReports_AfterDispose_AreDropped()
+    {
+        var sut = CreateSutShowingEverything();
+        sut.EnqueueProgress(Result(HostA, IPStatus.Success), 10, 1, 10);
+
+        sut.Dispose();
+        DrainDispatcher();
+
+        Assert.Empty(sut.Entries);
+    }
+
+    [StaFact]
+    public async Task Dispose_WhileScanning_CancelsTheScan()
+    {
+        // TEST-NET-1 (RFC 5737): never routed, so the scan waits on ping time-outs until cancelled.
+        var sut = new NetworkScannerViewModel
+        {
+            StartIpAddress = "192.0.2.1",
+            EndIpAddress = "192.0.2.254",
+        };
+
+        var scan = sut.ScanCommand.ExecuteAsync(null);
+        sut.Dispose();
+
+        var finished = await Task.WhenAny(scan, Task.Delay(TimeSpan.FromSeconds(30)));
+
+        Assert.Same(scan, finished);
+        Assert.False(sut.IsBusy);
+    }
+
     private static void DrainDispatcher()
         => System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(
             System.Windows.Threading.DispatcherPriority.ApplicationIdle,
