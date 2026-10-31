@@ -27,6 +27,33 @@ public sealed class WindowServiceTests
     }
 
     [WpfFact]
+    public async Task RefreshAsync_ClosedWindows_AreRemovedOnceTheyHaveBeenShownDisconnectedForOnePoll()
+    {
+        using var service = CreateService();
+        snapshots =
+        [
+            new WindowSnapshot(new IntPtr(1), "A", "Notepad", ProcessId: 10),
+            new WindowSnapshot(new IntPtr(2), "B", "Notepad", ProcessId: 10),
+            new WindowSnapshot(new IntPtr(3), "C", "Notepad", ProcessId: 10),
+        ];
+        await service.RefreshAsync();
+
+        snapshots =
+        [
+            new WindowSnapshot(new IntPtr(4), "D", "Chrome", ProcessId: 20),
+            new WindowSnapshot(new IntPtr(5), "E", "Chrome", ProcessId: 20),
+        ];
+        await service.RefreshAsync();
+
+        Assert.Equal(5, service.Windows.Count);
+        Assert.Equal(3, service.Windows.Count(w => w.State is DeviceState.Disconnected));
+
+        await service.RefreshAsync();
+
+        Assert.Equal([4, 5], service.Windows.Select(w => (int)w.Handle).Order());
+    }
+
+    [WpfFact]
     public async Task RefreshAsync_HandleReusedByAnotherProcess_ReplacesTheStaleEntry()
     {
         using var service = CreateService();
