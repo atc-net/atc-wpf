@@ -269,10 +269,16 @@ public static class PanelHelper
     }
 
     /// <summary>
-    /// Applies <see cref="ItemMarginProperty"/> to every child element except the last one,
-    /// which receives <see cref="LastItemMarginProperty"/> so the panel gets no trailing spacing.
-    /// A child whose margin was set locally by someone other than <see cref="PanelHelper"/> keeps it.
+    /// Applies <see cref="ItemMarginProperty"/> to every child element except the last one that is
+    /// not collapsed, which receives <see cref="LastItemMarginProperty"/> so the panel gets no trailing
+    /// spacing. A child whose margin was set locally by someone other than <see cref="PanelHelper"/> keeps it.
     /// </summary>
+    /// <remarks>
+    /// When the margin comes from <c>Spacing</c>, <c>HorizontalSpacing</c> or <c>VerticalSpacing</c>, only the
+    /// side facing the next item gets it: the right side in a horizontal <see cref="StackPanel"/>, the bottom
+    /// in a vertical one, and in a <see cref="DockPanel"/> the side facing the remaining space. Other panels
+    /// (such as <see cref="WrapPanel"/>, which needs the gap on both axes) get both.
+    /// </remarks>
     internal static void ApplyItemMargins(Panel panel)
     {
         panel.SetValue(ChildrenSnapshotProperty, ChildrenSnapshot.Create(panel));
@@ -283,14 +289,60 @@ public static class PanelHelper
             return;
         }
 
+        var lastShownIndex = children.FindLastIndex(x => x.Visibility != Visibility.Collapsed);
         var itemMargin = GetItemMargin(panel);
-        for (var i = 0; i < children.Count - 1; i++)
-        {
-            ApplyMargin(children[i], itemMargin);
-        }
+        var isSpacing = IsSpacingSet(panel);
 
-        ApplyMargin(children[^1], GetLastItemMargin(panel));
+        for (var i = 0; i < children.Count; i++)
+        {
+            var child = children[i];
+            if (i == lastShownIndex)
+            {
+                ApplyMargin(child, GetLastItemMargin(panel));
+            }
+            else
+            {
+                var margin = isSpacing
+                    ? GetSpacingMargin(panel, child, itemMargin)
+                    : itemMargin;
+                ApplyMargin(child, margin);
+            }
+        }
     }
+
+    private static bool IsSpacingSet(Panel panel)
+        => IsSet(panel, SpacingProperty) ||
+           IsSet(panel, HorizontalSpacingProperty) ||
+           IsSet(panel, VerticalSpacingProperty);
+
+    private static bool IsSet(
+        DependencyObject obj,
+        DependencyProperty property)
+        => DependencyPropertyHelper.GetValueSource(obj, property).BaseValueSource is not BaseValueSource.Default;
+
+    /// <summary>
+    /// Keeps only the main-axis side of a spacing margin: <see cref="Thickness.Right"/> holds the
+    /// horizontal spacing and <see cref="Thickness.Bottom"/> the vertical spacing.
+    /// </summary>
+    private static Thickness GetSpacingMargin(
+        Panel panel,
+        UIElement child,
+        Thickness itemMargin)
+        => panel switch
+        {
+            StackPanel { Orientation: Orientation.Horizontal } or VirtualizingStackPanel { Orientation: Orientation.Horizontal }
+                => new Thickness(itemMargin.Left, itemMargin.Top, itemMargin.Right, 0),
+            StackPanel or VirtualizingStackPanel
+                => new Thickness(itemMargin.Left, itemMargin.Top, 0, itemMargin.Bottom),
+            DockPanel => DockPanel.GetDock(child) switch
+            {
+                Dock.Left => new Thickness(0, 0, itemMargin.Right, 0),
+                Dock.Right => new Thickness(itemMargin.Right, 0, 0, 0),
+                Dock.Top => new Thickness(0, 0, 0, itemMargin.Bottom),
+                _ => new Thickness(0, itemMargin.Bottom, 0, 0),
+            },
+            _ => itemMargin,
+        };
 
     private static void ApplyMargin(
         FrameworkElement element,
@@ -343,19 +395,23 @@ public static class PanelHelper
         new PropertyMetadata(defaultValue: null));
 
     /// <summary>
-    /// A cheap fingerprint of a panel's children (count plus the last child) used to skip
-    /// re-applying margins on layout passes where the children did not change.
+    /// A cheap fingerprint of a panel's children (count, the last child, which children are collapsed,
+    /// their dock sides and the panel orientation) used to skip re-applying margins on layout passes
+    /// where none of that changed.
     /// </summary>
     private sealed class ChildrenSnapshot
     {
         private readonly int count;
+        private readonly int layoutKey;
         private readonly WeakReference<UIElement>? lastChild;
 
         private ChildrenSnapshot(
             int count,
+            int layoutKey,
             UIElement? lastChild)
         {
             this.count = count;
+            this.layoutKey = layoutKey;
             this.lastChild = lastChild is null ? null : new WeakReference<UIElement>(lastChild);
         }
 
@@ -364,13 +420,15 @@ public static class PanelHelper
             var children = panel.Children;
             return new ChildrenSnapshot(
                 children.Count,
+                GetLayoutKey(panel),
                 children.Count > 0 ? children[^1] : null);
         }
 
         public bool Matches(Panel panel)
         {
             var children = panel.Children;
-            if (children.Count != count)
+            if (children.Count != count ||
+                GetLayoutKey(panel) != layoutKey)
             {
                 return false;
             }
@@ -383,6 +441,29 @@ public static class PanelHelper
             return lastChild is not null &&
                    lastChild.TryGetTarget(out var target) &&
                    ReferenceEquals(target, children[^1]);
+        }
+
+        private static int GetLayoutKey(Panel panel)
+        {
+            var hash = default(HashCode);
+            hash.Add(panel switch
+            {
+                StackPanel stackPanel => stackPanel.Orientation,
+                VirtualizingStackPanel virtualizingStackPanel => virtualizingStackPanel.Orientation,
+                _ => (Orientation)(-1),
+            });
+
+            var isDockPanel = panel is DockPanel;
+            foreach (UIElement child in panel.Children)
+            {
+                hash.Add(child.Visibility == Visibility.Collapsed);
+                if (isDockPanel)
+                {
+                    hash.Add(DockPanel.GetDock(child));
+                }
+            }
+
+            return hash.ToHashCode();
         }
     }
 }
