@@ -156,7 +156,11 @@ public partial class NumericBox : Control
         PropertyChangedCallback = nameof(OnIntervalPropertyChanged))]
     private double interval;
 
-    [DependencyProperty(DefaultValue = true)]
+    /// <summary>
+    /// Whether the mouse wheel changes the value while the pointer is over an unfocused box.
+    /// Off by default, so scrolling a form doesn't change every box the pointer passes.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false)]
     private bool trackMouseWheelWhenMouseOver;
 
     [DependencyProperty]
@@ -781,37 +785,27 @@ public partial class NumericBox : Control
 
         base.OnPreviewMouseWheel(e);
 
-        if (InterceptMouseWheel && (IsFocused || valueTextBox?.IsFocused == true || TrackMouseWheelWhenMouseOver))
+        // The wheel changes the value only when the box can be edited and is focused (or tracks the
+        // wheel on hover). Otherwise the wheel is left alone, so a surrounding page keeps scrolling.
+        var consumesWheel = InterceptMouseWheel &&
+                            IsEnabled &&
+                            !IsReadOnly &&
+                            (IsKeyboardFocusWithin || TrackMouseWheelWhenMouseOver);
+
+        if (consumesWheel && e.Delta != 0)
         {
-            var increment = e.Delta > 0;
-            ChangeValueWithSpeedUp(increment);
+            // One notch is one Interval: the hold-to-accelerate speed-up is for spin buttons and arrow keys only.
+            ChangeValueInternal(e.Delta > 0 ? Interval : -Interval);
+            e.Handled = true;
         }
 
         var sv = TryFindScrollViewer();
-
         if (sv is not null && handlesMouseWheelScrolling.Value is not null)
         {
-            if (TrackMouseWheelWhenMouseOver)
-            {
-                handlesMouseWheelScrolling.Value.SetValue(
-                    sv,
-                    value: true,
-                    index: null);
-            }
-            else if (InterceptMouseWheel)
-            {
-                handlesMouseWheelScrolling.Value.SetValue(
-                    sv,
-                    valueTextBox?.IsFocused == true,
-                    index: null);
-            }
-            else
-            {
-                handlesMouseWheelScrolling.Value.SetValue(
-                    sv,
-                    value: true,
-                    index: null);
-            }
+            handlesMouseWheelScrolling.Value.SetValue(
+                sv,
+                consumesWheel,
+                index: null);
         }
     }
 
@@ -1400,11 +1394,6 @@ public partial class NumericBox : Control
 
     private void ResetInternal()
     {
-        if (IsReadOnly)
-        {
-            return;
-        }
-
         internalLargeChange = 100 * Interval;
         internalIntervalMultiplierForCalculation = Interval;
         intervalValueSinceReset = 0;

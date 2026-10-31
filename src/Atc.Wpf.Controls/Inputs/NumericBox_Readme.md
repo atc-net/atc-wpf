@@ -99,9 +99,9 @@ using Atc.Wpf.Controls.Inputs;
 | `Delay` | `int` | `500` | RepeatButton initial delay (ms) |
 | `Speedup` | `bool` | `true` | Accelerate value change while spin button is held |
 | `InterceptArrowKeys` | `bool` | `true` | Up / Down keys change `Value` by `Interval` |
-| `InterceptMouseWheel` | `bool` | `true` | Mouse wheel changes `Value` by `Interval` |
+| `InterceptMouseWheel` | `bool` | `true` | Mouse wheel changes `Value` by `Interval` (one `Interval` per notch, no speed-up) while the box is focused |
 | `InterceptManualEnter` | `bool` | `true` | Commit on `Enter`; revert on `Escape` |
-| `TrackMouseWheelWhenMouseOver` | `bool` | `true` | Wheel works on hover (no focus required) |
+| `TrackMouseWheelWhenMouseOver` | `bool` | `false` | Wheel also works on hover (no focus required) |
 | `IsReadOnly` | `bool` | `false` | Suppress edits and spin buttons |
 
 ### Spin buttons & layout
@@ -137,6 +137,7 @@ using Atc.Wpf.Controls.Inputs;
 - `StringFormat` accepts both shorthand (`N2`, `C`, `X4`) and full `{0:...}` patterns; for hex, the box also accepts the hex chars `a–f`.
 - `Culture` controls parsing of decimal/group separators and currency symbols. If unset, the framework `Language` is honored, so `xml:lang` on a parent works.
 - Because the spin buttons use `RepeatButton`, holding them down accelerates when `Speedup="True"`.
+- The mouse wheel only changes an enabled, editable box that has keyboard focus, so scrolling a form no longer changes every box under the pointer, and a read-only or disabled box lets the page scroll. `TrackMouseWheelWhenMouseOver` used to default to `true`; set it to `true` to get the hover behaviour back.
 
 ## 🔗 Related controls
 
