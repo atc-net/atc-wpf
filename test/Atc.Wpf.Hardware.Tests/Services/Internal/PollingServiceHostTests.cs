@@ -19,6 +19,28 @@ public sealed class PollingServiceHostTests
     }
 
     [WpfFact]
+    public async Task StartedTwice_StoppedOnce_KeepsPolling()
+    {
+        var polled = new TaskCompletionSource();
+        using var host = new PollingServiceHost(
+            "Test",
+            () =>
+            {
+                polled.TrySetResult();
+                return Task.CompletedTask;
+            })
+        {
+            Interval = TimeSpan.FromMilliseconds(20),
+        };
+
+        host.Start();
+        host.Start();
+        host.Stop();
+
+        Assert.Same(polled.Task, await Task.WhenAny(polled.Task, Task.Delay(Timeout)));
+    }
+
+    [WpfFact]
     public void InvokeOnUiAsync_OnTheUiThread_RunsInline()
     {
         var host = new PollingServiceHost("Test", () => Task.CompletedTask);

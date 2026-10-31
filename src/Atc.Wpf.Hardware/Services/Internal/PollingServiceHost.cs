@@ -21,7 +21,9 @@ internal sealed class PollingServiceHost : IDisposable
     private readonly Lock syncRoot = new();
     private TimeSpan interval = DefaultInterval;
     private Task? inFlightPoll;
-    private bool started;
+
+    // Several pickers can share one service: polling runs while at least one of them has started it.
+    private int startCount;
     private volatile bool disposed;
 
     public PollingServiceHost(
@@ -54,7 +56,7 @@ internal sealed class PollingServiceHost : IDisposable
             lock (syncRoot)
             {
                 interval = value;
-                if (started && !disposed)
+                if (startCount > 0 && !disposed)
                 {
                     timer.Change(value, Timeout.InfiniteTimeSpan);
                 }
@@ -66,13 +68,16 @@ internal sealed class PollingServiceHost : IDisposable
     {
         lock (syncRoot)
         {
-            if (started || disposed)
+            if (disposed)
             {
                 return;
             }
 
-            started = true;
-            timer.Change(interval, Timeout.InfiniteTimeSpan);
+            startCount++;
+            if (startCount == 1)
+            {
+                timer.Change(interval, Timeout.InfiniteTimeSpan);
+            }
         }
     }
 
@@ -80,13 +85,16 @@ internal sealed class PollingServiceHost : IDisposable
     {
         lock (syncRoot)
         {
-            if (!started || disposed)
+            if (startCount == 0 || disposed)
             {
                 return;
             }
 
-            started = false;
-            timer.Change(Timeout.Infinite, Timeout.Infinite);
+            startCount--;
+            if (startCount == 0)
+            {
+                timer.Change(Timeout.Infinite, Timeout.Infinite);
+            }
         }
     }
 
@@ -149,7 +157,7 @@ internal sealed class PollingServiceHost : IDisposable
             }
 
             disposed = true;
-            started = false;
+            startCount = 0;
         }
 
         timer.Dispose();
@@ -181,7 +189,7 @@ internal sealed class PollingServiceHost : IDisposable
             // One-shot timer, re-armed only once the poll is done, so a slow poll never overlaps the next tick.
             lock (syncRoot)
             {
-                if (started && !disposed)
+                if (startCount > 0 && !disposed)
                 {
                     timer.Change(interval, Timeout.InfiniteTimeSpan);
                 }

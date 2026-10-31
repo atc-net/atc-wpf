@@ -2,6 +2,26 @@ namespace Atc.Wpf.Hardware.Tests.Services;
 
 public sealed class UsbCameraServiceTests
 {
+    [WpfFact]
+    public async Task TwoPickersOnOneService_UnloadingOne_KeepsTheServiceWatching()
+    {
+        using var host = new FakeDeviceWatcherHost();
+        using var service = new UsbCameraService(host);
+        var first = new UsbCameraPicker(service);
+        var second = new UsbCameraPicker(service);
+
+        first.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+        second.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+        await Dispatcher.Yield();
+        first.RaiseEvent(new RoutedEventArgs(FrameworkElement.UnloadedEvent));
+
+        Assert.True(host.IsStarted);
+
+        second.RaiseEvent(new RoutedEventArgs(FrameworkElement.UnloadedEvent));
+
+        Assert.False(host.IsStarted);
+    }
+
     [Fact]
     public void Added_PopulatesPanelAndIsEnabled()
     {
