@@ -9,6 +9,7 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
     private readonly string aqsFilter;
     private readonly IEnumerable<string>? requestedProperties;
     private readonly Dispatcher uiDispatcher;
+    private readonly WatcherEventSink sink;
     private bool disposed;
     private bool startRequested;
 
@@ -25,11 +26,11 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
 
         uiDispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
 
-        watcher.Added += OnWatcherAdded;
-        watcher.Updated += OnWatcherUpdated;
-        watcher.Removed += OnWatcherRemoved;
-        watcher.EnumerationCompleted += OnWatcherEnumerationCompleted;
-        watcher.Stopped += OnWatcherStopped;
+        // The watcher holds its handlers through COM, which the GC cannot see through: handlers on this host
+        // would form a cycle (host -> watcher -> handler -> host) that keeps an undisposed service alive forever.
+        // The sink only holds the host weakly.
+        sink = new WatcherEventSink(this);
+        sink.Attach(watcher);
     }
 
     public event EventHandler<DeviceSnapshotEventArgs>? Added;
@@ -93,37 +94,25 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
 
         disposed = true;
 
-        watcher.Added -= OnWatcherAdded;
-        watcher.Updated -= OnWatcherUpdated;
-        watcher.Removed -= OnWatcherRemoved;
-        watcher.EnumerationCompleted -= OnWatcherEnumerationCompleted;
-        watcher.Stopped -= OnWatcherStopped;
+        sink.Detach(watcher);
 
         StopWatching();
     }
 
-    private void OnWatcherAdded(
-        DeviceWatcher sender,
-        DeviceInformation info)
+    private void OnWatcherAdded(DeviceInformation info)
         => MarshalToUi(
             () => Added?.Invoke(this, new DeviceSnapshotEventArgs(ToSnapshot(info))));
 
-    private void OnWatcherUpdated(
-        DeviceWatcher sender,
-        DeviceInformationUpdate update)
+    private void OnWatcherUpdated(DeviceInformationUpdate update)
         => MarshalToUi(
             () => Updated?.Invoke(
                 this,
                 new DeviceSnapshotEventArgs(ToUpdatedSnapshot(update.Id, update.Properties))));
 
-    private void OnWatcherRemoved(
-        DeviceWatcher sender,
-        DeviceInformationUpdate update)
+    private void OnWatcherRemoved(DeviceInformationUpdate update)
         => MarshalToUi(() => Removed?.Invoke(this, new DeviceRemovedEventArgs(update.Id)));
 
-    private void OnWatcherEnumerationCompleted(
-        DeviceWatcher sender,
-        object args)
+    private void OnWatcherEnumerationCompleted()
         => MarshalToUi(() => EnumerationCompleted?.Invoke(this, EventArgs.Empty));
 
     public Task InvokeOnUiAsync(Action action)
@@ -137,9 +126,7 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
         return uiDispatcher.InvokeAsync(action).Task;
     }
 
-    private void OnWatcherStopped(
-        DeviceWatcher sender,
-        object args)
+    private void OnWatcherStopped()
     {
         if (!startRequested)
         {
@@ -231,4 +218,111 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
            properties.TryGetValue(key, out var value)
             ? value as string
             : null;
+
+    /// <summary>
+    /// Receives the watcher events and forwards them to the host while it is alive. Once the host has been
+    /// collected without being disposed, the sink stops the watcher and unsubscribes.
+    /// </summary>
+    private sealed class WatcherEventSink
+    {
+        private readonly WeakReference<DeviceWatcherHost> owner;
+
+        public WatcherEventSink(DeviceWatcherHost owner)
+            => this.owner = new WeakReference<DeviceWatcherHost>(owner);
+
+        public void Attach(DeviceWatcher watcher)
+        {
+            watcher.Added += OnAdded;
+            watcher.Updated += OnUpdated;
+            watcher.Removed += OnRemoved;
+            watcher.EnumerationCompleted += OnEnumerationCompleted;
+            watcher.Stopped += OnStopped;
+        }
+
+        public void Detach(DeviceWatcher watcher)
+        {
+            watcher.Added -= OnAdded;
+            watcher.Updated -= OnUpdated;
+            watcher.Removed -= OnRemoved;
+            watcher.EnumerationCompleted -= OnEnumerationCompleted;
+            watcher.Stopped -= OnStopped;
+        }
+
+        private void OnAdded(
+            DeviceWatcher sender,
+            DeviceInformation info)
+        {
+            if (TryGetOwner(sender, out var host))
+            {
+                host.OnWatcherAdded(info);
+            }
+        }
+
+        private void OnUpdated(
+            DeviceWatcher sender,
+            DeviceInformationUpdate update)
+        {
+            if (TryGetOwner(sender, out var host))
+            {
+                host.OnWatcherUpdated(update);
+            }
+        }
+
+        private void OnRemoved(
+            DeviceWatcher sender,
+            DeviceInformationUpdate update)
+        {
+            if (TryGetOwner(sender, out var host))
+            {
+                host.OnWatcherRemoved(update);
+            }
+        }
+
+        private void OnEnumerationCompleted(
+            DeviceWatcher sender,
+            object args)
+        {
+            if (TryGetOwner(sender, out var host))
+            {
+                host.OnWatcherEnumerationCompleted();
+            }
+        }
+
+        private void OnStopped(
+            DeviceWatcher sender,
+            object args)
+        {
+            if (TryGetOwner(sender, out var host))
+            {
+                host.OnWatcherStopped();
+            }
+        }
+
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Best-effort cleanup of an orphaned watcher.")]
+        private bool TryGetOwner(
+            DeviceWatcher sender,
+            [NotNullWhen(true)] out DeviceWatcherHost? host)
+        {
+            if (owner.TryGetTarget(out host))
+            {
+                return true;
+            }
+
+            // The host was dropped while the watcher was still running: release the watcher.
+            try
+            {
+                Detach(sender);
+                if (sender.Status is DeviceWatcherStatus.Started or DeviceWatcherStatus.EnumerationCompleted)
+                {
+                    sender.Stop();
+                }
+            }
+            catch (Exception)
+            {
+                // The watcher is already going away.
+            }
+
+            return false;
+        }
+    }
 }
