@@ -13,8 +13,10 @@ namespace Atc.Wpf.Components.Viewers;
 internal sealed class TerminalLineBuffer
 {
     /// <summary>
-    /// Above this many lines to trim at once, the oldest lines are removed in one pass with a single reset
-    /// notification instead of one removal notification (and one shift of the whole list) per line.
+    /// Above this many lines to trim at once, and when the trim replaces most of the list (a resume after a pause,
+    /// or a lowered cap), the oldest lines are removed in one pass with a single reset notification instead of one
+    /// removal notification (and one shift of the whole list) per line. A steady stream at the cap trims each batch
+    /// line by line, so it never resets the list.
     /// </summary>
     private const int BulkTrimThreshold = 256;
 
@@ -138,7 +140,7 @@ internal sealed class TerminalLineBuffer
             return;
         }
 
-        if (excess > BulkTrimThreshold)
+        if (excess > BulkTrimThreshold && excess > lines.Count / 2)
         {
             lines.RemoveOldestUnpinned(excess, OnLineRemoved);
         }

@@ -28,6 +28,31 @@ public sealed class TerminalLineBufferTests
     }
 
     [StaFact]
+    public void Add_LargeBatchesAtTheCap_RaiseNoResetAndStayFast()
+    {
+        var sut = new TerminalLineBuffer();
+        var listView = new ListView { ItemsSource = sut.Lines };
+        sut.Add(Enumerable.Range(0, 10_000).Select(i => Line($"warmup {i}")).ToList(), maxLines: 10_000);
+        sut.ApplySearch("^error", useRegex: true, hideNonMatching: true);
+        var actions = new List<NotifyCollectionChangedAction>();
+        ((INotifyCollectionChanged)listView.Items).CollectionChanged += (_, e) => actions.Add(e.Action);
+        var stopwatch = Stopwatch.StartNew();
+
+        for (var batch = 0; batch < 50; batch++)
+        {
+            sut.Add(
+                Enumerable.Range(0, 1_000).Select(i => Line(i % 2 == 0 ? $"error {batch}.{i}" : $"info {batch}.{i}")).ToList(),
+                maxLines: 10_000);
+        }
+
+        Assert.True(stopwatch.Elapsed < TimeSpan.FromSeconds(10), stopwatch.Elapsed.ToString());
+        Assert.DoesNotContain(NotifyCollectionChangedAction.Reset, actions);
+        Assert.Equal(10_000, sut.Lines.Count);
+        Assert.Equal(5_000, sut.MatchCount);
+        Assert.Equal(5_000, listView.Items.Count);
+    }
+
+    [StaFact]
     public void Add_HideNonMatching_TrimsHiddenLinesAndKeepsTheMatchCount()
     {
         var sut = new TerminalLineBuffer();
