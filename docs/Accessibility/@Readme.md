@@ -33,6 +33,7 @@ These controls override `OnCreateAutomationPeer` and expose the listed patterns,
 | `CascaderComboBox` | Combo box | `ExpandCollapse`, `Value`; each column is a list, each row a check box with a three-state `Toggle` (rows with children also `ExpandCollapse`) |
 | `CheckTreeView` | Tree | each row is a tree item with `ExpandCollapse` and a three-state `Toggle` |
 | `TokenBox` | Combo box | `Value` (the typed text), `ExpandCollapse`; a token list (AutomationId `Tokens`) and a suggestion list (AutomationId `Suggestions`) |
+| `DockPanelPro` / `DockRegion` / `DockPane` | Pane / group / pane | regions `ExpandCollapse` when collapsible; tabs are tab items with `SelectionItem`; the float, close and (in a floating window) dock buttons are `Invoke` buttons named "Float *pane*", "Close *pane*", "Dock *pane*". AutomationIds come from `LayoutId`, `RegionId` and `PaneId` |
 
 `CheckListBox` and the pop-up list of `MultiSelectComboBox` have no custom peer: each row is a real WPF `CheckBox`, so it is a check box with the `Toggle` pattern.
 

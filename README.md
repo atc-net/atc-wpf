@@ -346,7 +346,7 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **StaggeredPanel** | Masonry layout | Pinterest-style waterfall | [Readme](src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md) |
 | **UniformSpacingPanel** | Uniform spacing | Consistent gaps + wrapping | [Readme](src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md) |
 | **ResponsivePanel** | Responsive layout | Breakpoint-based responsive design | [Readme](src/Atc.Wpf.Controls/Layouts/ResponsivePanel_Readme.md) |
-| **DockPanelPro** | IDE-style docking | Resizable regions | [Readme](src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md) |
+| **DockPanelPro** | IDE-style docking | Resizable regions, tabbed and floating panes | [Readme](src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md) |
 
 ### Data Display Controls
 
