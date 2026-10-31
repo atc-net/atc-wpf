@@ -131,7 +131,20 @@ public sealed class LabelTokenBoxTests : IDisposable
         Type(sut, "delta,");
 
         Assert.Equal(["new:delta"], sut.SelectedKeys);
-        Assert.Equal("delta", sut.Items["new:delta"]);
+        Assert.False(sut.Items.ContainsKey("new:delta"));
+    }
+
+    [StaFact]
+    public void AddNewValuesToItems_is_passed_on_to_the_inner_token_box()
+    {
+        var sut = Create();
+        sut.AllowCreate = true;
+        sut.AddNewValuesToItems = true;
+
+        Type(sut, "delta,");
+
+        Assert.Equal(["delta"], sut.SelectedKeys);
+        Assert.Equal("delta", sut.Items["delta"]);
     }
 
     [StaFact]
