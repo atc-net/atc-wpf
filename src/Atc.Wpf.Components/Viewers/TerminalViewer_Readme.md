@@ -4,7 +4,7 @@ A terminal-style output display with color-coded text based on keyword matching.
 
 ## 🔍 Overview
 
-`TerminalViewer` displays streaming text output with automatic color coding. It matches configurable keyword lists against each line and applies corresponding colors (error, success, and three custom term sets). The viewer processes data asynchronously via channels and supports copy-to-clipboard and clear-screen commands.
+`TerminalViewer` displays streaming text output with automatic color coding. It matches configurable keyword lists against each line and applies corresponding colors (error, success, and three custom term sets). The viewer processes data asynchronously through a bounded queue (at most `MaxLines` lines wait, also while paused) and supports copy-to-clipboard and clear-screen commands.
 
 ## 📍 Namespace
 
@@ -121,7 +121,7 @@ The zoom shortcuts accept both the main keyboard row and the numeric keypad (`Ct
 ## 📝 Notes
 
 - Data arrives via messenger events (`TerminalReceivedDataEventArgs`); set `TerminalId` on the message to address a single viewer
-- Processing uses `System.Threading.Channels` for async queuing
+- Received lines wait in a bounded queue (the newest `MaxLines`) drained by one background loop and committed in batches at Background priority; a clear also discards a batch already on its way
 - Term matching is word-boundary-aware: a term matches as a whole word, delimited by anything that is not a letter, digit or underscore, so `error` matches `error:` and `[error]` but not `errors`
 - With `EnableAnsiParsing` on (the default), ANSI escape sequences are rendered as colours and removed from `TerminalLineItem.Text`, so copy, export, search and term matching work on the plain text
 - The control implements `IDisposable` — dispose when no longer needed
