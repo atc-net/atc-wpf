@@ -171,9 +171,8 @@ internal sealed class SvgRender
                 geometryDrawing.Pen.DashCap = PenLineCap.Flat;
                 var ds = new DashStyle();
                 var scale = 1 / strokeWidth;
-                foreach (var d in stroke.StrokeArray)
+                foreach (var dash in stroke.StrokeArray)
                 {
-                    var dash = (int)d;
                     ds.Dashes.Add(dash * scale);
                 }
 
