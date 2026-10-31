@@ -418,6 +418,35 @@ public sealed class LabelControlsFormToModelWriterTests
         Assert.Null(actual.DayNullable);
     }
 
+    [StaFact]
+    public void Update_PropertiesWithConsecutiveCapitals_AreWritten()
+    {
+        // Arrange
+        var model = new AcronymModel
+        {
+            UIntValue = 1,
+            IPAddressText = "10.0.0.1",
+            HTTPPort = 80,
+        };
+
+        var labelControlsForm = CreateForm(model);
+        var keyValues = labelControlsForm.GetKeyValues();
+        var uintKey = Assert.Single(keyValues.Keys, k => k.EndsWith("UIntValue", StringComparison.OrdinalIgnoreCase));
+        var ipKey = Assert.Single(keyValues.Keys, k => k.EndsWith("IPAddressText", StringComparison.OrdinalIgnoreCase));
+        var portKey = Assert.Single(keyValues.Keys, k => k.EndsWith("HTTPPort", StringComparison.OrdinalIgnoreCase));
+        keyValues[uintKey] = 4_000_000_000m;
+        keyValues[ipKey] = "192.168.1.1";
+        keyValues[portKey] = 8080;
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, keyValues);
+
+        // Assert
+        Assert.Equal(4_000_000_000u, actual.UIntValue);
+        Assert.Equal("192.168.1.1", actual.IPAddressText);
+        Assert.Equal(8080, actual.HTTPPort);
+    }
+
     private static TControl Control<TControl>(
         LabelControlsForm labelControlsForm,
         string identifier)
