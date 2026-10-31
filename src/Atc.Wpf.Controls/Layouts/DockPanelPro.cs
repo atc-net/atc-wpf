@@ -42,10 +42,20 @@ public sealed partial class DockPanelPro : Panel
     private string? layoutId;
 
     /// <summary>
-    /// Gets or sets a value indicating whether to automatically save layout changes.
+    /// Gets or sets a value indicating whether the layout is saved automatically and restored when the panel is first loaded.
+    /// Needs a <see cref="LayoutId"/>: every <see cref="LayoutChanged"/> saves the layout to the <see cref="LayoutStore"/>
+    /// under that identifier, a pending change is saved when the owner window closes, and the first <c>Loaded</c>
+    /// loads the stored layout.
     /// </summary>
     [DependencyProperty(DefaultValue = false)]
     private bool autoSaveLayout;
+
+    /// <summary>
+    /// Gets or sets where <see cref="AutoSaveLayout"/> saves and loads the layout;
+    /// <see langword="null"/> uses <see cref="FileDockLayoutStore.Default"/>.
+    /// </summary>
+    [DependencyProperty]
+    private IDockLayoutStore? layoutStore;
 
     /// <summary>
     /// Gets or sets the thickness of splitters between regions.
@@ -81,6 +91,9 @@ public sealed partial class DockPanelPro : Panel
     {
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
+        AddHandler(DockRegion.ExpandedEvent, new RoutedEventHandler(OnRegionLayoutEvent));
+        AddHandler(DockRegion.CollapsedEvent, new RoutedEventHandler(OnRegionLayoutEvent));
+        AddHandler(DockRegion.ActivePaneChangedEvent, new RoutedPropertyChangedEventHandler<DockPane?>(OnRegionActivePaneChanged));
     }
 
     /// <summary>
@@ -261,6 +274,7 @@ public sealed partial class DockPanelPro : Panel
 
         InvalidateMeasure();
         InvalidateArrange();
+        NotifyLayoutChanged();
     }
 
     /// <inheritdoc/>
@@ -653,6 +667,8 @@ public sealed partial class DockPanelPro : Panel
                 region.RaiseRegionSizeChanged();
             }
         }
+
+        NotifyLayoutChanged();
     }
 
     private static double GetRegionWidth(

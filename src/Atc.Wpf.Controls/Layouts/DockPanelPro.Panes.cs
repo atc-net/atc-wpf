@@ -252,6 +252,7 @@ public sealed partial class DockPanelPro
         DockPaneState newState)
     {
         CommandManager.InvalidateRequerySuggested();
+        NotifyLayoutChanged();
         if (oldState != newState)
         {
             PaneStateChanged?.Invoke(this, new DockPaneStateChangedEventArgs(pane, oldState, newState));

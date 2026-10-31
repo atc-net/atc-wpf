@@ -425,7 +425,7 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
         }
     }
 
-    private static Window Show(DockPanelPro panel)
+    internal static Window Show(DockPanelPro panel)
     {
         var dictionary = new ResourceDictionary
         {
@@ -454,14 +454,15 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
         return window;
     }
 
-    private static void DispatchPending()
+    internal static void DispatchPending()
         => Dispatcher.CurrentDispatcher.Invoke(() => { }, DispatcherPriority.ApplicationIdle);
 
-    private static T? FindVisualChild<T>(DependencyObject parent)
+    internal static T? FindVisualChild<T>(DependencyObject parent)
         where T : DependencyObject
         => FindVisualChildren<T>(parent).FirstOrDefault();
 
-    private static IEnumerable<T> FindVisualChildren<T>(DependencyObject parent)
+    internal static IEnumerable<T> FindVisualChildren<T>(
+        DependencyObject parent)
         where T : DependencyObject
     {
         for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)

@@ -72,6 +72,7 @@ public sealed partial class DockPanelPro
         RoutedEventArgs e)
     {
         AttachOwnerWindow(Window.GetWindow(this));
+        LoadStoredLayoutOnce();
         CultureManager.UiCultureChanged -= OnUiCultureChanged;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
 
@@ -86,6 +87,7 @@ public sealed partial class DockPanelPro
         RoutedEventArgs e)
     {
         CultureManager.UiCultureChanged -= OnUiCultureChanged;
+        FlushLayoutChanged();
 
         // The panes stay floating; their windows open again when the panel is loaded again.
         foreach (var pane in floatingWindows.Keys.ToList())
@@ -135,6 +137,9 @@ public sealed partial class DockPanelPro
         {
             return;
         }
+
+        // Save a pending change while the floating windows are still open.
+        FlushLayoutChanged();
 
         // The owner closes its owned windows right after this; that must not close or dock the panes.
         isOwnerClosing = true;
@@ -278,6 +283,7 @@ public sealed partial class DockPanelPro
         if (sender is DockFloatingWindow window)
         {
             window.Pane.FloatingBounds = window.CurrentBounds;
+            NotifyLayoutChanged();
         }
     }
 

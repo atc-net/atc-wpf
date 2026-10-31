@@ -17,6 +17,114 @@ public sealed partial class DockPanelPro
         NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowNamedFloatingPointLiterals,
     };
 
+    private static readonly TimeSpan LayoutChangedDelay = TimeSpan.FromMilliseconds(300);
+
+    private DispatcherTimer? layoutChangedTimer;
+    private bool hasLoadedStoredLayout;
+    private bool isLoadingStoredLayout;
+
+    /// <summary>
+    /// Occurs after the layout changed: a pane was floated, docked, closed, restored or moved, the active tab changed,
+    /// a region was expanded or collapsed, a splitter was moved, a floating window was moved or resized, or the layout
+    /// was loaded or reset. Changes in quick succession are coalesced into one event, raised shortly after the last one;
+    /// a pending change is raised at once when the owner window closes or the panel is unloaded.
+    /// Changes made before the panel is loaded are not reported.
+    /// </summary>
+    public event EventHandler? LayoutChanged;
+
+    /// <summary>
+    /// Gets a value indicating whether a <see cref="LayoutChanged"/> is waiting to be raised.
+    /// </summary>
+    internal bool IsLayoutChangePending
+        => layoutChangedTimer?.IsEnabled == true;
+
+    /// <summary>
+    /// Raises a pending <see cref="LayoutChanged"/> now (and auto-saves).
+    /// </summary>
+    internal void FlushLayoutChanged()
+    {
+        if (!IsLayoutChangePending)
+        {
+            return;
+        }
+
+        layoutChangedTimer!.Stop();
+        LayoutChanged?.Invoke(this, EventArgs.Empty);
+
+        if (AutoSaveLayout && !string.IsNullOrEmpty(LayoutId))
+        {
+            (LayoutStore ?? FileDockLayoutStore.Default).Save(LayoutId, SaveLayout());
+        }
+    }
+
+    /// <summary>
+    /// Starts (or restarts) the delay of a coalesced <see cref="LayoutChanged"/>.
+    /// </summary>
+    private void NotifyLayoutChanged()
+    {
+        if (!IsLoaded || isLoadingStoredLayout)
+        {
+            return;
+        }
+
+        if (layoutChangedTimer is null)
+        {
+            layoutChangedTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher)
+            {
+                Interval = LayoutChangedDelay,
+            };
+            layoutChangedTimer.Tick += (_, _) => FlushLayoutChanged();
+        }
+
+        layoutChangedTimer.Stop();
+        layoutChangedTimer.Start();
+    }
+
+    /// <summary>
+    /// With <see cref="AutoSaveLayout"/>, loads the stored layout the first time the panel is loaded.
+    /// </summary>
+    private void LoadStoredLayoutOnce()
+    {
+        if (hasLoadedStoredLayout ||
+            !AutoSaveLayout ||
+            string.IsNullOrEmpty(LayoutId))
+        {
+            return;
+        }
+
+        hasLoadedStoredLayout = true;
+        var json = (LayoutStore ?? FileDockLayoutStore.Default).Load(LayoutId);
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return;
+        }
+
+        isLoadingStoredLayout = true;
+        try
+        {
+            LoadLayout(json);
+        }
+        finally
+        {
+            isLoadingStoredLayout = false;
+        }
+    }
+
+    private void OnRegionLayoutEvent(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (e.OriginalSource is DockRegion region && ReferenceEquals(region.Parent, this))
+        {
+            NotifyLayoutChanged();
+        }
+    }
+
+    private void OnRegionActivePaneChanged(
+        object sender,
+        RoutedPropertyChangedEventArgs<DockPane?> e)
+        => OnRegionLayoutEvent(sender, e);
+
     private void SavePaneStates(Internal.DockPanelLayout layout)
     {
         layout.Panes = [];

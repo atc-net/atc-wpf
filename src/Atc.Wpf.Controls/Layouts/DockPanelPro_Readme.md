@@ -130,7 +130,8 @@ dockPanel.RedockAllPanes();
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `LayoutId` | `string` | `null` | Identifier for layout persistence |
-| `AutoSaveLayout` | `bool` | `false` | Automatically save layout changes |
+| `AutoSaveLayout` | `bool` | `false` | Save the layout on every `LayoutChanged` and load it on the first `Loaded` (needs `LayoutId`) |
+| `LayoutStore` | `IDockLayoutStore` | `null` | Where `AutoSaveLayout` saves and loads; `null` uses `FileDockLayoutStore.Default` |
 | `SplitterThickness` | `double` | `5` | Thickness of resizable splitters |
 | `SplitterBackground` | `Brush` | from theme | Background brush for splitters |
 | `AllowFloating` | `bool` | `false` | Allow panes to float into their own tool windows |
@@ -161,6 +162,7 @@ dockPanel.RedockAllPanes();
 | Event | Description |
 |-------|-------------|
 | `PaneStateChanged` | A pane was floated, docked, closed or restored (`Pane`, `OldState`, `NewState`) |
+| `LayoutChanged` | The layout changed (coalesced, see [Auto-save](#-auto-save)) |
 
 ## ⚙️ DockRegion Properties
 
@@ -268,6 +270,22 @@ dockPanel.LoadLayout(layoutJson);
 ```csharp
 // Reset all regions to default sizes and dock all panes
 dockPanel.ResetLayout();
+```
+
+### 💾 Auto-save
+
+`LayoutChanged` is raised after a pane is floated, docked, closed, restored or moved, the active tab changes, a region is expanded or collapsed, a splitter is moved (mouse or keyboard), a floating window is moved or resized, and after `LoadLayout` / `ResetLayout`. Changes in quick succession are coalesced into one event about 300 ms after the last one; a pending change is raised at once when the owner window closes or the panel is unloaded. Changes made before the panel is loaded are not reported.
+
+With `AutoSaveLayout="True"` and a `LayoutId`, every `LayoutChanged` saves `SaveLayout()` to the `LayoutStore` under the `LayoutId`, and the first time the panel is loaded it loads the stored layout (if any):
+
+```xml
+<layouts:DockPanelPro AutoSaveLayout="True" LayoutId="IDE" AllowFloating="True">
+```
+
+The default store, `FileDockLayoutStore.Default`, writes `%LocalAppData%\<entry assembly name>\DockLayouts\<LayoutId>.json` (characters a file name cannot hold become `_`); a file that cannot be read or written is ignored. Implement `IDockLayoutStore` (`Load(layoutId)`, `Save(layoutId, layout)`) to keep layouts elsewhere, for example in the application settings:
+
+```csharp
+dockPanel.LayoutStore = new FileDockLayoutStore(Path.Combine(settingsFolder, "layouts"));
 ```
 
 ### 📄 Layout JSON Format
