@@ -205,8 +205,27 @@ public sealed partial class DualListSelector : Control
     /// A transfer that would exceed the limit is blocked (buttons disabled, drop refused),
     /// and the selected list footer shows "{0} of max {1}".
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnMaxSelectedCountChanged))]
     private int? maxSelectedCount;
+
+    /// <summary>
+    /// The same limit as <see cref="MaxSelectedCount"/>, under the name the other multi-select controls use
+    /// (<c>CheckListBox</c>, <c>MultiSelectComboBox</c>, ...); setting either one sets the other.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnMaxSelectionCountChanged))]
+    private int? maxSelectionCount;
+
+    /// <summary>
+    /// The <see cref="DualListSelectorItem.Identifier"/>s of the items in the selected list, in list order, like the
+    /// <c>SelectedKeys</c> of the other multi-select controls. Two-way by default and updated in place. Setting it (or
+    /// changing it in place) moves the items with those identifiers to the selected list (new ones at the end) and the
+    /// other selected items back, except locked ones; keys without an item are dropped. Items without an identifier
+    /// are not reflected in it.
+    /// </summary>
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnSelectedKeysChanged))]
+    private ObservableCollection<string>? selectedKeys;
 
     /// <summary>
     /// Whether both lists virtualize their rows (with container recycling), so lists of thousands of items stay fast.
@@ -257,6 +276,12 @@ public sealed partial class DualListSelector : Control
     /// Occurs when items are transferred between lists.
     /// </summary>
     public event EventHandler<DualListSelectorItemsTransferredEventArgs>? ItemsTransferred;
+
+    /// <summary>
+    /// Occurs when <see cref="SelectedKeys"/> changes because the selected list changed: once per transfer, reorder,
+    /// removal or applied key change.
+    /// </summary>
+    public event EventHandler<ValueChangedEventArgs<IReadOnlyList<string>>>? SelectedKeysChanged;
 
     /// <summary>
     /// Occurs when items are reordered in the Selected list.
@@ -651,6 +676,7 @@ public sealed partial class DualListSelector : Control
         }
 
         UpdateItemCounts();
+        OnSelectedListChanged();
     }
 
     /// <summary>
@@ -1743,6 +1769,9 @@ public sealed partial class DualListSelector : Control
         }
 
         selector.UpdateItemCounts();
+
+        // Wait until the other bindings settle (e.g. a DataContext swap replaces the keys too).
+        selector.ScheduleKeySync();
     }
 
     /// <summary>
@@ -1860,6 +1889,10 @@ public sealed partial class DualListSelector : Control
         }
 
         UpdateItemCounts();
+        if (ReferenceEquals(sender, SelectedItems) && transferDepth == 0)
+        {
+            OnSelectedListChanged();
+        }
     }
 
     /// <summary>

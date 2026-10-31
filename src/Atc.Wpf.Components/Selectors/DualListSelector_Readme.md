@@ -134,6 +134,8 @@ VisibleColumns.Add(new DualListSelectorItem { Identifier = "id", Name = "Id", Is
 | `HeaderCountFormat` | `string?` | `null` | Format of the "checked / total" count in `CheckBox` style (`{0}` checked, `{1}` shown); `null` uses the translated `"{0}/{1}"` |
 | `IsOneWay` | `bool` | `false` | Hides the "move to available" buttons; each selected row gets a × button (named "Remove {name}") and `Delete` removes the highlighted rows |
 | `MaxSelectedCount` | `int?` | `null` | Maximum number of items in the selected list; transfers and drops that would exceed it are blocked, and the selected footer shows "{0} of max {1}" |
+| `MaxSelectionCount` | `int?` | `null` | The same limit under the name the other multi-select controls use; setting either sets the other |
+| `SelectedKeys` | `ObservableCollection<string>?` | `null` | Two-way: the `Identifier`s of the selected items in list order. Setting or changing it moves the items with those keys to the selected list (new ones at the end) and the other unlocked keyed items back; keys without an item are dropped |
 | `IsVirtualizing` | `bool` | `true` | Virtualizes both lists with container recycling (also when grouped) |
 | `GroupMemberPath` | `string?` | `null` | Item property to group both lists by; when `null`, the lists are grouped by `DualListSelectorItem.Group` as soon as an item has one |
 
@@ -142,6 +144,7 @@ VisibleColumns.Add(new DualListSelectorItem { Identifier = "id", Name = "Id", Is
 | Event | Type | Description |
 |-------|------|-------------|
 | `ItemsTransferred` | `EventHandler<DualListSelectorItemsTransferredEventArgs>` | Raised after items are transferred between lists |
+| `SelectedKeysChanged` | `EventHandler<ValueChangedEventArgs<IReadOnlyList<string>>>` | Raised once when `SelectedKeys` changes because the selected list changed (transfer, reorder, removal or an applied key change) |
 | `ItemsReordered` | `EventHandler<DualListSelectorItemsReorderedEventArgs>` | Raised after items are reordered in the selected list |
 | `SelectionChanged` | `EventHandler<SelectionChangedEventArgs>` | Raised when selection changes in either list |
 
