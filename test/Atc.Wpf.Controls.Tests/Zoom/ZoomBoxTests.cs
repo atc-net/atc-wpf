@@ -58,4 +58,21 @@ public sealed class ZoomBoxTests : IDisposable
 
         Assert.True(zoomBox.HasAnimatedProperties);
     }
+
+    [StaFact]
+    public void ApplyDragZoomRect_FarRegionOfAFittedLargeContent_ZoomsIntoTheDraggedRegion()
+    {
+        // 4000x3000 content fitted into 800x600 (zoom 0.2): content x 3000..3500 lies far beyond the control's width.
+        var zoomBox = ZoomBoxFactory.CreateTemplated(new Canvas { Width = 4000, Height = 3000 }, 800, 600);
+        zoomBox.UseAnimations = false;
+        zoomBox.AnimatedScaleToFit();
+
+        zoomBox.ApplyDragZoomRect(new Point(3000, 1000), new Point(3500, 1400));
+
+        var centerX = zoomBox.ContentOffsetX + (zoomBox.ContentViewportWidth / 2);
+        var centerY = zoomBox.ContentOffsetY + (zoomBox.ContentViewportHeight / 2);
+        Assert.InRange(centerX, 3000, 3500);
+        Assert.InRange(centerY, 1000, 1400);
+        Assert.InRange(zoomBox.ViewportZoom, 1.5, 1.7);
+    }
 }

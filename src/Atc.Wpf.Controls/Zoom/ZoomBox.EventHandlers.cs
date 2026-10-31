@@ -357,8 +357,7 @@ public partial class ZoomBox
         }
         else if (mouseHandlingMode == MouseHandlingModeType.DragZooming)
         {
-            var finalContentMousePoint = e.GetPosition(content);
-            ApplyDragZoomRect(finalContentMousePoint);
+            ApplyDragZoomRect(contentMouseDownPoint, e.GetPosition(content));
         }
 
         ReleaseMouseCapture();
@@ -407,13 +406,14 @@ public partial class ZoomBox
                  System.Math.Abs(dragOffset.Y) > DragZoomThreshold))
             {
                 mouseHandlingMode = MouseHandlingModeType.DragZooming;
-                InitDragZoomRect(contentMouseDownPoint, curContentMousePoint);
+
+                // The overlay canvas covers the control, so it is drawn in control coordinates.
+                InitDragZoomRect(zoomControlMouseDownPoint, curZoomControlMousePoint);
             }
         }
         else if (mouseHandlingMode == MouseHandlingModeType.DragZooming)
         {
-            curContentMousePoint = e.GetPosition(this);
-            SetDragZoomRect(zoomControlMouseDownPoint, curContentMousePoint);
+            SetDragZoomRect(zoomControlMouseDownPoint, e.GetPosition(this));
         }
     }
 
@@ -663,20 +663,30 @@ public partial class ZoomBox
         ViewportHelpers.PositionBorderOnCanvas(partDragZoomBorder, rect);
     }
 
-    private void ApplyDragZoomRect(Point finalContentMousePoint)
+    /// <summary>
+    /// Zooms to the rectangle dragged between two points in content coordinates, clipped to the content.
+    /// </summary>
+    internal void ApplyDragZoomRect(
+        Point contentStartPoint,
+        Point contentEndPoint)
     {
-        if (partDragZoomCanvas is null)
+        if (content is null)
         {
             return;
         }
 
+        // Both points are in content coordinates, so clip against the content, not the (control-sized) overlay.
         var rect = ViewportHelpers.Clip(
-            finalContentMousePoint,
-            contentMouseDownPoint,
+            contentStartPoint,
+            contentEndPoint,
             new Point(0, 0),
-            new Point(partDragZoomCanvas.ActualWidth, partDragZoomCanvas.ActualHeight));
+            new Point(content.ActualWidth, content.ActualHeight));
 
-        AnimatedZoomTo(rect);
+        if (rect is { Width: > 0, Height: > 0 })
+        {
+            AnimatedZoomTo(rect);
+        }
+
         FadeOutDragZoomRect();
     }
 
