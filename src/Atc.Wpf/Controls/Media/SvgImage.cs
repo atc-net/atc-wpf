@@ -90,6 +90,13 @@ public sealed class SvgImage : Control
         typeof(SvgImage),
         new PropertyMetadata(FileSystemLoader.Instance));
 
+    /// <summary>Identifies the <see cref="ImageFailed"/> routed event.</summary>
+    public static readonly RoutedEvent ImageFailedEvent = EventManager.RegisterRoutedEvent(
+        nameof(ImageFailed),
+        RoutingStrategy.Bubble,
+        typeof(EventHandler<SvgImageFailedEventArgs>),
+        typeof(SvgImage));
+
     private readonly TranslateTransform translateTransform = new();
     private readonly ScaleTransform scaleTransform = new();
     private Drawing? drawing;
@@ -222,6 +229,17 @@ public sealed class SvgImage : Control
         SnapsToDevicePixels = true;
     }
 
+    /// <summary>
+    /// Occurs when the SVG image from <see cref="Source"/>, <see cref="FileSource"/> or <see cref="SetImage(string)"/>
+    /// cannot be loaded, e.g. a missing file, a missing resource or malformed SVG. The image then shows nothing.
+    /// Like <see cref="System.Windows.Controls.Image.ImageFailed"/>, the error is reported here instead of being thrown.
+    /// </summary>
+    public event EventHandler<SvgImageFailedEventArgs> ImageFailed
+    {
+        add => AddHandler(ImageFailedEvent, value);
+        remove => RemoveHandler(ImageFailedEvent, value);
+    }
+
     internal Svg? Svg => svgRender?.Svg;
 
     internal Drawing? CurrentDrawing => drawing;
@@ -266,13 +284,7 @@ public sealed class SvgImage : Control
         }
 
         InitializeSvgRender();
-
-        if (svgRender is not null)
-        {
-            loadImage(svgRender);
-        }
-
-        loadImage = null;
+        RunLoadImage();
     }
 
     /// <summary>
@@ -294,13 +306,7 @@ public sealed class SvgImage : Control
         }
 
         InitializeSvgRender();
-
-        if (svgRender is not null)
-        {
-            loadImage(svgRender);
-        }
-
-        loadImage = null;
+        RunLoadImage();
     }
 
     /// <summary>
@@ -346,15 +352,10 @@ public sealed class SvgImage : Control
         }
 
         InitializeSvgRender();
-
-        if (svgRender is null)
+        if (RunLoadImage())
         {
-            return;
+            ExposeSvgBrushes();
         }
-
-        loadImage(svgRender);
-        loadImage = null;
-        ExposeSvgBrushes();
     }
 
     /// <inheritdoc />
@@ -482,7 +483,20 @@ public sealed class SvgImage : Control
 
         svgImage.SetSource(new SvgSource(
             $"resource:{uri}",
-            () => Application.GetResourceStream(new Uri(uri, UriKind.Relative))?.Stream));
+            () => OpenResource(uri)));
+    }
+
+    /// <summary>
+    /// Opens an application resource from a relative URI or an absolute pack URI.
+    /// </summary>
+    private static Stream OpenResource(string uri)
+    {
+        var resourceUri = new Uri(uri, UriKind.RelativeOrAbsolute);
+        var streamInfo = resourceUri.IsAbsoluteUri &&
+                         uri.Contains("siteoforigin", StringComparison.OrdinalIgnoreCase)
+            ? Application.GetRemoteStream(resourceUri)
+            : Application.GetResourceStream(resourceUri);
+        return streamInfo?.Stream ?? throw new IOException($"Could not find the resource '{uri}'.");
     }
 
     private static void OnFileSourceChanged(
@@ -500,18 +514,38 @@ public sealed class SvgImage : Control
             return;
         }
 
-        var fileInfo = new FileInfo(uri);
-        if (!fileInfo.Exists)
+        svgImage.SetSource(CreateFileSource(uri));
+    }
+
+    /// <summary>
+    /// The file can change on disk, so its identity includes the write time and size. It is only opened when
+    /// the image is not in the drawing cache. A missing file or an invalid path is reported when the image loads.
+    /// </summary>
+    private static SvgSource CreateFileSource(string path)
+    {
+        FileInfo fileInfo;
+        try
         {
-            throw new FileNotFoundException($"Could not find file '{fileInfo.FullName}'.", fileInfo.FullName);
+            fileInfo = new FileInfo(path);
+        }
+        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or IOException or UnauthorizedAccessException or System.Security.SecurityException)
+        {
+            return new SvgSource(
+                $"invalid-file:{path}",
+                FailWith(ex));
         }
 
-        // The file can change on disk, so its identity includes the write time and size. It is only opened when
-        // the image is not in the drawing cache.
         var fullName = fileInfo.FullName;
-        svgImage.SetSource(new SvgSource(
+        if (!fileInfo.Exists)
+        {
+            return new SvgSource(
+                $"missing-file:{fullName.ToUpperInvariant()}",
+                FailWith(new FileNotFoundException($"Could not find file '{fullName}'.", fullName)));
+        }
+
+        return new SvgSource(
             $"file:{fullName.ToUpperInvariant()}|{fileInfo.LastWriteTimeUtc.Ticks}|{fileInfo.Length}",
-            () => new FileStream(fullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)));
+            () => new FileStream(fullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
     }
 
     private static void OnImageSourceChanged(
@@ -661,15 +695,20 @@ public sealed class SvgImage : Control
             return;
         }
 
-        using var stream = source.Open();
-        if (stream is null)
+        var addToCache = CanUseDrawingCache;
+        DrawingGroup svgDrawing;
+        try
         {
+            using var stream = source.Open() ?? throw new IOException("The SVG source could not be opened.");
+            InitializeSvgRender();
+            svgDrawing = svgRender!.LoadDrawing(stream);
+        }
+        catch (Exception ex) when (IsLoadFailure(ex))
+        {
+            ShowFailure(ex);
             return;
         }
 
-        var addToCache = CanUseDrawingCache;
-        InitializeSvgRender();
-        var svgDrawing = svgRender!.LoadDrawing(stream);
         isDrawingFromCache = false;
         ShowDrawing(svgDrawing);
         var paintServerBrushes = ExposeSvgBrushes();
@@ -678,6 +717,54 @@ public sealed class SvgImage : Control
         {
             SvgDrawingCache.TryAdd(CreateCacheKey(), svgDrawing, paintServerBrushes);
         }
+    }
+
+    /// <summary>
+    /// Runs the pending <see cref="SetImage(string)"/> or <see cref="SetImage(Stream)"/> load.
+    /// A failure is reported through <see cref="ImageFailed"/>.
+    /// </summary>
+    /// <returns><see langword="true"/> when the image was loaded.</returns>
+    private bool RunLoadImage()
+    {
+        var pendingLoad = loadImage;
+        loadImage = null;
+        if (pendingLoad is null || svgRender is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            pendingLoad(svgRender);
+            return true;
+        }
+        catch (Exception ex) when (IsLoadFailure(ex))
+        {
+            ShowFailure(ex);
+            return false;
+        }
+    }
+
+    private static Func<Stream?> FailWith(Exception error)
+        => () => throw error;
+
+    private static bool IsLoadFailure(Exception ex)
+        => ex is not (OutOfMemoryException or InsufficientExecutionStackException);
+
+    /// <summary>
+    /// Shows an empty image and raises <see cref="ImageFailed"/>.
+    /// </summary>
+    private void ShowFailure(Exception ex)
+    {
+        svgRender = null;
+        isDrawingFromCache = false;
+        var emptyDrawing = new DrawingGroup();
+        emptyDrawing.Freeze();
+        ShowDrawing(emptyDrawing);
+        RaiseEvent(new SvgImageFailedEventArgs(
+            ImageFailedEvent,
+            this,
+            ex));
     }
 
     private void ShowCachedDrawing(SvgDrawingCache.Entry entry)
@@ -804,6 +891,11 @@ public sealed class SvgImage : Control
         }
 
         var rect = drawing.Bounds;
+        if (rect.IsEmpty)
+        {
+            return;
+        }
+
         switch (ControlSizeType)
         {
             case ControlSizeType.None:

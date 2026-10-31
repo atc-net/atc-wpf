@@ -301,7 +301,6 @@ internal sealed class SvgRender
         return drawingGroup;
     }
 
-    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
     private void LoadGroupElements(
         DrawingGroup drawingGroup,
         IEnumerable<Shape> elements,
@@ -346,401 +345,420 @@ internal sealed class SvgRender
                 }
             }
 
-            switch (shape)
+            try
             {
-                case AnimationBase:
+                RenderElement(
+                    drawingGroup,
+                    shape);
+            }
+            catch (Exception ex) when (ex is not OutOfMemoryException)
+            {
+                // One broken element (e.g. invalid path data or animation values) is skipped;
+                // the rest of the image still renders.
+                Trace.TraceWarning($"SVG element {shape} skipped: {ex.Message}");
+            }
+        }
+    }
+
+    [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
+    private void RenderElement(
+        DrawingGroup drawingGroup,
+        Shape shape)
+    {
+        switch (shape)
+        {
+            case AnimationBase:
+            {
+                if (UseAnimations)
                 {
-                    if (UseAnimations)
+                    switch (shape)
                     {
-                        switch (shape)
+                        case AnimateTransform animateTransform:
                         {
-                            case AnimateTransform animateTransform:
+                            if (animateTransform.Type == AnimateTransformType.Rotate &&
+                                animateTransform.From is not null &&
+                                animateTransform.To is not null)
                             {
-                                if (animateTransform.Type == AnimateTransformType.Rotate &&
-                                    animateTransform.From is not null &&
-                                    animateTransform.To is not null)
+                                var animation = new DoubleAnimation
                                 {
-                                    var animation = new DoubleAnimation
+                                    From = double.Parse(
+                                        animateTransform.From,
+                                        GlobalizationConstants.EnglishCultureInfo),
+                                    To = double.Parse(
+                                        animateTransform.To,
+                                        GlobalizationConstants.EnglishCultureInfo),
+                                    Duration = animateTransform.Duration,
+                                    RepeatBehavior = RepeatBehavior.Forever,
+                                };
+
+                                var r = new RotateTransform();
+                                drawingGroup.Transform = r;
+                                r.BeginAnimation(
+                                    RotateTransform.AngleProperty,
+                                    animation);
+                            }
+
+                            break;
+                        }
+
+                        case Animate animate:
+                        {
+                            var target = Svg!.GetShape(animate.Href!);
+                            var g = target?.GeometryElement;
+                            if (g is null)
+                            {
+                                return;
+                            }
+
+                            switch (animate.AttributeName)
+                            {
+                                case "r":
+                                {
+                                    var animation = new DoubleAnimationUsingKeyFrames
                                     {
-                                        From = double.Parse(
-                                            animateTransform.From,
-                                            GlobalizationConstants.EnglishCultureInfo),
-                                        To = double.Parse(
-                                            animateTransform.To,
-                                            GlobalizationConstants.EnglishCultureInfo),
-                                        Duration = animateTransform.Duration,
-                                        RepeatBehavior = RepeatBehavior.Forever,
+                                        Duration = animate.Duration,
                                     };
 
-                                    var r = new RotateTransform();
-                                    drawingGroup.Transform = r;
-                                    r.BeginAnimation(
-                                        RotateTransform.AngleProperty,
+                                    if (animate.Values is not null)
+                                    {
+                                        foreach (var d in animate.Values
+                                                     .Split(';')
+                                                     .Select(x => new LinearDoubleKeyFrame(
+                                                         double.Parse(
+                                                             x,
+                                                             GlobalizationConstants.EnglishCultureInfo))))
+                                        {
+                                            animation.KeyFrames.Add(d);
+                                        }
+                                    }
+
+                                    animation.RepeatBehavior = RepeatBehavior.Forever;
+                                    g.BeginAnimation(
+                                        EllipseGeometry.RadiusXProperty,
                                         animation);
+                                    g.BeginAnimation(
+                                        EllipseGeometry.RadiusYProperty,
+                                        animation);
+                                    break;
                                 }
 
-                                break;
-                            }
-
-                            case Animate animate:
-                            {
-                                var target = Svg!.GetShape(animate.Href!);
-                                var g = target?.GeometryElement;
-                                if (g is null)
+                                case "cx":
                                 {
-                                    continue;
-                                }
-
-                                switch (animate.AttributeName)
-                                {
-                                    case "r":
+                                    var animation = new PointAnimationUsingKeyFrames
                                     {
-                                        var animation = new DoubleAnimationUsingKeyFrames
-                                        {
-                                            Duration = animate.Duration,
-                                        };
+                                        Duration = animate.Duration,
+                                    };
 
-                                        if (animate.Values is not null)
-                                        {
-                                            foreach (var d in animate.Values
-                                                         .Split(';')
-                                                         .Select(x => new LinearDoubleKeyFrame(
+                                    if (animate.Values is not null)
+                                    {
+                                        foreach (var d in animate.Values
+                                                     .Split(';')
+                                                     .Select(_ => new LinearPointKeyFrame(
+                                                         new Point(
                                                              double.Parse(
-                                                                 x,
-                                                                 GlobalizationConstants.EnglishCultureInfo))))
-                                            {
-                                                animation.KeyFrames.Add(d);
-                                            }
+                                                                 _,
+                                                                 GlobalizationConstants.EnglishCultureInfo),
+                                                             ((EllipseGeometry)g)!.Center.Y))))
+                                        {
+                                            animation.KeyFrames.Add(d);
                                         }
-
-                                        animation.RepeatBehavior = RepeatBehavior.Forever;
-                                        g.BeginAnimation(
-                                            EllipseGeometry.RadiusXProperty,
-                                            animation);
-                                        g.BeginAnimation(
-                                            EllipseGeometry.RadiusYProperty,
-                                            animation);
-                                        break;
                                     }
 
-                                    case "cx":
-                                    {
-                                        var animation = new PointAnimationUsingKeyFrames
-                                        {
-                                            Duration = animate.Duration,
-                                        };
-
-                                        if (animate.Values is not null)
-                                        {
-                                            foreach (var d in animate.Values
-                                                         .Split(';')
-                                                         .Select(_ => new LinearPointKeyFrame(
-                                                             new Point(
-                                                                 double.Parse(
-                                                                     _,
-                                                                     GlobalizationConstants.EnglishCultureInfo),
-                                                                 ((EllipseGeometry)g)!.Center.Y))))
-                                            {
-                                                animation.KeyFrames.Add(d);
-                                            }
-                                        }
-
-                                        animation.RepeatBehavior = RepeatBehavior.Forever;
-                                        g.BeginAnimation(
-                                            EllipseGeometry.CenterProperty,
-                                            animation);
-                                        break;
-                                    }
-
-                                    case "cy":
-                                    {
-                                        var animation = new PointAnimationUsingKeyFrames
-                                        {
-                                            Duration = animate.Duration,
-                                        };
-
-                                        if (animate.Values is not null)
-                                        {
-                                            foreach (var d in animate.Values
-                                                         .Split(';')
-                                                         .Select(_ => new LinearPointKeyFrame(
-                                                             new Point(
-                                                                 ((EllipseGeometry)g)!.Center.X,
-                                                                 double.Parse(
-                                                                     _,
-                                                                     GlobalizationConstants.EnglishCultureInfo)))))
-                                            {
-                                                animation.KeyFrames.Add(d);
-                                            }
-                                        }
-
-                                        animation.RepeatBehavior = RepeatBehavior.Forever;
-                                        g.BeginAnimation(
-                                            EllipseGeometry.CenterProperty,
-                                            animation);
-                                        break;
-                                    }
+                                    animation.RepeatBehavior = RepeatBehavior.Forever;
+                                    g.BeginAnimation(
+                                        EllipseGeometry.CenterProperty,
+                                        animation);
+                                    break;
                                 }
 
-                                break;
+                                case "cy":
+                                {
+                                    var animation = new PointAnimationUsingKeyFrames
+                                    {
+                                        Duration = animate.Duration,
+                                    };
+
+                                    if (animate.Values is not null)
+                                    {
+                                        foreach (var d in animate.Values
+                                                     .Split(';')
+                                                     .Select(_ => new LinearPointKeyFrame(
+                                                         new Point(
+                                                             ((EllipseGeometry)g)!.Center.X,
+                                                             double.Parse(
+                                                                 _,
+                                                                 GlobalizationConstants.EnglishCultureInfo)))))
+                                        {
+                                            animation.KeyFrames.Add(d);
+                                        }
+                                    }
+
+                                    animation.RepeatBehavior = RepeatBehavior.Forever;
+                                    g.BeginAnimation(
+                                        EllipseGeometry.CenterProperty,
+                                        animation);
+                                    break;
+                                }
                             }
+
+                            break;
                         }
                     }
-
-                    continue;
                 }
 
-                case UseShape useShape:
+                return;
+            }
+
+            case UseShape useShape:
+            {
+                var subgroup = LoadUse(useShape);
+                if (subgroup is not null)
                 {
-                    var subgroup = LoadUse(useShape);
-                    if (subgroup is not null)
-                    {
-                        drawingGroup.Children.Add(subgroup);
-                    }
-
-                    continue;
-                }
-
-                case Clip clip:
-                {
-                    var subgroup = LoadGroup(
-                        clip.Elements,
-                        viewBox: null,
-                        isSwitch: false);
-                    if (clip.Transform is not null)
-                    {
-                        subgroup.Transform = clip.Transform;
-                    }
-
                     drawingGroup.Children.Add(subgroup);
-                    continue;
                 }
 
-                case Shapes.Group groupShape:
+                return;
+            }
+
+            case Clip clip:
+            {
+                var subgroup = LoadGroup(
+                    clip.Elements,
+                    viewBox: null,
+                    isSwitch: false);
+                if (clip.Transform is not null)
                 {
-                    var subgroup = LoadGroup(
-                        groupShape.Elements,
-                        viewBox: null,
-                        groupShape.IsSwitch);
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        groupShape,
-                        subgroup);
-                    continue;
+                    subgroup.Transform = clip.Transform;
                 }
 
-                case RectangleShape rectangleShape:
+                drawingGroup.Children.Add(subgroup);
+                return;
+            }
+
+            case Shapes.Group groupShape:
+            {
+                var subgroup = LoadGroup(
+                    groupShape.Elements,
+                    viewBox: null,
+                    groupShape.IsSwitch);
+                AddDrawingToGroup(
+                    drawingGroup,
+                    groupShape,
+                    subgroup);
+                return;
+            }
+
+            case RectangleShape rectangleShape:
+            {
+                var dx = rectangleShape.X;
+                var dy = rectangleShape.Y;
+                var width = rectangleShape.Width;
+                var height = rectangleShape.Height;
+                var rx = rectangleShape.Rx;
+                var ry = rectangleShape.Ry;
+                if (width <= 0 || height <= 0)
                 {
-                    var dx = rectangleShape.X;
-                    var dy = rectangleShape.Y;
-                    var width = rectangleShape.Width;
-                    var height = rectangleShape.Height;
-                    var rx = rectangleShape.Rx;
-                    var ry = rectangleShape.Ry;
-                    if (width <= 0 || height <= 0)
+                    return;
+                }
+
+                switch (rx)
+                {
+                    case <= 0 when ry > 0:
+                        rx = ry;
+                        break;
+                    case > 0 when ry <= 0:
+                        ry = rx;
+                        break;
+                }
+
+                var rect = new RectangleGeometry(
+                    new Rect(
+                        dx,
+                        dy,
+                        width,
+                        height),
+                    rx,
+                    ry);
+                var di = NewDrawingItem(
+                    rectangleShape,
+                    rect);
+                AddDrawingToGroup(
+                    drawingGroup,
+                    rectangleShape,
+                    di);
+                return;
+            }
+
+            case LineShape lineShape:
+            {
+                var lineGeometry = new LineGeometry(
+                    lineShape.P1,
+                    lineShape.P2);
+                var di = NewDrawingItem(
+                    lineShape,
+                    lineGeometry);
+                AddDrawingToGroup(
+                    drawingGroup,
+                    lineShape,
+                    di);
+                return;
+            }
+
+            case PolylineShape polylineShape:
+            {
+                if (polylineShape.Points.Length == 0)
+                {
+                    return;
+                }
+
+                var pathGeometry = new PathGeometry();
+                var pathFigure = new PathFigure();
+                pathGeometry.Figures.Add(pathFigure);
+                pathFigure.IsClosed = false;
+                pathFigure.StartPoint = polylineShape.Points[0];
+                for (var index = 1; index < polylineShape.Points.Length; index++)
+                {
+                    pathFigure.Segments.Add(new LineSegment(
+                        polylineShape.Points[index],
+                        isStroked: true));
+                }
+
+                var di = NewDrawingItem(
+                    polylineShape,
+                    pathGeometry);
+                AddDrawingToGroup(
+                    drawingGroup,
+                    polylineShape,
+                    di);
+                return;
+            }
+
+            case PolygonShape polygonShape:
+            {
+                if (polygonShape.Points.Length == 0)
+                {
+                    return;
+                }
+
+                var pathGeometry = new PathGeometry();
+                var pathFigure = new PathFigure();
+                pathGeometry.Figures.Add(pathFigure);
+                pathFigure.IsClosed = true;
+                pathFigure.StartPoint = polygonShape.Points[0];
+                for (var index = 1; index < polygonShape.Points.Length; index++)
+                {
+                    pathFigure.Segments.Add(new LineSegment(
+                        polygonShape.Points[index],
+                        isStroked: true));
+                }
+
+                var di = NewDrawingItem(
+                    polygonShape,
+                    pathGeometry);
+                AddDrawingToGroup(
+                    drawingGroup,
+                    polygonShape,
+                    di);
+                return;
+            }
+
+            case CircleShape circleShape:
+            {
+                var ellipseGeometry = new EllipseGeometry(
+                    new Point(
+                        circleShape.Cx,
+                        circleShape.Cy),
+                    circleShape.R,
+                    circleShape.R);
+                var di = NewDrawingItem(
+                    circleShape,
+                    ellipseGeometry);
+                AddDrawingToGroup(
+                    drawingGroup,
+                    circleShape,
+                    di);
+                return;
+            }
+
+            case EllipseShape ellipseShape:
+            {
+                var ellipseGeometry = new EllipseGeometry(
+                    new Point(
+                        ellipseShape.Cx,
+                        ellipseShape.Cy),
+                    ellipseShape.Rx,
+                    ellipseShape.Ry);
+                var di = NewDrawingItem(
+                    ellipseShape,
+                    ellipseGeometry);
+                AddDrawingToGroup(
+                    drawingGroup,
+                    ellipseShape,
+                    di);
+                return;
+            }
+
+            case ImageShape image:
+            {
+                var imageDrawing = new ImageDrawing(
+                    image.ImageSource,
+                    new Rect(
+                        image.X,
+                        image.Y,
+                        image.Width,
+                        image.Height));
+                AddDrawingToGroup(
+                    drawingGroup,
+                    image,
+                    imageDrawing);
+                return;
+            }
+
+            case TextShape textShape:
+            {
+                var gp = TextRender.BuildTextGeometry(textShape);
+                foreach (var gm in gp.Children)
+                {
+                    var tSpan = TextRender.GetElement(gm);
+
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                    if (tSpan is null)
                     {
-                        continue;
+                        var di = NewDrawingItem(
+                            textShape,
+                            gm);
+                        AddDrawingToGroup(
+                            drawingGroup,
+                            textShape,
+                            di);
                     }
-
-                    switch (rx)
+                    else
                     {
-                        case <= 0 when ry > 0:
-                            rx = ry;
-                            break;
-                        case > 0 when ry <= 0:
-                            ry = rx;
-                            break;
+                        var di = NewDrawingItem(
+                            tSpan,
+                            gm);
+                        AddDrawingToGroup(
+                            drawingGroup,
+                            textShape,
+                            di);
                     }
-
-                    var rect = new RectangleGeometry(
-                        new Rect(
-                            dx,
-                            dy,
-                            width,
-                            height),
-                        rx,
-                        ry);
-                    var di = NewDrawingItem(
-                        rectangleShape,
-                        rect);
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        rectangleShape,
-                        di);
-                    continue;
                 }
 
-                case LineShape lineShape:
-                {
-                    var lineGeometry = new LineGeometry(
-                        lineShape.P1,
-                        lineShape.P2);
-                    var di = NewDrawingItem(
-                        lineShape,
-                        lineGeometry);
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        lineShape,
-                        di);
-                    continue;
-                }
+                return;
+            }
 
-                case PolylineShape polylineShape:
-                {
-                    if (polylineShape.Points.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    var pathGeometry = new PathGeometry();
-                    var pathFigure = new PathFigure();
-                    pathGeometry.Figures.Add(pathFigure);
-                    pathFigure.IsClosed = false;
-                    pathFigure.StartPoint = polylineShape.Points[0];
-                    for (var index = 1; index < polylineShape.Points.Length; index++)
-                    {
-                        pathFigure.Segments.Add(new LineSegment(
-                            polylineShape.Points[index],
-                            isStroked: true));
-                    }
-
-                    var di = NewDrawingItem(
-                        polylineShape,
-                        pathGeometry);
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        polylineShape,
-                        di);
-                    continue;
-                }
-
-                case PolygonShape polygonShape:
-                {
-                    if (polygonShape.Points.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    var pathGeometry = new PathGeometry();
-                    var pathFigure = new PathFigure();
-                    pathGeometry.Figures.Add(pathFigure);
-                    pathFigure.IsClosed = true;
-                    pathFigure.StartPoint = polygonShape.Points[0];
-                    for (var index = 1; index < polygonShape.Points.Length; index++)
-                    {
-                        pathFigure.Segments.Add(new LineSegment(
-                            polygonShape.Points[index],
-                            isStroked: true));
-                    }
-
-                    var di = NewDrawingItem(
-                        polygonShape,
-                        pathGeometry);
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        polygonShape,
-                        di);
-                    continue;
-                }
-
-                case CircleShape circleShape:
-                {
-                    var ellipseGeometry = new EllipseGeometry(
-                        new Point(
-                            circleShape.Cx,
-                            circleShape.Cy),
-                        circleShape.R,
-                        circleShape.R);
-                    var di = NewDrawingItem(
-                        circleShape,
-                        ellipseGeometry);
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        circleShape,
-                        di);
-                    continue;
-                }
-
-                case EllipseShape ellipseShape:
-                {
-                    var ellipseGeometry = new EllipseGeometry(
-                        new Point(
-                            ellipseShape.Cx,
-                            ellipseShape.Cy),
-                        ellipseShape.Rx,
-                        ellipseShape.Ry);
-                    var di = NewDrawingItem(
-                        ellipseShape,
-                        ellipseGeometry);
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        ellipseShape,
-                        di);
-                    continue;
-                }
-
-                case ImageShape image:
-                {
-                    var imageDrawing = new ImageDrawing(
-                        image.ImageSource,
-                        new Rect(
-                            image.X,
-                            image.Y,
-                            image.Width,
-                            image.Height));
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        image,
-                        imageDrawing);
-                    continue;
-                }
-
-                case TextShape textShape:
-                {
-                    var gp = TextRender.BuildTextGeometry(textShape);
-                    foreach (var gm in gp.Children)
-                    {
-                        var tSpan = TextRender.GetElement(gm);
-
-                        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                        if (tSpan is null)
-                        {
-                            var di = NewDrawingItem(
-                                textShape,
-                                gm);
-                            AddDrawingToGroup(
-                                drawingGroup,
-                                textShape,
-                                di);
-                        }
-                        else
-                        {
-                            var di = NewDrawingItem(
-                                tSpan,
-                                gm);
-                            AddDrawingToGroup(
-                                drawingGroup,
-                                textShape,
-                                di);
-                        }
-                    }
-
-                    continue;
-                }
-
-                case PathShape pathShape:
-                {
-                    var path = PathGeometry.CreateFromGeometry(
-                        Geometry.Parse(pathShape.Data));
-                    var di = NewDrawingItem(
-                        pathShape,
-                        path);
-                    AddDrawingToGroup(
-                        drawingGroup,
-                        pathShape,
-                        di);
-                    break;
-                }
+            case PathShape pathShape:
+            {
+                var path = PathGeometry.CreateFromGeometry(
+                    Geometry.Parse(pathShape.Data));
+                var di = NewDrawingItem(
+                    pathShape,
+                    path);
+                AddDrawingToGroup(
+                    drawingGroup,
+                    pathShape,
+                    di);
+                break;
             }
         }
     }

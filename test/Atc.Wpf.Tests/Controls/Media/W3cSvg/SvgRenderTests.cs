@@ -261,6 +261,40 @@ public sealed class SvgRenderTests
         Assert.Equal(2d, GeometryDrawings(restored).Single().Pen.Thickness);
     }
 
+    [StaFact]
+    public void Path_WithInvalidData_IsSkippedAndTheOtherShapesRender()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <rect width="2" height="2" fill="red" />
+              <path d="M 0 0 L x y Q" fill="blue" />
+              <rect x="5" width="2" height="2" fill="green" />
+            </svg>
+            """);
+
+        Assert.Equal(2, GeometryDrawings(drawing).Count());
+    }
+
+    [StaFact]
+    public void Animate_WithInvalidValues_IsSkippedAndTheOtherShapesRender()
+    {
+        var svgRender = new SvgRender { UseAnimations = true };
+
+        var drawing = svgRender.LoadXmlDrawing(
+            $$"""
+            {{SvgOpen}}
+              <g>
+                <circle id="c" cx="5" cy="5" r="2" />
+                <animate xlink:href="#c" attributeName="r" values="2;oops;2" dur="1s" />
+              </g>
+              <rect width="2" height="2" />
+            </svg>
+            """);
+
+        Assert.Equal(2, GeometryDrawings(drawing).Count());
+    }
+
     private static DrawingGroup Render(string svg)
         => new SvgRender().LoadXmlDrawing(svg);
 
