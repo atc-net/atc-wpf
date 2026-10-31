@@ -238,7 +238,10 @@
             DockPanel.Dock="Bottom"
             FlowDirection="LeftToRight"
             IsTextSearchEnabled="True"
-            ItemTemplateSelector="{StaticResource JsonPropertyTemplateSelector}">
+            ItemTemplateSelector="{StaticResource JsonPropertyTemplateSelector}"
+            ScrollViewer.CanContentScroll="True"
+            VirtualizingPanel.IsVirtualizing="True"
+            VirtualizingPanel.VirtualizationMode="Standard">
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Click="ExpandAll" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=ExpandAll}">
@@ -274,7 +277,11 @@
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Left" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
-                    <Setter Property="IsExpanded" Value="{Binding Path=StartExpanded, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, FallbackValue=False}" />
+                    <!--
+                        IsExpanded is bound in code to the per-viewer expand state, kept by node so it survives
+                        virtualization and re-templating. Standard (not Recycling) virtualization: the expander sets
+                        IsExpanded on the tree item itself, which must not carry over to another node.
+                    -->
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>

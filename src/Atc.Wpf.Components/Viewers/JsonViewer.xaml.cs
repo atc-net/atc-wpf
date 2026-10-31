@@ -4,12 +4,18 @@ namespace Atc.Wpf.Components.Viewers;
 
 public partial class JsonViewer
 {
+    private readonly JsonNodeExpansionState expansionState = new();
+
     [DependencyProperty(DefaultValue = true)]
     private bool showActionAndInformationBar;
 
     [DependencyProperty(DefaultValue = false)]
     private bool suppressErrorMessages;
 
+    /// <summary>
+    /// Whether the root of a loaded document starts expanded, showing its first level. Deeper levels start
+    /// collapsed; use <em>Expand all</em> in the context menu to open everything. Default <c>true</c>.
+    /// </summary>
     [DependencyProperty(DefaultValue = true)]
     private bool startExpanded;
 
@@ -31,6 +37,17 @@ public partial class JsonViewer
     {
         InitializeComponent();
 
+        // The expand state is kept by node, outside the (virtualized) tree items, which read it when they
+        // get their node and report the user's changes back through the Expanded and Collapsed events.
+        var itemContainerStyle = new Style(typeof(TreeViewItem), JsonTreeView.ItemContainerStyle);
+        itemContainerStyle.Setters.Add(
+            new Setter(
+                TreeViewItem.IsExpandedProperty,
+                new Binding { Converter = expansionState, Mode = BindingMode.OneWay }));
+        JsonTreeView.ItemContainerStyle = itemContainerStyle;
+        JsonTreeView.AddHandler(TreeViewItem.ExpandedEvent, new RoutedEventHandler(OnTreeViewItemExpandedChanged));
+        JsonTreeView.AddHandler(TreeViewItem.CollapsedEvent, new RoutedEventHandler(OnTreeViewItemExpandedChanged));
+
         var detectTheme = ThemeManager.Current.DetectTheme();
         if (detectTheme is not null &&
             Enum<ThemeMode>.TryParse(detectTheme.BaseColorScheme, ignoreCase: false, out var themeModeValue))
@@ -49,12 +66,12 @@ public partial class JsonViewer
     {
         JsonTreeView.ItemsSource = null;
         JsonTreeView.Items.Clear();
+        expansionState.Clear();
     }
 
     /// <summary>
     /// Parses the JSON text and shows it in the tree view. Empty input is ignored; invalid JSON
-    /// is reported in a message box (the invalid-format message is skipped when
-    /// <c>SuppressErrorMessages</c> is set).
+    /// is reported in a message box unless <c>SuppressErrorMessages</c> is set.
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "OK.")]
     public void Load(string json)
@@ -66,6 +83,7 @@ public partial class JsonViewer
 
         JsonTreeView.ItemsSource = null;
         JsonTreeView.Items.Clear();
+        expansionState.Clear();
 
         if (!json.IsFormatJson())
         {
@@ -84,14 +102,22 @@ public partial class JsonViewer
             var node = JsonNode.Parse(json);
             children.Add(node);
 
+            if (StartExpanded)
+            {
+                expansionState.Set(node, isExpanded: true);
+            }
+
             JsonTreeView.ItemsSource = children;
         }
         catch (Exception ex)
         {
-            MessageBox.Show(string.Format(
-                CultureInfo.CurrentCulture,
-                JsonViewerStrings.CouldNotOpenJsonStringFormat1,
-                ex.Message));
+            if (!SuppressErrorMessages)
+            {
+                MessageBox.Show(string.Format(
+                    CultureInfo.CurrentCulture,
+                    JsonViewerStrings.CouldNotOpenJsonStringFormat1,
+                    ex.Message));
+            }
         }
     }
 
@@ -145,7 +171,28 @@ public partial class JsonViewer
             return;
         }
 
-        jsonViewer.Load(jsonViewer.Data);
+        // The node colours come from JsonColorSchema; re-create the tree items so they pick up the new theme,
+        // without parsing the document again (the nodes and their expand state are kept).
+        JsonColorSchema.SetThemeMode((ThemeMode)e.NewValue);
+        jsonViewer.RefreshTreeItems();
+    }
+
+    private void RefreshTreeItems()
+    {
+        if (JsonTreeView.ItemsSource is not null)
+        {
+            JsonTreeView.Items.Refresh();
+        }
+    }
+
+    private void OnTreeViewItemExpandedChanged(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (e.OriginalSource is TreeViewItem { DataContext: JsonNode node } treeViewItem)
+        {
+            expansionState.Set(node, treeViewItem.IsExpanded);
+        }
     }
 
     private static void OnDataChanged(
@@ -192,61 +239,17 @@ public partial class JsonViewer
             return;
         }
 
-        var prevCursor = Cursor;
-        Cursor = Cursors.Wait;
-        ToggleItems(JsonTreeView, JsonTreeView.Items, isExpanded);
-        Cursor = prevCursor;
-    }
-
-    private void ToggleItems(
-        ItemsControl parentContainer,
-        IEnumerable items,
-        bool isExpanded)
-    {
-        var itemGen = parentContainer.ItemContainerGenerator;
-        if (itemGen.Status == GeneratorStatus.ContainersGenerated)
+        // Set the state by node (the tree is virtualized, so most nodes have no tree item), then let the tree
+        // items read it again.
+        if (isExpanded)
         {
-            Recurse(items, isExpanded, itemGen);
+            expansionState.ExpandAll(JsonTreeView.Items.OfType<JsonNode>());
         }
         else
         {
-            itemGen.StatusChanged += OnStatusChanged;
-
-            void OnStatusChanged(
-                object? sender,
-                EventArgs e)
-            {
-                if (itemGen.Status != GeneratorStatus.ContainersGenerated)
-                {
-                    return;
-                }
-
-                // One shot: otherwise every Expand/Collapse All leaves another handler behind.
-                itemGen.StatusChanged -= OnStatusChanged;
-                Recurse(items, isExpanded, itemGen);
-            }
-        }
-    }
-
-    private void Recurse(
-        IEnumerable items,
-        bool isExpanded,
-        ItemContainerGenerator itemContainerGenerator)
-    {
-        if (itemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
-        {
-            return;
+            expansionState.Clear();
         }
 
-        foreach (var item in items)
-        {
-            if (itemContainerGenerator.ContainerFromItem(item) is not TreeViewItem tvi)
-            {
-                continue;
-            }
-
-            tvi.IsExpanded = isExpanded;
-            ToggleItems(tvi, tvi.Items, isExpanded);
-        }
+        RefreshTreeItems();
     }
 }

@@ -40,6 +40,7 @@ global using Atc.Wpf.Controls.Progressing;
 global using Atc.Wpf.Controls.Zoom;
 global using Atc.Wpf.Data;
 global using Atc.Wpf.Dialogs;
+global using Atc.Wpf.Documents.ColorSchemas;
 global using Atc.Wpf.DragDrop;
 global using Atc.Wpf.Factories;
 global using Atc.Wpf.Forms;

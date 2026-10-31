@@ -56,7 +56,7 @@ jsonViewer.Load(jsonString);
 | `Data` | `string` | `null` | JSON string to display |
 | `ShowActionAndInformationBar` | `bool` | `true` | Show the toolbar with copy/expand/collapse buttons |
 | `SuppressErrorMessages` | `bool` | `false` | Suppress error display for invalid JSON |
-| `StartExpanded` | `bool` | `true` | Whether the tree starts fully expanded |
+| `StartExpanded` | `bool` | `true` | Whether the root starts expanded, showing the first level (deeper levels start collapsed; **Expand all** in the context menu opens everything) |
 | `ThemeMode` | `ThemeMode` | `Light` | Color theme (two-way bindable) |
 
 ## 🔧 Action Bar
