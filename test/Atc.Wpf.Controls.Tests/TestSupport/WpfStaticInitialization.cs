@@ -33,6 +33,11 @@ public sealed class WpfStaticInitialization
             RuntimeHelpers.RunClassConstructor(type.TypeHandle);
         }
 
+        // The Atc theme provider registers itself with the process-wide ThemeManager when its type is first used
+        // (e.g. by a themed NiceWindow). Registering it here, before any test thread has a view on the theme
+        // collections, keeps that registration from failing on another test's thread.
+        RuntimeHelpers.RunClassConstructor(typeof(Atc.Wpf.Theming.Theming.AtcAppsLibraryThemeProvider).TypeHandle);
+
         Dispatcher.CurrentDispatcher.InvokeShutdown();
     }
 }
