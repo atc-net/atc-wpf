@@ -7,6 +7,7 @@ public sealed class ApplicationMonitorViewModelBatchTests
     {
         using var sut = new ApplicationMonitorViewModel
         {
+            ListenOnToastNotificationMessage = false,
             MaxEntries = 1_000,
             IsPaused = true,
         };
@@ -30,7 +31,7 @@ public sealed class ApplicationMonitorViewModelBatchTests
     [StaFact]
     public void Batch_RaisesCanExecuteChangedOncePerCommand()
     {
-        using var sut = new ApplicationMonitorViewModel { IsPaused = true };
+        using var sut = new ApplicationMonitorViewModel { ListenOnToastNotificationMessage = false, IsPaused = true };
         var copyAllRaised = 0;
         var exportRaised = 0;
         sut.CopyAllCommand.CanExecuteChanged += (_, _) => copyAllRaised++;

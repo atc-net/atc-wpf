@@ -7,6 +7,7 @@ public sealed class ApplicationMonitorViewViewModelTests
     {
         using var viewModel = new ApplicationMonitorViewModel
         {
+            ListenOnToastNotificationMessage = false,
             MaxEntries = 500,
             AutoScroll = false,
             IsPaused = true,
@@ -25,7 +26,7 @@ public sealed class ApplicationMonitorViewViewModelTests
     [StaFact]
     public void DataContext_ValuesSetOnTheView_ArePushedToTheViewModel()
     {
-        using var viewModel = new ApplicationMonitorViewModel();
+        using var viewModel = new ApplicationMonitorViewModel { ListenOnToastNotificationMessage = false };
 
         var view = new ApplicationMonitorView
         {
@@ -40,8 +41,8 @@ public sealed class ApplicationMonitorViewViewModelTests
     [StaFact]
     public void DataContext_Swapped_TheNewViewModelKeepsItsSettings()
     {
-        using var first = new ApplicationMonitorViewModel { MaxEntries = 300 };
-        using var second = new ApplicationMonitorViewModel { MaxEntries = 700 };
+        using var first = new ApplicationMonitorViewModel { ListenOnToastNotificationMessage = false, MaxEntries = 300 };
+        using var second = new ApplicationMonitorViewModel { ListenOnToastNotificationMessage = false, MaxEntries = 700 };
         var view = new ApplicationMonitorView { DataContext = first };
 
         view.DataContext = second;
@@ -54,7 +55,7 @@ public sealed class ApplicationMonitorViewViewModelTests
     [StaFact]
     public void AddEntry_RaisesScrollRequestedOnlyOnThatViewModel()
     {
-        using var first = new ApplicationMonitorViewModel();
+        using var first = new ApplicationMonitorViewModel { ListenOnToastNotificationMessage = false };
         using var second = new ApplicationMonitorViewModel { ListenOnToastNotificationMessage = false };
         var firstRaised = 0;
         var secondRaised = 0;
