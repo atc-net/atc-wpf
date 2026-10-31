@@ -16,6 +16,8 @@ namespace Atc.Wpf.Controls.Navigation;
 [TemplatePart(Name = "PART_BackButton", Type = typeof(ButtonBase))]
 public partial class NavigationView : Control
 {
+    // The items whose Click this view listens to, so a Reset (Clear) can still unhook the removed ones.
+    private readonly HashSet<NavigationViewItem> subscribedItems = [];
     private Panel? menuItemsHost;
     private Panel? footerMenuItemsHost;
     private ButtonBase? backButton;
@@ -179,14 +181,21 @@ public partial class NavigationView : Control
     {
         var view = (NavigationView)d;
 
+        // Weak subscriptions: a long-lived (e.g. singleton) service must not keep a closed view alive.
         if (e.OldValue is INavigationService oldService)
         {
-            oldService.Navigated -= view.OnNavigated;
+            WeakEventManager<INavigationService, NavigatedEventArgs>.RemoveHandler(
+                oldService,
+                nameof(INavigationService.Navigated),
+                view.OnNavigated);
         }
 
         if (e.NewValue is INavigationService newService)
         {
-            newService.Navigated += view.OnNavigated;
+            WeakEventManager<INavigationService, NavigatedEventArgs>.AddHandler(
+                newService,
+                nameof(INavigationService.Navigated),
+                view.OnNavigated);
         }
 
         view.SyncWithNavigationService();
@@ -234,25 +243,25 @@ public partial class NavigationView : Control
         object? sender,
         NotifyCollectionChangedEventArgs e)
     {
-        if (e.OldItems is not null)
+        // Reconcile against both collections instead of trusting OldItems: a Reset (Clear) reports none.
+        var currentItems = new HashSet<NavigationViewItem>(AllItems());
+
+        foreach (var item in subscribedItems.Where(x => !currentItems.Contains(x)).ToList())
         {
-            foreach (NavigationViewItem item in e.OldItems)
-            {
-                item.Click -= OnItemClick;
-                if (ReferenceEquals(item, SelectedItem))
-                {
-                    SetSelectedItemWithoutNavigating(null);
-                }
-            }
+            item.Click -= OnItemClick;
+            subscribedItems.Remove(item);
         }
 
-        if (e.NewItems is not null)
+        foreach (var item in currentItems.Where(subscribedItems.Add))
         {
-            foreach (NavigationViewItem item in e.NewItems)
-            {
-                item.Click -= OnItemClick;
-                item.Click += OnItemClick;
-            }
+            item.Click += OnItemClick;
+        }
+
+        if (SelectedItem is { } selected &&
+            !currentItems.Contains(selected))
+        {
+            selected.IsSelected = false;
+            SetSelectedItemWithoutNavigating(null);
         }
 
         RebuildItemsHosts();
