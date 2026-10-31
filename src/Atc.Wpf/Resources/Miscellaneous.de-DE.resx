@@ -127,4 +127,16 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Alle auswählen</value>
   </data>
+  <data name="Float" xml:space="preserve">
+    <value>Abdocken</value>
+  </data>
+  <data name="Float1" xml:space="preserve">
+    <value>{0} abdocken</value>
+  </data>
+  <data name="Dock1" xml:space="preserve">
+    <value>{0} andocken</value>
+  </data>
+  <data name="Close1" xml:space="preserve">
+    <value>{0} schließen</value>
+  </data>
 </root>

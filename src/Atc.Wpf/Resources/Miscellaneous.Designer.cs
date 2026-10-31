@@ -266,5 +266,41 @@ namespace Atc.Wpf.Resources {
                 return ResourceManager.GetString("SelectAll", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Float.
+        /// </summary>
+        public static string Float {
+            get {
+                return ResourceManager.GetString("Float", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Float {0}.
+        /// </summary>
+        public static string Float1 {
+            get {
+                return ResourceManager.GetString("Float1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dock {0}.
+        /// </summary>
+        public static string Dock1 {
+            get {
+                return ResourceManager.GetString("Dock1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close {0}.
+        /// </summary>
+        public static string Close1 {
+            get {
+                return ResourceManager.GetString("Close1", resourceCulture);
+            }
+        }
     }
 }

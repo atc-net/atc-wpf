@@ -1,8 +1,8 @@
 namespace Atc.Wpf.Controls.Layouts;
 
 /// <summary>
-/// An enhanced dock panel with resizable splitters, collapsible regions, and layout persistence.
-/// Perfect for building IDE-style interfaces with tool windows.
+/// An enhanced dock panel with resizable splitters, collapsible regions, tabbed panes, floating tool windows
+/// and layout persistence. Perfect for building IDE-style interfaces with tool windows.
 /// </summary>
 public sealed partial class DockPanelPro : Panel
 {
@@ -60,10 +60,10 @@ public sealed partial class DockPanelPro : Panel
     private Brush? splitterBackground;
 
     /// <summary>
-    /// Gets or sets a value indicating whether floating windows are allowed.
-    /// This is a future feature placeholder.
+    /// Gets or sets a value indicating whether panes (<see cref="DockPane"/>) can be floated into their own tool windows.
+    /// A pane can also opt out with <see cref="DockPane.CanFloat"/>.
     /// </summary>
-    [DependencyProperty(DefaultValue = false)]
+    [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnAllowFloatingChanged))]
     private bool allowFloating;
 
     static DockPanelPro()
@@ -71,6 +71,7 @@ public sealed partial class DockPanelPro : Panel
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(DockPanelPro),
             new FrameworkPropertyMetadata(typeof(DockPanelPro)));
+        RegisterCommandBindings();
     }
 
     /// <summary>
@@ -78,6 +79,8 @@ public sealed partial class DockPanelPro : Panel
     /// </summary>
     public DockPanelPro()
     {
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
     }
 
     /// <summary>
@@ -223,10 +226,17 @@ public sealed partial class DockPanelPro : Panel
     }
 
     /// <summary>
-    /// Resets the layout to default values.
+    /// Resets the layout to default values: region sizes, expanded states, and all panes docked
+    /// (floating panes are docked back, closed panes restored).
     /// </summary>
     public void ResetLayout()
     {
+        foreach (var pane in GetPanes().Where(x => x.State != DockPaneState.Docked))
+        {
+            CloseFloatingWindow(pane);
+            ChangePaneState(pane, DockPaneState.Docked);
+        }
+
         topHeight = 0;
         bottomHeight = 0;
         leftWidth = 0;
@@ -287,7 +297,7 @@ public sealed partial class DockPanelPro : Panel
         var desiredHeight = 0.0;
 
         // Measure top region
-        if (topRegion is not null && topRegion.IsExpanded)
+        if (topRegion is not null && IsShown(topRegion))
         {
             var height = GetRegionHeight(topRegion, ref topHeight, 100);
             height = ClampHeight(height, topRegion);
@@ -297,7 +307,7 @@ public sealed partial class DockPanelPro : Panel
         }
 
         // Measure bottom region
-        if (bottomRegion is not null && bottomRegion.IsExpanded)
+        if (IsShown(bottomRegion))
         {
             var height = GetRegionHeight(bottomRegion, ref bottomHeight, 100);
             height = ClampHeight(height, bottomRegion);
@@ -309,7 +319,7 @@ public sealed partial class DockPanelPro : Panel
         var centerHeight = System.Math.Max(0, measureHeight - usedHeight);
 
         // Measure left region
-        if (leftRegion is not null && leftRegion.IsExpanded)
+        if (IsShown(leftRegion))
         {
             var width = GetRegionWidth(leftRegion, ref leftWidth, 200);
             width = ClampWidth(width, leftRegion);
@@ -319,7 +329,7 @@ public sealed partial class DockPanelPro : Panel
         }
 
         // Measure right region
-        if (rightRegion is not null && rightRegion.IsExpanded)
+        if (IsShown(rightRegion))
         {
             var width = GetRegionWidth(rightRegion, ref rightWidth, 200);
             width = ClampWidth(width, rightRegion);
@@ -373,7 +383,7 @@ public sealed partial class DockPanelPro : Panel
         var right = finalSize.Width;
 
         // Arrange top region and splitter
-        if (topRegion is not null && topRegion.IsExpanded)
+        if (topRegion is not null && IsShown(topRegion))
         {
             var height = ClampHeight(topHeight, topRegion);
             topRegion.Arrange(new Rect(0, top, finalSize.Width, height));
@@ -387,7 +397,7 @@ public sealed partial class DockPanelPro : Panel
         }
 
         // Arrange bottom region and splitter
-        if (bottomRegion is not null && bottomRegion.IsExpanded)
+        if (IsShown(bottomRegion))
         {
             var height = ClampHeight(bottomHeight, bottomRegion);
             bottom -= height;
@@ -403,7 +413,7 @@ public sealed partial class DockPanelPro : Panel
         var centerHeight = System.Math.Max(0, bottom - top);
 
         // Arrange left region and splitter
-        if (leftRegion is not null && leftRegion.IsExpanded)
+        if (IsShown(leftRegion))
         {
             var width = ClampWidth(leftWidth, leftRegion);
             leftRegion.Arrange(new Rect(left, top, width, centerHeight));
@@ -417,7 +427,7 @@ public sealed partial class DockPanelPro : Panel
         }
 
         // Arrange right region and splitter
-        if (rightRegion is not null && rightRegion.IsExpanded)
+        if (IsShown(rightRegion))
         {
             var width = ClampWidth(rightWidth, rightRegion);
             right -= width;
@@ -439,6 +449,18 @@ public sealed partial class DockPanelPro : Panel
 
         return finalSize;
     }
+
+    /// <inheritdoc />
+    protected override AutomationPeer OnCreateAutomationPeer()
+        => new DockPanelProAutomationPeer(this);
+
+    private static bool IsShown([NotNullWhen(true)] DockRegion? region)
+        => region is not null && region.IsExpanded && !region.IsEmptyPaneGroup;
+
+    private static void OnAllowFloatingChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => CommandManager.InvalidateRequerySuggested();
 
     private DockRegion? FindRegionById(string? regionId)
     {
@@ -511,7 +533,7 @@ public sealed partial class DockPanelPro : Panel
         DockRegion? region,
         bool isHorizontal)
     {
-        if (region is null || !region.IsResizable || !region.IsExpanded)
+        if (!IsShown(region) || !region.IsResizable)
         {
             if (splitter is not null)
             {
@@ -560,22 +582,22 @@ public sealed partial class DockPanelPro : Panel
 
     private void HideUnusedSplitters()
     {
-        if (topSplitter is not null && (topRegion is null || !topRegion.IsExpanded))
+        if (topSplitter is not null && !IsShown(topRegion))
         {
             topSplitter.Arrange(new Rect(0, 0, 0, 0));
         }
 
-        if (bottomSplitter is not null && (bottomRegion is null || !bottomRegion.IsExpanded))
+        if (bottomSplitter is not null && !IsShown(bottomRegion))
         {
             bottomSplitter.Arrange(new Rect(0, 0, 0, 0));
         }
 
-        if (leftSplitter is not null && (leftRegion is null || !leftRegion.IsExpanded))
+        if (leftSplitter is not null && !IsShown(leftRegion))
         {
             leftSplitter.Arrange(new Rect(0, 0, 0, 0));
         }
 
-        if (rightSplitter is not null && (rightRegion is null || !rightRegion.IsExpanded))
+        if (rightSplitter is not null && !IsShown(rightRegion))
         {
             rightSplitter.Arrange(new Rect(0, 0, 0, 0));
         }

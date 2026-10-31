@@ -127,4 +127,16 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Vælg alle</value>
   </data>
+  <data name="Float" xml:space="preserve">
+    <value>Gør flydende</value>
+  </data>
+  <data name="Float1" xml:space="preserve">
+    <value>Gør {0} flydende</value>
+  </data>
+  <data name="Dock1" xml:space="preserve">
+    <value>Fastgør {0}</value>
+  </data>
+  <data name="Close1" xml:space="preserve">
+    <value>Luk {0}</value>
+  </data>
 </root>

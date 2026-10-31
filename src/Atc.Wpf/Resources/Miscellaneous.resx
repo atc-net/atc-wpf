@@ -127,4 +127,16 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Select all</value>
   </data>
+  <data name="Float" xml:space="preserve">
+    <value>Float</value>
+  </data>
+  <data name="Float1" xml:space="preserve">
+    <value>Float {0}</value>
+  </data>
+  <data name="Dock1" xml:space="preserve">
+    <value>Dock {0}</value>
+  </data>
+  <data name="Close1" xml:space="preserve">
+    <value>Close {0}</value>
+  </data>
 </root>
