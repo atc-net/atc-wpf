@@ -638,6 +638,15 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         }
     }
 
+    private static (int Row, int Column) GetCell(
+        int position,
+        bool fillRowFirst,
+        int rowCount,
+        int columnCount)
+        => fillRowFirst
+            ? (Clamp(position / columnCount, rowCount - 1), Clamp(position % columnCount, columnCount - 1))
+            : (Clamp(position % rowCount, rowCount - 1), Clamp(position / rowCount, columnCount - 1));
+
     /// <summary>
     /// Perform the grid layout of row and column indexes.
     /// </summary>
@@ -655,54 +664,35 @@ public sealed class AutoGrid : System.Windows.Controls.Grid
         }
 
         var position = 0;
+        var cellCount = rowDefCount * colDefCount;
         var skip = new bool[rowDefCount, colDefCount];
         foreach (UIElement child in Children)
         {
             var childIsCollapsed = child.Visibility == Visibility.Collapsed;
             if (IsAutoIndexing && !childIsCollapsed)
             {
-                if (fillRowFirst)
+                // Skip every cell already taken by an earlier span (several may be adjacent).
+                var (row, col) = GetCell(position, fillRowFirst, rowDefCount, colDefCount);
+                while (skip[row, col] && position < cellCount - 1)
                 {
-                    var row = Clamp(position / colDefCount, rowDefCount - 1);
-                    var col = Clamp(position % colDefCount, colDefCount - 1);
-                    if (skip[row, col])
-                    {
-                        position++;
-                        row = Clamp(position / colDefCount, rowDefCount - 1);
-                        col = Clamp(position % colDefCount, colDefCount - 1);
-                    }
-
-                    SetRow(child, row);
-                    SetColumn(child, col);
-                    position += GetColumnSpan(child);
-
-                    // A span that reaches past the last row is clipped, as Grid does.
-                    var offset = System.Math.Min(GetRowSpan(child) - 1, rowDefCount - 1 - row);
-                    while (offset > 0)
-                    {
-                        skip[row + offset--, col] = true;
-                    }
+                    position++;
+                    (row, col) = GetCell(position, fillRowFirst, rowDefCount, colDefCount);
                 }
-                else
+
+                SetRow(child, row);
+                SetColumn(child, col);
+                position += fillRowFirst
+                    ? GetColumnSpan(child)
+                    : GetRowSpan(child);
+
+                // Reserve the whole span rectangle; a span that reaches past the last row/column is clipped, as Grid does.
+                var lastRow = System.Math.Min(row + GetRowSpan(child), rowDefCount) - 1;
+                var lastCol = System.Math.Min(col + GetColumnSpan(child), colDefCount) - 1;
+                for (var r = row; r <= lastRow; r++)
                 {
-                    var row = Clamp(position % rowDefCount, rowDefCount - 1);
-                    var col = Clamp(position / rowDefCount, colDefCount - 1);
-                    if (skip[row, col])
+                    for (var c = col; c <= lastCol; c++)
                     {
-                        position++;
-                        row = Clamp(position % rowDefCount, rowDefCount - 1);
-                        col = Clamp(position / rowDefCount, colDefCount - 1);
-                    }
-
-                    SetRow(child, row);
-                    SetColumn(child, col);
-                    position += GetRowSpan(child);
-
-                    // A span that reaches past the last column is clipped, as Grid does.
-                    var offset = System.Math.Min(GetColumnSpan(child) - 1, colDefCount - 1 - col);
-                    while (offset > 0)
-                    {
-                        skip[row, col + offset--] = true;
+                        skip[r, c] = true;
                     }
                 }
             }

@@ -368,4 +368,86 @@ public sealed class AutoGridTests
         Assert.Equal(0, Grid.GetRow(spanning));
         Assert.Equal(1, Grid.GetColumn(spanning));
     }
+
+    [StaFact]
+    public void Measure_TwoAdjacentRowSpans_PlacesTheNextChildAfterBothSkippedCells()
+    {
+        // A and B both span two rows, so row 1 only has column 2 free: C fills (0,2) and D must go to (1,2).
+        var grid = new AutoGrid
+        {
+            Columns = "*,*,*",
+            Rows = "*,*,*",
+        };
+
+        var a = new Border();
+        var b = new Border();
+        var c = new Border();
+        var d = new Border();
+        Grid.SetRowSpan(a, 2);
+        Grid.SetRowSpan(b, 2);
+        grid.Children.Add(a);
+        grid.Children.Add(b);
+        grid.Children.Add(c);
+        grid.Children.Add(d);
+
+        grid.Measure(new Size(300, 300));
+
+        Assert.Equal((0, 2), (Grid.GetRow(c), Grid.GetColumn(c)));
+        Assert.Equal((1, 2), (Grid.GetRow(d), Grid.GetColumn(d)));
+    }
+
+    [StaFact]
+    public void Measure_TwoByTwoSpan_ReservesTheWholeRectangle()
+    {
+        // A spans 2x2, so row 1 has only column 2 free: B fills (0,2), C goes to (1,2) and D to (2,0).
+        var grid = new AutoGrid
+        {
+            Columns = "*,*,*",
+            Rows = "*,*,*",
+        };
+
+        var a = new Border();
+        var b = new Border();
+        var c = new Border();
+        var d = new Border();
+        Grid.SetRowSpan(a, 2);
+        Grid.SetColumnSpan(a, 2);
+        grid.Children.Add(a);
+        grid.Children.Add(b);
+        grid.Children.Add(c);
+        grid.Children.Add(d);
+
+        grid.Measure(new Size(300, 300));
+
+        Assert.Equal((0, 2), (Grid.GetRow(b), Grid.GetColumn(b)));
+        Assert.Equal((1, 2), (Grid.GetRow(c), Grid.GetColumn(c)));
+        Assert.Equal((2, 0), (Grid.GetRow(d), Grid.GetColumn(d)));
+    }
+
+    [StaFact]
+    public void Measure_TwoAdjacentColumnSpans_WhenFillingColumnsFirst_PlacesTheNextChildAfterBothSkippedCells()
+    {
+        var grid = new AutoGrid
+        {
+            Columns = "*,*,*",
+            Rows = "*,*,*",
+            Orientation = Orientation.Vertical,
+        };
+
+        var a = new Border();
+        var b = new Border();
+        var c = new Border();
+        var d = new Border();
+        Grid.SetColumnSpan(a, 2);
+        Grid.SetColumnSpan(b, 2);
+        grid.Children.Add(a);
+        grid.Children.Add(b);
+        grid.Children.Add(c);
+        grid.Children.Add(d);
+
+        grid.Measure(new Size(300, 300));
+
+        Assert.Equal((2, 0), (Grid.GetRow(c), Grid.GetColumn(c)));
+        Assert.Equal((2, 1), (Grid.GetRow(d), Grid.GetColumn(d)));
+    }
 }
