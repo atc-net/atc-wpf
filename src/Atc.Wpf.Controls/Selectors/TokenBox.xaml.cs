@@ -370,7 +370,9 @@ public partial class TokenBox
         }
 
         var atTextStart = PartTextBox.CaretIndex == 0 && PartTextBox.SelectionLength == 0;
-        switch (key)
+
+        // Left and Right follow the layout: in right-to-left the tokens are to the right of the text.
+        switch (FlowDirectionKeyHelper.ToLayoutKey(key, FlowDirection))
         {
             case Key.Down when modifiers == ModifierKeys.None:
             case Key.Up when modifiers == ModifierKeys.None:

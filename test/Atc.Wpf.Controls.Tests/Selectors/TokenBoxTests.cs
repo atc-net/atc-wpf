@@ -407,6 +407,24 @@ public sealed class TokenBoxTests : IDisposable
     }
 
     [StaFact]
+    public void Arrow_keys_across_tokens_are_mirrored_in_right_to_left()
+    {
+        var sut = Create();
+        sut.FlowDirection = FlowDirection.RightToLeft;
+        sut.SelectedKeys = ["orders", "payments", "shipping"];
+
+        Assert.False(sut.HandleKey(Key.Left, ModifierKeys.None));
+        Assert.Equal(-1, sut.SelectedTokenIndex);
+
+        Assert.True(sut.HandleKey(Key.Right, ModifierKeys.None));
+        Assert.Equal(2, sut.SelectedTokenIndex);
+        Assert.True(sut.HandleKey(Key.Right, ModifierKeys.None));
+        Assert.Equal(1, sut.SelectedTokenIndex);
+        Assert.True(sut.HandleKey(Key.Left, ModifierKeys.None));
+        Assert.Equal(2, sut.SelectedTokenIndex);
+    }
+
+    [StaFact]
     public void Escape_closes_the_suggestions_then_clears_the_text()
     {
         var sut = Create();

@@ -151,7 +151,7 @@ While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke
 | `↓` / `↑` | Move in the suggestions (opens them when closed) |
 | `Enter`, `Tab`, a separator | Pick the highlighted suggestion, or create (when allowed) |
 | `Backspace` in an empty text | Select the last removable token; a second `Backspace` removes it |
-| `←` / `→` at the text start | Move the selection across the tokens; `Delete` removes the selected one |
+| `←` / `→` at the text start | Move the selection across the tokens; `Delete` removes the selected one (mirrored in right-to-left, where the tokens are to the right of the text) |
 | `Ctrl+V` | Paste and split |
 | `Esc` | Close the suggestions; a second `Esc` clears the typed text |
 
