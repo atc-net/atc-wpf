@@ -123,7 +123,7 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.GetFullIdentifier(), labelToggleSwitch.IsOn);
                     break;
                 case LabelComboBox labelComboBox:
-                    result.Add(control.GetFullIdentifier(), labelComboBox.SelectedKey);
+                    AddComboBoxValue(result, labelComboBox);
                     break;
                 case LabelCheckListBox labelCheckListBox:
                     result.Add(control.GetFullIdentifier(), GetSelectedKeysValue(control, labelCheckListBox.SelectedKeys));
@@ -147,7 +147,7 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.GetFullIdentifier(), (labelMultiColumnComboBox.SelectedKeys ?? []).ToList());
                     break;
                 case LabelDecimalBox labelDecimalBox:
-                    result.Add(control.GetFullIdentifier(), labelDecimalBox.Value);
+                    AddNumberValue(result, control, labelDecimalBox.Value, labelDecimalBox.Value);
                     break;
                 case LabelDecimalXyBox labelDecimalXyBox:
                     if (labelDecimalXyBox.InputDataType == typeof(Point2D) ||
@@ -162,7 +162,7 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
 
                     break;
                 case LabelIntegerBox labelIntegerBox:
-                    result.Add(control.GetFullIdentifier(), labelIntegerBox.Value);
+                    AddNumberValue(result, control, labelIntegerBox.Value, labelIntegerBox.Value);
                     break;
                 case LabelPixelSizeBox labelPixelSizeBox:
                     result.Add(
@@ -239,6 +239,59 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Adds the selected key of a combo box. For an enum property (see <see cref="ILabelControlBase.InputDataType"/>)
+    /// an empty or placeholder selection gives <see langword="null"/> for a nullable property and no value at all for
+    /// a non-nullable one, so the model keeps its current value.
+    /// </summary>
+    private static void AddComboBoxValue(
+        Dictionary<string, object> result,
+        LabelComboBox labelComboBox)
+    {
+        var inputDataType = labelComboBox.InputDataType;
+        var nonNullableType = inputDataType is null
+            ? null
+            : Nullable.GetUnderlyingType(inputDataType) ?? inputDataType;
+        var selectedKey = labelComboBox.SelectedKey;
+
+        if (nonNullableType is { IsEnum: true } &&
+            (string.IsNullOrWhiteSpace(selectedKey) ||
+             Guid.TryParse(selectedKey, out _)))
+        {
+            if (nonNullableType != inputDataType)
+            {
+                result.Add(labelComboBox.GetFullIdentifier(), null!);
+            }
+
+            return;
+        }
+
+        result.Add(labelComboBox.GetFullIdentifier(), selectedKey);
+    }
+
+    /// <summary>
+    /// Adds the value of a number box. For an integral property (see <see cref="ILabelControlBase.InputDataType"/>)
+    /// the value is written as a whole number, and a value outside the type's range is left out, so the model
+    /// keeps its current value. Any other property gets <paramref name="controlValue"/> as is.
+    /// </summary>
+    private static void AddNumberValue(
+        Dictionary<string, object> result,
+        ILabelControlBase control,
+        decimal value,
+        object controlValue)
+    {
+        if (!IntegralTypeHelper.TryGetBounds(control.InputDataType, out _, out _))
+        {
+            result.Add(control.GetFullIdentifier(), controlValue);
+            return;
+        }
+
+        if (IntegralTypeHelper.TryGetWholeNumber(value, control.InputDataType, out var integralValue))
+        {
+            result.Add(control.GetFullIdentifier(), integralValue);
+        }
     }
 
     /// <summary>

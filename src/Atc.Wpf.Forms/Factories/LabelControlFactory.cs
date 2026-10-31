@@ -43,6 +43,7 @@ public static class LabelControlFactory
             LabelText = labelText.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
             IsMandatory = isMandatory,
+            InputDataType = inputDataType,
             Items = new Dictionary<string, string>(StringComparer.Ordinal),
         };
 
@@ -491,7 +492,14 @@ public static class LabelControlFactory
             }
         }
 
-        return CreateLabelDecimalBox(
+        var isIntegralType = IntegralTypeHelper.TryGetBounds(inputType, out var typeMinimum, out var typeMaximum);
+        if (isIntegralType)
+        {
+            minimum = minimum.HasValue ? System.Math.Max(minimum.Value, typeMinimum) : typeMinimum;
+            maximum = maximum.HasValue ? System.Math.Min(maximum.Value, typeMaximum) : typeMaximum;
+        }
+
+        var control = CreateLabelDecimalBox(
             groupIdentifier,
             propertyInfo.Name,
             isReadOnly,
@@ -501,6 +509,13 @@ public static class LabelControlFactory
             value,
             minimum,
             maximum);
+
+        if (isIntegralType)
+        {
+            control.DecimalPlaces = 0;
+        }
+
+        return control;
     }
 
     /// <summary>
@@ -648,6 +663,14 @@ public static class LabelControlFactory
                 minimum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
                 maximum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
             }
+        }
+
+        if (IntegralTypeHelper.TryGetBounds(inputType, out var typeMinimum, out var typeMaximum))
+        {
+            var intMinimum = (int)System.Math.Max(typeMinimum, int.MinValue);
+            var intMaximum = (int)System.Math.Min(typeMaximum, int.MaxValue);
+            minimum = minimum.HasValue ? System.Math.Max(minimum.Value, intMinimum) : intMinimum;
+            maximum = maximum.HasValue ? System.Math.Min(maximum.Value, intMaximum) : intMaximum;
         }
 
         return CreateLabelIntegerBox(

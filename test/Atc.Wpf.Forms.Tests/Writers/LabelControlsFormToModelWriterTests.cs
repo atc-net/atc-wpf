@@ -293,6 +293,122 @@ public sealed class LabelControlsFormToModelWriterTests
         Assert.Equal(new DateTime(2025, 6, 7, 8, 9, 10, DateTimeKind.Unspecified), actual.DateTimeOffsetNullable.Value.LocalDateTime);
     }
 
+    [StaFact]
+    public void Update_IntegersModel_UntouchedLargeValues_RoundTrip()
+    {
+        // Arrange
+        var model = new IntegersModel
+        {
+            LongValue = 5_000_000_000,
+            LongNullable = -5_000_000_000,
+            UnsignedLongValue = 10_000_000_000_000_000_000,
+            UnsignedIntValue = 3_000_000_000,
+            UnsignedShortValue = 60_000,
+            ShortValue = -30_000,
+            DayValue = DayOfWeek.Friday,
+            DayNullable = DayOfWeek.Sunday,
+        };
+
+        var labelControlsForm = CreateForm(model);
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, labelControlsForm);
+
+        // Assert
+        Assert.Equal(model.LongValue, actual.LongValue);
+        Assert.Equal(model.LongNullable, actual.LongNullable);
+        Assert.Equal(model.UnsignedLongValue, actual.UnsignedLongValue);
+        Assert.Equal(model.UnsignedIntValue, actual.UnsignedIntValue);
+        Assert.Equal(model.UnsignedShortValue, actual.UnsignedShortValue);
+        Assert.Equal(model.ShortValue, actual.ShortValue);
+        Assert.Equal(model.DayValue, actual.DayValue);
+        Assert.Equal(model.DayNullable, actual.DayNullable);
+    }
+
+    [StaFact]
+    public void Update_IntegersModel_EditedLargeValues_AreWritten()
+    {
+        // Arrange
+        var model = new IntegersModel();
+
+        var labelControlsForm = CreateForm(model);
+        Control<LabelDecimalBox>(labelControlsForm, nameof(IntegersModel.LongValue)).Value = 7_000_000_000;
+        Control<LabelDecimalBox>(labelControlsForm, nameof(IntegersModel.UnsignedIntValue)).Value = 4_000_000_000;
+        Control<LabelDecimalBox>(labelControlsForm, nameof(IntegersModel.UnsignedLongValue)).Value = 12_000_000_000_000_000_000.00m;
+        Control<LabelIntegerBox>(labelControlsForm, nameof(IntegersModel.UnsignedShortValue)).Value = 65_000;
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, labelControlsForm);
+
+        // Assert
+        Assert.Equal(7_000_000_000, actual.LongValue);
+        Assert.Equal(4_000_000_000u, actual.UnsignedIntValue);
+        Assert.Equal(12_000_000_000_000_000_000ul, actual.UnsignedLongValue);
+        Assert.Equal((ushort)65_000, actual.UnsignedShortValue);
+    }
+
+    [StaFact]
+    public void Update_IntegersModel_OutOfRangeValues_KeepTheModelValue()
+    {
+        // Arrange
+        var model = new IntegersModel
+        {
+            UnsignedIntValue = 7,
+            UnsignedShortValue = 8,
+        };
+
+        var labelControlsForm = CreateForm(model);
+        var unsignedIntBox = Control<LabelDecimalBox>(labelControlsForm, nameof(IntegersModel.UnsignedIntValue));
+        Assert.Equal(uint.MinValue, unsignedIntBox.Minimum);
+        Assert.Equal(uint.MaxValue, unsignedIntBox.Maximum);
+        Assert.Equal(0, unsignedIntBox.DecimalPlaces);
+        unsignedIntBox.Value = -5;
+
+        var unsignedShortBox = Control<LabelIntegerBox>(labelControlsForm, nameof(IntegersModel.UnsignedShortValue));
+        Assert.Equal(ushort.MinValue, unsignedShortBox.Minimum);
+        Assert.Equal(ushort.MaxValue, unsignedShortBox.Maximum);
+        unsignedShortBox.Value = 70_000;
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, labelControlsForm);
+
+        // Assert
+        Assert.Equal(7u, actual.UnsignedIntValue);
+        Assert.Equal((ushort)8, actual.UnsignedShortValue);
+    }
+
+    [StaFact]
+    public void Update_IntegersModel_UnselectedEnums_WriteNullOrKeepTheModelValue()
+    {
+        // Arrange
+        var model = new IntegersModel
+        {
+            DayValue = DayOfWeek.Friday,
+            DayNullable = DayOfWeek.Sunday,
+        };
+
+        var labelControlsForm = CreateForm(model);
+        Control<LabelComboBox>(labelControlsForm, nameof(IntegersModel.DayValue)).SelectedKey = string.Empty;
+        Control<LabelComboBox>(labelControlsForm, nameof(IntegersModel.DayNullable)).SelectedKey = Atc.Helpers.DropDownFirstItemTypeHelper
+            .GetEnumGuid(DropDownFirstItemType.PleaseSelect)
+            .ToString();
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, labelControlsForm);
+
+        // Assert
+        Assert.Equal(DayOfWeek.Friday, actual.DayValue);
+        Assert.Null(actual.DayNullable);
+    }
+
+    private static TControl Control<TControl>(
+        LabelControlsForm labelControlsForm,
+        string identifier)
+        where TControl : ILabelControlBase
+        => AllLabelControls(labelControlsForm)
+            .OfType<TControl>()
+            .Single(x => x.Identifier == identifier);
+
     private static LabelControlsForm CreateForm<T>(T model)
     {
         var labelControls = ModelToLabelControlExtractor.Extract(model);

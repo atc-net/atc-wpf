@@ -231,6 +231,12 @@ public static class ModelToLabelControlExtractor
             return true;
         }
 
+        if (IntegralTypeHelper.IsWideIntegralType(propertyInfo.PropertyType))
+        {
+            labelControls.Add(CreateLabelWideIntegerBox(propertyInfo, model, typeGroupIdentifier, isReadOnly, propertyInfo.PropertyType));
+            return true;
+        }
+
         if (propertyInfo.PropertyType == typeof(int) ||
             propertyInfo.PropertyType == typeof(int?) ||
             propertyInfo.PropertyType == typeof(uint) ||
@@ -554,6 +560,35 @@ public static class ModelToLabelControlExtractor
         }
 
         return LabelControlFactory.CreateLabelIntegerBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            inputType,
+            value);
+    }
+
+    /// <summary>
+    /// Creates a whole-number <see cref="LabelDecimalBox"/> for a <see cref="uint"/>, <see cref="long"/> or
+    /// <see cref="ulong"/> property, whose values do not all fit in the <see cref="int"/> of a <see cref="LabelIntegerBox"/>.
+    /// </summary>
+    private static LabelDecimalBox CreateLabelWideIntegerBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly,
+        Type inputType)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        var value = GetPropertyValue(model, propertyInfo.Name) switch
+        {
+            uint u => u,
+            long l => l,
+            ulong ul => ul,
+            _ => 0m,
+        };
+
+        return LabelControlFactory.CreateLabelDecimalBox(
             propertyInfo,
             groupIdentifier,
             isReadOnly,
