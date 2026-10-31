@@ -2,6 +2,7 @@ namespace Atc.Wpf.Network.Vnc;
 
 public partial class VncViewerView
 {
+    private readonly VncKeyboardTranslator keyboardTranslator = new();
     private VncViewerViewModel? viewModel;
     private int lastPointerX;
     private int lastPointerY;
@@ -26,6 +27,8 @@ public partial class VncViewerView
 
         PreviewKeyDown += OnPreviewKeyDown;
         PreviewKeyUp += OnPreviewKeyUp;
+        PreviewTextInput += OnPreviewTextInput;
+        LostKeyboardFocus += OnLostKeyboardFocus;
     }
 
     private void OnDataContextChanged(
@@ -217,13 +220,15 @@ public partial class VncViewerView
             return;
         }
 
-        var key = e.Key == Key.System ? e.SystemKey : e.Key;
-
-        if (KeySymMapper.TryGetKeySym(key, out var keySym))
+        // Printable keys give no events here; they are sent from the text they type.
+        var events = keyboardTranslator.KeyDown(GetRealKey(e));
+        if (events.Count == 0)
         {
-            e.Handled = true;
-            await viewModel.SendKeyEventAsync(keySym, pressed: true).ConfigureAwait(false);
+            return;
         }
+
+        e.Handled = true;
+        await SendKeyEventsAsync(events).ConfigureAwait(false);
     }
 
     private async void OnPreviewKeyUp(
@@ -235,14 +240,78 @@ public partial class VncViewerView
             return;
         }
 
-        var key = e.Key == Key.System ? e.SystemKey : e.Key;
-
-        if (KeySymMapper.TryGetKeySym(key, out var keySym))
+        var events = keyboardTranslator.KeyUp(GetRealKey(e));
+        if (events.Count == 0)
         {
-            e.Handled = true;
-            await viewModel.SendKeyEventAsync(keySym, pressed: false).ConfigureAwait(false);
+            return;
+        }
+
+        e.Handled = true;
+        await SendKeyEventsAsync(events).ConfigureAwait(false);
+    }
+
+    private async void OnPreviewTextInput(
+        object sender,
+        TextCompositionEventArgs e)
+    {
+        if (viewModel is null || !viewModel.IsConnected)
+        {
+            return;
+        }
+
+        var events = keyboardTranslator.TextInput(e.Text);
+        if (events.Count == 0)
+        {
+            return;
+        }
+
+        e.Handled = true;
+        await SendKeyEventsAsync(events).ConfigureAwait(false);
+    }
+
+    private async void OnLostKeyboardFocus(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
+    {
+        if (IsKeyboardFocusWithin)
+        {
+            return;
+        }
+
+        // Keys released while another window has focus never reach us: release them on the server.
+        var events = keyboardTranslator.ReleaseAll();
+        if (events.Count == 0 ||
+            viewModel is null ||
+            !viewModel.IsConnected)
+        {
+            return;
+        }
+
+        await SendKeyEventsAsync(events).ConfigureAwait(false);
+    }
+
+    private async Task SendKeyEventsAsync(IReadOnlyList<VncKeyEvent> events)
+    {
+        var vm = viewModel;
+        if (vm is null)
+        {
+            return;
+        }
+
+        foreach (var keyEvent in events)
+        {
+            await vm.SendKeyEventAsync(keyEvent.KeySym, keyEvent.Pressed).ConfigureAwait(false);
         }
     }
+
+    private static Key GetRealKey(KeyEventArgs e)
+        => e.Key switch
+        {
+            Key.System => e.SystemKey,
+            Key.ImeProcessed => e.ImeProcessedKey,
+            Key.DeadCharProcessed => e.DeadCharProcessedKey,
+            _ => e.Key,
+        };
 
     private (int X, int Y) TranslateToVnc(MouseEventArgs e)
     {
