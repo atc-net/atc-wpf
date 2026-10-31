@@ -686,4 +686,27 @@ public sealed class ResponsivePanelTests
     }
 
     #endregion
+
+    #region Spanning Measure Tests
+
+    [StaFact]
+    public void Measure_SpanningWrappingText_IsMeasuredAtItsSpannedWidth()
+    {
+        const string text = "A long sentence that wraps into several lines when it only gets one column, but fits on far fewer lines across three columns of the panel.";
+        var panel = new ResponsivePanel { ColumnsSm = 3, Gap = 10 };
+        var spanning = new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap };
+        ResponsivePanel.SetSpanSm(spanning, 3);
+        panel.Children.Add(spanning);
+
+        panel.Measure(new Size(600, double.PositiveInfinity));
+        panel.Arrange(new Rect(0, 0, 600, panel.DesiredSize.Height));
+
+        var reference = new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap };
+        reference.Measure(new Size(600, double.PositiveInfinity));
+
+        Assert.Equal(reference.DesiredSize.Height, panel.DesiredSize.Height, 3);
+        Assert.Equal(600, spanning.RenderSize.Width, 3);
+    }
+
+    #endregion
 }
