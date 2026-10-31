@@ -139,4 +139,40 @@
   <data name="Close1" xml:space="preserve">
     <value>{0} schließen</value>
   </data>
+  <data name="FilterColumn1" xml:space="preserve">
+    <value>{0} filtern</value>
+  </data>
+  <data name="Blanks" xml:space="preserve">
+    <value>(Leer)</value>
+  </data>
+  <data name="ClearFilter" xml:space="preserve">
+    <value>Filter löschen</value>
+  </data>
+  <data name="Columns" xml:space="preserve">
+    <value>Spalten</value>
+  </data>
+  <data name="Values" xml:space="preserve">
+    <value>Werte</value>
+  </data>
+  <data name="TextFilter" xml:space="preserve">
+    <value>Textfilter</value>
+  </data>
+  <data name="Range" xml:space="preserve">
+    <value>Bereich</value>
+  </data>
+  <data name="Contains" xml:space="preserve">
+    <value>Enthält</value>
+  </data>
+  <data name="IsEqualTo" xml:space="preserve">
+    <value>Ist gleich</value>
+  </data>
+  <data name="StartsWith" xml:space="preserve">
+    <value>Beginnt mit</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>Bis</value>
+  </data>
 </root>

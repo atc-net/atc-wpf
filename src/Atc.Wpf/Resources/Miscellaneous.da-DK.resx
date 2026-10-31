@@ -139,4 +139,40 @@
   <data name="Close1" xml:space="preserve">
     <value>Luk {0}</value>
   </data>
+  <data name="FilterColumn1" xml:space="preserve">
+    <value>Filtrér {0}</value>
+  </data>
+  <data name="Blanks" xml:space="preserve">
+    <value>(Tomme)</value>
+  </data>
+  <data name="ClearFilter" xml:space="preserve">
+    <value>Ryd filter</value>
+  </data>
+  <data name="Columns" xml:space="preserve">
+    <value>Kolonner</value>
+  </data>
+  <data name="Values" xml:space="preserve">
+    <value>Værdier</value>
+  </data>
+  <data name="TextFilter" xml:space="preserve">
+    <value>Tekstfilter</value>
+  </data>
+  <data name="Range" xml:space="preserve">
+    <value>Interval</value>
+  </data>
+  <data name="Contains" xml:space="preserve">
+    <value>Indeholder</value>
+  </data>
+  <data name="IsEqualTo" xml:space="preserve">
+    <value>Er lig med</value>
+  </data>
+  <data name="StartsWith" xml:space="preserve">
+    <value>Starter med</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>Fra</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>Til</value>
+  </data>
 </root>

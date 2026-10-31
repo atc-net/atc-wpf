@@ -1,0 +1,335 @@
+namespace Atc.Wpf.Controls.Tests.DataGrids;
+
+using static DataGridFilterTestData;
+
+/// <summary>
+/// The header filter buttons and the filter pop-up of a grid shown in a window.
+/// </summary>
+[Collection(nameof(PackResourceTestGroup))]
+public sealed class DataGridFilterPopupTests : IDisposable
+{
+    private readonly List<Window> windows = [];
+    private readonly List<DataGrid> grids = [];
+
+    public void Dispose()
+    {
+        foreach (var grid in grids)
+        {
+            DataGridFilter.CloseColumnFilter(grid);
+        }
+
+        foreach (var window in windows)
+        {
+            window.Close();
+        }
+
+        Dispatcher.FromThread(Thread.CurrentThread)?.InvokeShutdown();
+    }
+
+    [StaFact]
+    public void Each_filterable_column_header_gets_an_invoke_button_named_after_the_column()
+    {
+        var grid = Show(CreateGrid());
+
+        var button = FindButton(grid, "Status");
+        var peer = UIElementAutomationPeer.CreatePeerForElement(button);
+
+        Assert.True(button.IsVisible);
+        Assert.Equal(string.Format(CultureInfo.CurrentCulture, Atc.Wpf.Resources.Miscellaneous.FilterColumn1, "Status"), peer.GetName());
+        Assert.Equal(AutomationControlType.Button, peer.GetAutomationControlType());
+        Assert.IsAssignableFrom<IInvokeProvider>(peer.GetPattern(PatternInterface.Invoke));
+    }
+
+    [StaFact]
+    public void Column_opt_out_and_template_columns_without_a_path_show_no_button()
+    {
+        var grid = CreateGrid();
+        DataGridFilter.SetIsColumnFilterEnabled(Column(grid, "Country"), value: false);
+        grid.Columns.Add(new DataGridTemplateColumn { Header = "Actions" });
+        Show(grid);
+
+        Assert.False(FindButton(grid, "Country").IsVisible);
+        Assert.False(FindButton(grid, "Actions").IsVisible);
+        Assert.True(FindButton(grid, "Customer").IsVisible);
+    }
+
+    [StaFact]
+    public void Pressing_the_button_does_not_press_or_sort_the_header()
+    {
+        var grid = Show(CreateGrid());
+        var button = FindButton(grid, "Status");
+        var header = FindAncestor<DataGridColumnHeader>(button)!;
+
+        var args = new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+        {
+            RoutedEvent = UIElement.MouseLeftButtonDownEvent,
+        };
+        button.RaiseEvent(args);
+
+        Assert.True(args.Handled);
+        Assert.False(header.IsPressed);
+        Assert.Null(Column(grid, "Status").SortDirection);
+        button.ReleaseMouseCapture();
+    }
+
+    [StaFact]
+    public void Invoking_the_button_opens_the_pop_up_under_it_with_the_content_reachable_through_the_peer()
+    {
+        var grid = Show(CreateGrid());
+        var button = FindButton(grid, "Status");
+        var peer = UIElementAutomationPeer.CreatePeerForElement(button);
+
+        ((IInvokeProvider)peer.GetPattern(PatternInterface.Invoke)).Invoke();
+        DispatcherHelper.DoEvents();
+
+        var content = DataGridFilter.GetOpenPopupContent(grid, Column(grid, "Status"));
+        Assert.NotNull(content);
+        Assert.Same(button, DataGridFilter.GetOpenPopup(grid)!.PlacementTarget);
+        Assert.Equal(["#Closed", "#Open", "#Pending"], content.ValueList.Items.Keys, StringComparer.Ordinal);
+        Assert.Equal(3, content.ValueList.SelectedKeys.Count);
+
+        peer.ResetChildrenCache();
+        var children = peer.GetChildren();
+        Assert.Contains(children, x => x.GetType().Name.Contains("UserControl", StringComparison.Ordinal));
+        Assert.Contains(Descendants(peer), x => x.GetName() == Atc.Wpf.Resources.Word.Ok);
+        Assert.Contains(Descendants(peer), x => x.GetName() == "Closed");
+    }
+
+    [StaFact]
+    public void Unticking_a_value_and_ok_applies_the_filter_and_closes_the_pop_up()
+    {
+        var grid = Show(CreateGrid());
+        var column = Column(grid, "Status");
+        DataGridFilter.OpenColumnFilter(grid, column);
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+
+        content.ValueList.GetItem("#Closed")!.IsChecked = false;
+        content.OkButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+
+        Assert.Null(DataGridFilter.GetOpenPopup(grid));
+        Assert.Equal([1, 3, 4, 5], VisibleIds(grid));
+        Assert.True(FindButton(grid, "Status").IsFilterActive);
+        var filter = Assert.Single(DataGridFilter.GetColumnFilters(grid));
+        Assert.Equal(["Open", "Pending"], filter.Values);
+    }
+
+    [StaFact]
+    public void Reopening_shows_the_current_filter_and_clear_filter_removes_it()
+    {
+        var grid = Show(CreateGrid());
+        var column = Column(grid, "Status");
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Status", ["Open"]));
+
+        DataGridFilter.OpenColumnFilter(grid, column);
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+        Assert.Equal(["#Open"], content.ValueList.SelectedKeys);
+
+        content.ClearButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+
+        Assert.Null(DataGridFilter.GetOpenPopup(grid));
+        Assert.Empty(DataGridFilter.GetColumnFilters(grid));
+        Assert.Equal(6, grid.Items.Count);
+        Assert.False(FindButton(grid, "Status").IsFilterActive);
+    }
+
+    [StaFact]
+    public void Ticking_everything_again_removes_the_filter()
+    {
+        var grid = Show(CreateGrid());
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Status", ["Open"]));
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Status"));
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+
+        content.ValueList.SelectAll();
+        Assert.True(content.HandleKey(Key.Enter, originalSource: null));
+
+        Assert.Empty(DataGridFilter.GetColumnFilters(grid));
+        Assert.Equal(6, grid.Items.Count);
+    }
+
+    [StaFact]
+    public void Escape_cancels_and_keeps_the_filters()
+    {
+        var grid = Show(CreateGrid());
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Status"));
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+        content.ValueList.GetItem("#Open")!.IsChecked = false;
+
+        Assert.True(content.HandleKey(Key.Escape, originalSource: null));
+
+        Assert.Null(DataGridFilter.GetOpenPopup(grid));
+        Assert.Empty(DataGridFilter.GetColumnFilters(grid));
+        Assert.Equal(6, grid.Items.Count);
+    }
+
+    [StaFact]
+    public void Enter_on_a_button_is_left_to_the_button()
+    {
+        var grid = Show(CreateGrid());
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Status"));
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+
+        Assert.False(content.HandleKey(Key.Enter, content.CancelButton));
+        Assert.NotNull(DataGridFilter.GetOpenPopup(grid));
+    }
+
+    [StaFact]
+    public void Alt_down_opens_the_filter_of_the_focused_button_or_the_current_column()
+    {
+        var grid = Show(CreateGrid());
+        var button = FindButton(grid, "Country");
+
+        Assert.True(DataGridFilter.HandleKey(grid, Key.System, Key.Down, button));
+        Assert.NotNull(DataGridFilter.GetOpenPopupContent(grid, Column(grid, "Country")));
+        DataGridFilter.CloseColumnFilter(grid);
+
+        grid.CurrentCell = new DataGridCellInfo(grid.Items[0], Column(grid, "Customer"));
+        Assert.True(DataGridFilter.HandleKey(grid, Key.System, Key.Down, grid));
+        Assert.NotNull(DataGridFilter.GetOpenPopupContent(grid, Column(grid, "Customer")));
+        DataGridFilter.CloseColumnFilter(grid);
+
+        Assert.False(DataGridFilter.HandleKey(grid, Key.Down, Key.None, grid));
+        Assert.Null(DataGridFilter.GetOpenPopup(grid));
+    }
+
+    [StaFact]
+    public void Text_mode_builds_a_text_filter()
+    {
+        var grid = Show(CreateGrid());
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Customer"));
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+
+        content.Mode = DataGridColumnFilterKind.Text;
+        content.TextFilterBox.Text = "AL";
+        content.OkButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+
+        var filter = Assert.Single(DataGridFilter.GetColumnFilters(grid));
+        Assert.Equal(DataGridColumnFilterKind.Text, filter.Kind);
+        Assert.Equal([1, 6], VisibleIds(grid));
+    }
+
+    [StaFact]
+    public void Range_mode_is_offered_for_number_and_date_columns_only()
+    {
+        var grid = Show(CreateGrid());
+
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Amount"));
+        var amount = DataGridFilter.GetOpenPopupContent(grid)!;
+        amount.Mode = DataGridColumnFilterKind.NumberRange;
+        Assert.Equal(DataGridColumnFilterKind.NumberRange, amount.Mode);
+        amount.FromBox.Text = "10";
+        amount.ToBox.Text = "1,000";
+        amount.OkButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+        Assert.Equal([1, 4, 6], VisibleIds(grid));
+
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Date"));
+        var date = DataGridFilter.GetOpenPopupContent(grid)!;
+        date.Mode = DataGridColumnFilterKind.DateRange;
+        Assert.Equal(DataGridColumnFilterKind.DateRange, date.Mode);
+        DataGridFilter.CloseColumnFilter(grid);
+
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Country"));
+        var country = DataGridFilter.GetOpenPopupContent(grid)!;
+        country.Mode = DataGridColumnFilterKind.NumberRange;
+        Assert.Equal(DataGridColumnFilterKind.Values, country.Mode);
+    }
+
+    [StaFact]
+    public void Header_keeps_the_column_title_with_the_consumer_header_template()
+    {
+        var grid = CreateGrid(isEnabled: false);
+        var template = new DataTemplate();
+        var factory = new FrameworkElementFactory(typeof(TextBlock));
+        factory.SetBinding(TextBlock.TextProperty, new Binding { StringFormat = "[{0}]" });
+        template.VisualTree = factory;
+        Column(grid, "Status").HeaderTemplate = template;
+        DataGridFilter.SetIsEnabled(grid, value: true);
+        Show(grid);
+
+        var header = FindAncestor<DataGridColumnHeader>(FindButton(grid, "Status"))!;
+        var texts = FindVisuals<TextBlock>(header).Select(x => x.Text).ToList();
+
+        Assert.Contains("[Status]", texts, StringComparer.Ordinal);
+    }
+
+    private DataGrid Show(DataGrid grid)
+    {
+        grids.Add(grid);
+        var window = new Window
+        {
+            Content = grid,
+            Width = 900,
+            Height = 300,
+            Left = -10000,
+            Top = -10000,
+            ShowActivated = false,
+            ShowInTaskbar = false,
+            WindowStyle = WindowStyle.None,
+        };
+        windows.Add(window);
+        window.Show();
+        window.UpdateLayout();
+        DispatcherHelper.DoEvents();
+        return grid;
+    }
+
+    private static DataGridFilterButton FindButton(
+        DataGrid grid,
+        string header)
+    {
+        var column = Column(grid, header);
+        return FindVisuals<DataGridFilterButton>(grid).Single(x =>
+            ReferenceEquals(x.Column, column) ||
+            ReferenceEquals(FindAncestor<DataGridColumnHeader>(x)?.Column, column));
+    }
+
+    private static IEnumerable<AutomationPeer> Descendants(AutomationPeer peer)
+    {
+        foreach (var child in peer.GetChildren() ?? [])
+        {
+            yield return child;
+            foreach (var descendant in Descendants(child))
+            {
+                yield return descendant;
+            }
+        }
+    }
+
+    private static List<T> FindVisuals<T>(DependencyObject root)
+        where T : DependencyObject
+    {
+        var result = new List<T>();
+        var stack = new Stack<DependencyObject>();
+        stack.Push(root);
+        while (stack.Count > 0)
+        {
+            var current = stack.Pop();
+            if (current is T match)
+            {
+                result.Add(match);
+            }
+
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+            {
+                stack.Push(VisualTreeHelper.GetChild(current, i));
+            }
+        }
+
+        return result;
+    }
+
+    private static T? FindAncestor<T>(DependencyObject? element)
+        where T : DependencyObject
+    {
+        while (element is not null)
+        {
+            element = VisualTreeHelper.GetParent(element);
+            if (element is T match)
+            {
+                return match;
+            }
+        }
+
+        return null;
+    }
+}

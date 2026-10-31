@@ -1,3 +1,4 @@
+global using System.Collections;
 global using System.Collections.ObjectModel;
 global using System.Collections.Specialized;
 global using System.ComponentModel;
@@ -37,6 +38,7 @@ global using Atc.Wpf.Animation;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Controls.Adorners;
 global using Atc.Wpf.Controls.ColorEditing.Internal;
+global using Atc.Wpf.Controls.DataGrids.Internal;
 global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs.Internal;
 global using Atc.Wpf.Controls.Layouts.Grid.Internal;
