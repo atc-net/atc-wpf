@@ -10,8 +10,8 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
     private readonly IEnumerable<string>? requestedProperties;
     private readonly Dispatcher uiDispatcher;
     private readonly WatcherEventSink sink;
-    private bool disposed;
-    private bool startRequested;
+    private readonly WatcherStartGate startGate = new();
+    private volatile bool disposed;
 
     public DeviceWatcherHost(
         string aqsFilter,
@@ -43,24 +43,17 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
 
     public void StartWatching()
     {
-        switch (watcher.Status)
+        // Start is only legal from Created, Stopped or Aborted. Stop is asynchronous, so a quick Unloaded then
+        // Loaded finds the watcher Stopping; the gate then starts it again once the Stopped event arrives.
+        if (startGate.RequestStart(() => watcher.Status))
         {
-            case DeviceWatcherStatus.Started:
-            case DeviceWatcherStatus.EnumerationCompleted:
-                return;
-            case DeviceWatcherStatus.Stopping:
-                // Start is only legal from Created, Stopped or Aborted. Stop is asynchronous, so a quick
-                // Unloaded then Loaded lands here; start again once the Stopped event arrives.
-                startRequested = true;
-                return;
+            watcher.Start();
         }
-
-        watcher.Start();
     }
 
     public void StopWatching()
     {
-        startRequested = false;
+        startGate.RequestStop();
 
         if (watcher.Status is DeviceWatcherStatus.Stopped or DeviceWatcherStatus.Created or DeviceWatcherStatus.Aborted)
         {
@@ -128,18 +121,18 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
 
     private void OnWatcherStopped()
     {
-        if (!startRequested)
+        // Raised on a WinRT thread.
+        if (!startGate.OnStopped())
         {
             return;
         }
 
-        startRequested = false;
         MarshalToUi(() =>
         {
-            if (!disposed &&
-                watcher.Status is DeviceWatcherStatus.Stopped or DeviceWatcherStatus.Aborted or DeviceWatcherStatus.Created)
+            // A stop may have been requested again while this was queued.
+            if (!disposed && startGate.IsStartWanted)
             {
-                watcher.Start();
+                StartWatching();
             }
         });
     }
