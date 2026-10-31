@@ -15,13 +15,15 @@
         <StackPanel Margin="10">
 
             <!--  Demo 1: Reorder within a single list  -->
-            <GroupBox Margin="0,0,0,10" Header="Demo 1: Reorder within a single list">
+            <GroupBox Margin="0,0,0,10" Header="Demo 1: Reorder within a single list (Ctrl/Shift-select several items to drag them together; hold at the top or bottom edge to scroll)">
                 <ListBox
-                    MinHeight="160"
+                    Height="160"
                     Margin="10"
+                    AutomationProperties.AutomationId="ReorderList"
                     atc:DragDropAttach.IsDragSource="True"
                     atc:DragDropAttach.IsDropTarget="True"
-                    ItemsSource="{Binding ReorderItems}" />
+                    ItemsSource="{Binding ReorderItems}"
+                    SelectionMode="Extended" />
             </GroupBox>
 
             <!--  Demo 2: Cross-list transfer  -->

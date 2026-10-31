@@ -243,6 +243,47 @@ internal static class DragDropHelper
     }
 
     /// <summary>
+    /// The width, in device-independent pixels, of the zone along each edge of a scrollable drop
+    /// target in which a drag scrolls it.
+    /// </summary>
+    internal const double AutoScrollEdgeSize = 20;
+
+    /// <summary>
+    /// Gets the direction a drag at <paramref name="position"/> should scroll a viewport of
+    /// <paramref name="viewportSize"/>: -1 (up/left), 0 or 1 (down/right) per axis. The edge zone is
+    /// <see cref="AutoScrollEdgeSize"/> wide, or a quarter of the viewport when that is smaller,
+    /// so the zones of a small list never cover its middle.
+    /// </summary>
+    internal static Vector GetAutoScrollDirection(
+        Size viewportSize,
+        Point position)
+    {
+        return new Vector(
+            GetAxisDirection(viewportSize.Width, position.X),
+            GetAxisDirection(viewportSize.Height, position.Y));
+
+        static int GetAxisDirection(
+            double length,
+            double offset)
+        {
+            var zone = System.Math.Min(AutoScrollEdgeSize, length / 4);
+            if (zone <= 0 || offset < 0 || offset > length)
+            {
+                return 0;
+            }
+
+            if (offset < zone)
+            {
+                return -1;
+            }
+
+            return offset > length - zone
+                ? 1
+                : 0;
+        }
+    }
+
+    /// <summary>
     /// Determines whether the panel hosting <paramref name="container"/> lays its items out horizontally.
     /// </summary>
     internal static bool IsHorizontalFlow(FrameworkElement container)

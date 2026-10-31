@@ -11,6 +11,8 @@ internal static class DragDropManager
     private static Point? dragStartPoint;
     private static ItemsControl? pressedItemsControl;
     private static object? pressedItem;
+    private static IReadOnlyList<object>? pressedSelection;
+    private static bool isSingleSelectionDeferred;
     private static DragInfo? currentDragInfo;
     private static DragDropAdorner? dragAdorner;
     private static DropTargetInsertionAdorner? insertionAdorner;
@@ -77,12 +79,32 @@ internal static class DragDropManager
         dragStartPoint = e.GetPosition(null);
         pressedItemsControl = itemsControl;
         pressedItem = item;
+
+        // Snapshot the selection now: a multi-select list collapses it to the pressed item on mouse down.
+        pressedSelection = GetDraggedItems(itemsControl, item);
+        if (pressedSelection.Count > 1 &&
+            Keyboard.Modifiers == ModifierKeys.None)
+        {
+            // Keep the selection so the whole selection can be dragged; a click without a drag
+            // still selects just the pressed item, on mouse up.
+            isSingleSelectionDeferred = true;
+            e.Handled = true;
+        }
     }
 
     private static void OnPreviewMouseLeftButtonUp(
         object sender,
         MouseButtonEventArgs e)
-        => ClearPendingDrag();
+    {
+        if (isSingleSelectionDeferred &&
+            pressedItemsControl is Selector selector &&
+            pressedItem is not null)
+        {
+            selector.SelectedItem = pressedItem;
+        }
+
+        ClearPendingDrag();
+    }
 
     private static void OnPreviewMouseMove(
         object sender,
@@ -105,7 +127,41 @@ internal static class DragDropManager
             return;
         }
 
-        BeginDrag(pressedItemsControl, pressedItem);
+        BeginDrag(pressedItemsControl, pressedItem, pressedSelection);
+    }
+
+    /// <summary>
+    /// Gets the items a drag started on <paramref name="item"/> carries: the whole selection, in
+    /// source-collection order, when <paramref name="item"/> is one of several selected items of a
+    /// multi-select <see cref="ListBox"/> or <see cref="MultiSelector"/> (such as a DataGrid);
+    /// otherwise just <paramref name="item"/>.
+    /// </summary>
+    internal static IReadOnlyList<object> GetDraggedItems(
+        ItemsControl itemsControl,
+        object item)
+    {
+        var selectedItems = itemsControl switch
+        {
+            ListBox { SelectionMode: not SelectionMode.Single } listBox => listBox.SelectedItems,
+            MultiSelector multiSelector => multiSelector.SelectedItems,
+            _ => null,
+        };
+
+        if (selectedItems is null ||
+            selectedItems.Count < 2 ||
+            !selectedItems.Contains(item))
+        {
+            return [item];
+        }
+
+        var order = itemsControl.ItemsSource as IList ?? itemsControl.Items;
+        return selectedItems
+            .Cast<object>()
+            .Select(x => (Item: x, Index: order.IndexOf(x)))
+            .Where(x => x.Index >= 0)
+            .OrderBy(x => x.Index)
+            .Select(x => x.Item)
+            .ToList();
     }
 
     /// <summary>
@@ -131,6 +187,8 @@ internal static class DragDropManager
         dragStartPoint = null;
         pressedItemsControl = null;
         pressedItem = null;
+        pressedSelection = null;
+        isSingleSelectionDeferred = false;
     }
 
     /// <summary>
@@ -140,6 +198,17 @@ internal static class DragDropManager
     internal static void BeginDrag(
         ItemsControl itemsControl,
         object item)
+        => BeginDrag(itemsControl, item, items: null);
+
+    /// <summary>
+    /// Asks the optional <see cref="IDragHandler"/> whether the drag may start and,
+    /// if so, runs the OLE drag-drop operation for <paramref name="item"/> carrying
+    /// <paramref name="items"/> (all dragged items; <see langword="null"/> for just <paramref name="item"/>).
+    /// </summary>
+    internal static void BeginDrag(
+        ItemsControl itemsControl,
+        object item,
+        IReadOnlyList<object>? items)
     {
         var sourceIndex = itemsControl.ItemsSource is IList sourceList
             ? sourceList.IndexOf(item)
@@ -148,6 +217,7 @@ internal static class DragDropManager
         var dragInfo = new DragInfo
         {
             SourceItem = item,
+            SourceItems = items ?? [item],
             SourceCollection = itemsControl.ItemsSource,
             VisualSource = itemsControl,
             SourceIndex = sourceIndex,
@@ -217,6 +287,45 @@ internal static class DragDropManager
         }
 
         UpdateInsertionAdorner(targetElement, dropInfo);
+        AutoScroll(targetElement, e.GetPosition);
+    }
+
+    /// <summary>
+    /// Scrolls the target one line while the pointer is in its edge zone. OLE keeps raising DragOver
+    /// while the pointer rests, so holding the pointer at an edge keeps scrolling.
+    /// </summary>
+    internal static void AutoScroll(
+        UIElement targetElement,
+        Func<IInputElement, Point> getPosition)
+    {
+        var scrollViewer = targetElement as ScrollViewer
+            ?? FindVisualChild<ScrollViewer>(targetElement);
+        if (scrollViewer is null)
+        {
+            return;
+        }
+
+        var direction = DragDropHelper.GetAutoScrollDirection(
+            new Size(scrollViewer.ActualWidth, scrollViewer.ActualHeight),
+            getPosition(scrollViewer));
+
+        if (direction.Y < 0 && scrollViewer.VerticalOffset > 0)
+        {
+            scrollViewer.LineUp();
+        }
+        else if (direction.Y > 0 && scrollViewer.VerticalOffset < scrollViewer.ScrollableHeight)
+        {
+            scrollViewer.LineDown();
+        }
+
+        if (direction.X < 0 && scrollViewer.HorizontalOffset > 0)
+        {
+            scrollViewer.LineLeft();
+        }
+        else if (direction.X > 0 && scrollViewer.HorizontalOffset < scrollViewer.ScrollableWidth)
+        {
+            scrollViewer.LineRight();
+        }
     }
 
     private static void OnDragEnter(
@@ -408,6 +517,27 @@ internal static class DragDropManager
         var layer = AdornerLayer.GetAdornerLayer(highlightAdorner.AdornedElement);
         layer?.Remove(highlightAdorner);
         highlightAdorner = null;
+    }
+
+    private static T? FindVisualChild<T>(DependencyObject parent)
+        where T : DependencyObject
+    {
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is T match)
+            {
+                return match;
+            }
+
+            var found = FindVisualChild<T>(child);
+            if (found is not null)
+            {
+                return found;
+            }
+        }
+
+        return null;
     }
 
     private static T? FindVisualParent<T>(DependencyObject child)
