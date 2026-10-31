@@ -99,8 +99,13 @@ internal static class WinApiHelper
             wp?.rcNormalPosition.GetHeight(),
             window.ActualHeight);
 
+        // SetWindowPlacement fails unless length is set to the size of the structure.
         var placement = new WINDOWPLACEMENT
         {
+            length = (uint)Marshal.SizeOf<WINDOWPLACEMENT>(),
+            flags = wp?.flags ?? default,
+            ptMinPosition = wp?.ptMinPosition ?? default,
+            ptMaxPosition = wp?.ptMaxPosition ?? default,
             showCmd = wp is null || wp.Value.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINIMIZED ? SHOW_WINDOW_CMD.SW_SHOWNORMAL : wp.Value.showCmd,
             rcNormalPosition = new RECT
             {
@@ -118,6 +123,26 @@ internal static class WinApiHelper
         {
             Trace.TraceWarning($"{window}: The window placement {wp} could not be (SetWindowPlacement)!");
         }
+    }
+
+    /// <summary>
+    /// Gets the current window placement of a window.
+    /// </summary>
+    /// <param name="window">The window to read the placement from.</param>
+    /// <returns>The window placement; <c>length</c> is 0 when it could not be read.</returns>
+    public static unsafe WINDOWPLACEMENT GetWindowPlacement(Window window)
+    {
+        ArgumentNullException.ThrowIfNull(window);
+
+        var hWnd = new WindowInteropHelper(window).EnsureHandle();
+        var wp = new WINDOWPLACEMENT
+        {
+            length = (uint)Marshal.SizeOf<WINDOWPLACEMENT>(),
+        };
+
+        return PInvoke.GetWindowPlacement(new HWND(hWnd), &wp)
+            ? wp
+            : default;
     }
 
     private static int CalcIntValue(

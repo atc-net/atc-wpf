@@ -12,6 +12,7 @@ global using System.Windows.Media;
 global using System.Windows.Threading;
 
 global using Atc.Wpf.Theming.Behaviors;
+global using Atc.Wpf.Theming.Behaviors.Internal;
 global using Atc.Wpf.Theming.Controls.Selectors;
 global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Helpers;
@@ -24,5 +25,6 @@ global using Atc.XUnit;
 global using ControlzEx.Theming;
 
 global using Windows.Win32.Foundation;
+global using Windows.Win32.UI.WindowsAndMessaging;
 
 global using Xunit;
