@@ -23,8 +23,6 @@ public sealed class DebounceDispatcher
     private DispatcherPriority cachedPriority;
     private Dispatcher? cachedDispatcher;
 
-    private DateTime TimerStarted { get; set; } = DateTime.UtcNow.AddYears(-1);
-
     private void OnTimerTick(
         object? sender,
         EventArgs e)
@@ -98,8 +96,9 @@ public sealed class DebounceDispatcher
 
     /// <summary>
     /// This method throttles events by allowing only 1 event to fire for the given
-    /// timeout period. Only the last event fired is handled - all others are ignored.
-    /// Throttle will fire events every timeout ms even if additional events are pending.
+    /// timeout period. The first call starts the period; when it ends, the action and
+    /// parameter of the last call in the period are fired - all others are ignored.
+    /// Throttle fires every timeout ms while calls keep coming.
     ///
     /// Use Throttle where you need to ensure that events fire at given intervals.
     /// </summary>
@@ -117,12 +116,16 @@ public sealed class DebounceDispatcher
     {
         dispatcher ??= Dispatcher.CurrentDispatcher;
 
-        var currentTime = DateTime.UtcNow;
+        // Latest call wins: it replaces the action the running window will fire.
+        pendingAction = action;
+        pendingParam = param;
 
-        // If timeout is not up yet - adjust timeout to fire with the latest action+param
-        if (currentTime.Subtract(TimerStarted).TotalMilliseconds < interval)
+        // While a window is running, leave its timer alone so it fires on schedule
+        // even though calls keep coming. A new window starts on the first call after it fired.
+        if (timer is { IsEnabled: true } &&
+            TryReuseTimer(priority, dispatcher))
         {
-            interval -= (int)currentTime.Subtract(TimerStarted).TotalMilliseconds;
+            return;
         }
 
         timer?.Stop();
@@ -142,9 +145,6 @@ public sealed class DebounceDispatcher
             cachedDispatcher = dispatcher;
         }
 
-        pendingAction = action;
-        pendingParam = param;
         timer.Start();
-        TimerStarted = currentTime;
     }
 }
