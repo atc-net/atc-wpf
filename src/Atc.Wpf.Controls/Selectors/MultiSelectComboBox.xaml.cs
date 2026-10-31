@@ -354,6 +354,12 @@ public partial class MultiSelectComboBox
             {
                 CommitDraftAndClose();
             }
+            else if (!string.IsNullOrEmpty(FilterText))
+            {
+                // Like the other drop-downs: the first Escape clears the filter, the next one closes.
+                SetCurrentValue(FilterTextProperty, string.Empty);
+                PartCheckList.FlushPendingFilter();
+            }
             else
             {
                 SetCurrentValue(IsDropDownOpenProperty, false);

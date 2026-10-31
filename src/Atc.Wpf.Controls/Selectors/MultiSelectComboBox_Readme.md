@@ -213,7 +213,8 @@ The closed box honours `atc:TextBoxHelper.Watermark`, `atc:ControlsHelper.Corner
 | Key | Action |
 |---|---|
 | `Alt+Down` / `Alt+Up` / `F4` | Open or close the pop-up |
-| `Esc` / `Enter` | Close the pop-up (focus returns to the box); in deferred mode `Esc` discards the ticks and `Enter` is OK |
+| `Esc` | Clear the filter text if there is any, otherwise close the pop-up (focus returns to the box); in deferred mode closing discards the ticks |
+| `Enter` | Close the pop-up (focus returns to the box); in deferred mode `Enter` is OK |
 | `Backspace` | `Chips` mode, closed box: remove the last chip |
 | Arrow keys | Move between rows; `Down` in the filter box moves to the first row |
 | `Space` | Tick the focused row |

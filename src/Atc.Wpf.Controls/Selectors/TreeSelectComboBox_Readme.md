@@ -9,6 +9,7 @@ A drop-down with a **tri-state check tree**. Closed, it looks like a `ComboBox` 
 - closed: the themed `ComboBox` look and height, with a summary in one of three display modes (`MultiSelectDisplayMode`, shared with `MultiSelectComboBox`): names, removable chips with "+N", or a count
 - open: ticking a node does **not** close the pop-up
 - one `SelectedKeysChanged` per action (a parent with all its children is one tick)
+- ⚠️ `CheckedKeysStrategy` defaults to **`Leaves`** (like `CheckTreeView`), while `CascaderComboBox` defaults to **`Parents`**: a tree drop-down usually feeds a query by its leaves (cities, folders), a cascader usually picks whole branches by path. Set `CheckedKeysStrategy` explicitly when the two must agree.
 - UI Automation: a combo box with `ExpandCollapse` and the summary as its `Value`; while open, the tree rows are tree items with `ExpandCollapse` and a three-state `Toggle`
 
 ## 📍 Namespace
@@ -66,7 +67,7 @@ With `Parents`, ticking all of Denmark gives one chip, "Denmark". Removing a chi
 |---|---|---|---|
 | `Nodes` | `ObservableCollection<CheckTreeNode>` | empty | The root nodes. |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The ticked keys. Two-way by default; updated in place. |
-| `CheckedKeysStrategy` | `CheckedKeysStrategy` | `Leaves` | `Leaves`, `Parents` or `All` (see `CheckTreeView`). |
+| `CheckedKeysStrategy` | `CheckedKeysStrategy` | `Leaves` | `Leaves`, `Parents` or `All` (see `CheckTreeView`). Note: `CascaderComboBox` defaults to `Parents`. |
 | `IsCheckLinked` | `bool` | `true` | `false`: every node is independent. |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = shown above 20 nodes. |
 | `FilterText` | `string` | `""` | The filter text (two-way). |
@@ -109,7 +110,8 @@ With `Parents`, ticking all of Denmark gives one chip, "Denmark". Removing a chi
 | Key | Action |
 |---|---|
 | `Alt+Down` / `Alt+Up` / `F4` | Open or close the pop-up |
-| `Esc` / `Enter` | Close the pop-up |
+| `Esc` | Clear the filter text if there is any, otherwise close the pop-up |
+| `Enter` | Close the pop-up |
 | `Backspace` | `Chips` mode, closed box: remove the last chip |
 | `↑` `↓` `→` `←` `Space` `*` | Tree navigation, toggle, expand all under the row (see `CheckTreeView`) |
 

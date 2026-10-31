@@ -9,7 +9,7 @@ A labeled multi-select **cascader** (`CascaderComboBox`): a drop-down with one c
 - `IsMandatory`: at least one key must be ticked
 - `MaxSelectionCount`: keys set from code beyond the limit are kept, but `IsValid()` is `false`
 - `SelectedKeysChanged` for a valid change, `SelectedKeysChangedInvalid` for a change that fails validation
-- `CheckedKeysStrategy` defaults to `Parents`, as in `CascaderComboBox`
+- ⚠️ `CheckedKeysStrategy` defaults to **`Parents`**, as in `CascaderComboBox`, while `LabelTreeSelectComboBox` defaults to **`Leaves`**; set it explicitly when the two must agree
 - supported by `LabelControlsForm` (the ticked keys are the value) and `LabelControlFactory.CreateLabelCascaderComboBox`
 
 ## 📍 Namespace

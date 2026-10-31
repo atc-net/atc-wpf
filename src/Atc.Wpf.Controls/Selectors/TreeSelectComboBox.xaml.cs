@@ -352,6 +352,14 @@ public partial class TreeSelectComboBox
             return true;
         }
 
+        if (IsDropDownOpen && key == Key.Escape && !string.IsNullOrEmpty(FilterText))
+        {
+            // Like the other drop-downs: the first Escape clears the filter, the next one closes.
+            SetCurrentValue(FilterTextProperty, string.Empty);
+            PartTree.FlushPendingFilter();
+            return true;
+        }
+
         if (IsDropDownOpen && key is Key.Escape or Key.Enter)
         {
             SetCurrentValue(IsDropDownOpenProperty, false);

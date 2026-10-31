@@ -23,18 +23,36 @@ internal static class DockScreenHelper
             return bounds;
         }
 
-        var target = workAreas
-            .Select(area => (Area: area, Overlap: OverlapArea(bounds, area), Distance: Distance(bounds, area)))
-            .OrderByDescending(x => x.Overlap)
-            .ThenBy(x => x.Distance)
-            .First()
-            .Area;
+        var target = GetBestWorkArea(bounds, workAreas);
 
         var width = System.Math.Min(bounds.Width, target.Width);
         var height = System.Math.Min(bounds.Height, target.Height);
         var left = System.Math.Min(System.Math.Max(bounds.Left, target.Left), target.Right - width);
         var top = System.Math.Min(System.Math.Max(bounds.Top, target.Top), target.Bottom - height);
         return new Rect(left, top, width, height);
+    }
+
+    /// <summary>
+    /// Returns the work area that the bounds overlap most, or the nearest one when they overlap none; the primary work
+    /// area when there are no work areas.
+    /// </summary>
+    public static Rect GetBestWorkArea(
+        Rect bounds,
+        IReadOnlyList<Rect> workAreas)
+    {
+        ArgumentNullException.ThrowIfNull(workAreas);
+
+        if (workAreas.Count == 0)
+        {
+            return SystemParameters.WorkArea;
+        }
+
+        return workAreas
+            .Select(area => (Area: area, Overlap: OverlapArea(bounds, area), Distance: Distance(bounds, area)))
+            .OrderByDescending(x => x.Overlap)
+            .ThenBy(x => x.Distance)
+            .First()
+            .Area;
     }
 
     /// <summary>

@@ -749,6 +749,18 @@ public sealed class CascaderComboBoxTests : IDisposable
         Assert.Single(events);
     }
 
+    [StaFact]
+    public void The_pop_up_width_is_capped_from_a_work_area_each_time_it_opens()
+    {
+        var sut = Create();
+        sut.PartPopupBorder.MaxWidth = 1;
+
+        sut.IsDropDownOpen = true;
+
+        Assert.True(sut.PartPopupBorder.MaxWidth >= 200);
+        sut.IsDropDownOpen = false;
+    }
+
     internal static System.Collections.ObjectModel.ObservableCollection<CheckTreeNode> CreateCascaderRegions()
     {
         var jutland = new CheckTreeNode("dk-jut", "Jutland");

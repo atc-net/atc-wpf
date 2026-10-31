@@ -245,7 +245,6 @@ public partial class CascaderComboBox
         Bind(PartPopupBorder, MinWidthProperty, ActualWidthProperty);
         Bind(PartPopupBorder, MaxHeightProperty, MaxDropDownHeightProperty);
         Bind(PartPopupBorder, FlowDirectionProperty, FlowDirectionProperty);
-        PartPopupBorder.MaxWidth = System.Math.Max(200, SystemParameters.WorkArea.Width - 16);
         PartPopup.PlacementTarget = this;
 
         PartColumns = new CascaderColumnView();
@@ -385,6 +384,7 @@ public partial class CascaderComboBox
             if (!string.IsNullOrEmpty(FilterText))
             {
                 SetCurrentValue(FilterTextProperty, string.Empty);
+                PartColumns.FlushPendingFilter();
                 return true;
             }
 
@@ -470,6 +470,20 @@ public partial class CascaderComboBox
         control.UpdateSummary();
     }
 
+    /// <summary>
+    /// Caps the pop-up at the width of the work area of the monitor the box is on (read on each open, so moving the
+    /// window to another monitor is followed).
+    /// </summary>
+    internal void UpdatePopupMaxWidth()
+    {
+        var size = new Size(System.Math.Max(1, ActualWidth), System.Math.Max(1, ActualHeight));
+        var bounds = new Rect(Atc.Wpf.Controls.Layouts.DockScreenHelper.ToScreenDip(this, default), size);
+        var workArea = Atc.Wpf.Controls.Layouts.DockScreenHelper.GetBestWorkArea(
+            bounds,
+            Atc.Wpf.Controls.Layouts.DockScreenHelper.GetWorkAreas(this));
+        PartPopupBorder.MaxWidth = System.Math.Max(200, workArea.Width - 16);
+    }
+
     private static void OnIsDropDownOpenChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -479,6 +493,7 @@ public partial class CascaderComboBox
 
         if (isOpen)
         {
+            control.UpdatePopupMaxWidth();
             Mouse.Capture(control, CaptureMode.SubTree);
             _ = control.Dispatcher.BeginInvoke(DispatcherPriority.Input, control.FocusPopupContent);
             control.DropDownOpened?.Invoke(control, EventArgs.Empty);

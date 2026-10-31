@@ -497,6 +497,21 @@ public sealed class MultiSelectComboBoxTests : IDisposable
         Assert.InRange(realized, 1, 100);
     }
 
+    [StaFact]
+    public void Escape_clears_the_filter_first_then_closes()
+    {
+        var sut = Create(3);
+        sut.IsDropDownOpen = true;
+        sut.FilterText = "2";
+
+        Assert.True(sut.HandleKey(Key.Escape, Key.None, ModifierKeys.None));
+        Assert.Equal(string.Empty, sut.FilterText);
+        Assert.True(sut.IsDropDownOpen);
+
+        Assert.True(sut.HandleKey(Key.Escape, Key.None, ModifierKeys.None));
+        Assert.False(sut.IsDropDownOpen);
+    }
+
     private static MultiSelectComboBox Create(int itemCount)
         => new() { Items = Items(itemCount) };
 

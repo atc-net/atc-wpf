@@ -50,7 +50,7 @@ Besides the common label properties (`LabelText`, `IsMandatory`, `InformationTex
 |---|---|---|---|
 | `Nodes` | `ObservableCollection<CheckTreeNode>` | empty | The root nodes. |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The ticked keys (two-way). |
-| `CheckedKeysStrategy` | `CheckedKeysStrategy` | `Leaves` | `Leaves`, `Parents` or `All`. |
+| `CheckedKeysStrategy` | `CheckedKeysStrategy` | `Leaves` | `Leaves`, `Parents` or `All`. Note: `LabelCascaderComboBox` defaults to `Parents`. |
 | `IsCheckLinked` | `bool` | `true` | `false`: every node is independent. |
 | `IsFilterVisible` | `bool?` | `null` | The filter box; `null` = shown above 20 nodes. |
 | `FilterText` | `string` | `""` | The filter text (two-way). |

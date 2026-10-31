@@ -9,7 +9,7 @@ A multi-select drop-down for **deep, uniform hierarchies**: one column per level
 - closed: the same box as `TreeSelectComboBox`: names, removable chips with "+N", or a count (`MultiSelectDisplayMode`)
 - open: a row of columns; each row is `[☐] Text ›`, the `›` on rows with children (loaded or not); the **active** row of each column (the one whose children are shown next) is highlighted
 - tri-state check boxes from the same engine as `CheckTreeView`: a parent is partial when only some of what is under it is ticked
-- `CheckedKeysStrategy` defaults to `Parents`: ticking all of Jutland keeps the one key `dk-jut`
+- ⚠️ `CheckedKeysStrategy` defaults to **`Parents`**: ticking all of Jutland keeps the one key `dk-jut`. This differs from `CheckTreeView` and `TreeSelectComboBox`, which default to **`Leaves`**: a cascader usually picks whole branches by path, a tree drop-down usually feeds a query by its leaves. Set `CheckedKeysStrategy` explicitly when the two must agree.
 - a filter across **all levels**: typing replaces the columns with one flat list of matches, each with its full path and the match highlighted
 - lazy loading: `LoadChildrenAsync` loads the children of a row when it becomes active, with a busy row in the next column; activating another row cancels the load
 - one `SelectedKeysChanged` per user action: ticking a node with 500 descendants is one event
@@ -127,7 +127,7 @@ As `TreeSelectComboBox`: `NoneText` (or the watermark) when nothing is ticked, "
 |---|---|---|---|
 | `Nodes` | `ObservableCollection<CheckTreeNode>` | empty | The roots (the first column). |
 | `SelectedKeys` | `ObservableCollection<string>` | empty | The ticked keys. Two-way by default; updated in place; setting it from code recomputes every state, with no event. |
-| `CheckedKeysStrategy` | `CheckedKeysStrategy` | `Parents` | `Parents`, `Leaves` or `All`. |
+| `CheckedKeysStrategy` | `CheckedKeysStrategy` | `Parents` | `Parents`, `Leaves` or `All`. Note: `CheckTreeView` and `TreeSelectComboBox` default to `Leaves`. |
 | `IsCheckLinked` | `bool` | `true` | `false`: every node is independent. |
 | `ExpandTrigger` | `CascaderExpandTrigger` | `Click` | `Click` or `Hover`. |
 | `ColumnWidth` | `double` | `180` | The width of each column. |

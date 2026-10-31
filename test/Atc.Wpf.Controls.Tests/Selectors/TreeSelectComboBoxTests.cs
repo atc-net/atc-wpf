@@ -257,6 +257,21 @@ public sealed class TreeSelectComboBoxTests : IDisposable
         Assert.False(sut.IsDropDownOpen);
     }
 
+    [StaFact]
+    public void Escape_clears_the_filter_first_then_closes()
+    {
+        var sut = Create();
+        sut.IsDropDownOpen = true;
+        sut.FilterText = "co";
+
+        Assert.True(sut.HandleKey(Key.Escape, Key.None, ModifierKeys.None));
+        Assert.Equal(string.Empty, sut.FilterText);
+        Assert.True(sut.IsDropDownOpen);
+
+        Assert.True(sut.HandleKey(Key.Escape, Key.None, ModifierKeys.None));
+        Assert.False(sut.IsDropDownOpen);
+    }
+
     private static TreeSelectComboBox Create()
         => new() { Nodes = CheckTreeStateTests.CreateRegionNodes() };
 
