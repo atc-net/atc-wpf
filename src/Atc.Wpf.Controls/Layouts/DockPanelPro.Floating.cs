@@ -128,6 +128,13 @@ public sealed partial class DockPanelPro
             window.Owner = ownerWindow;
         }
 
+        // The panel may now sit under other ancestors (another window or view): take their resources instead.
+        window.ReleaseResources();
+        if (window.Pane.Region is { } region)
+        {
+            InheritAncestorSettings(window, region);
+        }
+
         window.ApplyTexts();
         window.Show();
     }

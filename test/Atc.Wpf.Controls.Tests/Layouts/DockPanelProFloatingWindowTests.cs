@@ -458,6 +458,45 @@ public sealed class DockPanelProFloatingWindowTests : IDisposable
     }
 
     [StaFact]
+    public void A_floating_pane_takes_the_resources_of_the_new_window_when_the_panel_moves_there()
+    {
+        var (panel, _, _) = DockPanelProPaneTests.CreatePanel();
+        var text = new TextBlock { Text = "output text" };
+        var output = panel.FindPane("output")!;
+        output.Content = text;
+        var first = Show(panel);
+        Window? second = null;
+        try
+        {
+            first.Resources[typeof(TextBlock)] = TagStyle("first");
+            panel.FloatPane(output);
+            Assert.Equal("first", text.Tag);
+
+            first.Content = null;
+            DispatchPending();
+            second = Show(panel);
+            second.Resources[typeof(TextBlock)] = TagStyle("second");
+            DispatchPending();
+
+            Assert.True(panel.GetFloatingWindow(output)!.IsVisible);
+            Assert.Equal("second", text.Tag);
+        }
+        finally
+        {
+            panel.RedockAllPanes();
+            second?.Close();
+            first.Close();
+        }
+
+        static Style TagStyle(string tag)
+        {
+            var style = new Style(typeof(TextBlock));
+            style.Setters.Add(new Setter(FrameworkElement.TagProperty, tag));
+            return style;
+        }
+    }
+
+    [StaFact]
     public void The_floating_window_context_menu_docks_and_closes_the_pane()
     {
         var (panel, bottom, _) = DockPanelProPaneTests.CreatePanel();
