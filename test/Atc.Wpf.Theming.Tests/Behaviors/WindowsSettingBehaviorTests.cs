@@ -137,6 +137,20 @@ public sealed class WindowsSettingBehaviorTests
         Assert.False(WindowsSettingBehavior.IsPlacementOnScreen(new Rect(100, 1030, 800, 600), monitors));
     }
 
+    [StaFact]
+    public void GetMonitorWorkAreas_ReturnsEachMonitorWithItsWorkAreaInside()
+    {
+        var monitors = WindowsSettingBehavior.GetMonitorWorkAreas();
+
+        Assert.NotEmpty(monitors);
+        Assert.All(monitors, m =>
+        {
+            Assert.False(m.WorkArea.IsEmpty);
+            Assert.True(m.WorkArea.Width > 0 && m.WorkArea.Height > 0);
+            Assert.True(m.Bounds.Contains(m.WorkArea));
+        });
+    }
+
     private static MonitorWorkArea[] Monitors(params Rect[] bounds)
         => bounds
             .Select(b => new MonitorWorkArea(b, b))

@@ -274,7 +274,7 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
     /// <summary>
     /// Gets the bounds and work area of every attached monitor in physical pixels.
     /// </summary>
-    private static unsafe List<MonitorWorkArea> GetMonitorWorkAreas()
+    internal static unsafe List<MonitorWorkArea> GetMonitorWorkAreas()
     {
         var monitors = new List<MonitorWorkArea>();
         PInvoke.EnumDisplayMonitors(
