@@ -155,6 +155,42 @@ public sealed class DragDropMultiItemTests
         Assert.Equal(["d"], listBox.SelectedItems.Cast<object>());
     }
 
+    [StaFact]
+    public void PreviewMouseDown_OnACheckBoxInASelectedItemOfSeveral_LetsTheCheckBoxGetThePress()
+    {
+        // Arrange
+        var listBox = CreateExtendedListBox();
+        listBox.ItemTemplate = (DataTemplate)XamlReader.Parse(
+            """<DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"><CheckBox Content="{Binding}" /></DataTemplate>""");
+        DragDropAttach.SetIsDragSource(listBox, value: true);
+        using var host = new DragDropTestWindow(listBox);
+        listBox.SelectedItems.Add("b");
+        listBox.SelectedItems.Add("d");
+        var container = (ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem("d");
+        var checkBox = DragDropTestWindow.FindDescendant<CheckBox>(container);
+        var down = new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+        {
+            RoutedEvent = Mouse.PreviewMouseDownEvent,
+        };
+
+        try
+        {
+            // Act
+            checkBox.RaiseEvent(down);
+
+            // Assert
+            Assert.False(down.Handled);
+            Assert.Equal(["b", "d"], (IReadOnlyList<object>?)PressedSelectionField.GetValue(obj: null));
+        }
+        finally
+        {
+            listBox.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+            {
+                RoutedEvent = Mouse.PreviewMouseUpEvent,
+            });
+        }
+    }
+
     [StaTheory]
     [InlineData(50, 5, 0, -1)]
     [InlineData(50, 195, 0, 1)]

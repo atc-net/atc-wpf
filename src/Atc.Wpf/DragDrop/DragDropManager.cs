@@ -83,7 +83,8 @@ internal static class DragDropManager
         // Snapshot the selection now: a multi-select list collapses it to the pressed item on mouse down.
         pressedSelection = GetDraggedItems(itemsControl, item);
         if (pressedSelection.Count > 1 &&
-            Keyboard.Modifiers == ModifierKeys.None)
+            Keyboard.Modifiers == ModifierKeys.None &&
+            !IsInsideButton(e.OriginalSource as DependencyObject, itemsControl))
         {
             // Keep the selection so the whole selection can be dragged; a click without a drag
             // still selects just the pressed item, on mouse up.
@@ -180,6 +181,28 @@ internal static class DragDropManager
         }
 
         return DragDropHelper.GetItemFromElement(itemsControl, originalSource);
+    }
+
+    /// <summary>
+    /// Determines whether <paramref name="source"/> sits in a button (Button, CheckBox, ToggleButton, ...)
+    /// inside <paramref name="boundary"/>. Such a press must reach the button, so the selection-keeping
+    /// suppression of the press is skipped; the drag itself is still possible.
+    /// </summary>
+    private static bool IsInsideButton(
+        DependencyObject? source,
+        DependencyObject boundary)
+    {
+        for (var element = source;
+             element is not null && !ReferenceEquals(element, boundary);
+             element = DragDropHelper.GetParent(element))
+        {
+            if (element is ButtonBase)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static void ClearPendingDrag()
