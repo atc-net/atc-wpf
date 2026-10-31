@@ -496,11 +496,9 @@ public partial class CascaderComboBox
     /// </summary>
     internal void UpdatePopupMaxWidth()
     {
-        var size = new Size(System.Math.Max(1, ActualWidth), System.Math.Max(1, ActualHeight));
-        var bounds = new Rect(Atc.Wpf.Controls.Layouts.DockScreenHelper.ToScreenDip(this, default), size);
-        var workArea = Atc.Wpf.Controls.Layouts.DockScreenHelper.GetBestWorkArea(
-            bounds,
-            Atc.Wpf.Controls.Layouts.DockScreenHelper.GetWorkAreas(this));
+        var workArea = Atc.Wpf.Controls.Layouts.DockScreenHelper.GetWorkAreaAt(
+            this,
+            new Point(ActualWidth / 2, ActualHeight / 2));
         PartPopupBorder.MaxWidth = System.Math.Max(200, workArea.Width - 16);
     }
 

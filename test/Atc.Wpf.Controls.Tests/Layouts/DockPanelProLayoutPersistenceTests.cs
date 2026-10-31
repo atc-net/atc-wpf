@@ -222,6 +222,25 @@ public sealed class DockPanelProLayoutPersistenceTests
     }
 
     [Fact]
+    public void SelectWorkArea_picks_the_monitor_in_device_pixels_although_the_dip_areas_overlap()
+    {
+        IReadOnlyList<(Rect DeviceWork, double DpiX, double DpiY)> monitors =
+        [
+            (new Rect(0, 0, 2560, 1400), 96, 96),
+            (new Rect(2560, 0, 1920, 1400), 144, 144),
+        ];
+
+        var onSecondary = DockScreenHelper.SelectWorkArea(new Point(3000, 200), monitors, Matrix.Identity);
+        var onPrimary = DockScreenHelper.SelectWorkArea(new Point(100, 100), monitors, Matrix.Identity);
+        var offScreen = DockScreenHelper.SelectWorkArea(new Point(5000, 100), monitors, Matrix.Identity);
+
+        Assert.Equal(1280, onSecondary.Width, 6);
+        Assert.Equal(2560 / 1.5, onSecondary.Left, 6);
+        Assert.Equal(new Rect(0, 0, 2560, 1400), onPrimary);
+        Assert.Equal(onSecondary, offScreen);
+    }
+
+    [Fact]
     public void GetWorkAreas_returns_at_least_one_non_empty_area()
     {
         var areas = DockScreenHelper.GetWorkAreas(reference: null);

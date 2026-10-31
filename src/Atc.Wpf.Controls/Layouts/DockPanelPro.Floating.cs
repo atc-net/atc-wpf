@@ -224,15 +224,35 @@ public sealed partial class DockPanelPro
         window.Show();
         HookFloatingWindow(window);
 
-        // A window created at the DPI of one monitor and placed on a monitor with another DPI is rescaled by WPF when it
-        // gets there; now that it has that monitor's DPI, apply the bounds again (a no-op when nothing moved).
-        if (!window.IsClosed && window.CurrentBounds != bounds)
+        FitToOwnMonitor(window, bounds);
+    }
+
+    /// <summary>
+    /// A window created at the DPI of one monitor and placed on a monitor with another DPI is rescaled by WPF when it
+    /// gets there. Once shown (with its monitor's DPI), apply the bounds again, kept inside the work area of the monitor
+    /// the window is on (chosen in device pixels and converted with that monitor's DPI). A no-op when nothing moved.
+    /// </summary>
+    internal static void FitToOwnMonitor(
+        DockFloatingWindow window,
+        Rect bounds)
+    {
+        if (window.IsClosed || !window.IsVisible || bounds.IsEmpty)
         {
-            window.Left = bounds.Left;
-            window.Top = bounds.Top;
-            window.Width = bounds.Width;
-            window.Height = bounds.Height;
+            return;
         }
+
+        var workArea = DockScreenHelper.GetWorkAreaAt(window, new Point(window.ActualWidth / 2, window.ActualHeight / 2));
+        var fitted = DockScreenHelper.ClampToWorkAreas(bounds, [workArea]);
+        if (window.CurrentBounds == fitted)
+        {
+            return;
+        }
+
+        window.Left = fitted.Left;
+        window.Top = fitted.Top;
+        window.Width = fitted.Width;
+        window.Height = fitted.Height;
+        window.Pane.FloatingBounds = fitted;
     }
 
     /// <summary>

@@ -184,6 +184,7 @@ public sealed partial class DockPanelPro
             window.Width = bounds.Width;
             window.Height = bounds.Height;
             pane.FloatingBounds = bounds;
+            FitToOwnMonitor(window, bounds);
         }
     }
 

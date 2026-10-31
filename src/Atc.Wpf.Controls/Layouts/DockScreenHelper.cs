@@ -63,7 +63,68 @@ internal static class DockScreenHelper
     public static IReadOnlyList<Rect> GetWorkAreas(Visual? reference)
     {
         var fromDevice = GetTransformFromDevice(reference);
-        var areas = new List<Rect>();
+        var areas = GetMonitors()
+            .Select(x => DeviceToDip(x.DeviceWork, x.DpiX, x.DpiY, fromDevice))
+            .ToList();
+
+        if (areas.Count == 0)
+        {
+            areas.Add(SystemParameters.WorkArea);
+        }
+
+        return areas;
+    }
+
+    /// <summary>
+    /// Gets the work area, in device-independent units of that monitor's DPI, of the monitor a point of an element
+    /// is on. The monitor is chosen in device pixels, where monitors do not overlap (their per-DPI DIP rectangles can).
+    /// </summary>
+    public static Rect GetWorkAreaAt(
+        Visual element,
+        Point point)
+    {
+        ArgumentNullException.ThrowIfNull(element);
+
+        if (PresentationSource.FromVisual(element) is null)
+        {
+            return SystemParameters.WorkArea;
+        }
+
+        var monitors = GetMonitors();
+        return monitors.Count == 0
+            ? SystemParameters.WorkArea
+            : SelectWorkArea(element.PointToScreen(point), monitors, GetTransformFromDevice(element));
+    }
+
+    /// <summary>
+    /// Returns the work area (converted with its own DPI) of the monitor that contains a device point, or the nearest one.
+    /// </summary>
+    public static Rect SelectWorkArea(
+        Point devicePoint,
+        IReadOnlyList<(Rect DeviceWork, double DpiX, double DpiY)> monitors,
+        Matrix fallbackFromDevice)
+    {
+        ArgumentNullException.ThrowIfNull(monitors);
+
+        if (monitors.Count == 0)
+        {
+            return SystemParameters.WorkArea;
+        }
+
+        var point = new Rect(devicePoint, new Size(0, 0));
+        var monitor = monitors
+            .OrderBy(x => x.DeviceWork.Contains(devicePoint) ? 0 : 1)
+            .ThenBy(x => Distance(point, x.DeviceWork))
+            .First();
+        return DeviceToDip(monitor.DeviceWork, monitor.DpiX, monitor.DpiY, fallbackFromDevice);
+    }
+
+    /// <summary>
+    /// Enumerates the monitors: work area in device pixels and effective DPI (zero when unknown).
+    /// </summary>
+    private static List<(Rect DeviceWork, double DpiX, double DpiY)> GetMonitors()
+    {
+        var monitors = new List<(Rect DeviceWork, double DpiX, double DpiY)>();
         try
         {
             NativeMethods.EnumDisplayMonitors(
@@ -76,11 +137,7 @@ internal static class DockScreenHelper
                     {
                         var work = info.rcWork;
                         var (dpiX, dpiY) = GetMonitorDpi(monitor);
-                        areas.Add(DeviceToDip(
-                            new Rect(new Point(work.Left, work.Top), new Point(work.Right, work.Bottom)),
-                            dpiX,
-                            dpiY,
-                            fromDevice));
+                        monitors.Add((new Rect(new Point(work.Left, work.Top), new Point(work.Right, work.Bottom)), dpiX, dpiY));
                     }
 
                     return true;
@@ -89,19 +146,14 @@ internal static class DockScreenHelper
         }
         catch (DllNotFoundException)
         {
-            // Fall back to the primary work area below.
+            // The callers fall back to the primary work area.
         }
         catch (EntryPointNotFoundException)
         {
-            // Fall back to the primary work area below.
+            // The callers fall back to the primary work area.
         }
 
-        if (areas.Count == 0)
-        {
-            areas.Add(SystemParameters.WorkArea);
-        }
-
-        return areas;
+        return monitors;
     }
 
     /// <summary>

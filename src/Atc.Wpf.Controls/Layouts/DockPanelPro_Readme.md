@@ -436,7 +436,7 @@ The styles are `AtcApps.Styles.DockPanelPro`, `AtcApps.Styles.DockRegion`, `AtcA
 ## 📝 Notes
 
 - A floating window hosts exactly one pane; panes cannot be tabbed together inside a floating window.
-- Window bounds are in device-independent units of the monitor the window is on (the work areas are converted per monitor DPI, so a layout saved on a 150 % monitor restores there); mixed-DPI setups were checked with unit tests of the conversion, not on real hardware.
+- Window bounds are in device-independent units. Once a floating window is shown it is kept inside the work area of the monitor it is on, chosen in device pixels and converted with that monitor's DPI. A DIP position alone does not say which monitor it belongs to, so on mixed-DPI setups a restored window may open on a neighbouring monitor; this was checked with unit tests of the conversion, not on real hardware.
 
 ## ⚠️ Limitations
 
