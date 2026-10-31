@@ -247,12 +247,19 @@ public class FlyoutService : IFlyoutService
         Flyout flyout,
         CancellationToken cancellationToken)
     {
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return Task.FromCanceled<object?>(cancellationToken);
+        }
+
         var tcs = new TaskCompletionSource<object?>();
 
-        // Handle cancellation
+        // Handle cancellation. The registration is released when the flyout closes, so a long-lived
+        // token does not keep every flyout (and its view model) shown with it alive.
+        var registration = default(CancellationTokenRegistration);
         if (cancellationToken.CanBeCanceled)
         {
-            cancellationToken.Register(() =>
+            registration = cancellationToken.Register(() =>
             {
                 flyout.Dispatcher.Invoke(() =>
                 {
@@ -272,6 +279,10 @@ public class FlyoutService : IFlyoutService
             RoutedEventArgs e)
         {
             flyout.Closed -= OnClosed;
+
+            // Unregister (not Dispose): Dispose would wait for a running callback, and the callback
+            // itself closes the flyout through the dispatcher.
+            registration.Unregister();
 
             // Remove from stack
             RemoveFlyoutFromStack(flyout);
