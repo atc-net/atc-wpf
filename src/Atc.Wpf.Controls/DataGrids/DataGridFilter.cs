@@ -11,7 +11,8 @@ namespace Atc.Wpf.Controls.DataGrids;
 /// Filters are applied to the grid's default collection view (<see cref="CollectionViewSource.GetDefaultView"/>
 /// of <see cref="ItemsControl.ItemsSource"/>). A filter the consumer already set on that view is kept and ANDed;
 /// if the consumer replaces the view filter later, it is adopted (and ANDed) on the next filter change.
-/// Grids that share one <c>ItemsSource</c> share its default view and therefore its filter.
+/// Grids that share one <c>ItemsSource</c> share its default view: their filters combine (AND), so each grid shows
+/// the rows that pass the filters of all of them.
 /// </para>
 /// <para>
 /// Columns are identified by <see cref="ResolveColumnKey"/>: the attached <c>ColumnKey</c>, else the

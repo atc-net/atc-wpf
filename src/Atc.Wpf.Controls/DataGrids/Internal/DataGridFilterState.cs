@@ -5,17 +5,15 @@ namespace Atc.Wpf.Controls.DataGrids.Internal;
 /// the open pop-up. It is stored on the grid (a private attached property), so it lives exactly as long as the grid.
 /// </summary>
 /// <remarks>
-/// The default collection view of a long-lived <c>ItemsSource</c> outlives the grid, so the predicate installed on the
-/// view only holds the state weakly (<see cref="FilterPredicateHost"/>). The consumer's own filter is kept and ANDed.
+/// The view filter itself belongs to the view's <see cref="DataGridViewFilterOwner"/>, which combines the filters of
+/// every grid on the view with the consumer's own filter and holds this state weakly.
 /// </remarks>
 internal sealed class DataGridFilterState
 {
     private readonly DataGrid grid;
     private readonly Dictionary<string, DataGridColumnFilter> filters = new(StringComparer.Ordinal);
-    private readonly FilterPredicateHost host;
-    private readonly Predicate<object> predicate;
     private ICollectionView? view;
-    private bool isInstalled;
+    private DataGridViewFilterOwner? owner;
     private string appliedSearchText = string.Empty;
     private DispatcherTimer? searchTimer;
     private List<DataGridColumnFilterMatcher> matchers = [];
@@ -28,8 +26,6 @@ internal sealed class DataGridFilterState
     public DataGridFilterState(DataGrid grid)
     {
         this.grid = grid;
-        host = new FilterPredicateHost(this);
-        predicate = host.Evaluate;
         view = GetView(grid.ItemsSource);
 
         grid.Columns.CollectionChanged += OnColumnsChanged;
@@ -196,18 +192,20 @@ internal sealed class DataGridFilterState
         UpdateActiveFlags();
 
         var currentView = EnsureView();
-        if (currentView is not { CanFilter: true } || !(isInstalled || HasAnything))
+        if (currentView is not { CanFilter: true })
         {
             return;
         }
 
-        if (!ReferenceEquals(currentView.Filter, predicate))
+        if (HasAnything)
         {
-            host.ConsumerFilter = currentView.Filter;
+            owner = DataGridViewFilterOwner.GetOrCreate(currentView);
+            owner.ApplyDeferred(this);
         }
-
-        currentView.Filter = predicate;
-        isInstalled = true;
+        else
+        {
+            DetachFromOwner();
+        }
     }
 
     /// <summary>
@@ -219,18 +217,16 @@ internal sealed class DataGridFilterState
         UpdateActiveFlags();
 
         var currentView = EnsureView();
-        if (currentView is { CanFilter: true } && (isInstalled || HasAnything))
+        if (currentView is { CanFilter: true })
         {
-            if (ReferenceEquals(currentView.Filter, predicate))
+            if (HasAnything)
             {
-                currentView.Refresh();
+                owner = DataGridViewFilterOwner.GetOrCreate(currentView);
+                owner.Apply(this);
             }
             else
             {
-                // First install, or the consumer replaced the filter since: keep theirs and AND it.
-                host.ConsumerFilter = currentView.Filter;
-                currentView.Filter = predicate;
-                isInstalled = true;
+                DetachFromOwner();
             }
         }
 
@@ -254,7 +250,11 @@ internal sealed class DataGridFilterState
 
         RebuildMatchers();
         var others = matchers.Where(x => !ReferenceEquals(x.Column, column)).ToArray();
-        var consumer = GetConsumerFilter();
+        var currentView = EnsureView();
+        var viewOwner = DataGridViewFilterOwner.Find(currentView);
+        var consumer = viewOwner is null
+            ? currentView?.Filter
+            : item => viewOwner.PassesOthers(item, this);
         var firstRawByText = new Dictionary<string, object?>(StringComparer.Ordinal);
         foreach (var item in GetSourceItems())
         {
@@ -273,10 +273,11 @@ internal sealed class DataGridFilterState
     }
 
     /// <summary>
-    /// Returns the effective filter of the row item (used by the predicate on the view).
+    /// Returns whether the row item passes this grid's column filters and search (the view's owner ANDs the
+    /// consumer's filter and the other grids' filters).
     /// </summary>
     public bool Passes(object item)
-        => PassesOthers(item, host.ConsumerFilter, matchers);
+        => PassesOthers(item, consumer: null, matchers);
 
     /// <summary>
     /// Opens the filter pop-up of a column under <paramref name="placementTarget"/> (the header button, or the grid).
@@ -372,18 +373,11 @@ internal sealed class DataGridFilterState
     }
 
     /// <summary>
-    /// Gives the view the consumer's own filter back (the behaviour is switched off, or the source changed).
+    /// Takes this grid's filters off the view (the behaviour is switched off, or the source changed): the other
+    /// grids on the view keep theirs, and without any the view gets the consumer's own filter back.
     /// </summary>
     public void RestoreConsumerFilter()
-    {
-        if (isInstalled && view is not null && ReferenceEquals(view.Filter, predicate))
-        {
-            view.Filter = host.ConsumerFilter;
-        }
-
-        host.ConsumerFilter = null;
-        isInstalled = false;
-    }
+        => DetachFromOwner();
 
     private static ICollectionView? GetView(IEnumerable? itemsSource)
         => itemsSource is null
@@ -505,17 +499,11 @@ internal sealed class DataGridFilterState
         return false;
     }
 
-    private Predicate<object>? GetConsumerFilter()
+    private void DetachFromOwner()
     {
-        var currentView = EnsureView();
-        if (currentView is null)
-        {
-            return null;
-        }
-
-        return ReferenceEquals(currentView.Filter, predicate)
-            ? host.ConsumerFilter
-            : currentView.Filter;
+        var current = owner;
+        owner = null;
+        current?.Detach(this);
     }
 
     private IEnumerable GetSourceItems()
@@ -753,24 +741,5 @@ internal sealed class DataGridFilterState
         }
 
         return null;
-    }
-
-    /// <summary>
-    /// The object the view's filter delegate points at. It holds the state weakly, so a long-lived collection view
-    /// does not keep the grid alive; without the grid only the consumer's own filter applies.
-    /// </summary>
-    private sealed class FilterPredicateHost
-    {
-        private readonly WeakReference<DataGridFilterState> state;
-
-        public FilterPredicateHost(DataGridFilterState state)
-            => this.state = new WeakReference<DataGridFilterState>(state);
-
-        public Predicate<object>? ConsumerFilter { get; set; }
-
-        public bool Evaluate(object item)
-            => state.TryGetTarget(out var target)
-                ? target.Passes(item)
-                : ConsumerFilter?.Invoke(item) ?? true;
     }
 }

@@ -155,7 +155,7 @@ The column key is the `ColumnKey`, else the `SortMemberPath`, else the binding p
 
 ## 📝 Notes
 
-- **Shared view**: grids that share one `ItemsSource` share its default view, so they share the filter. Give each grid its own `CollectionViewSource` (or `ListCollectionView`) when they must filter independently.
+- **Shared view**: grids that share one `ItemsSource` share its default view, so their filters combine (AND) with each other and with the view's own filter. Give each grid its own `CollectionViewSource` (or `ListCollectionView`) when they must filter independently.
 - **Your own filter**: a `Filter` already set on the default view is kept and ANDed. If you replace the view's `Filter` after a column filter was applied, your new filter is adopted (and ANDed) on the next filter change. Switching `IsEnabled` off gives the view your filter back.
 - **ItemsSource replacement**: the active filters are applied to the new source; the old view gets its own filter back.
 - **Header templates**: the button is added by wrapping the column's `HeaderTemplate` (kept and restored when `IsEnabled` is switched off). Set your own `HeaderTemplate` before switching `IsEnabled` on. The header's content is stretched so the button sits at the right edge.
