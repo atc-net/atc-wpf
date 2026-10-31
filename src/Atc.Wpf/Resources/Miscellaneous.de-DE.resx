@@ -136,6 +136,9 @@
   <data name="Dock1" xml:space="preserve">
     <value>{0} andocken</value>
   </data>
+  <data name="Resize1" xml:space="preserve">
+    <value>Größe von {0} ändern</value>
+  </data>
   <data name="Close1" xml:space="preserve">
     <value>{0} schließen</value>
   </data>

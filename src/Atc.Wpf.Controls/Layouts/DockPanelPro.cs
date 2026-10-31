@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.Layouts;
 /// </summary>
 public sealed partial class DockPanelPro : Panel
 {
+    private const double SplitterKeyboardStep = 10;
+
     private readonly List<Thumb> splitters = [];
 
     private DockRegion? topRegion;
@@ -585,18 +587,113 @@ public sealed partial class DockPanelPro : Panel
             Background = SplitterBackground ?? Brushes.Transparent,
             Opacity = 0.01, // Nearly invisible but still hit-testable
             Tag = region,
+            Focusable = true,
+            IsTabStop = true,
         };
+
+        AutomationProperties.SetAutomationId(splitter, "Splitter_" + (region.RegionId ?? string.Empty));
+        ApplySplitterText(splitter);
 
         splitter.DragDelta += OnSplitterDragDelta;
         splitter.DragCompleted += OnSplitterDragCompleted;
+        splitter.KeyDown += OnSplitterKeyDown;
+        splitter.IsKeyboardFocusedChanged += OnSplitterKeyboardFocusChanged;
 
         return splitter;
+    }
+
+    /// <summary>
+    /// Names a splitter "Resize <i>region</i>" for UI Automation and as its tool tip.
+    /// </summary>
+    private static void ApplySplitterText(Thumb splitter)
+    {
+        if (splitter.Tag is not DockRegion region)
+        {
+            return;
+        }
+
+        var regionName = region.Header as string
+                         ?? region.ActivePane?.HeaderText
+                         ?? region.RegionId
+                         ?? string.Empty;
+        var text = string.Format(CultureInfo.CurrentCulture, Atc.Wpf.Resources.Miscellaneous.Resize1, regionName).Trim();
+        AutomationProperties.SetName(splitter, text);
+    }
+
+    private void ApplySplitterTexts()
+    {
+        foreach (var splitter in splitters)
+        {
+            ApplySplitterText(splitter);
+        }
+    }
+
+    /// <summary>
+    /// Arrow keys on a focused splitter move it by <see cref="SplitterKeyboardStep"/> (mirrored in right-to-left).
+    /// </summary>
+    private void OnSplitterKeyDown(
+        object sender,
+        KeyEventArgs e)
+    {
+        if (sender is not Thumb splitter ||
+            Keyboard.Modifiers != ModifierKeys.None)
+        {
+            return;
+        }
+
+        var isHorizontal = ReferenceEquals(splitter, topSplitter) || ReferenceEquals(splitter, bottomSplitter);
+        var (horizontal, vertical) = FlowDirectionKeyHelper.ToLayoutKey(e.Key, FlowDirection) switch
+        {
+            Key.Up when isHorizontal => (0d, -SplitterKeyboardStep),
+            Key.Down when isHorizontal => (0d, SplitterKeyboardStep),
+            Key.Left when !isHorizontal => (-SplitterKeyboardStep, 0d),
+            Key.Right when !isHorizontal => (SplitterKeyboardStep, 0d),
+            _ => (0d, 0d),
+        };
+
+        if (horizontal == 0 && vertical == 0)
+        {
+            return;
+        }
+
+        e.Handled = true;
+        MoveSplitter(splitter, horizontal, vertical);
+        OnSplitterDragCompleted(splitter, new DragCompletedEventArgs(horizontal, vertical, canceled: false));
+    }
+
+    /// <summary>
+    /// Shows a keyboard-focused splitter (it is nearly transparent otherwise).
+    /// </summary>
+    private void OnSplitterKeyboardFocusChanged(
+        object sender,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (sender is not Thumb splitter)
+        {
+            return;
+        }
+
+        if (splitter.IsKeyboardFocused)
+        {
+            splitter.Opacity = 1;
+            if (SplitterBackground is null)
+            {
+                splitter.SetResourceReference(Control.BackgroundProperty, "AtcApps.Brushes.Accent");
+            }
+        }
+        else
+        {
+            splitter.Opacity = 0.01;
+            splitter.Background = SplitterBackground ?? Brushes.Transparent;
+        }
     }
 
     private void RemoveSplitter(Thumb splitter)
     {
         splitter.DragDelta -= OnSplitterDragDelta;
         splitter.DragCompleted -= OnSplitterDragCompleted;
+        splitter.KeyDown -= OnSplitterKeyDown;
+        splitter.IsKeyboardFocusedChanged -= OnSplitterKeyboardFocusChanged;
         splitters.Remove(splitter);
         RemoveVisualChild(splitter);
     }
@@ -628,30 +725,53 @@ public sealed partial class DockPanelPro : Panel
         object sender,
         DragDeltaEventArgs e)
     {
-        if (sender is not Thumb splitter)
+        if (sender is Thumb splitter)
         {
-            return;
+            MoveSplitter(splitter, e.HorizontalChange, e.VerticalChange);
         }
+    }
 
+    private void MoveSplitter(
+        Thumb splitter,
+        double horizontalChange,
+        double verticalChange)
+    {
         if (splitter == topSplitter && topRegion is not null)
         {
-            topHeight = ClampHeight(topHeight + e.VerticalChange, topRegion);
-            InvalidateMeasure();
+            topHeight = ClampHeight(topHeight + verticalChange, topRegion);
+            KeepExplicitSize(topRegion, HeightProperty, topHeight);
         }
         else if (splitter == bottomSplitter && bottomRegion is not null)
         {
-            bottomHeight = ClampHeight(bottomHeight - e.VerticalChange, bottomRegion);
-            InvalidateMeasure();
+            bottomHeight = ClampHeight(bottomHeight - verticalChange, bottomRegion);
+            KeepExplicitSize(bottomRegion, HeightProperty, bottomHeight);
         }
         else if (splitter == leftSplitter && leftRegion is not null)
         {
-            leftWidth = ClampWidth(leftWidth + e.HorizontalChange, leftRegion);
-            InvalidateMeasure();
+            leftWidth = ClampWidth(leftWidth + horizontalChange, leftRegion);
+            KeepExplicitSize(leftRegion, WidthProperty, leftWidth);
         }
         else if (splitter == rightSplitter && rightRegion is not null)
         {
-            rightWidth = ClampWidth(rightWidth - e.HorizontalChange, rightRegion);
-            InvalidateMeasure();
+            rightWidth = ClampWidth(rightWidth - horizontalChange, rightRegion);
+            KeepExplicitSize(rightRegion, WidthProperty, rightWidth);
+        }
+
+        InvalidateMeasure();
+    }
+
+    /// <summary>
+    /// A region with an explicit <c>Width</c>/<c>Height</c> (its initial size) would keep that size in a
+    /// larger or smaller slot: move the explicit size along with the splitter.
+    /// </summary>
+    private static void KeepExplicitSize(
+        DockRegion region,
+        DependencyProperty property,
+        double size)
+    {
+        if (!double.IsNaN((double)region.GetValue(property)))
+        {
+            region.SetCurrentValue(property, size);
         }
     }
 

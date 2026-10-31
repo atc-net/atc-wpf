@@ -295,6 +295,15 @@ namespace Atc.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resize {0}.
+        /// </summary>
+        public static string Resize1 {
+            get {
+                return ResourceManager.GetString("Resize1", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Close {0}.
         /// </summary>
         public static string Close1 {

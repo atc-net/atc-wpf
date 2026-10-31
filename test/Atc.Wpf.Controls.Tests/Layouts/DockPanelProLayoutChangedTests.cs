@@ -200,6 +200,44 @@ public sealed class DockPanelProLayoutChangedTests : IDisposable
         }
     }
 
+    [StaFact]
+    public void Arrow_keys_on_a_focused_splitter_resize_its_region_and_raise_LayoutChanged()
+    {
+        var (panel, bottom, right) = DockPanelProPaneTests.CreatePanel();
+        var host = DockPanelProFloatingWindowTests.Show(panel);
+        try
+        {
+            var bottomSplitter = FindSplitter(panel, bottom);
+            var rightSplitter = FindSplitter(panel, right);
+            var bottomHeight = bottom.ActualHeight;
+            var rightWidth = right.ActualWidth;
+
+            Assert.True(bottomSplitter.Focusable);
+            Assert.True(rightSplitter.Focusable);
+            Assert.Equal("Splitter_bottom", System.Windows.Automation.AutomationProperties.GetAutomationId(bottomSplitter));
+            Assert.False(string.IsNullOrEmpty(System.Windows.Automation.AutomationProperties.GetName(bottomSplitter)));
+
+            Assert.True(PressKey(bottomSplitter, Key.Up));
+            Assert.True(PressKey(rightSplitter, Key.Left));
+            Assert.False(PressKey(rightSplitter, Key.Up));
+            host.UpdateLayout();
+
+            Assert.Equal(bottomHeight + 10, bottom.ActualHeight);
+            Assert.Equal(rightWidth + 10, right.ActualWidth);
+            Assert.True(panel.IsLayoutChangePending);
+
+            panel.FlowDirection = FlowDirection.RightToLeft;
+            Assert.True(PressKey(rightSplitter, Key.Right));
+            host.UpdateLayout();
+
+            Assert.Equal(rightWidth + 20, right.ActualWidth);
+        }
+        finally
+        {
+            host.Close();
+        }
+    }
+
     [Fact]
     public void FileDockLayoutStore_round_trips_and_returns_null_for_an_unknown_id()
     {
@@ -222,6 +260,25 @@ public sealed class DockPanelProLayoutChangedTests : IDisposable
                 Directory.Delete(directory, recursive: true);
             }
         }
+    }
+
+    private static Thumb FindSplitter(
+        DockPanelPro panel,
+        DockRegion region)
+        => DockPanelProFloatingWindowTests
+            .FindVisualChildren<Thumb>(panel)
+            .First(x => ReferenceEquals(x.Tag, region));
+
+    private static bool PressKey(
+        UIElement target,
+        Key key)
+    {
+        var args = new KeyEventArgs(Keyboard.PrimaryDevice, PresentationSource.FromVisual(target)!, 0, key)
+        {
+            RoutedEvent = Keyboard.KeyDownEvent,
+        };
+        target.RaiseEvent(args);
+        return args.Handled;
     }
 
     private sealed class MemoryLayoutStore : IDockLayoutStore

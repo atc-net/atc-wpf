@@ -136,6 +136,9 @@
   <data name="Dock1" xml:space="preserve">
     <value>Fastgør {0}</value>
   </data>
+  <data name="Resize1" xml:space="preserve">
+    <value>Tilpas størrelsen på {0}</value>
+  </data>
   <data name="Close1" xml:space="preserve">
     <value>Luk {0}</value>
   </data>

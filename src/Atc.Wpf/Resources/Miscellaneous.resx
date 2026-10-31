@@ -136,6 +136,9 @@
   <data name="Dock1" xml:space="preserve">
     <value>Dock {0}</value>
   </data>
+  <data name="Resize1" xml:space="preserve">
+    <value>Resize {0}</value>
+  </data>
   <data name="Close1" xml:space="preserve">
     <value>Close {0}</value>
   </data>

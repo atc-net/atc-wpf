@@ -224,13 +224,15 @@ dockPanel.RedockAllPanes();
 | `←` / `→` on a focused tab | Previous / next tab |
 | `Shift+F10` or the context-menu key on a tab or the region header | **Float** / **Close** menu for the pane |
 | `Shift+F10` inside a floating pane | **Dock** / **Close** menu |
-| `Tab` | Reaches the header float and close buttons |
+| `Tab` | Reaches the header float and close buttons, and the splitters |
+| `←` / `→` (`↑` / `↓`) on a focused splitter | Moves the splitter by 10 (mirrored in right-to-left); the focused splitter is shown in the accent colour |
 
 ## ♿ UI Automation
 
 - `DockPanelPro` is a pane (automation id = `LayoutId` unless one is set), each `DockRegion` a group named after its header or active pane (automation id = `RegionId`, `ExpandCollapse` when collapsible), and each `DockPane` a pane (automation id = `PaneId`).
 - The tabs are tab items with `SelectionItem` (automation id = `PaneId`).
 - The region header buttons are Invoke buttons named "Float *pane*" and "Close *pane*" (automation ids `FloatPane_<RegionId>` and `ClosePane_<RegionId>`); each tab has a "Close *pane*" button (`CloseTab_<PaneId>`).
+- Each splitter is a focusable thumb named "Resize *region*" (automation id `Splitter_<RegionId>`).
 - A floating window has the automation id `FloatingPane_<PaneId>` and a "Dock *pane*" Invoke button (`RedockPane`).
 
 The texts are translated (English, Danish, German) and follow `CultureManager.UiCulture`.

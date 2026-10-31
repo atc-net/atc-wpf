@@ -106,6 +106,8 @@ public sealed partial class DockPanelPro
         {
             window.ApplyTexts();
         }
+
+        ApplySplitterTexts();
     }
 
     private void AttachOwnerWindow(Window? window)
