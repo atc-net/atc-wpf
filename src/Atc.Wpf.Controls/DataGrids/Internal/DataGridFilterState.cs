@@ -585,6 +585,12 @@ internal sealed class DataGridFilterState
         var count = view is CollectionView collectionView
             ? collectionView.Count
             : -1;
+        if (count > 0 && view is IEditableCollectionView { NewItemPlaceholderPosition: not NewItemPlaceholderPosition.None })
+        {
+            // The new-item row of a grid with CanUserAddRows is not a row that passed the filters.
+            count--;
+        }
+
         grid.RaiseEvent(
             new DataGridFilterChangedEventArgs(
                 DataGridFilter.FilterChangedEvent,
@@ -658,7 +664,10 @@ internal sealed class DataGridFilterState
             return true;
         }
 
-        if (grid.CurrentColumn is { } column && DataGridFilter.CanFilterColumn(grid, column))
+        // Only from a cell (or the grid itself): an editing combo box or date picker keeps its own Alt+Down.
+        if (originalSource is (DataGridCell or DataGrid) &&
+            grid.CurrentColumn is { } column &&
+            DataGridFilter.CanFilterColumn(grid, column))
         {
             DataGridFilter.OpenColumnFilter(grid, column);
             return true;

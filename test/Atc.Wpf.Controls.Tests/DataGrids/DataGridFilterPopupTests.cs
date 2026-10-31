@@ -252,6 +252,85 @@ public sealed class DataGridFilterPopupTests : IDisposable
         Assert.Contains("[Status]", texts, StringComparer.Ordinal);
     }
 
+    [StaFact]
+    public void Funnel_follows_the_header_foreground_and_turns_accent_when_active()
+    {
+        var headerForeground = new SolidColorBrush(Colors.WhiteSmoke);
+        var accent = new SolidColorBrush(Colors.Orange);
+        var grid = CreateGrid();
+        var headerStyle = new Style(typeof(DataGridColumnHeader));
+        headerStyle.Setters.Add(new Setter(Control.ForegroundProperty, headerForeground));
+        grid.ColumnHeaderStyle = headerStyle;
+        grid.Resources["AtcApps.Brushes.Accent"] = accent;
+        Show(grid);
+        var funnel = (System.Windows.Shapes.Path)FindButton(grid, "Status").Content;
+
+        Assert.Same(headerForeground, funnel.Stroke);
+        Assert.Null(funnel.Fill);
+
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Status", ["Open"]));
+
+        Assert.Same(accent, funnel.Fill);
+        Assert.Same(accent, funnel.Stroke);
+    }
+
+    [StaFact]
+    public void Filter_buttons_are_reachable_from_the_grid_in_the_automation_tree()
+    {
+        var grid = Show(CreateGrid());
+        var gridPeer = UIElementAutomationPeer.CreatePeerForElement(grid);
+        var expected = string.Format(CultureInfo.CurrentCulture, Atc.Wpf.Resources.Miscellaneous.FilterColumn1, "Status");
+
+        var button = Descendants(gridPeer).FirstOrDefault(x =>
+            string.Equals(x.GetClassName(), "DataGridFilterButton", StringComparison.Ordinal) &&
+            string.Equals(x.GetName(), expected, StringComparison.Ordinal));
+
+        Assert.NotNull(button);
+        Assert.Equal(AutomationControlType.Button, button.GetAutomationControlType());
+    }
+
+    [StaFact]
+    public void Alt_down_in_an_editing_combo_box_is_left_to_the_combo_box()
+    {
+        var grid = Show(CreateGrid());
+        grid.CurrentCell = new DataGridCellInfo(grid.Items[0], Column(grid, "Customer"));
+
+        Assert.False(DataGridFilter.HandleKey(grid, Key.System, Key.Down, new ComboBox()));
+        Assert.Null(DataGridFilter.GetOpenPopup(grid));
+    }
+
+    [StaFact]
+    public void Opening_the_filter_of_a_hundred_thousand_distinct_values_is_measured()
+    {
+        var orders = Enumerable
+            .Range(0, 100_000)
+            .Select(i => new TestOrder { Id = i, Status = (i % 5).ToString(CultureInfo.InvariantCulture), Country = "Denmark" })
+            .ToList();
+        var grid = Show(CreateGrid(orders));
+
+        var stopwatch = Stopwatch.StartNew();
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Id"));
+        DataGridFilter.GetOpenPopup(grid)!.Child.UpdateLayout();
+        var idMs = stopwatch.ElapsedMilliseconds;
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+        Assert.Equal(100_000, content.ValueList.Items.Count);
+
+        stopwatch.Restart();
+        content.ValueList.GetItem("#7")!.IsChecked = false;
+        content.OkButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+        var okMs = stopwatch.ElapsedMilliseconds;
+        Assert.Equal(99_999, grid.Items.Count);
+
+        stopwatch.Restart();
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Status"));
+        DataGridFilter.GetOpenPopup(grid)!.Child.UpdateLayout();
+        var statusMs = stopwatch.ElapsedMilliseconds;
+        DataGridFilter.CloseColumnFilter(grid);
+
+        TestContext.Current.TestOutputHelper?.WriteLine(
+            $"100k rows: open Id filter (100,000 values) {idMs} ms, OK {okMs} ms, open Status filter (5 values) {statusMs} ms");
+    }
+
     private DataGrid Show(DataGrid grid)
     {
         grids.Add(grid);

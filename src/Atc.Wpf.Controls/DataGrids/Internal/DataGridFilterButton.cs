@@ -151,10 +151,14 @@ internal sealed class DataGridFilterButton : Button
         }
         else
         {
+            // The header's (themed) foreground: the button's own Foreground comes from the system button style.
             funnel.ClearValue(Shape.FillProperty);
             funnel.SetBinding(
                 Shape.StrokeProperty,
-                new Binding(nameof(Foreground)) { Source = this });
+                new Binding(nameof(Control.Foreground))
+                {
+                    RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(DataGridColumnHeader), 1),
+                });
         }
     }
 }

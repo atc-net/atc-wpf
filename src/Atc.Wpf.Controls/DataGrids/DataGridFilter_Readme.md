@@ -145,7 +145,7 @@ The column key is the `ColumnKey`, else the `SortMemberPath`, else the binding p
 | Key | Action |
 |-----|--------|
 | `Alt+Down` on a filter button | Opens that column's filter |
-| `Alt+Down` on a cell | Opens the filter of the current column (stock column headers cannot take the keyboard focus) |
+| `Alt+Down` on a cell | Opens the filter of the current column (stock column headers cannot take the keyboard focus). An editing cell's own control (e.g. a combo box) keeps `Alt+Down` |
 | `Enter` in the pop-up | OK |
 | `Esc` in the pop-up | Cancel |
 
@@ -161,9 +161,9 @@ The column key is the `ColumnKey`, else the `SortMemberPath`, else the binding p
 - **Header templates**: the button is added by wrapping the column's `HeaderTemplate` (kept and restored when `IsEnabled` is switched off). Set your own `HeaderTemplate` before switching `IsEnabled` on. The header's content is stretched so the button sits at the right edge.
 - **Columns without a path**: template columns need a `SortMemberPath` to be filterable; otherwise they get no button. Indexer paths and `DataTable` sources (`BindingListCollectionView`, which cannot filter with a predicate) are not supported.
 - **Values filters store the formatted text**, so a saved values filter depends on the column's `StringFormat` and the grid's `Language`. Range and text filters do not.
-- **Performance**: with 100,000 rows the distinct values of a column take about 20-25 ms and applying a filter about 20 ms (one `Refresh`; the search over six columns about 50 ms). Row and column virtualization stay on.
+- **Performance** (100,000 rows, Release build): the distinct values of a column take about 20-40 ms; the pop-up opens in about 0.1 s for a column with 5 values and about 0.3 s for one with 100,000 distinct values; OK applies the filter in about 0.1 s including the grid's re-layout (one `Refresh`); the search over six columns takes about 50 ms. Row and column virtualization stay on.
 - **Leaks**: the predicate on the (possibly long-lived) view holds the grid weakly; a dropped grid leaves only your own filter on the view.
-- Theme brushes only: the button and pop-up follow the Light and Dark themes. Texts are translated (English, Danish, German).
+- Theme brushes only: the button and pop-up follow the Light and Dark themes. The funnel takes the header's foreground (accent when active). The pop-up is a separate window, so its brushes come from the application resources, where the Atc theme is merged (`App.xaml`). Texts are translated (English, Danish, German).
 
 ## 🔗 Related Controls
 

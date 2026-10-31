@@ -321,6 +321,19 @@ public sealed class DataGridFilterTests : IDisposable
     }
 
     [StaFact]
+    public void Item_count_leaves_out_the_new_item_row()
+    {
+        var grid = CreateGrid();
+        grid.CanUserAddRows = true;
+        var events = new List<DataGridFilterChangedEventArgs>();
+        DataGridFilter.AddFilterChangedHandler(grid, (_, e) => events.Add(e));
+
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Status", ["Open"]));
+
+        Assert.Equal(3, Assert.Single(events).ItemCount);
+    }
+
+    [StaFact]
     public void New_items_source_gets_the_filters_and_the_old_view_gets_its_filter_back()
     {
         var first = Orders();
