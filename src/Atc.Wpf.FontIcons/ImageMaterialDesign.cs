@@ -155,7 +155,12 @@ public sealed class ImageMaterialDesign : Image, ISpinable, IRotatable, IFlippab
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageMaterialDesign.Icon, imageMaterialDesign.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            FontIconHelper.GetIconImageSource(
+                FontMaterialDesignTypeface,
+                char.ConvertFromUtf32((int)imageMaterialDesign.Icon),
+                imageMaterialDesign.Foreground));
     }
 
     private static void OnSpinDurationChanged(

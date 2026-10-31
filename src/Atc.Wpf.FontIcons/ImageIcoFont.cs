@@ -155,7 +155,12 @@ public sealed class ImageIcoFont : Image, ISpinable, IRotatable, IFlippable
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageIcoFont.Icon, imageIcoFont.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            FontIconHelper.GetIconImageSource(
+                IcoFontTypeface,
+                char.ConvertFromUtf32((int)imageIcoFont.Icon),
+                imageIcoFont.Foreground));
     }
 
     private static void OnSpinDurationChanged(

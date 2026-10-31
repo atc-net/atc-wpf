@@ -155,7 +155,12 @@ public sealed class ImageAwesomeBrand : Image, ISpinable, IRotatable, IFlippable
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageAwesome.Icon, imageAwesome.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            FontIconHelper.GetIconImageSource(
+                FontAwesomeBrandTypeface,
+                char.ConvertFromUtf32((int)imageAwesome.Icon),
+                imageAwesome.Foreground));
     }
 
     private static void OnSpinDurationChanged(

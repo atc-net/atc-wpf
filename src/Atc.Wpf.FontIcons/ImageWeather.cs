@@ -155,7 +155,12 @@ public sealed class ImageWeather : Image, ISpinable, IRotatable, IFlippable
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageWeather.Icon, imageWeather.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            FontIconHelper.GetIconImageSource(
+                FontWeatherTypeface,
+                char.ConvertFromUtf32((int)imageWeather.Icon),
+                imageWeather.Foreground));
     }
 
     private static void OnSpinDurationChanged(
