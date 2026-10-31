@@ -41,6 +41,11 @@ internal sealed class DataGridViewFilterOwner
         => Owners.GetValue(view, static x => new DataGridViewFilterOwner(x));
 
     /// <summary>
+    /// Gets the view the owner filters.
+    /// </summary>
+    public ICollectionView View => view;
+
+    /// <summary>
     /// Gets the consumer's own filter of the view (the one the owner ANDs), or the view's current filter when the
     /// owner's predicate is not installed.
     /// </summary>

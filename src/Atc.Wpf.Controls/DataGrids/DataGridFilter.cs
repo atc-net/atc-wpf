@@ -485,6 +485,12 @@ public static partial class DataGridFilter
         => GetState(grid)?.IsSearchPending == true;
 
     /// <summary>
+    /// Returns whether filter work waits for an edit or add transaction of the view to end.
+    /// </summary>
+    internal static bool IsApplyPending(DataGrid grid)
+        => GetState(grid)?.IsApplyPending == true;
+
+    /// <summary>
     /// Builds the column chooser menu: one checkable item per column.
     /// </summary>
     internal static ContextMenu CreateColumnChooserMenu(DataGrid grid)

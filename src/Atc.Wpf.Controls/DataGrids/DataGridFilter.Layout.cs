@@ -5,6 +5,8 @@ namespace Atc.Wpf.Controls.DataGrids;
 /// </summary>
 public static partial class DataGridFilter
 {
+    private static readonly object LayoutWorkKey = new();
+
     private static readonly JsonSerializerOptions LayoutWriteOptions = new()
     {
         WriteIndented = true,
@@ -85,13 +87,32 @@ public static partial class DataGridFilter
         ApplyColumns(grid, columnsByKey, known);
 
         var state = EnsureState(grid);
+        var sorts = (layout.Sorts ?? [])
+            .Where(x => !string.IsNullOrEmpty(x.PropertyName))
+            .ToList();
+        foreach (var column in grid.Columns)
+        {
+            var sort = sorts.Find(x => string.Equals(x.PropertyName, column.SortMemberPath, StringComparison.Ordinal));
+            column.SortDirection = sort?.Direction;
+        }
+
+        state.ReplaceFilters(
+            (layout.Filters ?? [])
+                .Where(x => x is not null && !string.IsNullOrEmpty(x.ColumnKey) && columnsByKey.ContainsKey(x.ColumnKey)));
+
+        // Sorting and filtering are refused during an edit or add transaction: they wait for it to end.
+        state.RunViewWork(LayoutWorkKey, () => ApplySortsAndFilters(grid, state, sorts));
+    }
+
+    private static void ApplySortsAndFilters(
+        DataGrid grid,
+        DataGridFilterState state,
+        List<DataGridSortLayout> sorts)
+    {
         var view = grid.ItemsSource is null ? null : CollectionViewSource.GetDefaultView(grid.ItemsSource);
         var deferral = view?.DeferRefresh();
         try
         {
-            var sorts = (layout.Sorts ?? [])
-                .Where(x => !string.IsNullOrEmpty(x.PropertyName))
-                .ToList();
             if (view is { CanSort: true })
             {
                 view.SortDescriptions.Clear();
@@ -101,15 +122,6 @@ public static partial class DataGridFilter
                 }
             }
 
-            foreach (var column in grid.Columns)
-            {
-                var sort = sorts.Find(x => string.Equals(x.PropertyName, column.SortMemberPath, StringComparison.Ordinal));
-                column.SortDirection = sort?.Direction;
-            }
-
-            state.ReplaceFilters(
-                (layout.Filters ?? [])
-                    .Where(x => x is not null && !string.IsNullOrEmpty(x.ColumnKey) && columnsByKey.ContainsKey(x.ColumnKey)));
             state.ApplyToDeferredView();
         }
         finally

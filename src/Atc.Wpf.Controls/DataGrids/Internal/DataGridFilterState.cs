@@ -12,6 +12,7 @@ internal sealed class DataGridFilterState
 {
     private readonly DataGrid grid;
     private readonly Dictionary<string, DataGridColumnFilter> filters = new(StringComparer.Ordinal);
+    private readonly List<PendingViewWork> pendingWork = [];
     private ICollectionView? view;
     private DataGridViewFilterOwner? owner;
     private string appliedSearchText = string.Empty;
@@ -22,6 +23,7 @@ internal sealed class DataGridFilterState
     private DataGridColumn? popupColumn;
     private DataGridFilterPopupContent? popupContent;
     private bool isReapplyQueued;
+    private DispatcherTimer? retryTimer;
 
     public DataGridFilterState(DataGrid grid)
     {
@@ -32,6 +34,7 @@ internal sealed class DataGridFilterState
         grid.Unloaded += OnGridUnloaded;
         grid.PreviewKeyDown += OnGridPreviewKeyDown;
         grid.ContextMenuOpening += OnGridContextMenuOpening;
+        grid.RowEditEnding += OnGridRowEditEnding;
     }
 
     /// <summary>
@@ -55,6 +58,11 @@ internal sealed class DataGridFilterState
     /// Gets a value indicating whether a search is pending (debounced).
     /// </summary>
     public bool IsSearchPending => searchTimer is { IsEnabled: true };
+
+    /// <summary>
+    /// Gets a value indicating whether filter work waits for an edit or add transaction of the view to end.
+    /// </summary>
+    public bool IsApplyPending => pendingWork.Count > 0;
 
     private bool HasAnything
         => filters.Count > 0 || appliedSearchText.Length > 0;
@@ -115,7 +123,7 @@ internal sealed class DataGridFilterState
         filters.Clear();
         if (appliedSearchText.Length > 0)
         {
-            Apply();
+            Apply(commitEdit: false);
             return;
         }
 
@@ -167,7 +175,9 @@ internal sealed class DataGridFilterState
         }
 
         appliedSearchText = text;
-        Apply();
+
+        // A search typed elsewhere (or a debounce tick) does not commit a half-typed row: it waits for the edit.
+        Apply(commitEdit: false);
     }
 
     /// <summary>
@@ -209,13 +219,31 @@ internal sealed class DataGridFilterState
     }
 
     /// <summary>
-    /// Builds the filter of the view and refreshes it once, then raises <c>FilterChanged</c>.
+    /// Builds the filter of the view and refreshes it once, then raises <c>FilterChanged</c>. A row the grid is
+    /// editing is committed first; while the view is still in an edit or add transaction the refresh waits for it.
     /// </summary>
     public void Apply()
+        => Apply(commitEdit: true);
+
+    /// <summary>
+    /// Runs work that filters, sorts or refreshes the grid's view (layout load) when the view allows it: a row the
+    /// grid is editing is committed first, and while the view is still in an edit or add transaction the work waits
+    /// for it (a later call with the same <paramref name="key"/> replaces it).
+    /// </summary>
+    public void RunViewWork(
+        object key,
+        Action work)
+        => RunWhenIdle(key, EnsureView(), commitEdit: true, work);
+
+    private void Apply(bool commitEdit)
     {
         RebuildMatchers();
         UpdateActiveFlags();
+        RunWhenIdle(this, EnsureView(), commitEdit, ApplyToView);
+    }
 
+    private void ApplyToView()
+    {
         var currentView = EnsureView();
         if (currentView is { CanFilter: true })
         {
@@ -503,7 +531,90 @@ internal sealed class DataGridFilterState
     {
         var current = owner;
         owner = null;
-        current?.Detach(this);
+        if (current is not null)
+        {
+            RunWhenIdle(current, current.View, commitEdit: false, () => current.Detach(this));
+        }
+    }
+
+    private static bool IsInTransaction(ICollectionView? targetView)
+        => targetView is IEditableCollectionView editable &&
+           (editable.IsEditingItem || editable.IsAddingNew);
+
+    private void RunWhenIdle(
+        object key,
+        ICollectionView? targetView,
+        bool commitEdit,
+        Action work)
+    {
+        pendingWork.RemoveAll(x => ReferenceEquals(x.Key, key));
+        if (commitEdit && IsInTransaction(targetView))
+        {
+            // The grid's own row edit: commit it (a failed validation keeps the row editing, and the work waits).
+            grid.CommitEdit(DataGridEditingUnit.Row, exitEditingMode: true);
+        }
+
+        if (IsInTransaction(targetView))
+        {
+            pendingWork.Add(new PendingViewWork(key, targetView, work));
+            StartRetryTimer();
+            return;
+        }
+
+        FlushPendingWork();
+        work();
+    }
+
+    private void FlushPendingWork()
+    {
+        var runnable = pendingWork.FindAll(x => !IsInTransaction(x.View));
+        pendingWork.RemoveAll(runnable.Contains);
+        if (pendingWork.Count == 0)
+        {
+            retryTimer?.Stop();
+        }
+
+        foreach (var item in runnable)
+        {
+            item.Work();
+        }
+    }
+
+    private void StartRetryTimer()
+    {
+        if (retryTimer is null)
+        {
+            // A transaction started in code ends without any event, so poll; the timer holds the state weakly.
+            var weakState = new WeakReference<DataGridFilterState>(this);
+            retryTimer = new DispatcherTimer(DispatcherPriority.Background, grid.Dispatcher)
+            {
+                Interval = TimeSpan.FromMilliseconds(200),
+            };
+            retryTimer.Tick += (sender, _) =>
+            {
+                if (weakState.TryGetTarget(out var state))
+                {
+                    state.FlushPendingWork();
+                }
+                else
+                {
+                    ((DispatcherTimer)sender!).Stop();
+                }
+            };
+        }
+
+        retryTimer.Start();
+    }
+
+    private void OnGridRowEditEnding(
+        object? sender,
+        DataGridRowEditEndingEventArgs e)
+    {
+        if (pendingWork.Count > 0)
+        {
+            // The transaction is still open while the event is raised: retry once it has ended.
+            _ = grid.Dispatcher.BeginInvoke(DispatcherPriority.Background, FlushPendingWork);
+        }
     }
 
     private IEnumerable GetSourceItems()
@@ -616,7 +727,7 @@ internal sealed class DataGridFilterState
                 () =>
                 {
                     isReapplyQueued = false;
-                    Apply();
+                    Apply(commitEdit: false);
                 });
         }
     }
@@ -742,4 +853,9 @@ internal sealed class DataGridFilterState
 
         return null;
     }
+
+    private sealed record PendingViewWork(
+        object Key,
+        ICollectionView? View,
+        Action Work);
 }
