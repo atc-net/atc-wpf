@@ -492,8 +492,8 @@ public static class ModelToLabelControlExtractor
         var value = propertyObjectValue switch
         {
             decimal dec => dec,
-            double dub => (decimal)dub,
-            float flo => (decimal)flo,
+            double dub => NumberClampHelper.ToDecimal(dub),
+            float flo => NumberClampHelper.ToDecimal(flo),
             _ => 0,
         };
 
@@ -520,12 +520,12 @@ public static class ModelToLabelControlExtractor
         switch (propertyObjectValue)
         {
             case Size size:
-                valueX = (decimal)size.Width;
-                valueY = (decimal)size.Height;
+                valueX = NumberClampHelper.ToDecimal(size.Width);
+                valueY = NumberClampHelper.ToDecimal(size.Height);
                 break;
             case Point2D point2D:
-                valueX = (decimal)point2D.X;
-                valueY = (decimal)point2D.Y;
+                valueX = NumberClampHelper.ToDecimal(point2D.X);
+                valueY = NumberClampHelper.ToDecimal(point2D.Y);
                 break;
         }
 
@@ -611,8 +611,8 @@ public static class ModelToLabelControlExtractor
         switch (propertyObjectValue)
         {
             case Size size:
-                valueWidth = (int)size.Width;
-                valueHeight = (int)size.Height;
+                valueWidth = NumberClampHelper.ToInt32(size.Width);
+                valueHeight = NumberClampHelper.ToInt32(size.Height);
                 break;
         }
 
