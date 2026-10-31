@@ -204,7 +204,7 @@ public sealed class ImageBootstrap : Image, ISpinable, IRotatable, IFlippable
             return;
         }
 
-        if (!imageBootstrap.Spin ||
+        if (imageBootstrap.Spin ||
             e.NewValue is not double ||
             e.NewValue.Equals(e.OldValue))
         {

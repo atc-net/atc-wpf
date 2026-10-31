@@ -197,8 +197,8 @@ public sealed class ImageMaterialDesign : Image, ISpinable, IRotatable, IFlippab
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var imageMaterialDesign = d as ImageMaterialDesign;
-        if (imageMaterialDesign?.Spin != true ||
+        if (d is not ImageMaterialDesign imageMaterialDesign ||
+            imageMaterialDesign.Spin ||
             e.NewValue is not double ||
             e.NewValue.Equals(e.OldValue))
         {

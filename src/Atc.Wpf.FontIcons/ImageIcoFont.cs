@@ -197,8 +197,10 @@ public sealed class ImageIcoFont : Image, ISpinable, IRotatable, IFlippable
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var imageIcoFont = d as ImageIcoFont;
-        if (imageIcoFont?.Spin != true || e.NewValue is not double || e.NewValue.Equals(e.OldValue))
+        if (d is not ImageIcoFont imageIcoFont ||
+            imageIcoFont.Spin ||
+            e.NewValue is not double ||
+            e.NewValue.Equals(e.OldValue))
         {
             return;
         }

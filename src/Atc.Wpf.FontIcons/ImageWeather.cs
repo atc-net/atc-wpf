@@ -197,8 +197,8 @@ public sealed class ImageWeather : Image, ISpinable, IRotatable, IFlippable
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var imageWeather = d as ImageWeather;
-        if (imageWeather?.Spin != true ||
+        if (d is not ImageWeather imageWeather ||
+            imageWeather.Spin ||
             e.NewValue is not double ||
             e.NewValue.Equals(e.OldValue))
         {
