@@ -56,10 +56,16 @@ public sealed class JsonViewerExpansionTests
             Assert.True(root.IsExpanded);
             Assert.True(((TreeViewItem)root.ItemContainerGenerator.ContainerFromIndex(0)).IsExpanded);
             Assert.False(((TreeViewItem)root.ItemContainerGenerator.ContainerFromIndex(1)).IsExpanded);
+
+            var keyBrush = Atc.Wpf.Documents.ColorSchemas.JsonColorSchema.KeyBrush;
+            Assert.Contains(
+                FindVisualChildren<TextBlock>(root.ItemContainerGenerator.ContainerFromIndex(0)),
+                textBlock => ReferenceEquals(textBlock.Foreground, keyBrush));
         }
         finally
         {
             window.Close();
+            Atc.Wpf.Documents.ColorSchemas.JsonColorSchema.SetThemeMode(ThemeMode.Light);
         }
     }
 
@@ -102,6 +108,24 @@ public sealed class JsonViewerExpansionTests
             ShowInTaskbar = false,
             WindowStyle = WindowStyle.None,
         };
+
+    private static IEnumerable<T> FindVisualChildren<T>(DependencyObject parent)
+        where T : DependencyObject
+    {
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is T match)
+            {
+                yield return match;
+            }
+
+            foreach (var nested in FindVisualChildren<T>(child))
+            {
+                yield return nested;
+            }
+        }
+    }
 
     private static int CountTreeViewItems(DependencyObject parent)
     {

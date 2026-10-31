@@ -50,7 +50,7 @@
             DataType="{x:Type jsonTree:JsonPropertyNode}"
             ItemsSource="{Binding Converter={x:Static valueConverters:JsonNodeChildrenConverter.Instance}}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
-                <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}">
+                <TextBlock Foreground="{Binding Path=(colorSchemas:JsonColorSchema.KeyBrush)}">
                     <Run Text="{Binding Path=Name, Mode=OneWay}" />
                     <Run Text=": " />
                 </TextBlock>
@@ -70,7 +70,7 @@
             DataType="{x:Type jsonTree:JsonPropertyNode}"
             ItemsSource="{Binding Converter={x:Static valueConverters:JsonNodeChildrenConverter.Instance}}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
-                <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}" Text="{Binding Path=Name, Mode=OneWay}">
+                <TextBlock Foreground="{Binding Path=(colorSchemas:JsonColorSchema.KeyBrush)}" Text="{Binding Path=Name, Mode=OneWay}">
                     <Run Text="{Binding Path=Name, Mode=OneWay}" />
                     <Run Text=": " />
                 </TextBlock>
@@ -80,7 +80,7 @@
 
         <DataTemplate x:Key="PrimitivePropertyTemplate" DataType="{x:Type jsonTree:JsonPropertyNode}">
             <StackPanel Style="{StaticResource TreeViewItemStackPanel}">
-                <TextBlock Foreground="{x:Static colorSchemas:JsonColorSchema.KeyBrush}">
+                <TextBlock Foreground="{Binding Path=(colorSchemas:JsonColorSchema.KeyBrush)}">
                     <Run Text="{Binding Path=Name, Mode=OneWay}" />
                     <Run Text=":   " />
                 </TextBlock>
