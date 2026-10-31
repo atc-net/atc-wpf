@@ -39,6 +39,13 @@ public sealed partial class Flyout : ContentControl
     private ScaleTransform? scaleTransform;
 
     private bool isAnimating;
+
+    // Set while a light dismiss (overlay click or Escape) closes the flyout: it has already raised Closing
+    // (with IsLightDismiss), so the IsOpen change must not raise it a second time.
+    private bool isClosingEventRaised;
+
+    // Set while a cancelled close puts IsOpen back to true, so that restore does not run the open sequence.
+    private bool isRestoringIsOpen;
     private IInputElement? previouslyFocusedElement;
     private Window? parentWindow;
 
@@ -718,9 +725,19 @@ public sealed partial class Flyout : ContentControl
 
         RaiseEvent(args);
 
-        if (!args.Cancel)
+        if (args.Cancel)
+        {
+            return;
+        }
+
+        isClosingEventRaised = true;
+        try
         {
             IsOpen = false;
+        }
+        finally
+        {
+            isClosingEventRaised = false;
         }
     }
 
@@ -728,20 +745,21 @@ public sealed partial class Flyout : ContentControl
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is Flyout flyout)
+        if (d is not Flyout flyout || flyout.isRestoringIsOpen)
         {
-            var newIsOpen = (bool)e.NewValue;
+            return;
+        }
 
-            if (newIsOpen)
-            {
-                flyout.RegisterAsOpen();
-                flyout.OnOpening();
-            }
-            else
-            {
-                flyout.UnregisterAsOpen();
-                flyout.OnClosing(isLightDismiss: false);
-            }
+        var newIsOpen = (bool)e.NewValue;
+
+        if (newIsOpen)
+        {
+            flyout.RegisterAsOpen();
+            flyout.OnOpening();
+        }
+        else
+        {
+            flyout.OnClosing();
         }
     }
 
@@ -766,24 +784,40 @@ public sealed partial class Flyout : ContentControl
         AnimateOpen();
     }
 
-    private void OnClosing(bool isLightDismiss)
+    private void OnClosing()
     {
-        if (!isLightDismiss)
+        if (isClosingEventRaised)
         {
-            var args = new FlyoutClosingEventArgs(ClosingEvent, this)
-            {
-                IsLightDismiss = false,
-            };
-
-            RaiseEvent(args);
-
-            if (args.Cancel)
-            {
-                IsOpen = true;
-                return;
-            }
+            UnregisterAsOpen();
+            AnimateClose();
+            return;
         }
 
+        var args = new FlyoutClosingEventArgs(ClosingEvent, this)
+        {
+            IsLightDismiss = false,
+        };
+
+        RaiseEvent(args);
+
+        if (args.Cancel)
+        {
+            // Put IsOpen back without re-running the open sequence (no Opening, no open animation);
+            // the flyout never left the open order, so it stays topmost.
+            isRestoringIsOpen = true;
+            try
+            {
+                SetCurrentValue(IsOpenProperty, value: true);
+            }
+            finally
+            {
+                isRestoringIsOpen = false;
+            }
+
+            return;
+        }
+
+        UnregisterAsOpen();
         AnimateClose();
     }
 
