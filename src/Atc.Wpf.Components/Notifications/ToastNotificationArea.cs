@@ -15,6 +15,13 @@ public sealed partial class ToastNotificationArea : Control
     private int maxItems;
 
     /// <summary>
+    /// Gets or sets a value indicating whether a notification's expiration time stops running while the mouse is
+    /// over it, so it does not close while the user reads it or moves to one of its buttons. Defaults to <see langword="true"/>.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true)]
+    private bool pauseOnHover;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="ToastNotificationArea"/> class. The area is registered with the
     /// <see cref="ToastNotificationManager"/> while it is loaded, so an area in a view that has been unloaded no longer receives notifications.
     /// </summary>
@@ -135,8 +142,8 @@ public sealed partial class ToastNotificationArea : Control
             return;
         }
 
-        await Task
-            .Delay(expirationTime)
+        await toastNotification
+            .WaitForExpiryAsync(expirationTime, PauseOnHover)
             .ConfigureAwait(true);
         await toastNotification
             .CloseAsync()
