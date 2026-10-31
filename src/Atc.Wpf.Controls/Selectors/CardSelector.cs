@@ -650,6 +650,14 @@ public sealed partial class CardSelector : ListBox
             .Select(GetKey)
             .OfType<string>()
             .ToList();
+
+        // A single mode holds exactly the selected card's key: a restored key without a card is replaced, not kept.
+        if (SelectionMode != CardSelectionMode.Multiple)
+        {
+            WriteKeys(keysOfSelection.Distinct(StringComparer.Ordinal).ToList());
+            return;
+        }
+
         var unselectedKeys = GetItemKeys();
         unselectedKeys.ExceptWith(keysOfSelection);
 

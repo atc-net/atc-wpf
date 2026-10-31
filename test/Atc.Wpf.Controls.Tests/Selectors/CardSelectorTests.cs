@@ -321,6 +321,24 @@ public sealed class CardSelectorTests : IDisposable
             new("enterprise", "Enterprise"),
         ];
 
+    [StaTheory]
+    [InlineData(CardSelectionMode.Single)]
+    [InlineData(CardSelectionMode.SingleOrNone)]
+    public void A_single_mode_writes_only_the_clicked_key_when_a_restored_key_has_no_card(
+        CardSelectionMode mode)
+    {
+        var (sut, items) = Create(x => x.SelectionMode = mode);
+        sut.SelectedKeys = ["legacy"];
+        var events = Record(sut);
+
+        Assert.True(sut.RequestToggle(items[0]));
+
+        Assert.Equal(["basic"], sut.SelectedKeys);
+        var change = Assert.Single(events);
+        Assert.Equal(["legacy"], change.OldValue);
+        Assert.Equal(["basic"], change.NewValue);
+    }
+
     private static (CardSelector Sut, System.Collections.ObjectModel.ObservableCollection<Plan> Items) Create(
         Action<CardSelector>? configure = null)
     {
