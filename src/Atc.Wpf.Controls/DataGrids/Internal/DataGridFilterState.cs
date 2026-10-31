@@ -175,11 +175,12 @@ internal sealed class DataGridFilterState
     }
 
     /// <summary>
-    /// Re-applies the filters, e.g. after a column was shown or hidden (the search covers the visible columns).
+    /// Re-applies the search after a column was shown or hidden (the search covers the visible columns; the column
+    /// filters do not depend on visibility, so without a search nothing is refreshed).
     /// </summary>
-    public void Reapply()
+    public void ReapplySearch()
     {
-        if (HasAnything)
+        if (appliedSearchText.Length > 0)
         {
             Apply();
         }

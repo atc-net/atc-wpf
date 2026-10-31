@@ -523,7 +523,7 @@ public static partial class DataGridFilter
             }
 
             column.Visibility = item.IsChecked ? Visibility.Visible : Visibility.Collapsed;
-            GetState(grid)?.Reapply();
+            GetState(grid)?.ReapplySearch();
         }
     }
 

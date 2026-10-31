@@ -403,6 +403,32 @@ public sealed class DataGridFilterTests : IDisposable
     }
 
     [StaFact]
+    public void Hiding_a_column_with_the_chooser_without_a_search_does_not_refresh_the_view()
+    {
+        var orders = Orders();
+        var grid = CreateGrid(orders);
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Status", ["Open"]));
+        var resets = 0;
+        ((INotifyCollectionChanged)CollectionViewSource.GetDefaultView(orders)).CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                resets++;
+            }
+        };
+        var events = 0;
+        DataGridFilter.AddFilterChangedHandler(grid, (_, _) => events++);
+
+        var menu = DataGridFilter.CreateColumnChooserMenu(grid);
+        ((MenuItem)menu.Items[2]).IsChecked = false;
+        ((MenuItem)menu.Items[2]).IsChecked = true;
+
+        Assert.Equal(0, resets);
+        Assert.Equal(0, events);
+        Assert.Equal([1, 3, 5], VisibleIds(grid));
+    }
+
+    [StaFact]
     public void Template_column_without_a_path_cannot_be_filtered_but_one_with_sort_member_path_can()
     {
         var grid = CreateGrid();
