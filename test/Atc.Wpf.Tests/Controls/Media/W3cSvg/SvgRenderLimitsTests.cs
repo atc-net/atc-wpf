@@ -57,6 +57,66 @@ public sealed class SvgRenderLimitsTests
         Assert.NotEmpty(GeometryDrawings(drawing));
     }
 
+    [StaTheory]
+    [InlineData("")]
+    [InlineData("fill=\"red\"")]
+    [InlineData("stroke=\"red\"")]
+    public void ShapeUnderManyPlainGroups_InheritsItsPaintQuickly(
+        string rectAttributes)
+    {
+        const int depth = 250;
+        var sb = new StringBuilder(SvgOpen);
+        for (var i = 0; i < depth; i++)
+        {
+            sb.Append("<g>");
+        }
+
+        sb.Append(CultureInfo.InvariantCulture, $"""<rect width="1" height="1" {rectAttributes} />""");
+        for (var i = 0; i < depth; i++)
+        {
+            sb.Append("</g>");
+        }
+
+        sb.Append("</svg>");
+
+        var (drawing, elapsed) = RenderTimed(sb.ToString());
+
+        Assert.True(elapsed < MaxDuration, $"Rendering took {elapsed}.");
+        Assert.Single(GeometryDrawings(drawing));
+    }
+
+    [StaTheory]
+    [InlineData("""<rect id="l0" width="1" height="1" fill="red" />""", "")]
+    [InlineData("""<linearGradient id="gr"><stop offset="0" stop-color="red" /><stop offset="1" stop-color="blue" /></linearGradient><rect id="l0" width="1" height="1" fill="url(#gr)" />""", "")]
+    [InlineData("""<rect id="l0" width="1" height="1" />""", "fill=\"red\"")]
+    [InlineData("""<rect id="l0" width="1" height="1" stroke="red" />""", "")]
+    public void UseFanOut_WithSharedPaint_StopsAtTheDrawingBudgetQuickly(
+        string leaf,
+        string rootAttributes)
+    {
+        var sb = new StringBuilder();
+        sb.Append(CultureInfo.InvariantCulture, $"""<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" {rootAttributes}>""");
+        sb.Append("<defs>");
+        sb.Append(leaf);
+        for (var level = 1; level <= 6; level++)
+        {
+            sb.Append(CultureInfo.InvariantCulture, $"""<g id="l{level}">""");
+            for (var i = 0; i < 10; i++)
+            {
+                sb.Append(CultureInfo.InvariantCulture, $"""<use href="#l{level - 1}" />""");
+            }
+
+            sb.Append("</g>");
+        }
+
+        sb.Append("""</defs><use href="#l6" /></svg>""");
+
+        var (drawing, elapsed) = RenderTimed(sb.ToString());
+
+        Assert.True(elapsed < MaxDuration, $"Rendering took {elapsed}.");
+        Assert.InRange(CountDrawings(drawing), 1, SvgLimits.MaxDrawings);
+    }
+
     [StaFact]
     public void LongChainOfUseElements_DoesNotOverflowTheStack()
     {

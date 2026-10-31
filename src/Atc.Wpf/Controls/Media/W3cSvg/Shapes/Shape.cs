@@ -86,53 +86,13 @@ internal class Shape
 
     public bool Display { get; set; } = true;
 
-    public virtual Stroke? Stroke
-    {
-        get
-        {
-            if (stroke is not null)
-            {
-                return stroke;
-            }
+    // The parent's getter already looks further up, so asking it is enough;
+    // walking every ancestor here too made the lookup exponential in the nesting depth.
+    public virtual Stroke? Stroke => stroke ?? Parent?.Stroke;
 
-            var parent = Parent;
-            while (parent is not null)
-            {
-                if (parent.Stroke is not null)
-                {
-                    return parent.Stroke;
-                }
-
-                parent = parent.Parent;
-            }
-
-            return null;
-        }
-    }
-
-    public virtual Fill? Fill
-    {
-        get
-        {
-            if (fill is not null)
-            {
-                return fill;
-            }
-
-            var parent = Parent;
-            while (parent is not null)
-            {
-                if (parent.Fill is not null)
-                {
-                    return parent.Fill;
-                }
-
-                parent = parent.Parent;
-            }
-
-            return null;
-        }
-    }
+    // The parent's getter already looks further up, so asking it is enough;
+    // walking every ancestor here too made the lookup exponential in the nesting depth.
+    public virtual Fill? Fill => fill ?? Parent?.Fill;
 
     public virtual TextStyle? TextStyle
     {

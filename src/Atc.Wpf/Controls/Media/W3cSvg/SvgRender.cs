@@ -24,6 +24,8 @@ internal sealed class SvgRender
 
     private readonly HashSet<Shape> expandingUseTargets = new();
 
+    private readonly Dictionary<Brush, Brush> frozenRenderBrushes = new(ReferenceEqualityComparer.Instance);
+
     private int renderedElementCount;
     private int renderDepth;
 
@@ -119,6 +121,31 @@ internal sealed class SvgRender
     {
         renderedElementCount = 0;
         renderDepth = 0;
+        frozenRenderBrushes.Clear();
+    }
+
+    /// <summary>
+    /// Paint-server and custom brushes are shared by every shape that uses them. WPF tracks each parent of an
+    /// unfrozen brush, which gets slower with every shape (quadratic), so the drawing uses a frozen copy,
+    /// made once per render. Animated or bound brushes cannot be frozen and are used as they are.
+    /// </summary>
+    private Brush? ForRender(Brush? brush)
+    {
+        if (brush is null ||
+            brush.IsFrozen ||
+            !brush.CanFreeze ||
+            brush.HasAnimatedProperties)
+        {
+            return brush;
+        }
+
+        if (!frozenRenderBrushes.TryGetValue(brush, out var frozenBrush))
+        {
+            frozenBrush = (Brush)brush.GetCurrentValueAsFrozen();
+            frozenRenderBrushes[brush] = frozenBrush;
+        }
+
+        return frozenBrush;
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - for now.")]
@@ -164,7 +191,7 @@ internal sealed class SvgRender
             }
 
             geometryDrawing.Pen = new Pen(
-                brush,
+                ForRender(brush),
                 strokeWidth);
             if (stroke.StrokeArray is not null)
             {
@@ -232,12 +259,12 @@ internal sealed class SvgRender
         }
         else
         {
-            geometryDrawing.Brush = Svg.Fill ?? shape.Fill.FillBrush(
+            geometryDrawing.Brush = ForRender(Svg.Fill ?? shape.Fill.FillBrush(
                 Svg,
                 this,
                 shape,
                 shape.Opacity,
-                geometry.Bounds);
+                geometry.Bounds));
             if (OverrideColor is not null)
             {
                 geometryDrawing.Brush = new SolidColorBrush(
