@@ -459,6 +459,44 @@ public sealed class NumericBoxTests : IDisposable
         Assert.True(handled);
     }
 
+    [StaTheory]
+    [InlineData(".")]
+    [InlineData("-")]
+    [InlineData("x")]
+    public void NumbersMode_LongDigitRunWithTrailingNonDigit_IsRejectedQuickly(
+        string trailing)
+    {
+        // Arrange
+        var (numericBox, textBox, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.NumericInputMode = NumericInput.Numbers;
+        var text = new string('1', 40) + trailing;
+        var stopwatch = Stopwatch.StartNew();
+
+        // Act
+        var handled = RaisePreviewTextInput(textBox, text);
+
+        // Assert
+        stopwatch.Stop();
+        Assert.True(handled);
+        Assert.True(
+            stopwatch.ElapsedMilliseconds < 50,
+            $"Validation took {stopwatch.ElapsedMilliseconds} ms.");
+    }
+
+    [StaFact]
+    public void NumbersMode_TypedDigits_AreParsedAsDecimalInteger()
+    {
+        // Arrange
+        var (numericBox, textBox, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.NumericInputMode = NumericInput.Numbers;
+
+        // Act
+        TypeText(textBox, "123");
+
+        // Assert
+        Assert.Equal(123d, numericBox.Value);
+    }
+
     [StaFact]
     public void StringFormat_Null_IsCoercedToEmptyString()
     {

@@ -25,8 +25,10 @@ public partial class NumericBox : Control
         RegexOptions.Compiled,
         TimeSpan.FromSeconds(1));
 
+    // The atomic group keeps each 1-2 digit chunk once it has matched, so a long digit run
+    // followed by a non-hex character fails in linear time instead of backtracking exponentially.
     private static readonly Regex RegexHexadecimal = new(
-        @"^([a-fA-F0-9]{1,2}\s?)+$",
+        @"^(?>[a-fA-F0-9]{1,2}\s?)+$",
         RegexOptions.Compiled,
         TimeSpan.FromSeconds(1));
 
