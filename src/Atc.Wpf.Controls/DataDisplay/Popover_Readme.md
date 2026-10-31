@@ -131,13 +131,16 @@ using Atc.Wpf.Controls.DataDisplay;
 
 | Value | Description |
 |-------|-------------|
-| `Click` | Opens on click, closes when clicking outside (default) |
-| `Hover` | Opens on mouse enter, closes on mouse leave |
+| `Click` | Opens on click (or Enter/Space on the anchor), closes when clicking outside (default) |
+| `Hover` | Opens on mouse enter or when the anchor gets keyboard focus, closes on mouse leave or when focus leaves |
 | `Manual` | Controlled programmatically via `IsOpen` |
 
 ## 📝 Notes
 
 - In `Click` mode, clicking outside the popover dismisses it (light dismiss)
+- In `Click` mode the popover is keyboard-accessible: a `Button` anchor toggles it on its `Click` (mouse, Enter, Space or access key), and any other focusable anchor toggles it with Enter or Space
+- In `Hover` mode, tabbing to a focusable anchor opens the popover too; it stays open while the focus is in the anchor or the popover content
+- When the popover is unloaded (e.g. its page is navigated away) it closes and detaches from the window
 - In `Hover` mode, `OpenDelay` and `CloseDelay` control timing; moving from anchor to popup keeps it open
 - The popover automatically flips to the opposite side when constrained by screen edges
 - Press `Escape` to close an open popover
