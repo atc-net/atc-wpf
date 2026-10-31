@@ -134,11 +134,38 @@ public sealed class UsbCameraService : IUsbCameraService
         }
     }
 
-    private static void OnUpdated(
+    private void OnUpdated(
         object? sender,
         DeviceSnapshotEventArgs e)
     {
-        // No-op for camera enumeration changes today.
+        var snapshot = e.Snapshot;
+        var existing = FindByDeviceId(snapshot.Id);
+        if (existing is null)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(snapshot.UpdatedName))
+        {
+            existing.FriendlyName = snapshot.UpdatedName;
+        }
+
+        if (snapshot.UpdatedIsEnabled is not { } isEnabled)
+        {
+            return;
+        }
+
+        existing.IsEnabled = isEnabled;
+
+        // A disabled camera is shown as in use, as on enumeration; a removed one stays disconnected.
+        if (!isEnabled && existing.State is not DeviceState.Disconnected)
+        {
+            existing.State = DeviceState.InUse;
+        }
+        else if (isEnabled && existing.State is DeviceState.InUse)
+        {
+            existing.State = DeviceState.Available;
+        }
     }
 
     private void OnEnumerationCompleted(

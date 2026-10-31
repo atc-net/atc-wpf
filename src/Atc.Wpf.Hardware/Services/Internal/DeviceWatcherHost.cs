@@ -4,6 +4,8 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
 {
     private const string SerialPortNameKey = "System.DeviceInterface.Serial.PortName";
     private const string AepIsConnectedKey = "System.Devices.Aep.IsConnected";
+    private const string ItemNameDisplayKey = "System.ItemNameDisplay";
+    private const string InterfaceEnabledKey = "System.Devices.InterfaceEnabled";
 
     private readonly DeviceWatcher watcher;
     private readonly string aqsFilter;
@@ -174,6 +176,8 @@ internal sealed class DeviceWatcherHost : IDeviceWatcherHost
             Name = string.Empty,
             IsConnected = TryGetBoolean(properties, AepIsConnectedKey),
             PortName = TryGetString(properties, SerialPortNameKey),
+            UpdatedName = TryGetString(properties, ItemNameDisplayKey),
+            UpdatedIsEnabled = TryGetBoolean(properties, InterfaceEnabledKey),
         };
 
     private static CameraPanel? MapPanel(EnclosureLocation? location)

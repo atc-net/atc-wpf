@@ -5,6 +5,8 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class AudioDeviceInfo : ObservableObject, IDeviceInfo
 {
+    private bool isDefault;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="AudioDeviceInfo"/> class.
     /// </summary>
@@ -24,7 +26,7 @@ public sealed partial class AudioDeviceInfo : ObservableObject, IDeviceInfo
         FriendlyName = friendlyName;
         Kind = kind;
         IsEnabled = isEnabled;
-        IsDefault = isDefault;
+        this.isDefault = isDefault;
     }
 
     /// <inheritdoc />
@@ -45,8 +47,31 @@ public sealed partial class AudioDeviceInfo : ObservableObject, IDeviceInfo
 
     /// <summary>
     /// Gets a value indicating whether the endpoint is the system default for its kind.
+    /// Follows the Windows setting while the service is watching.
     /// </summary>
-    public bool IsDefault { get; }
+    public bool IsDefault
+    {
+        get => isDefault;
+        internal set
+        {
+            if (value == isDefault)
+            {
+                return;
+            }
+
+            isDefault = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(DisplayName));
+        }
+    }
+
+    /// <summary>
+    /// Gets the text shown for the endpoint: its name, with a ★ when it is the system default.
+    /// </summary>
+    public string DisplayName
+        => IsDefault
+            ? $"{FriendlyName} ★"
+            : FriendlyName;
 
     /// <summary>
     /// The current state of the endpoint.
@@ -56,7 +81,5 @@ public sealed partial class AudioDeviceInfo : ObservableObject, IDeviceInfo
 
     /// <inheritdoc />
     public override string ToString()
-        => IsDefault
-            ? $"{FriendlyName} ★"
-            : FriendlyName;
+        => DisplayName;
 }

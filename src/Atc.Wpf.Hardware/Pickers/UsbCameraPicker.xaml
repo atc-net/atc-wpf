@@ -32,7 +32,7 @@
                 <TextBlock
                     Grid.Column="2"
                     VerticalAlignment="Center"
-                    Text="{Binding}" />
+                    Text="{Binding DisplayName}" />
                 <TextBlock
                     Grid.Column="4"
                     VerticalAlignment="Center"

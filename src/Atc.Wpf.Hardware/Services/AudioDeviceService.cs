@@ -8,6 +8,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
 
     private readonly IDeviceWatcherHost watcher;
+    private readonly IDefaultAudioDeviceSource? defaultSource;
     private int watchCount;
     private bool initialEnumerationCompleted;
     private bool disposed;
@@ -17,16 +18,21 @@ public sealed class AudioDeviceService : IAudioDeviceService
     /// </summary>
     /// <param name="kind">Whether to enumerate capture (input) or render (output) endpoints.</param>
     public AudioDeviceService(AudioDeviceKind kind)
-        : this(kind, new DeviceWatcherHost(DeviceInformation.GetAqsFilterFromDeviceClass(
-            kind is AudioDeviceKind.Input ? DeviceClass.AudioCapture : DeviceClass.AudioRender)))
+        : this(
+            kind,
+            new DeviceWatcherHost(DeviceInformation.GetAqsFilterFromDeviceClass(
+                kind is AudioDeviceKind.Input ? DeviceClass.AudioCapture : DeviceClass.AudioRender)),
+            new MediaDeviceDefaultAudioSource(kind))
     {
     }
 
     internal AudioDeviceService(
         AudioDeviceKind kind,
-        IDeviceWatcherHost watcher)
+        IDeviceWatcherHost watcher,
+        IDefaultAudioDeviceSource? defaultSource = null)
     {
         this.watcher = watcher ?? throw new ArgumentNullException(nameof(watcher));
+        this.defaultSource = defaultSource;
         Kind = kind;
         Devices = new ObservableCollection<AudioDeviceInfo>();
 
@@ -61,6 +67,13 @@ public sealed class AudioDeviceService : IAudioDeviceService
             watchCount--;
             throw;
         }
+
+        // The Windows default can change while nothing watches; catch up, then follow it.
+        if (defaultSource is not null)
+        {
+            defaultSource.DefaultDeviceChanged += OnDefaultDeviceChanged;
+            ApplyDefaultDevice(defaultSource.GetDefaultDeviceId());
+        }
     }
 
     /// <inheritdoc />
@@ -74,6 +87,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
         watchCount--;
         if (watchCount == 0)
         {
+            UnfollowDefaultDevice();
             watcher.StopWatching();
         }
     }
@@ -118,6 +132,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
 
         disposed = true;
 
+        UnfollowDefaultDevice();
         watcher.Added -= OnAdded;
         watcher.Removed -= OnRemoved;
         watcher.Updated -= OnUpdated;
@@ -146,6 +161,48 @@ public sealed class AudioDeviceService : IAudioDeviceService
         DeviceSnapshotEventArgs e)
     {
         // No-op for audio enumeration changes today.
+    }
+
+    private void UnfollowDefaultDevice()
+    {
+        if (defaultSource is not null)
+        {
+            defaultSource.DefaultDeviceChanged -= OnDefaultDeviceChanged;
+        }
+    }
+
+    private void OnDefaultDeviceChanged(
+        object? sender,
+        EventArgs e)
+    {
+        // Raised on a WinRT thread; the collection and its items are only changed on the UI thread.
+        var source = defaultSource;
+        if (source is null || disposed)
+        {
+            return;
+        }
+
+        var defaultId = source.GetDefaultDeviceId();
+        _ = watcher.InvokeOnUiAsync(() =>
+        {
+            if (!disposed)
+            {
+                ApplyDefaultDevice(defaultId);
+            }
+        });
+    }
+
+    private void ApplyDefaultDevice(string? defaultId)
+    {
+        if (defaultId is null)
+        {
+            return;
+        }
+
+        foreach (var device in Devices)
+        {
+            device.IsDefault = string.Equals(device.DeviceId, defaultId, StringComparison.OrdinalIgnoreCase);
+        }
     }
 
     private void OnEnumerationCompleted(
