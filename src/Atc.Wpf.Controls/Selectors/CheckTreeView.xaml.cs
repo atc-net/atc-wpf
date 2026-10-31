@@ -265,6 +265,16 @@ public partial class CheckTreeView
         => RunUserAction(() => state.SetAll(value: false));
 
     /// <summary>
+    /// Defers the handling of changes to the tree (nodes added to or removed from <see cref="Nodes"/> or a
+    /// <see cref="CheckTreeNode.Children"/> collection) until the returned scope is disposed; each changed parent is
+    /// then applied once. Wrap the adding of many nodes in it:
+    /// <code>using (tree.DeferRefresh()) { foreach (var node in nodes) { parent.Children.Add(node); } }</code>
+    /// </summary>
+    /// <returns>The scope; dispose it to apply the changes.</returns>
+    public IDisposable DeferRefresh()
+        => state.DeferStructureChanges();
+
+    /// <summary>
     /// Expands every loaded node.
     /// </summary>
     public void ExpandAll()

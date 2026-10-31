@@ -136,6 +136,7 @@ Ticking a node whose children are not loaded ticks the node itself (with `Leaves
 | Method | Description |
 |---|---|
 | `FindNode(string key)` | Returns the node with a key, or `null`. |
+| `DeferRefresh()` | Returns a scope that defers the handling of added or removed nodes until it is disposed; each changed parent is then applied once. Wrap the adding of many nodes in it (`using (tree.DeferRefresh()) { ... }`). Nodes appended one at a time outside it are indexed one by one (no re-indexing of their siblings). |
 | `ToggleNode(CheckTreeNode node)` | Toggles a node as a click does (one event). |
 | `SetNodeChecked(string key, bool isChecked)` | Ticks or unticks a node (with its shown, enabled children when linked). |
 | `SelectAll()` / `ClearSelection()` | Ticks every shown, enabled node / unticks every enabled node (one event each). |

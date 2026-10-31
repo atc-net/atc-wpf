@@ -155,6 +155,7 @@ As `TreeSelectComboBox`: `NoneText` (or the watermark) when nothing is ticked, "
 | Method | Description |
 |---|---|
 | `FindNode(string key)` | Returns the node with a key, or `null`. |
+| `DeferRefresh()` | Returns a scope that defers the handling of added or removed nodes until it is disposed; each changed parent is then applied once. Wrap the adding of many nodes in it (`using (tree.DeferRefresh()) { ... }`). Nodes appended one at a time outside it are indexed one by one (no re-indexing of their siblings). |
 | `ToggleNode(CheckTreeNode node)` | Toggles a node as a click on its check box does (one event). |
 | `SelectAll()` / `ClearSelection()` | One event each. |
 

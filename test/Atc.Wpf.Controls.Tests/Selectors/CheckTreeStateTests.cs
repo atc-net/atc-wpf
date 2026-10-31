@@ -400,6 +400,63 @@ public sealed class CheckTreeStateTests
     }
 
     [Fact]
+    public void Adding_children_one_at_a_time_indexes_each_node_once()
+    {
+        var parent = new CheckTreeNode("p", "Parent");
+        var sut = Create(CheckedKeysStrategy.Parents, parent);
+        sut.ApplyKeys(["p"]);
+        var before = sut.IndexCount;
+
+        for (var i = 0; i < 1000; i++)
+        {
+            parent.Children.Add(new CheckTreeNode($"c{i}", $"Child {i}"));
+        }
+
+        Assert.Equal(1000, sut.IndexCount - before);
+        Assert.True(parent.IsChecked);
+        Assert.All(parent.Children, x => Assert.True(x.IsChecked));
+        Assert.Equal(["p"], sut.GetKeys());
+    }
+
+    [Fact]
+    public void Adding_roots_one_at_a_time_indexes_each_node_once()
+    {
+        var roots = new System.Collections.ObjectModel.ObservableCollection<CheckTreeNode>();
+        var sut = new CheckTreeState();
+        sut.SetRoots(roots);
+        sut.ApplyKeys(["r500"]);
+        var before = sut.IndexCount;
+
+        for (var i = 0; i < 1000; i++)
+        {
+            roots.Add(new CheckTreeNode($"r{i}", $"Root {i}"));
+        }
+
+        Assert.Equal(1000, sut.IndexCount - before);
+        Assert.True(sut.Find("r500")!.IsChecked);
+        Assert.Equal(["r500"], sut.GetKeys());
+    }
+
+    [Fact]
+    public void Children_added_one_at_a_time_update_a_linked_parent_and_its_ancestors()
+    {
+        var sut = CreateRegions();
+        sut.ApplyKeys(["se-sto", "se-got"]);
+        var sweden = sut.Find("se")!;
+        Assert.True(sweden.IsChecked);
+
+        sweden.Children.Add(new CheckTreeNode("se-mal", "Malmo"));
+
+        Assert.Null(sweden.IsChecked);
+        Assert.Null(sut.Find("world")!.IsChecked);
+
+        sut.SetChecked(sut.Find("se-mal")!, value: true);
+
+        Assert.True(sweden.IsChecked);
+        Assert.Equal(["se-sto", "se-got", "se-mal"], sut.GetKeys());
+    }
+
+    [Fact]
     public void Lazy_children_and_a_node_moved_back_into_the_tree_keep_their_keys()
     {
         var lazy = new CheckTreeNode("lazy", "Lazy") { HasUnloadedChildren = true };

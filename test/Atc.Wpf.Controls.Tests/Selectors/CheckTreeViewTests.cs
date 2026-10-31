@@ -647,6 +647,48 @@ public sealed class CheckTreeViewTests : IDisposable
         public System.Collections.ObjectModel.ObservableCollection<string> SelectedKeys { get; set; } = new(keys);
     }
 
+    [StaFact]
+    public void Kept_keys_under_an_unticked_lazy_parent_stay_dropped_whatever_order_the_children_load_in()
+    {
+        var sut = CreateLazy();
+        sut.SelectedKeys = ["dk-jut-aar"];
+        var jutland = sut.FindNode("dk-jut")!;
+        sut.ToggleNode(jutland);
+        sut.ToggleNode(jutland);
+
+        jutland.Children.Add(new CheckTreeNode("dk-jut-aal", "Aalborg"));
+        jutland.Children.Add(new CheckTreeNode("dk-jut-aar", "Aarhus"));
+        jutland.HasUnloadedChildren = false;
+
+        Assert.False(jutland.IsChecked);
+        Assert.Empty(sut.SelectedKeys);
+    }
+
+    [StaFact]
+    public void DeferRefresh_applies_many_added_nodes_once_when_disposed()
+    {
+        var sut = CreateRegions();
+        sut.CheckedKeysStrategy = CheckedKeysStrategy.Parents;
+        sut.ToggleNode(sut.FindNode("se")!);
+        var sweden = sut.FindNode("se")!;
+        var events = Record(sut);
+
+        using (sut.DeferRefresh())
+        {
+            for (var i = 0; i < 100; i++)
+            {
+                sweden.Children.Add(new CheckTreeNode($"se-{i}", $"Town {i}"));
+            }
+
+            Assert.Null(sut.FindNode("se-0"));
+        }
+
+        Assert.True(sut.FindNode("se-0")!.IsChecked);
+        Assert.Equal(102, sut.GetShownChildren(sweden).Count);
+        Assert.Equal(["se"], sut.SelectedKeys);
+        Assert.Empty(events);
+    }
+
     private static CheckTreeView CreateLazy()
     {
         var dk = new CheckTreeNode("dk", "Denmark");

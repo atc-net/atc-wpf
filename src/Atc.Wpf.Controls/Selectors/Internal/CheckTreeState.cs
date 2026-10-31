@@ -85,6 +85,11 @@ internal sealed class CheckTreeState
     public int StateWriteCount { get; private set; }
 
     /// <summary>
+    /// Gets the number of nodes indexed so far (a measure of how much a structure change re-indexed).
+    /// </summary>
+    public int IndexCount { get; private set; }
+
+    /// <summary>
     /// Gets the root nodes.
     /// </summary>
     public IReadOnlyList<CheckTreeNode> Roots
@@ -594,15 +599,18 @@ internal sealed class CheckTreeState
     /// Drops the kept keys of the nodes now loaded under a node the user unticked before they loaded; nodes under it
     /// that still have unloaded children inherit the mark.
     /// </summary>
-    private void DropKeysUnderPrunedNode(CheckTreeNode parent)
+    private void DropKeysUnderPrunedNode(
+        CheckTreeNode parent,
+        IEnumerable<CheckTreeNode> loadedChildren)
     {
-        if (!prunedNodes.Remove(parent))
+        // The mark stays: children that load later (one at a time) are dropped as well.
+        if (!prunedNodes.Contains(parent))
         {
             return;
         }
 
         var isChanged = false;
-        var stack = new Stack<CheckTreeNode>(ChildrenOf(parent));
+        var stack = new Stack<CheckTreeNode>(loadedChildren);
         while (stack.Count > 0)
         {
             var current = stack.Pop();
@@ -774,6 +782,7 @@ internal sealed class CheckTreeState
         {
             Parent = parent,
         };
+        IndexCount++;
         infos[node] = info;
         nodesByKey[node.Key] = node;
         childrenOwners[node.Children] = node;
@@ -827,6 +836,27 @@ internal sealed class CheckTreeState
             return;
         }
 
+        if (e.Action == NotifyCollectionChangedAction.Add &&
+            e.NewItems is { Count: > 0 } newItems &&
+            roots is not null &&
+            e.NewStartingIndex == indexedRoots.Count &&
+            roots.Count == indexedRoots.Count + newItems.Count)
+        {
+            var added = newItems
+                .OfType<CheckTreeNode>()
+                .Where(x => Index(x, parent: null))
+                .ToList();
+            indexedRoots.AddRange(added);
+            foreach (var root in added)
+            {
+                ApplyRecursive(root, inherited: false);
+            }
+
+            StructureChanged?.Invoke(null);
+            ThrowIndexErrors();
+            return;
+        }
+
         RefreshRoots();
     }
 
@@ -859,7 +889,55 @@ internal sealed class CheckTreeState
             return;
         }
 
+        // Appending (one node at a time, as a view model often does) indexes only the new nodes.
+        if (e.Action == NotifyCollectionChangedAction.Add &&
+            e.NewItems is { Count: > 0 } newItems &&
+            infos.TryGetValue(parent, out var info) &&
+            e.NewStartingIndex == info.IndexedChildren.Count &&
+            parent.Children.Count == info.IndexedChildren.Count + newItems.Count)
+        {
+            AppendChildren(parent, info, newItems.OfType<CheckTreeNode>().ToList());
+            return;
+        }
+
         RefreshParent(parent);
+    }
+
+    /// <summary>
+    /// Indexes and applies children appended to a parent, then updates the parent and its ancestors: the cost is the
+    /// new sub-trees plus the depth, not the parent's other children.
+    /// </summary>
+    private void AppendChildren(
+        CheckTreeNode parent,
+        NodeInfo info,
+        IReadOnlyList<CheckTreeNode> appended)
+    {
+        var added = appended
+            .Where(child => Index(child, parent))
+            .ToList();
+        info.IndexedChildren.AddRange(added);
+        DropKeysUnderPrunedNode(parent, added);
+
+        var oldState = parent.IsChecked;
+        var inherited = IsCheckLinked && (keySet.Contains(parent.Key) || IsAnyAncestorKeyed(parent));
+        foreach (var child in added)
+        {
+            ApplyRecursive(child, inherited);
+            Count(info, child.IsChecked, +1);
+        }
+
+        if (IsCheckLinked)
+        {
+            var newState = StateFromCounters(info);
+            if (!IsStateOf(oldState, newState))
+            {
+                WriteState(parent, newState);
+                Propagate(GetParent(parent));
+            }
+        }
+
+        StructureChanged?.Invoke(parent);
+        ThrowIndexErrors();
     }
 
     private void RefreshParent(CheckTreeNode parent)
@@ -878,7 +956,7 @@ internal sealed class CheckTreeState
             .Where(child => Index(child, parent))
             .ToList();
 
-        DropKeysUnderPrunedNode(parent);
+        DropKeysUnderPrunedNode(parent, info.IndexedChildren);
         prunedNodes.RemoveWhere(x => !infos.ContainsKey(x));
 
         var oldState = parent.IsChecked;

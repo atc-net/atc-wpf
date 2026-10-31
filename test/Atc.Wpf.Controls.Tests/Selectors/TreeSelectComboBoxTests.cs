@@ -272,6 +272,21 @@ public sealed class TreeSelectComboBoxTests : IDisposable
         Assert.False(sut.IsDropDownOpen);
     }
 
+    [StaFact]
+    public void DeferRefresh_applies_many_added_nodes_once_when_disposed()
+    {
+        var sut = Create();
+        var root = sut.Nodes[0];
+
+        using (sut.DeferRefresh())
+        {
+            root.Children.Add(new CheckTreeNode("new-node", "New"));
+            Assert.Null(sut.FindNode("new-node"));
+        }
+
+        Assert.NotNull(sut.FindNode("new-node"));
+    }
+
     private static TreeSelectComboBox Create()
         => new() { Nodes = CheckTreeStateTests.CreateRegionNodes() };
 

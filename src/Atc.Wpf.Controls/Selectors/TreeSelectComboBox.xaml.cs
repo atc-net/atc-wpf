@@ -301,6 +301,16 @@ public partial class TreeSelectComboBox
     internal bool IsWritingSelectedKeys => PartTree.IsWritingSelectedKeys;
 
     /// <summary>
+    /// Defers the handling of changes to the tree (nodes added to or removed from <see cref="Nodes"/> or a
+    /// <see cref="CheckTreeNode.Children"/> collection) until the returned scope is disposed; each changed parent is
+    /// then applied once. Wrap the adding of many nodes in it:
+    /// <code>using (tree.DeferRefresh()) { foreach (var node in nodes) { parent.Children.Add(node); } }</code>
+    /// </summary>
+    /// <returns>The scope; dispose it to apply the changes.</returns>
+    public IDisposable DeferRefresh()
+        => PartTree.DeferRefresh();
+
+    /// <summary>
     /// Returns the node with a key, or <see langword="null"/> when it is not in the tree.
     /// </summary>
     /// <param name="key">The node key.</param>

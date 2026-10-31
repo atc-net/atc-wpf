@@ -775,6 +775,21 @@ public sealed class CascaderComboBoxTests : IDisposable
         Assert.Single(events);
     }
 
+    [StaFact]
+    public void DeferRefresh_applies_many_added_nodes_once_when_disposed()
+    {
+        var sut = Create();
+        var svealand = sut.FindNode("se-sve")!;
+
+        using (sut.DeferRefresh())
+        {
+            svealand.Children.Add(new CheckTreeNode("se-sve-upp", "Uppsala"));
+            Assert.Null(sut.FindNode("se-sve-upp"));
+        }
+
+        Assert.NotNull(sut.FindNode("se-sve-upp"));
+    }
+
     internal static System.Collections.ObjectModel.ObservableCollection<CheckTreeNode> CreateCascaderRegions()
     {
         var jutland = new CheckTreeNode("dk-jut", "Jutland");

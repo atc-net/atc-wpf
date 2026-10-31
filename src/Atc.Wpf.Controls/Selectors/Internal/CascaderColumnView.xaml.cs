@@ -630,6 +630,12 @@ internal partial class CascaderColumnView
     }
 
     /// <summary>
+    /// Defers the handling of tree changes until the returned scope is disposed.
+    /// </summary>
+    internal IDisposable DeferRefresh()
+        => state.DeferStructureChanges();
+
+    /// <summary>
     /// Prepares a row container for a node.
     /// </summary>
     internal void PrepareContainer(
