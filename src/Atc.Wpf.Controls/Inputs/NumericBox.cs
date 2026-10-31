@@ -1309,29 +1309,19 @@ public partial class NumericBox : Control
                     value: null);
             }
         }
-        else if (manualChange)
+        else if (manualChange &&
+                 ValidateText(
+                     text,
+                     out var convertedValue))
         {
-            if (ValidateText(
-                text,
-                out var convertedValue))
-            {
-                convertedValue = FormattedValue(
-                    convertedValue,
-                    StringFormat,
-                    SpecificCultureInfo);
-                SetValueTo(convertedValue);
-            }
-            else if (DefaultValue.HasValue)
-            {
-                SetValueTo(DefaultValue.Value);
-                InternalSetText(Value);
-            }
-            else
-            {
-                SetCurrentValue(
-                    ValueProperty,
-                    value: null);
-            }
+            // Only parsable text updates the value. Typed text that doesn't parse yet is an edit in progress
+            // (e.g. a half-deleted currency symbol), so the value is kept instead of jumping to DefaultValue;
+            // LostFocus restores the formatted text.
+            convertedValue = FormattedValue(
+                convertedValue,
+                StringFormat,
+                SpecificCultureInfo);
+            SetValueTo(convertedValue);
         }
 
         OnValueChanged(
@@ -1417,8 +1407,14 @@ public partial class NumericBox : Control
             return false;
         }
 
-        // Hexadecimal input legitimately contains the letters A-F; any other letter is invalid.
+        // Hexadecimal input legitimately contains the letters A-F; any other letter is invalid,
+        // except the letters the StringFormat itself writes (e.g. "kr.", "zł", "CHF", " kg").
         var allowsHexLetters = ParsingNumberStyle.HasFlag(NumberStyles.AllowHexSpecifier);
+        if (!allowsHexLetters)
+        {
+            text = RemoveFormatLetterRuns(text);
+        }
+
         if (text.Any(c => char.IsLetter(c) && !(allowsHexLetters && char.IsAsciiHexDigit(c))))
         {
             return false;
@@ -1457,6 +1453,57 @@ public partial class NumericBox : Control
             ParsingNumberStyle,
             SpecificCultureInfo,
             out convertedValue);
+    }
+
+    /// <summary>
+    /// Removes the runs of letters that the current <see cref="StringFormat"/> writes around the number
+    /// (a currency symbol such as "kr" or "zł", or a unit such as "kg"), so an edited formatted text can be parsed.
+    /// </summary>
+    private string RemoveFormatLetterRuns(string text)
+    {
+        if (string.IsNullOrWhiteSpace(StringFormat) ||
+            !text.Any(char.IsLetter))
+        {
+            return text;
+        }
+
+        var formatCulture = SpecificCultureInfo;
+        var sample = FormattedValueString(1234.5, StringFormat, formatCulture) +
+                     " " +
+                     FormattedValueString(-1234.5, StringFormat, formatCulture);
+
+        var letterRuns = new HashSet<string>(StringComparer.Ordinal);
+        var start = -1;
+        for (var i = 0; i <= sample.Length; i++)
+        {
+            var isLetter = i < sample.Length && char.IsLetter(sample[i]);
+            if (isLetter && start < 0)
+            {
+                start = i;
+            }
+            else if (!isLetter && start >= 0)
+            {
+                var run = sample[start..i];
+
+                // An exponent marker is part of the number, not a literal of the format.
+                if (run is not ("E" or "e"))
+                {
+                    letterRuns.Add(run);
+                }
+
+                start = -1;
+            }
+        }
+
+        foreach (var run in letterRuns.OrderByDescending(r => r.Length))
+        {
+            text = text.Replace(
+                run,
+                string.Empty,
+                StringComparison.Ordinal);
+        }
+
+        return text.Trim();
     }
 
     private bool ConvertNumber(
