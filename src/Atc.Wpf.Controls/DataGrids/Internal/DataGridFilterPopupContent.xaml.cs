@@ -10,6 +10,8 @@ internal sealed partial class DataGridFilterPopupContent
     private const string KeyPrefix = "#";
 
     private readonly List<string> valueKeys = [];
+    private IReadOnlyList<string> hiddenIncludedValues = [];
+    private bool hasHiddenExcludedValues;
     private string columnKey = string.Empty;
     private DataGridFilterValueKind valueKind;
     private CultureInfo culture = CultureInfo.CurrentCulture;
@@ -189,8 +191,19 @@ internal sealed partial class DataGridFilterPopupContent
     }
 
     /// <summary>
+    /// Sets the values the list does not show (their rows are hidden by other filters) that pass the column's filter,
+    /// and whether some hidden values do not pass: a values filter built on OK keeps both as they are.
+    /// </summary>
+    public void SetHiddenValues(
+        (IReadOnlyList<string> Included, bool HasExcluded) hiddenValues)
+    {
+        hiddenIncludedValues = hiddenValues.Included;
+        hasHiddenExcludedValues = hiddenValues.HasExcluded;
+    }
+
+    /// <summary>
     /// Builds the filter the pop-up describes, or <see langword="null"/> when it restricts nothing
-    /// (every value ticked, an empty text, an open range).
+    /// (every value ticked with no hidden value excluded, an empty text, an open range).
     /// </summary>
     public DataGridColumnFilter? BuildFilter()
     {
@@ -225,13 +238,14 @@ internal sealed partial class DataGridFilterPopupContent
             default:
             {
                 var selected = new HashSet<string>(PartValues.SelectedKeys, StringComparer.Ordinal);
-                return valueKeys.TrueForAll(selected.Contains)
+                return valueKeys.TrueForAll(selected.Contains) && !hasHiddenExcludedValues
                     ? null
                     : DataGridColumnFilter.ForValues(
                         columnKey,
                         valueKeys
                             .Where(selected.Contains)
-                            .Select(x => x[KeyPrefix.Length..]));
+                            .Select(x => x[KeyPrefix.Length..])
+                            .Concat(hiddenIncludedValues));
             }
         }
     }

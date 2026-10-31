@@ -148,6 +148,77 @@ public sealed class DataGridFilterPopupTests : IDisposable
     }
 
     [StaFact]
+    public void Ok_on_a_values_filter_reopened_while_another_column_is_filtered_keeps_it()
+    {
+        var grid = Show(CreateGrid());
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Status", ["Open"]));
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Country", ["Denmark"]));
+
+        // Only "Open" is shown (both Danish rows are open) and it is ticked.
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Status"));
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+        Assert.Equal(["#Open"], content.ValueList.Items.Keys, StringComparer.Ordinal);
+        content.OkButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+        DataGridFilter.ClearColumnFilter(grid, Column(grid, "Country"));
+
+        Assert.Equal([1, 3, 5], VisibleIds(grid));
+        var filter = Assert.Single(DataGridFilter.GetColumnFilters(grid));
+        Assert.Equal(["Open"], filter.Values);
+    }
+
+    [StaFact]
+    public void Ticking_every_shown_value_with_the_hidden_values_allowed_removes_the_filter()
+    {
+        var grid = Show(CreateGrid());
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Status", ["Open", "Pending"]));
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Country", ["Sweden"]));
+
+        // Shown: Closed, Pending (the Swedish rows); Open is hidden and allowed.
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Status"));
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+        Assert.Equal(["#Closed", "#Pending"], content.ValueList.Items.Keys, StringComparer.Ordinal);
+        content.ValueList.SelectAll();
+        content.OkButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+        DataGridFilter.ClearColumnFilter(grid, Column(grid, "Country"));
+
+        Assert.Empty(DataGridFilter.GetColumnFilters(grid));
+        Assert.Equal(6, grid.Items.Count);
+    }
+
+    [StaFact]
+    public void Ticking_every_shown_value_with_a_hidden_excluded_value_keeps_a_filter()
+    {
+        var grid = Show(CreateGrid());
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Status", ["Open", "Closed"]));
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Country", ["Germany"]));
+
+        // Shown: Closed, Open (the German rows), both ticked; Pending is hidden and excluded.
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Status"));
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+        content.OkButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+        DataGridFilter.ClearColumnFilter(grid, Column(grid, "Country"));
+
+        Assert.Equal([1, 2, 3, 5, 6], VisibleIds(grid));
+    }
+
+    [StaFact]
+    public void Unticking_a_shown_value_keeps_the_hidden_values_allowed()
+    {
+        var grid = Show(CreateGrid());
+        DataGridFilter.SetColumnFilter(grid, DataGridColumnFilter.ForValues("Country", ["Germany"]));
+
+        // Shown: Closed, Open (the German rows); Pending is hidden and, without a Status filter, allowed.
+        DataGridFilter.OpenColumnFilter(grid, Column(grid, "Status"));
+        var content = DataGridFilter.GetOpenPopupContent(grid)!;
+        content.ValueList.GetItem("#Closed")!.IsChecked = false;
+        content.OkButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+        Assert.Equal([5], VisibleIds(grid));
+        DataGridFilter.ClearColumnFilter(grid, Column(grid, "Country"));
+
+        Assert.Equal([1, 3, 4, 5], VisibleIds(grid));
+    }
+
+    [StaFact]
     public void Escape_cancels_and_keeps_the_filters()
     {
         var grid = Show(CreateGrid());

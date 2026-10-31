@@ -268,6 +268,16 @@ internal sealed class DataGridFilterState
     public IReadOnlyList<DataGridFilterValue> GetDistinctValues(
         DataGridColumn column,
         out DataGridFilterValueKind kind)
+        => GetDistinctValues(column, allTexts: null, out kind);
+
+    /// <summary>
+    /// Returns the distinct formatted values of a column over the rows that pass every other filter, and collects
+    /// into <paramref name="allTexts"/> the formatted values of every row, filtered or not.
+    /// </summary>
+    private List<DataGridFilterValue> GetDistinctValues(
+        DataGridColumn column,
+        HashSet<string>? allTexts,
+        out DataGridFilterValueKind kind)
     {
         kind = DataGridFilterValueKind.Text;
         var accessor = DataGridColumnValueAccessor.Create(column, DataGridFilter.GetGridCulture(grid));
@@ -286,14 +296,31 @@ internal sealed class DataGridFilterState
         var firstRawByText = new Dictionary<string, object?>(StringComparer.Ordinal);
         foreach (var item in GetSourceItems())
         {
-            if (item is null || !PassesOthers(item, consumer, others))
+            if (item is null)
             {
                 continue;
             }
 
-            var raw = accessor.GetValue(item);
-            var text = accessor.Format(raw);
-            firstRawByText.TryAdd(text, raw);
+            if (allTexts is null)
+            {
+                if (!PassesOthers(item, consumer, others))
+                {
+                    continue;
+                }
+
+                var raw = accessor.GetValue(item);
+                firstRawByText.TryAdd(accessor.Format(raw), raw);
+            }
+            else
+            {
+                var raw = accessor.GetValue(item);
+                var text = accessor.Format(raw);
+                allTexts.Add(text);
+                if (PassesOthers(item, consumer, others))
+                {
+                    firstRawByText.TryAdd(text, raw);
+                }
+            }
         }
 
         kind = GetValueKind(firstRawByText.Values);
@@ -317,9 +344,12 @@ internal sealed class DataGridFilterState
         ClosePopup();
 
         var key = DataGridFilter.ResolveColumnKey(column);
-        var values = GetDistinctValues(column, out var kind);
+        var allTexts = new HashSet<string>(StringComparer.Ordinal);
+        var values = GetDistinctValues(column, allTexts, out var kind);
+        var current = filters.GetValueOrDefault(key);
         var content = new DataGridFilterPopupContent();
-        content.Load(key, values, kind, filters.GetValueOrDefault(key), DataGridFilter.GetGridCulture(grid));
+        content.Load(key, values, kind, current, DataGridFilter.GetGridCulture(grid));
+        content.SetHiddenValues(GetHiddenValueStates(values, allTexts, current));
         AutomationProperties.SetName(
             content,
             string.Format(CultureInfo.CurrentCulture, Atc.Wpf.Resources.Miscellaneous.FilterColumn1, DataGridFilter.GetColumnTitle(column)));
@@ -427,6 +457,29 @@ internal sealed class DataGridFilterState
             From = filter.From,
             To = filter.To,
         };
+
+    /// <summary>
+    /// Returns how the values the pop-up does not list (their rows are hidden by other filters) pass the column's
+    /// filter: they keep the state they have, so OK on the pop-up changes the listed values only.
+    /// </summary>
+    private static (IReadOnlyList<string> Included, bool HasExcluded) GetHiddenValueStates(
+        IReadOnlyList<DataGridFilterValue> shownValues,
+        HashSet<string> allTexts,
+        DataGridColumnFilter? current)
+    {
+        var shown = new HashSet<string>(shownValues.Select(x => x.Text), StringComparer.Ordinal);
+        if (current?.Kind != DataGridColumnFilterKind.Values)
+        {
+            // No values filter yet: every hidden value passes.
+            return (allTexts.Where(x => !shown.Contains(x)).ToList(), false);
+        }
+
+        // Allowed values without rows (e.g. from a saved layout) are kept as well.
+        var allowed = new HashSet<string>(current.Values, StringComparer.Ordinal);
+        return (
+            current.Values.Where(x => !shown.Contains(x)).Distinct(StringComparer.Ordinal).ToList(),
+            allTexts.Any(x => !shown.Contains(x) && !allowed.Contains(x)));
+    }
 
     private static DataGridFilterValueKind GetValueKind(
         IEnumerable<object?> rawValues)

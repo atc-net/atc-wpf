@@ -9,6 +9,7 @@ Excel-style column filters, a search box, a column chooser and layout persistenc
 - **Column filter drop-down**: `DataGridFilter.IsEnabled="True"` adds a funnel button to each column header. It opens a pop-up with a `CheckListBox` of the column's **distinct values** (with filter box, tri-state **Select all** and one **(Blanks)** entry), plus OK, Cancel and **Clear filter**.
   - The values are formatted as the cells show them (the binding's `Converter`, `StringFormat` and the grid's `Language`) and sorted by their raw value, so numbers and dates sort naturally. Blanks (`null` or empty) come last.
   - The values reflect the rows that pass the **other** columns' filters, the search and your own view filter (Excel behaviour).
+  - OK changes only the values the list shows: a value whose rows the other filters hide keeps passing (or not) as before, so clearing another column's filter later neither drops nor widens this one.
   - **Text filter** mode: *Contains*, *Equals* or *Starts with* (case-insensitive) on the formatted text.
   - **Range** mode for number and date columns: an inclusive minimum/maximum (dates compare whole days).
   - A column with an active filter shows a filled accent funnel; `DataGridFilter.IsColumnFilterActive` is set on the column for your own header styles.
