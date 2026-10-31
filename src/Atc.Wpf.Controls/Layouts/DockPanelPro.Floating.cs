@@ -221,6 +221,16 @@ public sealed partial class DockPanelPro
         window.Closed += OnFloatingWindowClosed;
         floatingWindows[pane] = window;
         window.Show();
+
+        // A window created at the DPI of one monitor and placed on a monitor with another DPI is rescaled by WPF when it
+        // gets there; now that it has that monitor's DPI, apply the bounds again (a no-op when nothing moved).
+        if (!window.IsClosed && window.CurrentBounds != bounds)
+        {
+            window.Left = bounds.Left;
+            window.Top = bounds.Top;
+            window.Width = bounds.Width;
+            window.Height = bounds.Height;
+        }
     }
 
     /// <summary>

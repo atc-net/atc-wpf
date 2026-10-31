@@ -56,7 +56,9 @@ internal static class DockScreenHelper
     }
 
     /// <summary>
-    /// Gets the work areas of all monitors in the device-independent units of the visual's window.
+    /// Gets the work areas of all monitors in device-independent units. Each monitor is converted with its own DPI
+    /// (in a per-monitor DPI aware process, a window on that monitor measures its position in those units); when the
+    /// monitor DPI is not available, the DPI of the visual's window is used.
     /// </summary>
     public static IReadOnlyList<Rect> GetWorkAreas(Visual? reference)
     {
@@ -73,9 +75,12 @@ internal static class DockScreenHelper
                     if (NativeMethods.GetMonitorInfo(monitor, ref info))
                     {
                         var work = info.rcWork;
-                        var topLeft = fromDevice.Transform(new Point(work.Left, work.Top));
-                        var bottomRight = fromDevice.Transform(new Point(work.Right, work.Bottom));
-                        areas.Add(new Rect(topLeft, bottomRight));
+                        var (dpiX, dpiY) = GetMonitorDpi(monitor);
+                        areas.Add(DeviceToDip(
+                            new Rect(new Point(work.Left, work.Top), new Point(work.Right, work.Bottom)),
+                            dpiX,
+                            dpiY,
+                            fromDevice));
                     }
 
                     return true;
@@ -97,6 +102,32 @@ internal static class DockScreenHelper
         }
 
         return areas;
+    }
+
+    /// <summary>
+    /// Converts a rectangle in device pixels to device-independent units with a monitor's DPI;
+    /// with no DPI (zero) the fallback transform (the reference window's DPI) is used.
+    /// </summary>
+    public static Rect DeviceToDip(
+        Rect deviceRect,
+        double dpiX,
+        double dpiY,
+        Matrix fallbackFromDevice)
+    {
+        if (dpiX > 0 && dpiY > 0)
+        {
+            var scaleX = 96d / dpiX;
+            var scaleY = 96d / dpiY;
+            return new Rect(
+                deviceRect.Left * scaleX,
+                deviceRect.Top * scaleY,
+                deviceRect.Width * scaleX,
+                deviceRect.Height * scaleY);
+        }
+
+        return new Rect(
+            fallbackFromDevice.Transform(deviceRect.TopLeft),
+            fallbackFromDevice.Transform(deviceRect.BottomRight));
     }
 
     /// <summary>
@@ -122,6 +153,27 @@ internal static class DockScreenHelper
     /// </summary>
     public static Point GetCursorPosition(Visual reference)
         => ToScreenDip(reference, Mouse.GetPosition((IInputElement)reference));
+
+    /// <summary>
+    /// The effective DPI of a monitor (the system DPI in a system-aware process); zero when it cannot be read.
+    /// </summary>
+    private static (double DpiX, double DpiY) GetMonitorDpi(IntPtr monitor)
+    {
+        try
+        {
+            return NativeMethods.GetDpiForMonitor(monitor, NativeMethods.MonitorDpiTypeEffective, out var dpiX, out var dpiY) == 0
+                ? (dpiX, dpiY)
+                : (0, 0);
+        }
+        catch (DllNotFoundException)
+        {
+            return (0, 0);
+        }
+        catch (EntryPointNotFoundException)
+        {
+            return (0, 0);
+        }
+    }
 
     private static Matrix GetTransformFromDevice(Visual? reference)
         => reference is not null && PresentationSource.FromVisual(reference)?.CompositionTarget is { } target
@@ -184,6 +236,16 @@ internal static class DockScreenHelper
             IntPtr lprcClip,
             MonitorEnumProc lpfnEnum,
             IntPtr dwData);
+
+        public const int MonitorDpiTypeEffective = 0;
+
+        [DllImport("shcore.dll")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        public static extern int GetDpiForMonitor(
+            IntPtr hmonitor,
+            int dpiType,
+            out uint dpiX,
+            out uint dpiY);
 
         [DllImport("user32.dll", EntryPoint = "GetMonitorInfoW")]
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]

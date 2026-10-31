@@ -197,6 +197,40 @@ public sealed class DockPanelProLayoutPersistenceTests
     }
 
     [Fact]
+    public void DeviceToDip_converts_each_monitor_with_its_own_dpi()
+    {
+        var primary = new Rect(0, 0, 2560, 1400);
+        var secondary = new Rect(2560, 0, 1920, 1400);
+
+        var primaryDip = DockScreenHelper.DeviceToDip(primary, 96, 96, Matrix.Identity);
+        var secondaryDip = DockScreenHelper.DeviceToDip(secondary, 144, 144, Matrix.Identity);
+
+        Assert.Equal(new Rect(0, 0, 2560, 1400), primaryDip);
+        Assert.Equal(2560 / 1.5, secondaryDip.Left, 6);
+        Assert.Equal(1920 / 1.5, secondaryDip.Width, 6);
+        Assert.Equal(1400 / 1.5, secondaryDip.Height, 6);
+    }
+
+    [Fact]
+    public void DeviceToDip_without_a_monitor_dpi_uses_the_fallback_transform()
+    {
+        var fromDevice = new Matrix(1 / 1.25, 0, 0, 1 / 1.25, 0, 0);
+
+        var result = DockScreenHelper.DeviceToDip(new Rect(0, 0, 1000, 500), 0, 0, fromDevice);
+
+        Assert.Equal(new Rect(0, 0, 800, 400), result);
+    }
+
+    [Fact]
+    public void GetWorkAreas_returns_at_least_one_non_empty_area()
+    {
+        var areas = DockScreenHelper.GetWorkAreas(reference: null);
+
+        Assert.NotEmpty(areas);
+        Assert.All(areas, x => Assert.True(x.Width > 0 && x.Height > 0));
+    }
+
+    [Fact]
     public void ClampToWorkAreas_uses_the_screen_with_the_largest_overlap()
     {
         var left = new Rect(0, 0, 1920, 1040);
