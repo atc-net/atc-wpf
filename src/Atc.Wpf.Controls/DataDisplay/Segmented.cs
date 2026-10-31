@@ -17,6 +17,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 public sealed partial class Segmented : Control
 {
     private readonly ObservableCollection<SegmentedItem> selectedItemsSource = [];
+    private readonly HashSet<SegmentedItem> hookedItems = [];
     private readonly List<Border> separators = [];
     private readonly SelectedKeysCleanup modeTrim;
     private Panel? itemsHost;
@@ -364,27 +365,39 @@ public sealed partial class Segmented : Control
         object? sender,
         NotifyCollectionChangedEventArgs e)
     {
-        if (e.OldItems is not null)
-        {
-            foreach (SegmentedItem item in e.OldItems)
-            {
-                item.Click -= OnItemClick;
-                item.Owner = null;
-            }
-        }
-
-        if (e.NewItems is not null)
-        {
-            foreach (SegmentedItem item in e.NewItems)
-            {
-                item.Click += OnItemClick;
-                item.Owner = this;
-            }
-        }
-
+        SyncHookedItems();
         UpdateItemMetadata();
         SyncAfterItemsChanged();
         RebuildVisualTree();
+    }
+
+    /// <summary>
+    /// Hooks the click of every item in <see cref="Items"/> once and unhooks the items that left. Works from the tracked
+    /// set rather than the event's old items, which a <c>Clear()</c> (a reset) does not report.
+    /// </summary>
+    private void SyncHookedItems()
+    {
+        var current = new HashSet<SegmentedItem>(Items);
+        foreach (var item in hookedItems.Where(x => !current.Contains(x)).ToList())
+        {
+            item.Click -= OnItemClick;
+            if (ReferenceEquals(item.Owner, this))
+            {
+                item.Owner = null;
+            }
+
+            hookedItems.Remove(item);
+        }
+
+        foreach (var item in Items)
+        {
+            if (hookedItems.Add(item))
+            {
+                item.Click += OnItemClick;
+            }
+
+            item.Owner = this;
+        }
     }
 
     private void OnSelectedKeysCollectionChanged(

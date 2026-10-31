@@ -543,6 +543,31 @@ public sealed class SegmentedTests : IDisposable
         Assert.Single(selection.GetSelection());
     }
 
+    [StaFact]
+    public void Clearing_and_re_adding_the_same_items_hooks_each_click_once()
+    {
+        var sut = CreateWeekdays(SegmentedSelectionMode.Multiple);
+        var items = sut.Items.ToList();
+
+        sut.Items.Clear();
+
+        Assert.All(items, x => Assert.Null(x.Owner));
+
+        foreach (var item in items)
+        {
+            sut.Items.Add(item);
+        }
+
+        var events = Record(sut);
+
+        items[1].PerformClick();
+
+        Assert.Equal(["tue"], sut.SelectedKeys);
+        Assert.True(items[1].IsSelected);
+        Assert.Single(events);
+        Assert.Same(sut, items[1].Owner);
+    }
+
     private static Segmented CreateWeekdays(SegmentedSelectionMode mode)
     {
         var sut = new Segmented { SelectionMode = mode };
