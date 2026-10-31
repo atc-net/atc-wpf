@@ -1,0 +1,151 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfControls.DataGrids.DataGridFilterView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="900"
+    d:DesignWidth="1000"
+    mc:Ignorable="d">
+
+    <ScrollViewer Style="{StaticResource SampleScrollViewerStyle}">
+        <atc:UniformSpacingPanel Style="{StaticResource SampleUsageAreaStyle}">
+
+            <!--  5,000 orders: filters, search, column chooser, layout  -->
+            <atc:GroupBoxExpander Header="5,000 orders: column filters, search box, column chooser (right-click a header) and layout">
+                <DockPanel Margin="10">
+                    <WrapPanel Margin="0,0,0,8" DockPanel.Dock="Top">
+                        <TextBox
+                            x:Name="SearchBox"
+                            Width="220"
+                            Margin="0,0,8,0"
+                            atc:TextBoxHelper.ClearTextButton="True"
+                            atc:TextBoxHelper.Watermark="Search all columns"
+                            AutomationProperties.AutomationId="SearchBox" />
+                        <Button
+                            Margin="0,0,8,0"
+                            Padding="8,2"
+                            AutomationProperties.AutomationId="ColumnsButton"
+                            Click="OnColumnsClick"
+                            Content="Columns..." />
+                        <Button
+                            Margin="0,0,8,0"
+                            Padding="8,2"
+                            AutomationProperties.AutomationId="ClearFiltersButton"
+                            Click="OnClearFiltersClick"
+                            Content="Clear filters" />
+                        <Button
+                            Margin="0,0,8,0"
+                            Padding="8,2"
+                            AutomationProperties.AutomationId="SaveLayoutButton"
+                            Click="OnSaveLayoutClick"
+                            Content="Save layout" />
+                        <Button
+                            Margin="0,0,8,0"
+                            Padding="8,2"
+                            AutomationProperties.AutomationId="RestoreLayoutButton"
+                            Click="OnRestoreLayoutClick"
+                            Content="Restore layout" />
+                        <TextBlock
+                            x:Name="OrdersRowCount"
+                            VerticalAlignment="Center"
+                            AutomationProperties.AutomationId="OrdersRowCount" />
+                    </WrapPanel>
+
+                    <StackPanel Margin="0,8,0,0" DockPanel.Dock="Bottom">
+                        <TextBlock FontWeight="Bold" Text="FilterChanged events (latest last):" />
+                        <TextBlock
+                            x:Name="FilterLog"
+                            AutomationProperties.AutomationId="FilterLog"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+
+                    <DataGrid
+                        x:Name="OrdersGrid"
+                        Height="380"
+                        atc:DataGridFilter.IsEnabled="True"
+                        atc:DataGridFilter.SearchText="{Binding ElementName=SearchBox, Path=Text}"
+                        atc:DataGridFilter.ShowColumnChooser="True"
+                        AutoGenerateColumns="False"
+                        AutomationProperties.AutomationId="OrdersGrid"
+                        CanUserAddRows="False"
+                        IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                atc:DataGridFilter.CanUserHideColumn="False"
+                                atc:DataGridFilter.ColumnKey="id"
+                                atc:DataGridFilter.IsColumnFilterEnabled="False"
+                                Binding="{Binding Id}"
+                                Header="Id" />
+                            <DataGridTextColumn
+                                Width="180"
+                                Binding="{Binding Customer}"
+                                Header="Customer" />
+                            <DataGridTextColumn
+                                Width="110"
+                                Binding="{Binding Country}"
+                                Header="Country" />
+                            <DataGridTextColumn
+                                Width="110"
+                                Binding="{Binding Status}"
+                                Header="Status" />
+                            <DataGridTextColumn Binding="{Binding Amount, StringFormat=N2}" Header="Amount">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Date, StringFormat=yyyy-MM-dd}" Header="Date" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </atc:GroupBoxExpander>
+
+            <!--  100,000 rows  -->
+            <atc:GroupBoxExpander Header="100,000 rows (virtualized; distinct values are computed when a filter opens)">
+                <DockPanel Margin="10">
+                    <TextBlock
+                        x:Name="BigRowCount"
+                        Margin="0,0,0,8"
+                        AutomationProperties.AutomationId="BigRowCount"
+                        DockPanel.Dock="Top" />
+                    <DataGrid
+                        x:Name="BigGrid"
+                        Height="380"
+                        atc:DataGridFilter.IsEnabled="True"
+                        atc:DataGridFilter.ShowColumnChooser="True"
+                        AutoGenerateColumns="False"
+                        AutomationProperties.AutomationId="BigGrid"
+                        CanUserAddRows="False"
+                        EnableColumnVirtualization="True"
+                        EnableRowVirtualization="True"
+                        IsReadOnly="True"
+                        VirtualizingPanel.IsVirtualizing="True"
+                        VirtualizingPanel.VirtualizationMode="Recycling">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                            <DataGridTextColumn
+                                Width="180"
+                                Binding="{Binding Customer}"
+                                Header="Customer" />
+                            <DataGridTextColumn
+                                Width="110"
+                                Binding="{Binding Country}"
+                                Header="Country" />
+                            <DataGridTextColumn
+                                Width="110"
+                                Binding="{Binding Status}"
+                                Header="Status" />
+                            <DataGridTextColumn Binding="{Binding Amount, StringFormat=N2}" Header="Amount" />
+                            <DataGridTextColumn Binding="{Binding Date, StringFormat=yyyy-MM-dd}" Header="Date" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </atc:GroupBoxExpander>
+
+        </atc:UniformSpacingPanel>
+    </ScrollViewer>
+
+</UserControl>

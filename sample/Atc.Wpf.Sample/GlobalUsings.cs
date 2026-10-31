@@ -43,6 +43,7 @@ global using Atc.Wpf.Components.Selectors;
 global using Atc.Wpf.Components.Settings;
 global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.DataDisplay;
+global using Atc.Wpf.Controls.DataGrids;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Media;
 global using Atc.Wpf.Controls.Navigation;

@@ -176,6 +176,13 @@
             SamplePath="DataDisplay.TimelineView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="DataGrids">
+        <sample:SampleTreeViewItem
+            Header="DataGridFilter"
+            IsExpanded="True"
+            SamplePath="DataGrids.DataGridFilterView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Layouts">
         <sample:SampleTreeViewItem
             Header="AutoGrid"
