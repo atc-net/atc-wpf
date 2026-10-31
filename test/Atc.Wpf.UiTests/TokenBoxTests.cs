@@ -94,6 +94,41 @@ public sealed class TokenBoxTests : IDisposable
         Assert.EndsWith("[orders, payments, billing] -> [orders, billing]", lines[2], StringComparison.Ordinal);
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    public void A_click_on_empty_space_outside_the_box_closes_the_suggestions()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            "TabWpfControls",
+            parentTreeNodeName: string.Empty,
+            leafTreeNodeName: "TokenBox");
+
+        var box = FindByAutomationId(mainWindow, "InteractiveBox");
+        var edit = box.FindFirstChild(cf => cf.ByControlType(ControlType.Edit));
+        Assert.NotNull(edit);
+        edit.Focus();
+        Keyboard.Type("or");
+        Wait.UntilInputIsProcessed();
+
+        var expandCollapse = box.Patterns.ExpandCollapse.Pattern;
+        Retry.WhileFalse(
+            () => expandCollapse.ExpandCollapseState.Value == ExpandCollapseState.Expanded,
+            timeout: TimeSpan.FromSeconds(5),
+            interval: TimeSpan.FromMilliseconds(200));
+
+        // To the right of the box (it is left-aligned and 320 wide): empty, non-focusable panel space.
+        var bounds = box.BoundingRectangle;
+        Mouse.Click(new System.Drawing.Point(bounds.Right + 150, bounds.Top + (bounds.Height / 2)));
+        Wait.UntilInputIsProcessed();
+
+        Retry.WhileFalse(
+            () => expandCollapse.ExpandCollapseState.Value == ExpandCollapseState.Collapsed,
+            timeout: TimeSpan.FromSeconds(5),
+            interval: TimeSpan.FromMilliseconds(200));
+        Assert.Equal(ExpandCollapseState.Collapsed, expandCollapse.ExpandCollapseState.Value);
+    }
+
     private static List<string> TokenNames(AutomationElement box)
     {
         var list = box.FindFirstChild(cf => cf.ByAutomationId("Tokens"));

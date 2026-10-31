@@ -170,6 +170,7 @@ While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke
 - **Created values:** the key is the text itself unless `TokenCreating` sets another; the pair is added to `Items`. While `AllowCreate` is set, keys in `SelectedKeys` that are not in `Items` show as their key.
 - **Duplicates** are ignored (by key, or by display value ignoring case); pasting "a, a, b" adds a and b.
 - **Items changes** drop tokens whose keys are gone (one event), except created values and values picked from `SuggestionsProvider`. Keys that were never in `Items` (free values, or keys restored before the items load) are kept too.
+- **Closing the suggestions:** like the other drop-downs, the box holds the mouse capture while the suggestions are open, so a click anywhere outside the box and its pop-up closes them (also on empty space that cannot take focus; as in a combo box, that click only closes them). They also close when a scroll viewer around the box scrolls, when the window moves or is deactivated, and when focus leaves the box.
 - **Limit:** a paste past `MaxSelectionCount` adds tokens up to the limit and drops the rest.
 - **Token order** follows `SelectedKeys`; new tokens are appended.
 - The texts ("+{0}", "Remove {0}", "{0} of max {1}", "No matches", "Please wait...", "Clear") come from the shared `Atc.Wpf.Resources.Miscellaneous` resources (English, Danish, German).

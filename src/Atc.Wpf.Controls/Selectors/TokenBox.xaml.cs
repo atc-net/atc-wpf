@@ -257,6 +257,8 @@ public partial class TokenBox
         PartSuggestionList.PreviewMouseLeftButtonDown += OnSuggestionListPreviewMouseLeftButtonDown;
         PartSuggestionList.SelectionChanged += OnSuggestionListSelectionChanged;
         IsKeyboardFocusWithinChanged += OnIsKeyboardFocusWithinChanged;
+        Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);
+        AddHandler(Mouse.LostMouseCaptureEvent, new MouseEventHandler(OnLostMouseCaptureWithin));
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
@@ -660,6 +662,21 @@ public partial class TokenBox
 
         control.PartPopup.IsOpen = isOpen && (control.Suggestions.Count > 0 || control.PartStatusText.Visibility == Visibility.Visible);
 
+        // Like the other drop-downs, the box holds the mouse capture while open, so a click anywhere outside (also on
+        // a part of the window that cannot take focus) closes the suggestions. A part that takes the capture for a
+        // moment (the text box while selecting, a remove button) gets it back afterwards.
+        if (isOpen)
+        {
+            if (!control.IsWithin(Mouse.Captured as DependencyObject))
+            {
+                Mouse.Capture(control, CaptureMode.SubTree);
+            }
+        }
+        else if (Mouse.Captured == control)
+        {
+            Mouse.Capture(null);
+        }
+
         if (UIElementAutomationPeer.FromElement(control) is TokenBoxAutomationPeer peer)
         {
             peer.RaiseExpandCollapseStateChanged((bool)e.OldValue, isOpen);
@@ -801,6 +818,7 @@ public partial class TokenBox
         {
             window.Deactivated += OnWindowDeactivatedOrMoved;
             window.LocationChanged += OnWindowDeactivatedOrMoved;
+            window.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnWindowScrollChanged), handledEventsToo: true);
         }
     }
 
@@ -822,8 +840,75 @@ public partial class TokenBox
 
         subscribedWindow.Deactivated -= OnWindowDeactivatedOrMoved;
         subscribedWindow.LocationChanged -= OnWindowDeactivatedOrMoved;
+        subscribedWindow.RemoveHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(OnWindowScrollChanged));
         subscribedWindow = null;
     }
+
+    /// <summary>
+    /// Closes the suggestions when a scroll viewer around the box scrolls (the pop-up would drift away from the field).
+    /// </summary>
+    private void OnWindowScrollChanged(
+        object sender,
+        ScrollChangedEventArgs e)
+    {
+        if (IsDropDownOpen &&
+            (e.VerticalChange != 0 || e.HorizontalChange != 0) &&
+            e.OriginalSource is ScrollViewer scrollViewer &&
+            scrollViewer.IsAncestorOf(this))
+        {
+            SetCurrentValue(IsDropDownOpenProperty, false);
+        }
+    }
+
+    private void OnMouseDownOutsideCapturedElement(
+        object sender,
+        MouseButtonEventArgs e)
+        => SetCurrentValue(IsDropDownOpenProperty, false);
+
+    private void OnLostMouseCaptureWithin(
+        object sender,
+        MouseEventArgs e)
+    {
+        if (!IsDropDownOpen || Mouse.Captured == this)
+        {
+            return;
+        }
+
+        if (ReferenceEquals(e.OriginalSource, this))
+        {
+            // The box lost the capture: keep the suggestions open only when a part of it took the capture.
+            if (!IsWithin(Mouse.Captured as DependencyObject))
+            {
+                SetCurrentValue(IsDropDownOpenProperty, false);
+            }
+
+            return;
+        }
+
+        if (!IsWithin(e.OriginalSource as DependencyObject))
+        {
+            SetCurrentValue(IsDropDownOpenProperty, false);
+            return;
+        }
+
+        // A part released the capture it took: take it back, so the next click outside still closes the suggestions.
+        if (Mouse.Captured is null)
+        {
+            Mouse.Capture(this, CaptureMode.SubTree);
+            e.Handled = true;
+        }
+        else if (!IsWithin(Mouse.Captured as DependencyObject))
+        {
+            SetCurrentValue(IsDropDownOpenProperty, false);
+        }
+    }
+
+    private bool IsWithin(DependencyObject? element)
+        => element is Visual visual &&
+           (ReferenceEquals(visual, this) ||
+            IsAncestorOf(visual) ||
+            ReferenceEquals(visual, PartPopupBorder) ||
+            PartPopupBorder.IsAncestorOf(visual));
 
     private void OnWindowDeactivatedOrMoved(
         object? sender,

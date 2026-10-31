@@ -754,6 +754,74 @@ public sealed class TokenBoxTests : IDisposable
         Assert.False(sut.IsDropDownOpen);
     }
 
+    [StaFact]
+    public void The_suggestions_hold_the_mouse_capture_and_close_on_a_click_outside()
+    {
+        var sut = Create();
+        var window = CreateWindow(sut);
+        window.Show();
+        try
+        {
+            sut.Text = "ing";
+            Assert.True(sut.IsDropDownOpen);
+            Assert.Same(sut, Mouse.Captured);
+
+            sut.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+            {
+                RoutedEvent = Mouse.PreviewMouseDownOutsideCapturedElementEvent,
+            });
+
+            Assert.False(sut.IsDropDownOpen);
+            Assert.Null(Mouse.Captured);
+        }
+        finally
+        {
+            Mouse.Capture(null);
+            window.Close();
+        }
+    }
+
+    [StaFact]
+    public void The_suggestions_close_when_a_scroll_viewer_around_the_box_scrolls()
+    {
+        var sut = Create();
+        var scrollViewer = new ScrollViewer
+        {
+            Content = new StackPanel { Children = { sut, new Border { Height = 2000 } } },
+        };
+        var window = CreateWindow(scrollViewer);
+        window.Show();
+        try
+        {
+            window.UpdateLayout();
+            sut.Text = "ing";
+            Assert.True(sut.IsDropDownOpen);
+
+            scrollViewer.ScrollToVerticalOffset(100);
+            window.UpdateLayout();
+
+            Assert.False(sut.IsDropDownOpen);
+        }
+        finally
+        {
+            Mouse.Capture(null);
+            window.Close();
+        }
+    }
+
+    private static Window CreateWindow(UIElement content)
+        => new()
+        {
+            Content = content,
+            Width = 300,
+            Height = 200,
+            Left = -10000,
+            Top = -10000,
+            ShowActivated = false,
+            ShowInTaskbar = false,
+            WindowStyle = WindowStyle.None,
+        };
+
     private static TokenBox Create()
         => new()
         {
