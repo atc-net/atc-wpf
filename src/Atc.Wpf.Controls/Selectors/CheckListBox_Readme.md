@@ -113,7 +113,7 @@ The data context of `ItemTemplate` is the row (`CheckListItem`: `Key`, `DisplayV
 | Method | Description |
 |---|---|
 | `SelectAll()` | Ticks every shown, enabled item (one event). Does nothing when the limit has no room for them all. |
-| `ClearSelection()` | Unticks every enabled item, shown or not (one event). |
+| `ClearSelection()` | Unticks every enabled item, shown or not, and drops keys that have no item (one event). |
 | `GetItem(string key)` | Returns the row of a key; setting its `IsChecked` ticks it as a click would. |
 
 ## 📢 Events

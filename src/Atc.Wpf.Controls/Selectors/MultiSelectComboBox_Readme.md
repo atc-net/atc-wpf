@@ -197,7 +197,7 @@ The closed box honours `atc:TextBoxHelper.Watermark`, `atc:ControlsHelper.Corner
 | Method | Description |
 |---|---|
 | `SelectAll()` | Ticks every shown, enabled item (one event). |
-| `ClearSelection()` | Unticks every enabled item (one event). |
+| `ClearSelection()` | Unticks every enabled item and drops keys that have no item (one event). |
 | `GetItem(string key)` | Returns the pop-up row of a key; setting its `IsChecked` ticks it as a click would. |
 
 ## 📢 Events

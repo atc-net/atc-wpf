@@ -95,13 +95,16 @@ public partial class MultiColumnComboBox
     /// </summary>
     public void ClearSelection()
     {
+        // Keys without an item (e.g. restored before the items load) go too, as in the tree controls.
+        var current = GetWorkingKeys();
         var keys = sourceItems
             .Where(IsItemEnabled)
             .Select(GetKey)
             .OfType<string>()
+            .Concat(current.Where(x => !itemsByKey.ContainsKey(x)))
             .ToList();
 
-        Commit(KeySelectionHelper.GetSelectionWith(GetWorkingKeys(), [], keys));
+        Commit(KeySelectionHelper.GetSelectionWith(current, [], keys));
     }
 
     /// <summary>

@@ -98,6 +98,55 @@ public sealed class MultiSelectPresetKeysTests : IDisposable
         Assert.Equal(1, events);
     }
 
+    [StaFact]
+    public void CheckListBox_ClearSelection_also_drops_keys_without_an_item()
+    {
+        var sut = new CheckListBox { Items = Loaded(), SelectedKeys = ["legacy", "a"] };
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        sut.ClearSelection();
+
+        Assert.Empty(sut.SelectedKeys);
+        Assert.Equal(1, events);
+    }
+
+    [StaFact]
+    public void MultiSelectComboBox_ClearSelection_also_drops_keys_without_an_item()
+    {
+        var sut = new MultiSelectComboBox { Items = Loaded(), SelectedKeys = ["legacy"] };
+
+        sut.ClearSelection();
+
+        Assert.Empty(sut.SelectedKeys);
+    }
+
+    [StaFact]
+    public void ChipGroup_ClearSelection_also_drops_keys_without_an_item()
+    {
+        var sut = new ChipGroup { Items = Loaded(), SelectedKeys = ["legacy", "b"] };
+
+        sut.ClearSelection();
+
+        Assert.Empty(sut.SelectedKeys);
+    }
+
+    [StaFact]
+    public void MultiColumnComboBox_ClearSelection_also_drops_keys_without_an_item()
+    {
+        var sut = new MultiColumnComboBox
+        {
+            KeyMemberPath = "Key",
+            DisplayMemberPath = "Value",
+            ItemsSource = Loaded().ToList(),
+            SelectedKeys = ["legacy", "a"],
+        };
+
+        sut.ClearSelection();
+
+        Assert.Empty(sut.SelectedKeys);
+    }
+
     private static Dictionary<string, string> Empty()
         => new(StringComparer.Ordinal);
 

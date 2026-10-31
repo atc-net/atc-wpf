@@ -190,11 +190,15 @@ public partial class CheckListBox
     /// </summary>
     public void ClearSelection()
     {
+        // Keys without an item (e.g. restored before the items load) go too, as in the tree controls.
+        var current = GetCurrentSelection();
         var keys = itemRows
             .Where(x => !disabledSet.Contains(x.Key))
-            .Select(x => x.Key);
+            .Select(x => x.Key)
+            .Concat(current.Where(x => !itemKeys.Contains(x)))
+            .ToList();
 
-        Commit(KeySelectionHelper.GetSelectionWith(GetCurrentSelection(), [], keys));
+        Commit(KeySelectionHelper.GetSelectionWith(current, [], keys));
     }
 
     /// <summary>

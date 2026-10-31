@@ -217,7 +217,14 @@ public sealed partial class ChipGroup : UserControl
     /// Clears every enabled chip in one change. Disabled keys keep their state.
     /// </summary>
     public void ClearSelection()
-        => Commit(KeySelectionHelper.GetSelectionWith(GetCurrentSelection(), [], GetEnabledKeys()));
+    {
+        // Keys without an item (e.g. restored before the items load) go too, as in the tree controls.
+        var current = GetCurrentSelection();
+        var keys = GetEnabledKeys()
+            .Concat(current.Where(x => !itemKeys.Contains(x)))
+            .ToList();
+        Commit(KeySelectionHelper.GetSelectionWith(current, [], keys));
+    }
 
     /// <summary>
     /// Returns the chip of an item, or <see langword="null"/> when the key is not in <see cref="Items"/>.
