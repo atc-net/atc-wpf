@@ -20,6 +20,12 @@ internal static class NativeWindowMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool IsWindowVisible(IntPtr hWnd);
 
+    [DllImport("user32.dll")]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    public static extern IntPtr GetWindow(
+        IntPtr hWnd,
+        uint uCmd);
+
     [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "GetWindowTextW")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern int GetWindowText(

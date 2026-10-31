@@ -66,16 +66,20 @@ public sealed class ProcessService : IProcessService
     private static IReadOnlyList<ProcessSnapshot> EnumerateProcesses()
     {
         var snapshots = new List<ProcessSnapshot>();
+        var processes = System.Diagnostics.Process.GetProcesses();
 
-        foreach (var p in System.Diagnostics.Process.GetProcesses())
+        // One pass over the top-level windows; Process.MainWindowHandle would enumerate them once per process.
+        var mainWindows = ProcessMainWindowMap.Capture();
+
+        foreach (var p in processes)
         {
             try
             {
-                var hasWindow = p.MainWindowHandle != IntPtr.Zero;
+                var hasWindow = mainWindows.TryGetValue(p.Id, out var mainWindowHandle);
                 snapshots.Add(new ProcessSnapshot(
                     p.Id,
                     p.ProcessName,
-                    hasWindow ? p.MainWindowTitle : string.Empty,
+                    hasWindow ? NativeWindowMethods.ReadWindowTitle(mainWindowHandle) : string.Empty,
                     hasWindow));
             }
             catch (Exception)
