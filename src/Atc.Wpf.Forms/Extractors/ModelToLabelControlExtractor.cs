@@ -366,6 +366,24 @@ public static class ModelToLabelControlExtractor
         return GetPropertyInfo(target, fieldName)?.GetValue(target);
     }
 
+    /// <summary>
+    /// Gets the local clock time of a <see cref="DateTimeOffset"/> for a date-time picker, clamped to the
+    /// <see cref="DateTime"/> range at its ends.
+    /// </summary>
+    private static DateTime ToLocalDateTime(DateTimeOffset value)
+    {
+        var offset = TimeZoneInfo.Local.GetUtcOffset(value.UtcDateTime);
+        var localTicks = value.UtcTicks + offset.Ticks;
+        if (localTicks < DateTime.MinValue.Ticks)
+        {
+            return DateTime.MinValue;
+        }
+
+        return localTicks > DateTime.MaxValue.Ticks
+            ? DateTime.MaxValue
+            : new DateTime(localTicks, DateTimeKind.Unspecified);
+    }
+
     private static PropertyInfo? GetPropertyInfo(
         object target,
         string fieldName)
@@ -602,12 +620,12 @@ public static class ModelToLabelControlExtractor
     {
         ArgumentNullException.ThrowIfNull(model);
 
-        DateTime? value = null;
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null)
+        var value = GetPropertyValue(model, propertyInfo.Name) switch
         {
-            value = propertyObjectValue as DateTime?;
-        }
+            DateTime dateTime => dateTime,
+            DateTimeOffset dateTimeOffset => ToLocalDateTime(dateTimeOffset),
+            _ => (DateTime?)null,
+        };
 
         return LabelControlFactory.CreateLabelDateTimePicker(
             propertyInfo,

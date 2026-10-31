@@ -166,4 +166,145 @@ public sealed class LabelControlsFormToModelWriterTests
         Assert.Equal(@"C:\Temp", actual.Directory?.FullName);
         Assert.Equal(@"C:\Temp\test.txt", actual.File?.FullName);
     }
+
+    [StaFact]
+    public void Update_DatesModel_UntouchedValues_RoundTrip()
+    {
+        // Arrange
+        var model = new DatesModel
+        {
+            DateTimeValue = new DateTime(2024, 5, 17, 13, 45, 30, DateTimeKind.Unspecified),
+            DateTimeNullable = new DateTime(2023, 1, 2, 3, 4, 5, DateTimeKind.Unspecified),
+            DateOnlyValue = new DateOnly(2024, 5, 17),
+            DateOnlyNullable = new DateOnly(2023, 1, 2),
+            TimeOnlyValue = new TimeOnly(13, 45, 30),
+            TimeOnlyNullable = new TimeOnly(3, 4, 5),
+            DateTimeOffsetValue = new DateTimeOffset(2024, 5, 17, 13, 45, 30, TimeSpan.FromHours(5)),
+            DateTimeOffsetNullable = new DateTimeOffset(2023, 1, 2, 3, 4, 5, TimeSpan.Zero),
+        };
+
+        var labelControlsForm = CreateForm(model);
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, labelControlsForm);
+
+        // Assert
+        Assert.Equal(model.DateTimeValue, actual.DateTimeValue);
+        Assert.Equal(model.DateTimeNullable, actual.DateTimeNullable);
+        Assert.Equal(model.DateOnlyValue, actual.DateOnlyValue);
+        Assert.Equal(model.DateOnlyNullable, actual.DateOnlyNullable);
+        Assert.Equal(model.TimeOnlyValue, actual.TimeOnlyValue);
+        Assert.Equal(model.TimeOnlyNullable, actual.TimeOnlyNullable);
+        Assert.Equal(model.DateTimeOffsetValue.UtcDateTime, actual.DateTimeOffsetValue.UtcDateTime);
+        Assert.Equal(model.DateTimeOffsetNullable!.Value.UtcDateTime, actual.DateTimeOffsetNullable!.Value.UtcDateTime);
+    }
+
+    [StaFact]
+    public void Update_DatesModel_DefaultValues_RoundTrip()
+    {
+        // Arrange
+        var model = new DatesModel();
+
+        var labelControlsForm = CreateForm(model);
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, labelControlsForm);
+
+        // Assert
+        Assert.Equal(default, actual.DateTimeValue);
+        Assert.Null(actual.DateTimeNullable);
+        Assert.Equal(default, actual.DateOnlyValue);
+        Assert.Null(actual.DateOnlyNullable);
+        Assert.Equal(default, actual.TimeOnlyValue);
+        Assert.Null(actual.TimeOnlyNullable);
+        Assert.Equal(default(DateTimeOffset).UtcDateTime, actual.DateTimeOffsetValue.UtcDateTime);
+        Assert.Null(actual.DateTimeOffsetNullable);
+    }
+
+    [StaFact]
+    public void Update_DatesModel_ClearedNullableDates_WriteNull()
+    {
+        // Arrange
+        var model = new DatesModel
+        {
+            DateTimeNullable = new DateTime(2023, 1, 2, 3, 4, 5, DateTimeKind.Unspecified),
+            DateOnlyNullable = new DateOnly(2023, 1, 2),
+            TimeOnlyNullable = new TimeOnly(3, 4, 5),
+            DateTimeOffsetNullable = new DateTimeOffset(2023, 1, 2, 3, 4, 5, TimeSpan.Zero),
+        };
+
+        var labelControlsForm = CreateForm(model);
+        foreach (var labelControl in AllLabelControls(labelControlsForm))
+        {
+            switch (labelControl)
+            {
+                case LabelDateTimePicker labelDateTimePicker:
+                    labelDateTimePicker.SelectedDate = null;
+                    break;
+                case LabelDatePicker labelDatePicker:
+                    labelDatePicker.SelectedDate = null;
+                    break;
+                case LabelTimePicker labelTimePicker:
+                    labelTimePicker.SelectedTime = null;
+                    break;
+            }
+        }
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, labelControlsForm);
+
+        // Assert
+        Assert.Null(actual.DateTimeNullable);
+        Assert.Null(actual.DateOnlyNullable);
+        Assert.Null(actual.TimeOnlyNullable);
+        Assert.Null(actual.DateTimeOffsetNullable);
+    }
+
+    [StaFact]
+    public void Update_DatesModel_EditedDates_AreWrittenAsThePropertyType()
+    {
+        // Arrange
+        var model = new DatesModel();
+
+        var labelControlsForm = CreateForm(model);
+        foreach (var labelControl in AllLabelControls(labelControlsForm))
+        {
+            switch (labelControl)
+            {
+                case LabelDateTimePicker { Identifier: nameof(DatesModel.DateTimeOffsetNullable) } labelDateTimePicker:
+                    labelDateTimePicker.SelectedDate = new DateTime(2025, 6, 7, 8, 9, 10, DateTimeKind.Unspecified);
+                    break;
+                case LabelDatePicker { Identifier: nameof(DatesModel.DateOnlyNullable) } labelDatePicker:
+                    labelDatePicker.SelectedDate = new DateTime(2025, 6, 7, 0, 0, 0, DateTimeKind.Unspecified);
+                    break;
+                case LabelTimePicker { Identifier: nameof(DatesModel.TimeOnlyNullable) } labelTimePicker:
+                    labelTimePicker.SelectedTime = new DateTime(1, 1, 1, 8, 9, 10, DateTimeKind.Unspecified);
+                    break;
+            }
+        }
+
+        // Act
+        var actual = LabelControlsFormToModelWriter.Update(model, labelControlsForm);
+
+        // Assert
+        Assert.Equal(new DateOnly(2025, 6, 7), actual.DateOnlyNullable);
+        Assert.Equal(new TimeOnly(8, 9, 10), actual.TimeOnlyNullable);
+        Assert.NotNull(actual.DateTimeOffsetNullable);
+        Assert.Equal(new DateTime(2025, 6, 7, 8, 9, 10, DateTimeKind.Unspecified), actual.DateTimeOffsetNullable.Value.LocalDateTime);
+    }
+
+    private static LabelControlsForm CreateForm<T>(T model)
+    {
+        var labelControls = ModelToLabelControlExtractor.Extract(model);
+
+        var labelControlsForm = new LabelControlsForm();
+        labelControlsForm.AddColumn(labelControls);
+        return labelControlsForm;
+    }
+
+    private static IEnumerable<ILabelControlBase> AllLabelControls(
+        LabelControlsForm labelControlsForm)
+        => labelControlsForm.Rows!
+            .SelectMany(row => row.Columns!)
+            .SelectMany(column => column.LabelControls);
 }

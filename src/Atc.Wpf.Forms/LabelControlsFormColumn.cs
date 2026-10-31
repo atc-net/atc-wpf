@@ -178,13 +178,13 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.GetFullIdentifier(), labelTextBox.Text);
                     break;
                 case LabelDateTimePicker labelDateTimePicker:
-                    result.Add(control.GetFullIdentifier(), labelDateTimePicker.SelectedDate ?? DateTime.MinValue);
+                    AddDateValue(result, control, labelDateTimePicker.SelectedDate);
                     break;
                 case LabelDatePicker labelDatePicker:
-                    result.Add(control.GetFullIdentifier(), labelDatePicker.SelectedDate ?? DateTime.MinValue);
+                    AddDateValue(result, control, labelDatePicker.SelectedDate);
                     break;
                 case LabelTimePicker labelTimePicker:
-                    result.Add(control.GetFullIdentifier(), labelTimePicker.SelectedTime ?? DateTime.MinValue);
+                    AddDateValue(result, control, labelTimePicker.SelectedTime);
                     break;
                 case LabelDirectoryPicker labelDirectoryPicker:
                     if (labelDirectoryPicker.Value is not null)
@@ -239,6 +239,78 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Adds the value of a date or time picker, converted to the type of the edited property
+    /// (see <see cref="ILabelControlBase.InputDataType"/>): <see cref="DateOnly"/>, <see cref="TimeOnly"/>,
+    /// <see cref="DateTimeOffset"/> or <see cref="DateTime"/>. An empty picker gives <see langword="null"/> for a
+    /// nullable property and no value at all for a non-nullable one, so the model keeps its current value.
+    /// </summary>
+    private static void AddDateValue(
+        Dictionary<string, object> result,
+        ILabelControlBase control,
+        DateTime? selectedDate)
+    {
+        var inputDataType = control.InputDataType;
+        if (selectedDate is null)
+        {
+            if (inputDataType is null ||
+                !inputDataType.IsValueType ||
+                Nullable.GetUnderlyingType(inputDataType) is not null)
+            {
+                result.Add(control.GetFullIdentifier(), null!);
+            }
+
+            return;
+        }
+
+        var value = selectedDate.Value;
+        var nonNullableType = inputDataType is null
+            ? typeof(DateTime)
+            : Nullable.GetUnderlyingType(inputDataType) ?? inputDataType;
+
+        object convertedValue;
+        if (nonNullableType == typeof(DateOnly))
+        {
+            convertedValue = DateOnly.FromDateTime(value);
+        }
+        else if (nonNullableType == typeof(TimeOnly))
+        {
+            convertedValue = TimeOnly.FromDateTime(value);
+        }
+        else if (nonNullableType == typeof(DateTimeOffset))
+        {
+            convertedValue = ToDateTimeOffset(value);
+        }
+        else
+        {
+            convertedValue = value;
+        }
+
+        result.Add(control.GetFullIdentifier(), convertedValue);
+    }
+
+    /// <summary>
+    /// Converts a picker's local clock time to a <see cref="DateTimeOffset"/>, clamping at the ends of the range
+    /// where the local offset would move the instant outside <see cref="DateTimeOffset.MinValue"/>/<see cref="DateTimeOffset.MaxValue"/>.
+    /// </summary>
+    private static DateTimeOffset ToDateTimeOffset(DateTime value)
+    {
+        var localValue = DateTime.SpecifyKind(value, DateTimeKind.Local);
+        var offset = TimeZoneInfo.Local.GetUtcOffset(localValue);
+        var utcTicks = localValue.Ticks - offset.Ticks;
+        if (utcTicks < DateTimeOffset.MinValue.UtcTicks)
+        {
+            return DateTimeOffset.MinValue;
+        }
+
+        if (utcTicks > DateTimeOffset.MaxValue.UtcTicks)
+        {
+            return DateTimeOffset.MaxValue;
+        }
+
+        return new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Unspecified), offset);
     }
 
     /// <summary>
