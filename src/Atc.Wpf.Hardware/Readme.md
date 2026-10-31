@@ -47,7 +47,9 @@ Polling pickers expose their service tuning, for example:
 <atc:ProcessPicker PollingInterval="00:00:05" OnlyWithMainWindow="True" />
 ```
 
-To share one watcher between several pickers, or to supply a test double, pass the service to the picker's constructor (`new ProcessPicker(IProcessService service)`).
+To share one watcher between several pickers, or to supply a test double, pass the service to the picker's constructor (`new ProcessPicker(IProcessService service)`). A shared service keeps watching until the last picker using it unloads (`StartWatching`/`StopWatching` calls are counted).
+
+`ProcessPicker` and `WindowPicker` show an exited process or a closed window as **Disconnected** for one poll and then drop it, since a process id or window handle never comes back.
 
 ## 📖 Documentation
 
