@@ -735,6 +735,20 @@ public sealed class CascaderComboBoxTests : IDisposable
         Assert.Equal(["dk-zea-cph", "dk-jut-aar"], sut.SelectedKeys);
     }
 
+    [StaFact]
+    public void ClearSelection_drops_the_kept_keys_of_nodes_that_are_not_loaded()
+    {
+        var dk = new CheckTreeNode("dk", "Denmark");
+        dk.Children.Add(new CheckTreeNode("dk-jut", "Jutland") { HasUnloadedChildren = true });
+        var sut = new CascaderComboBox { Nodes = [dk], SelectedKeys = ["dk-jut-aar"] };
+        var events = Record(sut);
+
+        sut.ClearSelection();
+
+        Assert.Empty(sut.SelectedKeys);
+        Assert.Single(events);
+    }
+
     internal static System.Collections.ObjectModel.ObservableCollection<CheckTreeNode> CreateCascaderRegions()
     {
         var jutland = new CheckTreeNode("dk-jut", "Jutland");

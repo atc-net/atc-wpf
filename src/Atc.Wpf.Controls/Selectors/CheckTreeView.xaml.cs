@@ -406,7 +406,7 @@ public partial class CheckTreeView
     private void ApplySelectedKeys()
     {
         KeysApplyCount++;
-        state.ApplyKeys((IEnumerable<string>?)SelectedKeys ?? []);
+        state.ReplaceKeys((IEnumerable<string>?)SelectedKeys ?? []);
         RefreshChrome();
     }
 

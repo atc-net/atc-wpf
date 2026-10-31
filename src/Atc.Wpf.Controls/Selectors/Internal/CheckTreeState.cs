@@ -21,7 +21,9 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </para>
 /// <para>
 /// Keys of nodes that are not in the tree (e.g. children that are not loaded yet) are kept in <see cref="GetKeys"/>, so a
-/// saved selection survives until those nodes appear.
+/// saved selection survives until those nodes appear. Select all and Clear (over the whole tree) drop them. Unticking a
+/// node whose children are not loaded yet marks it: when its children load, the kept keys of the loaded nodes under it
+/// are dropped instead of ticking them again.
 /// </para>
 /// <para>
 /// The engine tracks <see cref="CheckTreeNode.Children"/> changes: the changed parent's sub-tree is re-applied from the
@@ -34,6 +36,7 @@ internal sealed class CheckTreeState
     private readonly Dictionary<string, CheckTreeNode> nodesByKey = new(StringComparer.Ordinal);
     private readonly HashSet<CheckTreeNode> deferredParents = new(ReferenceEqualityComparer.Instance);
     private readonly Dictionary<object, CheckTreeNode> childrenOwners = new(ReferenceEqualityComparer.Instance);
+    private readonly HashSet<CheckTreeNode> prunedNodes = new(ReferenceEqualityComparer.Instance);
     private ObservableCollection<CheckTreeNode>? roots;
     private List<string> keys = [];
     private HashSet<string> keySet = new(StringComparer.Ordinal);
@@ -99,6 +102,7 @@ internal sealed class CheckTreeState
         }
 
         UnindexAll();
+        prunedNodes.Clear();
         roots = newRoots;
         if (roots is not null)
         {
@@ -198,6 +202,16 @@ internal sealed class CheckTreeState
     }
 
     /// <summary>
+    /// Sets the keys from outside the engine (the bound <c>SelectedKeys</c>): forgets which unloaded nodes the user
+    /// unticked, since the new keys say what is ticked, then applies them.
+    /// </summary>
+    public void ReplaceKeys(IEnumerable<string> newKeys)
+    {
+        prunedNodes.Clear();
+        ApplyKeys(newKeys);
+    }
+
+    /// <summary>
     /// Returns the keys for the current states: per <see cref="Strategy"/> when linked, every ticked node otherwise; in
     /// tree order, followed by the kept keys of nodes that are not in the tree.
     /// </summary>
@@ -283,6 +297,7 @@ internal sealed class CheckTreeState
             return StateWriteCount != before;
         }
 
+        MarkUnloaded(node, value, isShown);
         SetSubtree(node, value, isShown);
         Propagate(GetParent(node));
         return StateWriteCount != before;
@@ -302,6 +317,20 @@ internal sealed class CheckTreeState
         }
 
         var before = StateWriteCount;
+        var isKeptKeyDropped = false;
+        if (isShown is null)
+        {
+            // Over the whole tree, Select all and Clear also settle the kept keys of nodes that are not loaded: Clear
+            // unticks them, and Select all ticks their loaded ancestors, which pass the tick on when they load.
+            isKeptKeyDropped = keys.RemoveAll(x => !nodesByKey.ContainsKey(x)) > 0;
+            if (isKeptKeyDropped)
+            {
+                keySet = new HashSet<string>(keys, StringComparer.Ordinal);
+            }
+
+            prunedNodes.Clear();
+        }
+
         if (!IsCheckLinked)
         {
             foreach (var node in EnumerateNodes())
@@ -312,7 +341,7 @@ internal sealed class CheckTreeState
                 }
             }
 
-            return StateWriteCount != before;
+            return isKeptKeyDropped || StateWriteCount != before;
         }
 
         foreach (var root in roots)
@@ -323,7 +352,7 @@ internal sealed class CheckTreeState
             }
         }
 
-        return StateWriteCount != before;
+        return isKeptKeyDropped || StateWriteCount != before;
     }
 
     /// <summary>
@@ -397,6 +426,7 @@ internal sealed class CheckTreeState
         }
 
         UnindexAll();
+        prunedNodes.Clear();
     }
 
     private static bool HasChildren(CheckTreeNode node)
@@ -496,6 +526,75 @@ internal sealed class CheckTreeState
         foreach (var child in node.Children)
         {
             CollectKeys(child, result);
+        }
+    }
+
+    /// <summary>
+    /// Records (on untick) or forgets (on tick) the nodes in a sub-tree whose children are not loaded yet.
+    /// </summary>
+    private void MarkUnloaded(
+        CheckTreeNode node,
+        bool value,
+        Func<CheckTreeNode, bool>? isShown)
+    {
+        var stack = new Stack<CheckTreeNode>();
+        stack.Push(node);
+        while (stack.Count > 0)
+        {
+            var current = stack.Pop();
+            if (current.HasUnloadedChildren)
+            {
+                if (value)
+                {
+                    prunedNodes.Remove(current);
+                }
+                else
+                {
+                    prunedNodes.Add(current);
+                }
+            }
+
+            foreach (var child in current.Children)
+            {
+                if (child.IsEnabled && (isShown is null || isShown(child)))
+                {
+                    stack.Push(child);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Drops the kept keys of the nodes now loaded under a node the user unticked before they loaded; nodes under it
+    /// that still have unloaded children inherit the mark.
+    /// </summary>
+    private void DropKeysUnderPrunedNode(CheckTreeNode parent)
+    {
+        if (!prunedNodes.Remove(parent))
+        {
+            return;
+        }
+
+        var isChanged = false;
+        var stack = new Stack<CheckTreeNode>(parent.Children);
+        while (stack.Count > 0)
+        {
+            var current = stack.Pop();
+            isChanged |= keySet.Remove(current.Key);
+            if (current.HasUnloadedChildren)
+            {
+                prunedNodes.Add(current);
+            }
+
+            foreach (var child in current.Children)
+            {
+                stack.Push(child);
+            }
+        }
+
+        if (isChanged)
+        {
+            keys = keys.Where(keySet.Contains).ToList();
         }
     }
 
@@ -715,6 +814,7 @@ internal sealed class CheckTreeState
             }
         }
 
+        prunedNodes.RemoveWhere(x => !infos.ContainsKey(x));
         ApplyKeys(keys);
         StructureChanged?.Invoke(null);
     }
@@ -754,6 +854,9 @@ internal sealed class CheckTreeState
         {
             Index(child, parent);
         }
+
+        DropKeysUnderPrunedNode(parent);
+        prunedNodes.RemoveWhere(x => !infos.ContainsKey(x));
 
         var oldState = parent.IsChecked;
         ApplyRecursive(parent, IsAnyAncestorKeyed(parent));

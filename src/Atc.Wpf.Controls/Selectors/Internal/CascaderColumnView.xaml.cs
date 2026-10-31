@@ -1292,7 +1292,7 @@ internal partial class CascaderColumnView
 
     private void ApplySelectedKeys()
     {
-        state.ApplyKeys((IEnumerable<string>?)SelectedKeys ?? []);
+        state.ReplaceKeys((IEnumerable<string>?)SelectedKeys ?? []);
         RefreshChrome();
     }
 

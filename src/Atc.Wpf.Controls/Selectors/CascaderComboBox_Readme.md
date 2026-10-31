@@ -196,7 +196,7 @@ Unlike the other drop-downs of the family, `Enter` on a row does not close the p
 
 - Bulk changes: the default `SelectedKeys` is an `ObservableCollectionEx<string>`, so Select all and Clear raise one `Reset`; a view-model `ObservableCollection<string>` gets one notification per key, but the control still updates its states and summary once per action. For a bulk change from code, assign a new collection or use `ObservableCollectionEx<string>.AddRange` (one notification): adding keys one by one updates the control once per key.
 - A node belongs to one tree: give each control its own nodes.
-- Keys in `SelectedKeys` that are not in the tree (for example cities that are not loaded yet) are kept, so a saved selection survives until those nodes appear.
+- Keys in `SelectedKeys` that are not in the tree (for example cities that are not loaded yet) are kept, so a saved selection survives until those nodes appear. **Select all** and **Clear** drop them, and unticking a node whose children are not loaded drops the kept keys of the nodes that later load under it (they come up unticked).
 - Disabled nodes keep their state; a parent over a disabled, unticked child stays partial.
 - Ticks apply right away; there is no OK / Cancel mode.
 - The column view is a separate internal element, so it could later be shown inline or reused for a single-select cascader.

@@ -513,6 +513,72 @@ public sealed class CheckTreeViewTests : IDisposable
         Assert.Equal(["dk-odense", "dk-aarhus"], sut.SelectedKeys);
     }
 
+    [StaFact]
+    public void ClearSelection_drops_the_kept_keys_of_nodes_that_are_not_loaded()
+    {
+        var sut = CreateLazy();
+        sut.SelectedKeys = ["dk-jut-aar"];
+        var events = Record(sut);
+
+        sut.ClearSelection();
+
+        Assert.Empty(sut.SelectedKeys);
+        Assert.Single(events);
+    }
+
+    [StaFact]
+    public void SelectAll_drops_the_kept_keys_of_nodes_that_are_not_loaded()
+    {
+        var sut = CreateLazy();
+        sut.SelectedKeys = ["dk-jut-aar"];
+        var events = Record(sut);
+
+        sut.SelectAll();
+
+        Assert.Equal(["dk-jut", "dk-zea"], sut.SelectedKeys);
+        Assert.Single(events);
+    }
+
+    [StaFact]
+    public void Unticking_an_unloaded_parent_drops_the_kept_keys_under_it_once_they_load()
+    {
+        var sut = CreateLazy();
+        sut.SelectedKeys = ["dk-jut-aar"];
+        var jutland = sut.FindNode("dk-jut")!;
+        sut.ToggleNode(jutland);
+        sut.ToggleNode(jutland);
+
+        jutland.Children.Add(new CheckTreeNode("dk-jut-aar", "Aarhus"));
+        jutland.Children.Add(new CheckTreeNode("dk-jut-aal", "Aalborg"));
+        jutland.HasUnloadedChildren = false;
+
+        Assert.False(jutland.IsChecked);
+        Assert.Empty(sut.SelectedKeys);
+    }
+
+    [StaFact]
+    public void A_kept_key_still_ticks_its_node_when_the_parent_was_not_touched()
+    {
+        var sut = CreateLazy();
+        sut.SelectedKeys = ["dk-jut-aar"];
+        var jutland = sut.FindNode("dk-jut")!;
+
+        jutland.Children.Add(new CheckTreeNode("dk-jut-aar", "Aarhus"));
+        jutland.Children.Add(new CheckTreeNode("dk-jut-aal", "Aalborg"));
+        jutland.HasUnloadedChildren = false;
+
+        Assert.Null(jutland.IsChecked);
+        Assert.Equal(["dk-jut-aar"], sut.SelectedKeys);
+    }
+
+    private static CheckTreeView CreateLazy()
+    {
+        var dk = new CheckTreeNode("dk", "Denmark");
+        dk.Children.Add(new CheckTreeNode("dk-jut", "Jutland") { HasUnloadedChildren = true });
+        dk.Children.Add(new CheckTreeNode("dk-zea", "Zealand"));
+        return new CheckTreeView { Nodes = [dk] };
+    }
+
     private static CheckTreeView CreateRegions()
         => new() { Nodes = CheckTreeStateTests.CreateRegionNodes(), ExpandDepth = 2 };
 
