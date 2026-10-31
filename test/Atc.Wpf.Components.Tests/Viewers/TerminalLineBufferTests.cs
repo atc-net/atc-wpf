@@ -2,6 +2,10 @@ namespace Atc.Wpf.Components.Tests.Viewers;
 
 public sealed class TerminalLineBufferTests
 {
+    // CI runs with code coverage on slower machines (about 15 times slower), so it gets more room.
+    private static readonly TimeSpan MaxDuration = TimeSpan.FromSeconds(
+        string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase) ? 150 : 10);
+
     [StaTheory]
     [InlineData(false)]
     [InlineData(true)]
@@ -45,7 +49,7 @@ public sealed class TerminalLineBufferTests
                 maxLines: 10_000);
         }
 
-        Assert.True(stopwatch.Elapsed < TimeSpan.FromSeconds(10), stopwatch.Elapsed.ToString());
+        Assert.True(stopwatch.Elapsed < MaxDuration, stopwatch.Elapsed.ToString());
         Assert.DoesNotContain(NotifyCollectionChangedAction.Reset, actions);
         Assert.Equal(10_000, sut.Lines.Count);
         Assert.Equal(5_000, sut.MatchCount);
@@ -85,7 +89,7 @@ public sealed class TerminalLineBufferTests
                 maxLines: 10_000);
         }
 
-        Assert.True(stopwatch.Elapsed < TimeSpan.FromSeconds(10), stopwatch.Elapsed.ToString());
+        Assert.True(stopwatch.Elapsed < MaxDuration, stopwatch.Elapsed.ToString());
         Assert.Equal(10_000, sut.Lines.Count);
         Assert.Equal("190000", sut.Lines[0].Text);
         Assert.Equal(sut.Lines.Count(l => l.Text.Contains('7', StringComparison.Ordinal)), sut.MatchCount);

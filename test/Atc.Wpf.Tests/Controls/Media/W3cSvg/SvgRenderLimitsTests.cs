@@ -3,7 +3,10 @@ namespace Atc.Wpf.Tests.Controls.Media.W3cSvg;
 public sealed class SvgRenderLimitsTests
 {
     private const string SvgOpen = """<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">""";
-    private static readonly TimeSpan MaxDuration = TimeSpan.FromSeconds(2);
+
+    // A runaway render takes minutes; CI runs with code coverage on slower machines, so it gets more room.
+    private static readonly TimeSpan MaxDuration = TimeSpan.FromSeconds(
+        string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase) ? 20 : 5);
 
     [StaFact]
     public void UseFanOut_TenLevelsOfTen_StopsAtTheDrawingBudgetQuickly()
