@@ -170,6 +170,56 @@ public sealed class BusyIndicatorServiceTests
         region.Dispose();
     }
 
+    [StaFact]
+    public void Hide_CancellableSessionWhileOtherSessionKeepsRegionBusy_RemovesStaleCancelButton()
+    {
+        // Arrange
+        var region = new HostedRegion();
+        var service = new BusyIndicatorService(Dispatcher.CurrentDispatcher);
+        var cancellable = service.Show("A", region.Name, allowCancellation: true);
+        var staleButton = Assert.IsType<Button>(region.Overlay.BusyContentAfter);
+        var plain = service.Show("B", region.Name);
+
+        // Act
+        service.Hide(cancellable);
+        var exception = Record.Exception(() => staleButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)));
+
+        // Assert
+        Assert.Null(exception);
+        Assert.True(region.Overlay.IsBusy);
+        Assert.Null(region.Overlay.BusyContentAfter);
+        Assert.Equal("B", region.Overlay.BusyContent);
+        Assert.False(cancellable.IsCancelled);
+
+        service.Hide(plain);
+        region.Dispose();
+    }
+
+    [StaFact]
+    public void Hide_NewestSession_RestoresRemainingSessionContentAndCancelButton()
+    {
+        // Arrange
+        var region = new HostedRegion();
+        var service = new BusyIndicatorService(Dispatcher.CurrentDispatcher);
+        var cancellable = service.Show("A", region.Name, allowCancellation: true);
+        var plain = service.Show("B", region.Name);
+        var cancellationToken = BusyIndicatorManager.GetCancellationToken(cancellable);
+
+        // Act
+        service.Hide(plain);
+
+        // Assert
+        Assert.True(region.Overlay.IsBusy);
+        Assert.Equal("A", region.Overlay.BusyContent);
+        region.ClickCancel();
+        Assert.True(cancellable.IsCancelled);
+        Assert.True(cancellationToken.IsCancellationRequested);
+
+        service.Hide(cancellable);
+        Assert.False(region.Overlay.IsBusy);
+        region.Dispose();
+    }
+
     /// <summary>
     /// A loaded <see cref="BusyOverlay"/> registered under a region name unique to the test
     /// (the manager's region registry is static).
