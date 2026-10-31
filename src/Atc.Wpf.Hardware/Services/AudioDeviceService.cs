@@ -72,7 +72,7 @@ public sealed class AudioDeviceService : IAudioDeviceService
         if (defaultSource is not null)
         {
             defaultSource.DefaultDeviceChanged += OnDefaultDeviceChanged;
-            ApplyDefaultDevice(defaultSource.GetDefaultDeviceId());
+            ApplyDefaultDeviceFromSource();
         }
     }
 
@@ -120,6 +120,9 @@ public sealed class AudioDeviceService : IAudioDeviceService
                 Devices[i].State = DeviceState.Disconnected;
             }
         }
+
+        // The enumerated flag can disagree with Windows' own default; that one wins, also on known devices.
+        ApplyDefaultDeviceFromSource();
     }
 
     /// <inheritdoc />
@@ -143,7 +146,10 @@ public sealed class AudioDeviceService : IAudioDeviceService
     private void OnAdded(
         object? sender,
         DeviceSnapshotEventArgs e)
-        => UpsertFromSnapshot(e.Snapshot, isInitialEnumeration: !initialEnumerationCompleted);
+    {
+        UpsertFromSnapshot(e.Snapshot, isInitialEnumeration: !initialEnumerationCompleted);
+        ApplyDefaultDeviceFromSource();
+    }
 
     private void OnRemoved(
         object? sender,
@@ -190,6 +196,14 @@ public sealed class AudioDeviceService : IAudioDeviceService
                 ApplyDefaultDevice(defaultId);
             }
         });
+    }
+
+    private void ApplyDefaultDeviceFromSource()
+    {
+        if (defaultSource is not null)
+        {
+            ApplyDefaultDevice(defaultSource.GetDefaultDeviceId());
+        }
     }
 
     private void ApplyDefaultDevice(string? defaultId)

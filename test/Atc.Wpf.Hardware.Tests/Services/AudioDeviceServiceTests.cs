@@ -157,6 +157,55 @@ public sealed class AudioDeviceServiceTests
     }
 
     [Fact]
+    public async Task WatchingStartsBeforeTheFirstRefresh_TheDefaultSourceWinsOverTheEnumeratedFlag()
+    {
+        using var host = new FakeDeviceWatcherHost();
+        var defaults = new FakeDefaultAudioDeviceSource { DefaultDeviceId = "b" };
+        using var service = new AudioDeviceService(AudioDeviceKind.Output, host, defaults);
+        host.SeedSnapshots.Add(new DeviceSnapshot { Id = "a", Name = "A", IsEnabled = true, IsDefault = true });
+        host.SeedSnapshots.Add(new DeviceSnapshot { Id = "b", Name = "B", IsEnabled = true });
+
+        // A picker starts watching on an empty list, then refreshes.
+        service.StartWatching();
+        await service.RefreshAsync();
+
+        Assert.False(service.Devices.Single(d => d.DeviceId == "a").IsDefault);
+        Assert.True(service.Devices.Single(d => d.DeviceId == "b").IsDefault);
+    }
+
+    [Fact]
+    public async Task RefreshAsync_CorrectsAStaleMarkerOnKnownDevices()
+    {
+        using var host = new FakeDeviceWatcherHost();
+        var defaults = new FakeDefaultAudioDeviceSource { DefaultDeviceId = "a" };
+        using var service = new AudioDeviceService(AudioDeviceKind.Output, host, defaults);
+        host.SeedSnapshots.Add(new DeviceSnapshot { Id = "a", Name = "A", IsEnabled = true, IsDefault = true });
+        host.SeedSnapshots.Add(new DeviceSnapshot { Id = "b", Name = "B", IsEnabled = true });
+        await service.RefreshAsync();
+
+        defaults.DefaultDeviceId = "b";
+        await service.RefreshAsync();
+
+        Assert.False(service.Devices.Single(d => d.DeviceId == "a").IsDefault);
+        Assert.True(service.Devices.Single(d => d.DeviceId == "b").IsDefault);
+    }
+
+    [Fact]
+    public void Added_WhileWatching_TakesTheMarkerFromTheDefaultSource()
+    {
+        using var host = new FakeDeviceWatcherHost();
+        var defaults = new FakeDefaultAudioDeviceSource { DefaultDeviceId = "b" };
+        using var service = new AudioDeviceService(AudioDeviceKind.Input, host, defaults);
+        service.StartWatching();
+
+        host.RaiseAdded(new DeviceSnapshot { Id = "a", Name = "A", IsEnabled = true, IsDefault = true });
+        host.RaiseAdded(new DeviceSnapshot { Id = "b", Name = "B", IsEnabled = true });
+
+        Assert.False(service.Devices[0].IsDefault);
+        Assert.True(service.Devices[1].IsDefault);
+    }
+
+    [Fact]
     public void Dispose_StopsFollowingTheDefaultDevice()
     {
         using var host = new FakeDeviceWatcherHost();
