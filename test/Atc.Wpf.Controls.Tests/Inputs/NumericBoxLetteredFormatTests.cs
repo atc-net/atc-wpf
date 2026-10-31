@@ -77,6 +77,32 @@ public sealed class NumericBoxLetteredFormatTests : IDisposable
         Assert.Equal(1234.27d, numericBox.Value);
     }
 
+    [StaTheory]
+    [InlineData("da-DK")]
+    [InlineData("en-US")]
+    public void OneDecimalUnitFormat_BackspaceThenDigit_KeepsAndUpdatesTheValue(
+        string cultureName)
+    {
+        // Arrange
+        var (numericBox, textBox) = CreateCurrencyLikeBox(cultureName, "{0:N1} kg", 12.5);
+        var lastDigit = LastDigitIndex(textBox.Text);
+
+        // Act
+        PressBackspace(textBox, lastDigit + 1);
+        var afterBackspace = numericBox.Value;
+        textBox.CaretIndex = lastDigit;
+        var handled = RaisePreviewTextInput(textBox, "7");
+        if (!handled)
+        {
+            textBox.Text = textBox.Text.Insert(lastDigit, "7");
+        }
+
+        // Assert
+        Assert.True(afterBackspace is 12d or 12.5d, $"Value after Backspace was {afterBackspace}.");
+        Assert.False(handled);
+        Assert.Equal(12.7d, numericBox.Value);
+    }
+
     [StaFact]
     public void PartlyDeletedSuffix_DoesNotResetTheValueToDefault()
     {
@@ -108,7 +134,8 @@ public sealed class NumericBoxLetteredFormatTests : IDisposable
 
     private static (NumericBox NumericBox, TextBox TextBox) CreateCurrencyLikeBox(
         string cultureName,
-        string stringFormat)
+        string stringFormat,
+        double value = 1234.25)
     {
         var culture = CultureInfo.GetCultureInfo(cultureName);
         Thread.CurrentThread.CurrentCulture = culture;
@@ -125,10 +152,10 @@ public sealed class NumericBoxLetteredFormatTests : IDisposable
         };
 
         numericBox.ApplyTemplate();
-        numericBox.Value = 1234.25;
+        numericBox.Value = value;
 
         var textBox = (TextBox)numericBox.Template.FindName("PART_TextBox", numericBox);
-        Assert.Contains(culture.NumberFormat.NumberDecimalSeparator + "25", textBox.Text, StringComparison.Ordinal);
+        Assert.Contains(culture.NumberFormat.NumberDecimalSeparator, textBox.Text, StringComparison.Ordinal);
         return (numericBox, textBox);
     }
 
