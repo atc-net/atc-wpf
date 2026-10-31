@@ -163,12 +163,13 @@ While a lookup waits or runs, the pop-up shows "Please wait...". A new keystroke
 ## 📝 Notes
 
 - When `SelectedKeys` is data-bound, the keys dropped (or ticked) because `Items` changed are written once the bindings have settled (one dispatcher pass later), so a DataContext swap never writes into the previous view model's collection; unbound, it happens at once.
+- Only the keys of items that disappear from `Items` are dropped; keys that were never among the items are kept, so a selection restored before the items load (an empty `Items` first, the loaded items later) survives. The whole family follows this rule.
 - **Matching typed text:** a part matches an item when it equals its display value (case-insensitive) or its key.
 - **Highlight:** without `AllowCreate` the first suggestion is highlighted, so `Enter` picks it. With `AllowCreate` only a suggestion equal to the typed text is highlighted, so `Enter` creates the typed value instead of picking a longer one (use `↓` to pick a suggestion).
 - **Unknown text:** without `AllowCreate`, text that matches nothing stays in the field; pasted parts that match nothing stay there too (joined by the first separator).
 - **Created values:** the key is the text itself unless `TokenCreating` sets another; the pair is added to `Items`. While `AllowCreate` is set, keys in `SelectedKeys` that are not in `Items` show as their key.
 - **Duplicates** are ignored (by key, or by display value ignoring case); pasting "a, a, b" adds a and b.
-- **Items changes** drop tokens whose keys are gone (one event), except created values and values picked from `SuggestionsProvider`. With `AllowCreate`, keys that were never in `Items` (free values set from the view model) are kept too.
+- **Items changes** drop tokens whose keys are gone (one event), except created values and values picked from `SuggestionsProvider`. Keys that were never in `Items` (free values, or keys restored before the items load) are kept too.
 - **Limit:** a paste past `MaxSelectionCount` adds tokens up to the limit and drops the rest.
 - **Token order** follows `SelectedKeys`; new tokens are appended.
 - The texts ("+{0}", "Remove {0}", "{0} of max {1}", "No matches", "Please wait...", "Clear") come from the shared `Atc.Wpf.Resources.Miscellaneous` resources (English, Danish, German).

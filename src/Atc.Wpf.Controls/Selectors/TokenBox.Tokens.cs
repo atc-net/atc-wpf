@@ -301,8 +301,8 @@ public partial class TokenBox
 
     /// <summary>
     /// Drops the keys gone from <see cref="Items"/> (one event); created values and values picked from the
-    /// suggestions provider are kept. With <see cref="AllowCreate"/>, keys that were never in <see cref="Items"/>
-    /// (free values) are kept as well.
+    /// suggestions provider are kept, and so are keys that were never in <see cref="Items"/> (free values, or keys
+    /// restored before the items were loaded), as in the rest of the multi-select family.
     /// </summary>
     private void CleanUpSelection(IReadOnlySet<string> oldItemKeys)
     {
@@ -316,7 +316,7 @@ public partial class TokenBox
         var newKeys = oldKeys
             .Where(x => newItems.ContainsKey(x) ||
                         knownValues.ContainsKey(x) ||
-                        (AllowCreate && !oldItemKeys.Contains(x)))
+                        !oldItemKeys.Contains(x))
             .Distinct(StringComparer.Ordinal)
             .ToList();
         if (KeySelectionHelper.SetEquals(oldKeys, newKeys))

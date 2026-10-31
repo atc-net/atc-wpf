@@ -138,6 +138,7 @@ Methods: `SelectAll()` (ticks every shown, enabled row), `ClearSelection()` (unt
 ## 📝 Notes
 
 - When `SelectedKeys` is data-bound, the keys dropped (or ticked) because `Items` changed are written once the bindings have settled (one dispatcher pass later), so a DataContext swap never writes into the previous view model's collection; unbound, it happens at once.
+- Only the keys of items that disappear from `Items` are dropped; keys that were never among the items are kept, so a selection restored before the items load (an empty `Items` first, the loaded items later) survives. The whole family follows this rule.
 - **A column belongs to one grid.** WPF lets a `DataGridColumn` sit in one `DataGrid` only, so the columns of `Columns` are moved into the pop-up grid. Do not share a column instance between controls (or with another `DataGrid`); removing it from `Columns` releases it.
 - The filter reads the binding path of each visible `DataGridBoundColumn` (for other columns, `SortMemberPath`), not the formatted cell text: `StringFormat` and converters are not applied. Use `FilterMemberPaths` to search other properties.
 - The grid is read-only: no cell editing, no column reordering, no grouping.

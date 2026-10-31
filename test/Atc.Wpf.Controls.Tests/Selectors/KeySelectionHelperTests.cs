@@ -122,6 +122,18 @@ public sealed class KeySelectionHelperTests
     }
 
     [Fact]
+    public void GetSelectionAfterItemsChanged_keeps_keys_that_were_never_among_the_items()
+    {
+        var result = KeySelectionHelper.GetSelectionAfterItemsChanged(
+            ["restored", "a"],
+            Keys(),
+            Items("a"),
+            selectNewItems: false);
+
+        Assert.Equal(["restored", "a"], result);
+    }
+
+    [Fact]
     public void GetSelectionAfterItemsChanged_keeps_the_selection_when_there_are_no_items()
     {
         var result = KeySelectionHelper.GetSelectionAfterItemsChanged(
@@ -150,7 +162,7 @@ public sealed class KeySelectionHelperTests
     {
         var result = KeySelectionHelper.GetSelectionAfterItemsChanged(
             ["a", "stale"],
-            Keys("a"),
+            Keys("a", "stale"),
             Items("a", "b", "c", "d"),
             selectNewItems: true,
             maxSelectionCount: 3);
@@ -176,7 +188,7 @@ public sealed class KeySelectionHelperTests
     {
         var result = KeySelectionHelper.GetSelectionAfterItemsChanged(
             ["A", "b"],
-            Keys("a", "b"),
+            Keys("A", "a", "b"),
             Items("a", "b"),
             selectNewItems: false);
 
@@ -194,7 +206,7 @@ public sealed class KeySelectionHelperTests
 
         var result = KeySelectionHelper.GetSelectionAfterItemsChanged(
             ["A", "b", "x"],
-            Keys("a", "b"),
+            Keys("a", "b", "x"),
             items,
             selectNewItems: false);
 

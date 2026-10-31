@@ -19,7 +19,9 @@ internal static class KeySelectionHelper
 
     /// <summary>
     /// Returns the selection after <c>Items</c> changed from <paramref name="oldItemKeys"/> to <paramref name="newItems"/>:
-    /// keys no longer present are dropped and, when <paramref name="selectNewItems"/> is set, keys that were not
+    /// keys of items that disappeared (present in <paramref name="oldItemKeys"/>, gone from <paramref name="newItems"/>)
+    /// are dropped, while keys that were never among the items are kept (a restored selection survives an empty first
+    /// <c>Items</c>) and, when <paramref name="selectNewItems"/> is set, keys that were not
     /// present before are ticked (in item order), but only while the selection holds fewer than
     /// <paramref name="maxSelectionCount"/> keys.
     /// </summary>
@@ -39,7 +41,7 @@ internal static class KeySelectionHelper
         }
 
         var result = currentSelection
-            .Where(newItems.ContainsKey)
+            .Where(x => newItems.ContainsKey(x) || !oldItemKeys.Contains(x))
             .Distinct(StringComparer.Ordinal)
             .ToList();
 
