@@ -271,6 +271,36 @@ public sealed class PropertyGridTests
         Assert.Equal(nameof(Lookup.Title), item.PropertyName);
     }
 
+    [StaTheory]
+    [InlineData(nameof(Counters.Big), 5_000_000_000d, 5_000_000_000L)]
+    [InlineData(nameof(Counters.Big), -5_000_000_000d, -5_000_000_000L)]
+    [InlineData(nameof(Counters.Huge), 10_000_000_000_000_000_000d, 10_000_000_000_000_000_000UL)]
+    [InlineData(nameof(Counters.Huge), -5d, 0UL)]
+    [InlineData(nameof(Counters.Unsigned), 4_000_000_000d, 4_000_000_000U)]
+    [InlineData(nameof(Counters.Unsigned), -5d, 0U)]
+    [InlineData(nameof(Counters.Ranged), -5d, 0U)]
+    [InlineData(nameof(Counters.Ranged), 70_000d, 50_000U)]
+    [InlineData(nameof(Counters.Small), 300d, (byte)255)]
+    public void IntegerPropertyEditor_WritesTheValueInTheRangeOfThePropertyType(
+        string propertyName,
+        double editorValue,
+        object expected)
+    {
+        // Arrange
+        var counters = new Counters();
+        var propertyInfo = typeof(Counters).GetProperty(propertyName)!;
+        var item = new PropertyGridItem(propertyInfo, counters, propertyInfo.GetCustomAttributes().ToList());
+        var sut = new Atc.Wpf.Forms.PropertyEditing.Editors.IntegerPropertyEditor();
+        var editor = (Atc.Wpf.Controls.Inputs.IntegerBox)sut.CreateEditor(item);
+        sut.BindToProperty(editor, item);
+
+        // Act
+        editor.Value = editorValue;
+
+        // Assert
+        Assert.Equal(expected, item.Value);
+    }
+
     private static IEnumerable<PropertyGridItem> AllItems(PropertyGrid grid)
         => grid.Categories.SelectMany(c => c.Properties);
 
@@ -345,6 +375,20 @@ public sealed class PropertyGridTests
         {
             set => _ = value;
         }
+    }
+
+    private sealed class Counters
+    {
+        public long Big { get; set; }
+
+        public ulong Huge { get; set; }
+
+        public uint Unsigned { get; set; }
+
+        [Range(-10, 50_000)]
+        public uint Ranged { get; set; }
+
+        public byte Small { get; set; }
     }
 
     private sealed class Rack
