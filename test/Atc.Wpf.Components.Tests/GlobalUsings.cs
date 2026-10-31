@@ -1,10 +1,12 @@
 global using System.Collections.ObjectModel;
 global using System.Collections.Specialized;
+global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.Printing;
 global using System.Reflection;
 global using System.Runtime.CompilerServices;
+global using System.Text.RegularExpressions;
 global using System.Windows;
 global using System.Windows.Automation;
 global using System.Windows.Automation.Peers;

@@ -24,7 +24,8 @@ public sealed partial class TerminalViewer : IDisposable
     private readonly CancellationTokenSource cts = new();
     private readonly Task? queueProcessingTask;
 
-    private Regex? compiledSearchRegex;
+    private readonly TerminalLineBuffer lineBuffer = new();
+
     private int nextLineNumber = 1;
     private AnsiSgrState ansiState = AnsiSgrState.Default;
     private bool isDisposed;
@@ -61,6 +62,8 @@ public sealed partial class TerminalViewer : IDisposable
     public TerminalViewer()
     {
         InitializeComponent();
+
+        ListViewTerminal.ItemsSource = lineBuffer.Lines;
 
         // Intentionally NOT setting DataContext = this. Doing so would
         // override the inherited DataContext on the <atc:TerminalViewer>
@@ -359,74 +362,20 @@ public sealed partial class TerminalViewer : IDisposable
     {
         if (d is TerminalViewer tv)
         {
-            tv.RebuildSearchRegex();
-            tv.ApplyFilterAndCountMatches();
-        }
-    }
-
-    private void RebuildSearchRegex()
-    {
-        compiledSearchRegex = null;
-        if (string.IsNullOrEmpty(SearchText) || !UseRegex)
-        {
-            return;
-        }
-
-        try
-        {
-            compiledSearchRegex = new Regex(
-                SearchText,
-                RegexOptions.IgnoreCase | RegexOptions.Compiled,
-                TimeSpan.FromMilliseconds(50));
-        }
-        catch (ArgumentException)
-        {
-            // Invalid pattern — leave compiledSearchRegex null; LineMatches treats this as "no match".
+            tv.lineBuffer.ApplySearch(tv.SearchText, tv.UseRegex, tv.HideNonMatching);
+            tv.SyncMatchCount();
         }
     }
 
     private bool LineMatches(string text)
+        => lineBuffer.Matcher.IsMatch(text);
+
+    private void SyncMatchCount()
     {
-        if (string.IsNullOrEmpty(SearchText))
-        {
-            return true;
-        }
-
-        if (UseRegex)
-        {
-            return compiledSearchRegex is not null && compiledSearchRegex.IsMatch(text);
-        }
-
-        return text.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+        MatchCount = lineBuffer.MatchCount;
+        NextMatchCommand.RaiseCanExecuteChanged();
+        PreviousMatchCommand.RaiseCanExecuteChanged();
     }
-
-    private void ApplyFilterAndCountMatches()
-    {
-        var filterEnabled = HideNonMatching && !string.IsNullOrEmpty(SearchText);
-        ListViewTerminal.Items.Filter = filterEnabled
-            ? FilterPredicate
-            : null;
-
-        if (string.IsNullOrEmpty(SearchText))
-        {
-            MatchCount = 0;
-            return;
-        }
-
-        var count = 0;
-        foreach (var item in ListViewTerminal.Items.SourceCollection)
-        {
-            if (item is TerminalLineItem line && LineMatches(line.Text))
-            {
-                count++;
-            }
-        }
-
-        MatchCount = count;
-    }
-
-    private bool FilterPredicate(object item)
-        => item is not TerminalLineItem line || LineMatches(line.Text);
 
     [RelayCommand]
     private void FocusSearch()
@@ -602,47 +551,39 @@ public sealed partial class TerminalViewer : IDisposable
     [RelayCommand(CanExecute = nameof(CanExecuteHasItems))]
     private void ClearScreen()
     {
-        var pinned = ListViewTerminal.Items
-            .OfType<TerminalLineItem>()
-            .Where(line => line.IsPinned)
-            .ToList();
-
-        ListViewTerminal.Items.Clear();
+        lineBuffer.ClearUnpinned();
 
         // Reset the line-number counter so the next received line starts fresh.
         // Pinned lines keep their original numbers (purely informational).
         nextLineNumber = 1;
 
-        foreach (var p in pinned)
-        {
-            ListViewTerminal.Items.Add(p);
-        }
-
         ResetTailState();
-        ApplyFilterAndCountMatches();
+        SyncMatchCount();
     }
 
     [RelayCommand]
     private void TogglePinSelected()
     {
+        var lines = lineBuffer.Lines;
         var indices = new List<int>();
         foreach (var item in ListViewTerminal.SelectedItems)
         {
-            var idx = ListViewTerminal.Items.IndexOf(item);
-            if (idx >= 0)
+            if (item is TerminalLineItem line)
             {
-                indices.Add(idx);
+                var idx = lines.IndexOf(line);
+                if (idx >= 0)
+                {
+                    indices.Add(idx);
+                }
             }
         }
 
         // Replace each selected item with a pin-toggled copy. Done in a
-        // separate pass since the indices reference the live ItemCollection.
+        // separate pass since the indices reference the live collection.
         foreach (var idx in indices)
         {
-            if (ListViewTerminal.Items[idx] is TerminalLineItem line)
-            {
-                ListViewTerminal.Items[idx] = line with { IsPinned = !line.IsPinned };
-            }
+            var line = lines[idx];
+            lines[idx] = line with { IsPinned = !line.IsPinned };
         }
     }
 
@@ -683,20 +624,22 @@ public sealed partial class TerminalViewer : IDisposable
         var dispatcher = ListViewTerminal.Dispatcher;
         if (dispatcher.CheckAccess())
         {
-            ListViewTerminal.Items.Clear();
-            ResetTailState();
+            ClearAllLines();
         }
         else
         {
             _ = dispatcher.InvokeAsync(
-                () =>
-                {
-                    ListViewTerminal.Items.Clear();
-                    ResetTailState();
-                },
+                ClearAllLines,
                 DispatcherPriority.Render,
                 CancellationToken.None);
         }
+    }
+
+    private void ClearAllLines()
+    {
+        lineBuffer.Clear();
+        ResetTailState();
+        SyncMatchCount();
     }
 
     private void ResetTailState()
@@ -705,7 +648,7 @@ public sealed partial class TerminalViewer : IDisposable
         IsDetachedFromTail = false;
         NewSinceDetached = 0;
         UpdateBufferedCount();
-        if (ListViewTerminal.Items.Count == 0)
+        if (lineBuffer.Lines.Count == 0)
         {
             nextLineNumber = 1;
             ansiState = AnsiSgrState.Default;
@@ -803,7 +746,7 @@ public sealed partial class TerminalViewer : IDisposable
     private void CommitBatchOnUiThread(
         List<TerminalReceivedDataEventArgs> batch)
     {
-        var addedCount = 0;
+        var items = new List<TerminalLineItem>();
         foreach (var line in batch.SelectMany(e => e.Lines))
         {
             var text = line;
@@ -827,35 +770,24 @@ public sealed partial class TerminalViewer : IDisposable
                 LineNumber = nextLineNumber++,
                 Runs = runs,
             };
-            ListViewTerminal.Items.Add(item);
-            addedCount++;
+            items.Add(item);
         }
 
-        TrimToCap();
+        // Adds, trims and keeps the search filter and match count current without resetting the list.
+        lineBuffer.Add(items, MaxLines);
 
-        if (isUserDetachedSnapshot && addedCount > 0)
+        if (isUserDetachedSnapshot && items.Count > 0)
         {
-            NewSinceDetached += addedCount;
-        }
-
-        // Recount matches whenever new lines arrive (or get trimmed) so the
-        // toolbar badge stays live.
-        if (!string.IsNullOrEmpty(SearchText))
-        {
-            ApplyFilterAndCountMatches();
+            NewSinceDetached += items.Count;
         }
 
         CopyToClipboardCommand.RaiseCanExecuteChanged();
         ClearScreenCommand.RaiseCanExecuteChanged();
         ExportCommand.RaiseCanExecuteChanged();
-        NextMatchCommand.RaiseCanExecuteChanged();
-        PreviousMatchCommand.RaiseCanExecuteChanged();
+        SyncMatchCount();
 
         ListViewTerminal.UpdateLayout();
     }
-
-    private void TrimToCap()
-        => TerminalLineTrimmer.TrimToCap(ListViewTerminal.Items, MaxLines);
 
     private void UpdateBufferedCount()
     {
