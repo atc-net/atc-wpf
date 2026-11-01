@@ -14,6 +14,9 @@ public partial class ApplicationMonitorView
     private bool isUserDetached;
     private bool isPerformingProgrammaticScroll;
 
+    // The view model whose ScrollRequested this view listens to (only while loaded, so it does not keep the view alive).
+    private ApplicationMonitorViewModel? scrollSource;
+
     [DependencyProperty(DefaultValue = true)]
     private bool showToolbar;
 
@@ -126,16 +129,34 @@ public partial class ApplicationMonitorView
     private void OnApplicationMonitorViewLoaded(
         object sender,
         RoutedEventArgs e)
-        => Messenger.Default.Register<ApplicationMonitorScrollEvent>(this, OnApplicationMonitorScrollEvent);
+        => SubscribeToScrollRequests(DataContext as ApplicationMonitorViewModel);
 
     private void OnApplicationMonitorViewUnloaded(
         object sender,
         RoutedEventArgs e)
-        => Messenger.Default.UnRegister<ApplicationMonitorScrollEvent>(this, OnApplicationMonitorScrollEvent);
+        => SubscribeToScrollRequests(viewModel: null);
+
+    private void SubscribeToScrollRequests(
+        ApplicationMonitorViewModel? viewModel)
+    {
+        if (scrollSource is not null)
+        {
+            scrollSource.ScrollRequested -= OnViewModelScrollRequested;
+        }
+
+        scrollSource = viewModel;
+
+        if (scrollSource is not null)
+        {
+            scrollSource.ScrollRequested += OnViewModelScrollRequested;
+        }
+    }
 
     // ---------------------------------------------------------------------
-    // VM bridge — push View DPs into the VM when DataContext attaches, and
-    // mirror back any VM-driven changes so toolbar toggles stay in sync.
+    // VM bridge — when DataContext attaches, push only the view DPs that were
+    // set on the view (locally or by a binding) into the VM and show the VM's
+    // own values for the rest, then mirror back any VM-driven changes so
+    // toolbar toggles stay in sync.
     // ---------------------------------------------------------------------
     private void OnApplicationMonitorViewDataContextChanged(
         object sender,
@@ -146,12 +167,34 @@ public partial class ApplicationMonitorView
             oldVm.PropertyChanged -= OnViewModelPropertyChanged;
         }
 
-        if (e.NewValue is ApplicationMonitorViewModel newVm)
+        var newVm = e.NewValue as ApplicationMonitorViewModel;
+        if (newVm is not null)
         {
+            SyncSetting(AutoScrollProperty, AutoScroll, newVm.AutoScroll, value => newVm.AutoScroll = value);
+            SyncSetting(MaxEntriesProperty, MaxEntries, newVm.MaxEntries, value => newVm.MaxEntries = value);
+            SyncSetting(IsPausedProperty, IsPaused, newVm.IsPaused, value => newVm.IsPaused = value);
             newVm.PropertyChanged += OnViewModelPropertyChanged;
-            newVm.AutoScroll = AutoScroll;
-            newVm.MaxEntries = MaxEntries;
-            newVm.IsPaused = IsPaused;
+        }
+
+        if (IsLoaded)
+        {
+            SubscribeToScrollRequests(newVm);
+        }
+    }
+
+    private void SyncSetting<T>(
+        DependencyProperty property,
+        T viewValue,
+        T viewModelValue,
+        Action<T> setViewModelValue)
+    {
+        if (DependencyPropertyHelper.GetValueSource(this, property).BaseValueSource == BaseValueSource.Local)
+        {
+            setViewModelValue(viewValue);
+        }
+        else
+        {
+            SetCurrentValue(property, viewModelValue);
         }
     }
 
@@ -301,9 +344,11 @@ public partial class ApplicationMonitorView
         }
     }
 
-    private void OnApplicationMonitorScrollEvent(
-        ApplicationMonitorScrollEvent obj)
+    private void OnViewModelScrollRequested(
+        object? sender,
+        ApplicationMonitorScrollRequestedEventArgs e)
     {
+        var obj = e.ScrollEvent;
         _ = Dispatcher.BeginInvokeIfRequired(() =>
         {
             if (LvEntries.Items.Count <= 0)

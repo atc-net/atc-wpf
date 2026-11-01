@@ -459,6 +459,202 @@ public sealed class NumericBoxTests : IDisposable
         Assert.True(handled);
     }
 
+    [StaTheory]
+    [InlineData(".")]
+    [InlineData("-")]
+    [InlineData("x")]
+    public void NumbersMode_LongDigitRunWithTrailingNonDigit_IsRejectedQuickly(
+        string trailing)
+    {
+        // Arrange
+        var (numericBox, textBox, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.NumericInputMode = NumericInput.Numbers;
+        var text = new string('1', 40) + trailing;
+        var stopwatch = Stopwatch.StartNew();
+
+        // Act
+        var handled = RaisePreviewTextInput(textBox, text);
+
+        // Assert
+        stopwatch.Stop();
+        Assert.True(handled);
+        Assert.True(
+            stopwatch.ElapsedMilliseconds < 50,
+            $"Validation took {stopwatch.ElapsedMilliseconds} ms.");
+    }
+
+    [StaFact]
+    public void NumbersMode_TypedDigits_AreParsedAsDecimalInteger()
+    {
+        // Arrange
+        var (numericBox, textBox, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.NumericInputMode = NumericInput.Numbers;
+
+        // Act
+        TypeText(textBox, "123");
+
+        // Assert
+        Assert.Equal(123d, numericBox.Value);
+    }
+
+    [StaFact]
+    public void MouseWheel_ManyNotchesWithSpeedup_StepsByIntervalEachTime()
+    {
+        // Arrange
+        var (numericBox, _, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Speedup = true;
+        numericBox.TrackMouseWheelWhenMouseOver = true;
+        numericBox.Value = 0;
+
+        // Act
+        for (var i = 0; i < 150; i++)
+        {
+            RaiseMouseWheel(numericBox, delta: 120);
+        }
+
+        // Assert
+        Assert.Equal(150d, numericBox.Value);
+    }
+
+    [StaFact]
+    public void MouseWheel_UnfocusedWithDefaults_IsIgnoredAndNotHandled()
+    {
+        // Arrange
+        var (numericBox, _, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Value = 5;
+
+        // Act
+        var handled = RaiseMouseWheel(numericBox, delta: 120);
+
+        // Assert
+        Assert.False(numericBox.TrackMouseWheelWhenMouseOver);
+        Assert.Equal(5d, numericBox.Value);
+        Assert.False(handled);
+    }
+
+    [StaFact]
+    public void MouseWheel_TrackedButReadOnly_IsIgnoredAndNotHandled()
+    {
+        // Arrange
+        var (numericBox, _, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.TrackMouseWheelWhenMouseOver = true;
+        numericBox.Value = 5;
+        numericBox.IsReadOnly = true;
+
+        // Act
+        var handled = RaiseMouseWheel(numericBox, delta: 120);
+
+        // Assert
+        Assert.Equal(5d, numericBox.Value);
+        Assert.False(handled);
+    }
+
+    [StaFact]
+    public void MouseWheel_TrackedButDisabled_IsIgnored()
+    {
+        // Arrange
+        var (numericBox, _, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.TrackMouseWheelWhenMouseOver = true;
+        numericBox.Value = 5;
+        numericBox.IsEnabled = false;
+
+        // Act
+        RaiseMouseWheel(numericBox, delta: 120);
+
+        // Assert
+        Assert.Equal(5d, numericBox.Value);
+    }
+
+    [StaFact]
+    public void ReadOnly_ValueChanged_KeepsSpinButtonsDisabled()
+    {
+        // Arrange
+        var (numericBox, _, up, down) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Minimum = 0;
+        numericBox.Maximum = 10;
+        numericBox.Value = 0;
+        numericBox.IsReadOnly = true;
+
+        // Act
+        numericBox.Value = 5;
+
+        // Assert
+        Assert.False(up.IsEnabled);
+        Assert.False(down.IsEnabled);
+    }
+
+    [StaFact]
+    public void ReadOnly_Cleared_ReEnablesSpinButtonsWithinRange()
+    {
+        // Arrange
+        var (numericBox, _, up, down) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Minimum = 0;
+        numericBox.Maximum = 10;
+        numericBox.Value = 10;
+        numericBox.IsReadOnly = true;
+
+        // Act
+        numericBox.IsReadOnly = false;
+
+        // Assert
+        Assert.False(up.IsEnabled);
+        Assert.True(down.IsEnabled);
+    }
+
+    [StaFact]
+    public void AutomationPeer_UpButtonClick_RaisesRangeValueChange()
+    {
+        // Arrange
+        var (numericBox, _, up, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Value = 4;
+        var peer = (NumericBoxAutomationPeer)UIElementAutomationPeer.CreatePeerForElement(numericBox);
+
+        // Act
+        Click(up);
+
+        // Assert
+        Assert.Equal((4d, 5d), peer.LastRaisedValueChange);
+    }
+
+    [StaFact]
+    public void AutomationPeer_BoundValueChange_RaisesRangeValueChange()
+    {
+        // Arrange
+        var (numericBox, _, _, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Value = 1;
+        var peer = (NumericBoxAutomationPeer)UIElementAutomationPeer.CreatePeerForElement(numericBox);
+
+        // Act
+        numericBox.Value = 7;
+
+        // Assert
+        Assert.Equal((1d, 7d), peer.LastRaisedValueChange);
+    }
+
+    [StaFact]
+    public void ArrowKeySpeedup_AfterReadOnlyRoundTrip_IsReset()
+    {
+        // Arrange
+        var (numericBox, _, up, _) = CreateTemplated(CultureInfo.GetCultureInfo("en-US"));
+        numericBox.Speedup = true;
+        numericBox.Value = 0;
+        for (var i = 0; i < 150; i++)
+        {
+            Click(up);
+        }
+
+        numericBox.IsReadOnly = true;
+        numericBox.Interval = 2;
+        numericBox.IsReadOnly = false;
+        var before = numericBox.Value;
+
+        // Act
+        Click(up);
+
+        // Assert
+        Assert.Equal(before + 2, numericBox.Value);
+    }
+
     [StaFact]
     public void StringFormat_Null_IsCoercedToEmptyString()
     {
@@ -848,6 +1044,19 @@ public sealed class NumericBoxTests : IDisposable
         var handled = RaisePreviewTextInput(textBox, text);
         Assert.False(handled, $"PreviewTextInput rejected '{text}'.");
         textBox.Text = text;
+    }
+
+    private static bool RaiseMouseWheel(
+        NumericBox numericBox,
+        int delta)
+    {
+        var args = new MouseWheelEventArgs(Mouse.PrimaryDevice, 0, delta)
+        {
+            RoutedEvent = Mouse.PreviewMouseWheelEvent,
+        };
+
+        numericBox.RaiseEvent(args);
+        return args.Handled;
     }
 
     private static void Click(RepeatButton button)

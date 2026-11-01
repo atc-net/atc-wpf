@@ -20,8 +20,6 @@ public partial class WellKnownColorPicker
     {
         InitializeComponent();
 
-        DataContext = this;
-
         Palette = [];
         Palette.AddRange(ColorItemHelper.GetColorItems());
     }

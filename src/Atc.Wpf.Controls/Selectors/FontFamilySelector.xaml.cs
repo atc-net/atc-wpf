@@ -41,8 +41,6 @@ public partial class FontFamilySelector
     {
         InitializeComponent();
 
-        DataContext = this;
-
         Loaded += OnLoaded;
     }
 

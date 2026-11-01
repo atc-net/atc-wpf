@@ -311,6 +311,33 @@ public sealed class DevicePickerControllerTests
     }
 
     [Fact]
+    public async Task LoadedTwice_ThenUnloaded_StartsAndStopsTheSharedServiceOnce()
+    {
+        var sut = CreateSut();
+
+        await sut.LoadedAsync();
+        await sut.LoadedAsync();
+        sut.Unloaded();
+        sut.Unloaded();
+
+        Assert.Equal(["start", "stop"], serviceCalls.Where(c => !string.Equals(c, "refresh", StringComparison.Ordinal)), StringComparer.Ordinal);
+    }
+
+    [Fact]
+    public async Task AutoRefreshToggledWhileLoaded_StopsOnlyTheWatchItStarted()
+    {
+        var sut = CreateSut();
+        await sut.LoadedAsync();
+
+        sut.AutoRefreshOnDeviceChangeChanged();
+        host.AutoRefreshOnDeviceChange = false;
+        sut.AutoRefreshOnDeviceChangeChanged();
+        sut.Unloaded();
+
+        Assert.Equal(["start", "stop"], serviceCalls.Where(c => !string.Equals(c, "refresh", StringComparison.Ordinal)), StringComparer.Ordinal);
+    }
+
+    [Fact]
     public async Task LoadedAsync_RefreshFails_DoesNotThrow()
     {
         refresh = () => Task.FromException(new InvalidOperationException("probe failed"));
@@ -386,13 +413,24 @@ public sealed class DevicePickerControllerTests
     }
 
     [Fact]
-    public void Unloaded_StopsWatching()
+    public async Task Unloaded_StopsTheWatchStartedByLoaded()
+    {
+        var sut = CreateSut();
+        await sut.LoadedAsync();
+
+        sut.Unloaded();
+
+        Assert.Equal(["start", "refresh", "stop"], serviceCalls);
+    }
+
+    [Fact]
+    public void Unloaded_WithoutLoaded_DoesNotStopTheSharedService()
     {
         var sut = CreateSut();
 
         sut.Unloaded();
 
-        Assert.Equal(["stop"], serviceCalls);
+        Assert.Empty(serviceCalls);
     }
 
     private static RunningProcessInfo Item(

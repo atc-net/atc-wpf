@@ -78,144 +78,153 @@ internal class Group : Shape
             return null;
         }
 
-        switch (nodeName)
+        try
         {
-            case SvgTagConstants.Style:
-                CssStyleParser.ParseStyle(
-                    svg,
-                    childNode.InnerText);
-                break;
-            case SvgTagConstants.ShapeRect:
-                retVal = new RectangleShape(
-                    svg,
-                    childNode);
-                break;
-            case SvgTagConstants.Filter:
-                retVal = new Filter(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.FeGaussianBlur:
-                retVal = new FilterFeGaussianBlur(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.ShapeCircle:
-                retVal = new CircleShape(
-                    svg,
-                    childNode);
-                break;
-            case SvgTagConstants.ShapeEllipse:
-                retVal = new EllipseShape(
-                    svg,
-                    childNode);
-                break;
-            case SvgTagConstants.ShapeLine:
-                retVal = new LineShape(
-                    svg,
-                    childNode);
-                break;
-            case SvgTagConstants.ShapePolyline:
-                retVal = new PolylineShape(
-                    svg,
-                    childNode);
-                break;
-            case SvgTagConstants.ShapePolygon:
-                retVal = new PolygonShape(
-                    svg,
-                    childNode);
-                break;
-            case SvgTagConstants.ShapePath:
-                retVal = new PathShape(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.ClipPath:
-                retVal = new Clip(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.ShapeGroup:
-                retVal = new Group(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.Switch:
-                retVal = new Group(
-                    svg,
-                    childNode,
-                    parent!)
-                {
-                    IsSwitch = true,
-                };
-                break;
-            case SvgTagConstants.ShapeUse:
-                retVal = new UseShape(
-                    svg,
-                    childNode);
-                break;
-            case SvgTagConstants.ShapeImage:
-                retVal = new ImageShape(
-                    svg,
-                    childNode);
-                break;
-            case SvgTagConstants.Animate:
-                retVal = new Animate(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.AnimateColor:
-                retVal = new AnimateColor(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.AnimateMotion:
-                retVal = new AnimateMotion(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.AnimateTransform:
-                retVal = new AnimateTransform(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.Text:
-                retVal = new TextShape(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
-            case SvgTagConstants.LinearGradient:
-                svg.PaintServers.Create(
-                    svg,
-                    childNode);
-                return null;
-            case SvgTagConstants.RadialGradient:
-                svg.PaintServers.Create(
-                    svg,
-                    childNode);
-                return null;
-            case SvgTagConstants.Definitions:
-                ReadDefs(
-                    svg,
-                    list,
-                    childNode);
-                return null;
-            case SvgTagConstants.Symbol:
-                retVal = new Group(
-                    svg,
-                    childNode,
-                    parent!);
-                break;
+            switch (nodeName)
+            {
+                case SvgTagConstants.Style:
+                    CssStyleParser.ParseStyle(
+                        svg,
+                        childNode.InnerText);
+                    break;
+                case SvgTagConstants.ShapeRect:
+                    retVal = new RectangleShape(
+                        svg,
+                        childNode);
+                    break;
+                case SvgTagConstants.Filter:
+                    retVal = new Filter(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.FeGaussianBlur:
+                    retVal = new FilterFeGaussianBlur(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.ShapeCircle:
+                    retVal = new CircleShape(
+                        svg,
+                        childNode);
+                    break;
+                case SvgTagConstants.ShapeEllipse:
+                    retVal = new EllipseShape(
+                        svg,
+                        childNode);
+                    break;
+                case SvgTagConstants.ShapeLine:
+                    retVal = new LineShape(
+                        svg,
+                        childNode);
+                    break;
+                case SvgTagConstants.ShapePolyline:
+                    retVal = new PolylineShape(
+                        svg,
+                        childNode);
+                    break;
+                case SvgTagConstants.ShapePolygon:
+                    retVal = new PolygonShape(
+                        svg,
+                        childNode);
+                    break;
+                case SvgTagConstants.ShapePath:
+                    retVal = new PathShape(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.ClipPath:
+                    retVal = new Clip(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.ShapeGroup:
+                    retVal = new Group(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.Switch:
+                    retVal = new Group(
+                        svg,
+                        childNode,
+                        parent!)
+                    {
+                        IsSwitch = true,
+                    };
+                    break;
+                case SvgTagConstants.ShapeUse:
+                    retVal = new UseShape(
+                        svg,
+                        childNode);
+                    break;
+                case SvgTagConstants.ShapeImage:
+                    retVal = new ImageShape(
+                        svg,
+                        childNode);
+                    break;
+                case SvgTagConstants.Animate:
+                    retVal = new Animate(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.AnimateColor:
+                    retVal = new AnimateColor(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.AnimateMotion:
+                    retVal = new AnimateMotion(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.AnimateTransform:
+                    retVal = new AnimateTransform(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.Text:
+                    retVal = new TextShape(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+                case SvgTagConstants.LinearGradient:
+                    svg.PaintServers.Create(
+                        svg,
+                        childNode);
+                    return null;
+                case SvgTagConstants.RadialGradient:
+                    svg.PaintServers.Create(
+                        svg,
+                        childNode);
+                    return null;
+                case SvgTagConstants.Definitions:
+                    ReadDefs(
+                        svg,
+                        list,
+                        childNode);
+                    return null;
+                case SvgTagConstants.Symbol:
+                    retVal = new Group(
+                        svg,
+                        childNode,
+                        parent!);
+                    break;
+            }
+        }
+        catch (Exception ex) when (ex is not OutOfMemoryException)
+        {
+            // One broken element is left out; the rest of the image is still read.
+            Trace.TraceWarning($"SVG element <{childNode.Name}> skipped: {ex.Message}");
+            return null;
         }
 
         if (retVal is not null)

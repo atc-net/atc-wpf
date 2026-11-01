@@ -29,7 +29,7 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
     }
 
     /// <summary>
-    /// Occurs when a region of <see cref="CurrentFrame"/> has been updated.
+    /// Occurs when <see cref="CurrentFrame"/> has been updated; raised once per rendered batch of rectangles.
     /// </summary>
     public event EventHandler? FramebufferUpdated;
 
@@ -139,7 +139,7 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
 
     private async Task ExecuteShowConnectDialogAsync()
     {
-        var ownerWindow = Application.Current.MainWindow;
+        var ownerWindow = Application.Current?.MainWindow;
         if (ownerWindow is null)
         {
             return;

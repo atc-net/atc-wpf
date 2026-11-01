@@ -139,6 +139,7 @@ using Atc.Wpf.Controls.DataDisplay;
 - **GroupBoxExpander** - Collapsible grouping control
 - **Carousel** - Cards can be used as carousel slide content
 - **Badge** - Overlay cards with notification counts
+- **CardSelector** - A wrapping grid of selectable cards (plans, templates, devices)
 
 ## 🎮 Sample Application
 

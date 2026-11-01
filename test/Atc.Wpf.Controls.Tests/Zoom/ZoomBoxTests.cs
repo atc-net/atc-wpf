@@ -58,4 +58,114 @@ public sealed class ZoomBoxTests : IDisposable
 
         Assert.True(zoomBox.HasAnimatedProperties);
     }
+
+    [StaFact]
+    public void ApplyDragZoomRect_FarRegionOfAFittedLargeContent_ZoomsIntoTheDraggedRegion()
+    {
+        // 4000x3000 content fitted into 800x600 (zoom 0.2): content x 3000..3500 lies far beyond the control's width.
+        var zoomBox = ZoomBoxFactory.CreateTemplated(new Canvas { Width = 4000, Height = 3000 }, 800, 600);
+        zoomBox.UseAnimations = false;
+        zoomBox.AnimatedScaleToFit();
+
+        zoomBox.ApplyDragZoomRect(new Point(3000, 1000), new Point(3500, 1400));
+
+        var centerX = zoomBox.ContentOffsetX + (zoomBox.ContentViewportWidth / 2);
+        var centerY = zoomBox.ContentOffsetY + (zoomBox.ContentViewportHeight / 2);
+        Assert.InRange(centerX, 3000, 3500);
+        Assert.InRange(centerY, 1000, 1400);
+        Assert.InRange(zoomBox.ViewportZoom, 1.5, 1.7);
+    }
+
+    [StaFact]
+    public void PreviewKeyDown_SpaceFromATextBoxInTheContent_IsLeftForTheTextBox()
+    {
+        var textBox = new TextBox { Width = 100 };
+        var canvas = new Canvas { Width = 800, Height = 600 };
+        canvas.Children.Add(textBox);
+        var zoomBox = ZoomBoxFactory.CreateTemplated(canvas, 400, 400);
+
+        var args = KeyPress.CreateArgs(Keyboard.PreviewKeyDownEvent, Key.Space);
+        textBox.RaiseEvent(args);
+
+        Assert.False(args.Handled);
+        Assert.Null(zoomBox.Cursor);
+    }
+
+    [StaFact]
+    public void PreviewKeyDown_SpaceOnTheZoomBox_StartsSpacebarPanning()
+    {
+        var zoomBox = ZoomBoxFactory.CreateTemplated(new Canvas { Width = 800, Height = 600 }, 400, 400);
+
+        var args = KeyPress.CreateArgs(Keyboard.PreviewKeyDownEvent, Key.Space);
+        zoomBox.RaiseEvent(args);
+
+        Assert.True(args.Handled);
+        Assert.Equal(Cursors.Hand, zoomBox.Cursor);
+
+        zoomBox.RaiseEvent(KeyPress.CreateArgs(Keyboard.PreviewKeyUpEvent, Key.Space));
+        Assert.Null(zoomBox.Cursor);
+    }
+
+    [StaFact]
+    public void ZoomCommandMessage_ZoomToFit_BeforeAnyCommandWasUsed_ZoomsToFit()
+    {
+        var zoomBox = ZoomBoxFactory.CreateTemplated(new Canvas { Width = 800, Height = 600 }, 400, 400);
+        zoomBox.UseAnimations = false;
+
+        zoomBox.OnZoomCommandMessageHandler(new Atc.Wpf.Controls.Zoom.Messages.ZoomCommandMessage(ZoomCommandMessageType.ZoomToFit));
+
+        Assert.Equal(zoomBox.FitZoomValue, zoomBox.ViewportZoom, 6);
+    }
+
+    [StaFact]
+    public void ZoomCommandMessage_ZoomToPercentage_BeforeAnyCommandWasUsed_ZoomsToThePercentage()
+    {
+        var zoomBox = ZoomBoxFactory.CreateTemplated(new Canvas { Width = 800, Height = 600 }, 400, 400);
+        zoomBox.UseAnimations = false;
+
+        zoomBox.OnZoomCommandMessageHandler(new Atc.Wpf.Controls.Zoom.Messages.ZoomCommandMessage(ZoomCommandMessageType.ZoomToPercentage, 200));
+
+        Assert.Equal(2.0, zoomBox.ViewportZoom, 6);
+    }
+
+    [StaFact]
+    public void ZoomInitialPositionFitScreen_ContentResizedBeforeTheUserZooms_FitsAgain()
+    {
+        var canvas = new Canvas { Width = 800, Height = 600 };
+        var zoomBox = ZoomBoxFactory.CreateTemplated(canvas, 400, 400);
+        zoomBox.ZoomInitialPosition = ZoomInitialPositionType.FitScreen;
+
+        Resize(zoomBox, canvas, 800, 800);
+        Assert.Equal(0.5, zoomBox.ViewportZoom, 6);
+
+        Resize(zoomBox, canvas, 1600, 1600);
+        Assert.Equal(0.25, zoomBox.ViewportZoom, 6);
+    }
+
+    [StaFact]
+    public void ZoomInitialPositionFitScreen_ContentResizedAfterTheUserZoomed_KeepsTheUsersZoom()
+    {
+        var canvas = new Canvas { Width = 800, Height = 600 };
+        var zoomBox = ZoomBoxFactory.CreateTemplated(canvas, 400, 400);
+        zoomBox.ZoomInitialPosition = ZoomInitialPositionType.FitScreen;
+        Resize(zoomBox, canvas, 800, 800);
+
+        zoomBox.ViewportZoom = 2.0;
+        Resize(zoomBox, canvas, 1600, 1600);
+
+        Assert.Equal(2.0, zoomBox.ViewportZoom, 6);
+    }
+
+    private static void Resize(
+        ZoomBox zoomBox,
+        FrameworkElement content,
+        double width,
+        double height)
+    {
+        content.Width = width;
+        content.Height = height;
+        zoomBox.Measure(new Size(400, 400));
+        zoomBox.Arrange(new Rect(0, 0, 400, 400));
+        zoomBox.UpdateLayout();
+    }
 }

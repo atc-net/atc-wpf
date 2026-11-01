@@ -165,8 +165,9 @@ public sealed class ImageAwesomeRegular : Image, ISpinable, IRotatable, IFlippab
 
         d.SetCurrentValue(
             SourceProperty,
-            CreateImageSource(
-                imageAwesome.Icon,
+            FontIconHelper.GetIconImageSource(
+                FontAwesomeRegularTypeface,
+                char.ConvertFromUtf32((int)imageAwesome.Icon),
                 imageAwesome.Foreground));
     }
 

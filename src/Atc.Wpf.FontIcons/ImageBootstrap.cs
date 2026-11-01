@@ -155,7 +155,12 @@ public sealed class ImageBootstrap : Image, ISpinable, IRotatable, IFlippable
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageBootstrap.Icon, imageBootstrap.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            FontIconHelper.GetIconImageSource(
+                FontBootstrapTypeface,
+                char.ConvertFromUtf32((int)imageBootstrap.Icon),
+                imageBootstrap.Foreground));
     }
 
     private static void OnSpinDurationChanged(
@@ -204,7 +209,7 @@ public sealed class ImageBootstrap : Image, ISpinable, IRotatable, IFlippable
             return;
         }
 
-        if (!imageBootstrap.Spin ||
+        if (imageBootstrap.Spin ||
             e.NewValue is not double ||
             e.NewValue.Equals(e.OldValue))
         {

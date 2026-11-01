@@ -151,6 +151,10 @@
             IsExpanded="True"
             SamplePath="DataDisplay.ChipView" />
         <sample:SampleTreeViewItem
+            Header="ChipGroup"
+            IsExpanded="True"
+            SamplePath="DataDisplay.ChipGroupView" />
+        <sample:SampleTreeViewItem
             Header="Divider"
             IsExpanded="True"
             SamplePath="DataDisplay.DividerView" />
@@ -170,6 +174,13 @@
             Header="Timeline"
             IsExpanded="True"
             SamplePath="DataDisplay.TimelineView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="DataGrids">
+        <sample:SampleTreeViewItem
+            Header="DataGridFilter"
+            IsExpanded="True"
+            SamplePath="DataGrids.DataGridFilterView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Layouts">
@@ -258,6 +269,22 @@
 
     <TreeViewItem Header="Selectors">
         <sample:SampleTreeViewItem
+            Header="CardSelector"
+            IsExpanded="True"
+            SamplePath="Selectors.CardSelectorView" />
+        <sample:SampleTreeViewItem
+            Header="CascaderComboBox"
+            IsExpanded="True"
+            SamplePath="Selectors.CascaderComboBoxView" />
+        <sample:SampleTreeViewItem
+            Header="CheckListBox"
+            IsExpanded="True"
+            SamplePath="Selectors.CheckListBoxView" />
+        <sample:SampleTreeViewItem
+            Header="CheckTreeView"
+            IsExpanded="True"
+            SamplePath="Selectors.CheckTreeViewView" />
+        <sample:SampleTreeViewItem
             Header="CountrySelector"
             IsExpanded="True"
             SamplePath="Selectors.CountrySelectorView" />
@@ -269,6 +296,22 @@
             Header="LanguageSelector"
             IsExpanded="True"
             SamplePath="Selectors.LanguageSelectorView" />
+        <sample:SampleTreeViewItem
+            Header="MultiColumnComboBox"
+            IsExpanded="True"
+            SamplePath="Selectors.MultiColumnComboBoxView" />
+        <sample:SampleTreeViewItem
+            Header="MultiSelectComboBox"
+            IsExpanded="True"
+            SamplePath="Selectors.MultiSelectComboBoxView" />
+        <sample:SampleTreeViewItem
+            Header="TokenBox"
+            IsExpanded="True"
+            SamplePath="Selectors.TokenBoxView" />
+        <sample:SampleTreeViewItem
+            Header="TreeSelectComboBox"
+            IsExpanded="True"
+            SamplePath="Selectors.TreeSelectComboBoxView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Zoom">

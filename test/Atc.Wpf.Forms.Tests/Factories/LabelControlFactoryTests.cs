@@ -84,4 +84,36 @@ public sealed class LabelControlFactoryTests : IDisposable
         Assert.Equal(1920, actual.ValueWidth);
         Assert.Equal(1080, actual.ValueHeight);
     }
+
+    [StaFact]
+    public void CreateLabelMultiSelectComboBox_ForAPropertyThatIsNotAFlagsEnumOrEnumCollection_Throws()
+    {
+        var propertyInfo = typeof(MultiSelectModel).GetProperty(nameof(MultiSelectModel.Tags))!;
+
+        Assert.Throws<ArgumentException>(
+            () => LabelControlFactory.CreateLabelMultiSelectComboBox(
+                propertyInfo,
+                groupIdentifier: string.Empty,
+                isReadOnly: true,
+                selectedKeys: null));
+    }
+
+    [StaFact]
+    public void CreateLabelTokenBox_ForAProperty_IsReadOnlyWhenAsked()
+    {
+        var propertyInfo = typeof(MultiSelectModel).GetProperty(nameof(MultiSelectModel.Aliases))!;
+
+        var actual = LabelControlFactory.CreateLabelTokenBox(
+            propertyInfo,
+            groupIdentifier: "Group",
+            isReadOnly: true,
+            selectedKeys: ["a"]);
+
+        Assert.False(actual.IsEnabled);
+        Assert.True(actual.AllowCreate);
+        Assert.Empty(actual.Items);
+        Assert.Equal("Group.Aliases", actual.GetFullIdentifier());
+        Assert.Equal(typeof(string[]), actual.InputDataType);
+        Assert.Null(actual.MaxSelectionCount);
+    }
 }

@@ -7,9 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ATC.Net WPF is an enterprise-ready WPF control library framework providing MVVM infrastructure, theming, 160+ controls, and source generators. The project follows a four-tier architecture:
 
 - **Atc.Wpf** - Core library (MVVM, layouts, value converters, helpers)
-- **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls)
-- **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation) plus the bare `TimeZonePicker` / `LabelTimeZonePicker` (system-locale picker, no hardware involvement)
-- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, zoom browser)
+- **Atc.Wpf.Controls** - Atomic controls library (14 base controls, buttons, color controls, selectors incl. the `CardSelector` card/tile picker, the `CheckListBox` multi-select list, the `MultiSelectComboBox` multi-select drop-down, the `TokenBox` tag input with suggestions, the tri-state check trees `CheckTreeView` / `TreeSelectComboBox`, the `CascaderComboBox` column-per-level cascader and the `MultiColumnComboBox` check-box grid drop-down; data display incl. the `ChipGroup` toggle-chip filter; the `DataGridFilter` attached behaviours that give the stock `DataGrid` Excel-style column filters, a search, a column chooser and layout persistence)
+- **Atc.Wpf.Forms** - Form field controls (25+ labeled controls with validation, incl. `LabelCheckListBox`, `LabelMultiSelectComboBox`, `LabelChipGroup`, `LabelTokenBox`, `LabelTreeSelectComboBox`, `LabelCascaderComboBox` and `LabelMultiColumnComboBox`) plus the bare `TimeZonePicker` / `LabelTimeZonePicker` (system-locale picker, no hardware involvement)
+- **Atc.Wpf.Components** - Composite components (dialogs, viewers, settings, zoom browser, the `DualListSelector` transfer list with check-box style, one-way mode, locked items, a limit and virtualization)
 - **Atc.Wpf.FontIcons** - Font-based icon rendering
 - **Atc.Wpf.Theming** - Light/Dark theme infrastructure
 - **Atc.Wpf.Network** - Network scanning and discovery controls (wraps external `Atc.Network`)
@@ -34,7 +34,7 @@ dotnet test test/Atc.Wpf.Tests
 dotnet test test/Atc.Wpf.Controls.Tests
 
 # Run single test by name
-dotnet test --filter "FullyQualifiedName~TestMethodName"
+dotnet run --project test/Atc.Wpf.Tests -c Release --no-build -- --filter-method "*TestMethodName*"
 
 # Run sample application
 dotnet run --project sample/Atc.Wpf.Sample
@@ -44,7 +44,7 @@ dotnet run --project sample/Atc.Wpf.Sample
 
 ### Source Generators and MVVM (from Atc.XamlToolkit)
 
-The project uses C# source generators and MVVM infrastructure from the [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) packages (included as dependencies of Atc.Wpf):
+The project uses C# source generators and MVVM infrastructure from the [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) packages. `Atc.Wpf` itself does not reference them; `Atc.Wpf.Controls`, `Atc.Wpf.Forms`, `Atc.Wpf.Components` and the other UI packages do, and consuming apps reference `Atc.XamlToolkit` / `Atc.XamlToolkit.Wpf` directly to get the generators:
 
 **Source Generator Attributes:**
 - `[ObservableProperty]` - Generates properties with INotifyPropertyChanged from private fields
@@ -69,7 +69,7 @@ Source generators are provided by the `Atc.XamlToolkit` and `Atc.XamlToolkit.Wpf
 
 ### MVVM Base Classes
 
-The MVVM base classes come from the `Atc.XamlToolkit` package (included as a dependency):
+The MVVM base classes come from the `Atc.XamlToolkit` package (not a dependency of `Atc.Wpf`; reference it directly):
 - `ViewModelBase` - Standard ViewModel base (from `Atc.XamlToolkit.Mvvm`)
 - `MainWindowViewModelBase` - For main window ViewModels (from `Atc.XamlToolkit.Mvvm`)
 - `ViewModelDialogBase` - For dialog ViewModels (from `Atc.XamlToolkit.Mvvm`)
@@ -100,6 +100,7 @@ sample/Atc.Wpf.Sample/            # Demo application
 - StyleCop, Meziantou, SonarAnalyzer enforced
 - Release builds treat warnings as errors
 - Every public member in `src/` has an XML doc comment: each library project turns CS1591 (missing XML comment) back on, so an undocumented public member fails the Release build. `[assembly: Atc.XamlToolkit.Mvvm.GenerateDocumentationDefault]` makes the source generators document generated members from the field/method docs; document a `[RoutedEvent]` field yourself
+- Resource (translation) keys in `*.resx` end with the number of format parameters they take: no placeholders, no suffix (`SelectAll`, `CountOfMax`); `"{0} of max {1}"` is `CountOfMax2`; `"+{0}"` is `MoreCount1`. Add every key to the neutral, `.da-DK` and `.de-DE` files
 
 ## Testing
 
@@ -112,16 +113,16 @@ sample/Atc.Wpf.Sample/            # Demo application
 
 | Test Project | Focus Area | Test Files |
 |--------------|------------|-----------:|
-| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage and AutoGrey extensions, SvgImage brushes and drawing cache, managed markup extensions, culture change across UI threads), SVG rendering, drag and drop, animation and helper attached properties, navigation guards, clipboard, JSON formatting, observable collections with collection views, hotkey chords, SVG transform order, text-box monitoring, SVG render snapshots | 157 |
-| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox, XY boxes, their lost-focus events and value metadata), CountrySelector, layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests, right-to-left keyboard, images and zoom, picker DataContext, sample readme lookup, zoom box content and animations, busy overlay culture, grid lines, toggle switch, Row panel, sample viewer view model, syntax colour adjuster and markdown code-block theming | 55 |
-| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls (incl. lost-focus events and culture selector forwarding), EndpointBox, ColorPicker, decimal box and toggle switch events, factory range bounds, control-data extractor, date text culture | 28 |
-| `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, terminal term matching, line highlight and trimming, flyout service close-all, DualListSelector reorder, monitor dispose, Zoom browser, tray icon, value converters, right-to-left viewers, JSON property template selector, flyout first open and host hit testing, DualListSelector item counts, dialog owner, toast area registry, topmost flyout Escape, print page size | 39 |
-| `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization, RefreshAsync UI-thread marshalling, watcher update snapshots, polling service UI-thread marshalling, live preview dispose | 39 |
-| `Atc.Wpf.Network.Tests` | Network ViewModels, scanner progress, VNC connection service, value converters | 12 |
-| `Atc.Wpf.Theming.Tests` | Compliance, value-converter functional tests, Windows theme sync, high-contrast theme generation, DatePicker style, NiceWindow backdrop and ThemeMode, window placement save and upgrade, WindowButtonCommands parent, ThemeManagerHelper fallbacks, NiceWindow culture and title margin, validation error template, watermarks | 20 |
+| `Atc.Wpf.Tests` | Core library (Helpers, Extensions, Collections, ValueConverters, Serialization, JSON tree, Hotkeys, SVG loader, AutoGreyableImage and AutoGrey extensions, SvgImage brushes and drawing cache, managed markup extensions, culture change across UI threads), SVG rendering, drag and drop, animation and helper attached properties, navigation guards, clipboard, JSON formatting, observable collections with collection views, hotkey chords, SVG transform order, text-box monitoring, SVG render snapshots, auto-scroll list view coalescing, string validation rule, animation helpers (Animate attach, animation extensions), LRU cache, JSON formatter output, SVG robustness limits, SVG image elements | 170 |
+| `Atc.Wpf.Controls.Tests` | Inputs (NumericBox incl. currency/unit format editing, UI-culture following, template and wheel, XY boxes, their lost-focus events and value metadata), CountrySelector, layouts, zoom (grid overlay, ruler, minimap), navigation (NavigationView), value converters, event args, theme-subscription leak tests, right-to-left keyboard, images and zoom, picker DataContext, sample readme lookup, zoom box content and animations, busy overlay culture, grid lines, toggle switch, Row panel, sample viewer view model, syntax colour adjuster and markdown code-block theming, multi-select controls (CheckListBox, MultiSelectComboBox, TokenBox, ChipGroup, Segmented multi-select, CheckTreeView and its check engine, TreeSelectComboBox, CascaderComboBox, MultiColumnComboBox, CardSelector), multi-select DataContext swaps, multi-select limit validation, collection leaks and selection-change storms, DockPanelPro tab groups, floating windows, layout persistence, LayoutChanged/auto-save and dock guides, DataGridFilter (distinct values, column filters, search, column chooser, layout round-trip, one refresh per apply, leaks, 100k rows, themed rows without binding errors during refresh, DataTable and ExpandoObject sources), selector/color picker DataContext bindings, Popover keyboard and unload || 101 |
+| `Atc.Wpf.Forms.Tests` | Extractors, Factories, Helpers, FontPicker storage, settings POCOs, Label* controls (incl. lost-focus events and culture selector forwarding), EndpointBox, ColorPicker, decimal box and toggle switch events, factory range bounds, control-data extractor, date text culture, multi-select Label controls (LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox, LabelCascaderComboBox, LabelMultiColumnComboBox), Label multi-select DataContext swaps and validation, model-generated multi-select fields, PropertyGrid | 41 |
+| `Atc.Wpf.Components.Tests` | Flyouts, DualListSelector pieces, dialogs, Terminal events/routing, ANSI parser, terminal term matching, line highlight and trimming, flyout service close-all, DualListSelector reorder, monitor dispose, Zoom browser, tray icon, value converters, right-to-left viewers, JSON property template selector, flyout first open and host hit testing, DualListSelector item counts, dialog owner, toast area registry, topmost flyout Escape, print page size, DualListSelector check-box style, one-way mode, locked items, limit, grouping and virtualization, printing and input dialogs without a main window, DualListSelector bulk transfers and SelectedKeys, busy indicator service, flyouts added through FlyoutService, print preview re-pagination, toast close-on-click and hover pause, dialog owner resolution | 60 |
+| `Atc.Wpf.Hardware.Tests` | Device/polling services, picker controller, pickers, frame slot, models, localization, RefreshAsync UI-thread marshalling, watcher update snapshots, polling service UI-thread marshalling, live preview dispose, process main-window lookup, default-constructed picker lifetime, watcher start gate, waveform buffers, camera preview sizing | 45 |
+| `Atc.Wpf.Network.Tests` | Network ViewModels, scanner progress, scan cancellation on dispose, VNC connection service, VNC pointer masks and layout-independent keyboard, value converters | 15 |
+| `Atc.Wpf.Theming.Tests` | Compliance, value-converter functional tests, Windows theme sync, high-contrast theme generation, DatePicker style, NiceWindow backdrop and ThemeMode, window placement save and upgrade, WindowButtonCommands parent, ThemeManagerHelper fallbacks, NiceWindow culture and title margin, validation error template, watermarks, window placement restore and per-monitor title-bar check, StatusBar in a plain Window, TabItem focus visual | 23 |
 | `Atc.Wpf.UndoRedo.Tests` | UndoRedo UI (HistoryViewModel + compliance) | 2 |
-| `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests, converter parameter parsing | 5 |
-| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app incl. dialog placement, toasts and NiceWindow title bar (`Category=UI`, excluded from the default CI run) | 12 |
+| `Atc.Wpf.FontIcons.Tests` | FontIcons assembly marker + per-icon-set enum smoke tests, converter parameter parsing, Image* icon rotation and shared vector sources | 6 |
+| `Atc.Wpf.UiTests` | FlaUI desktop tests against the sample app incl. drag-and-drop auto-scroll, dialog placement, toasts, NiceWindow title bar, the multi-select controls, DockPanelPro floating the DataGrid column filter and a smoke test that opens every sample without binding errors (`Category=UI`, excluded from the default CI run) | 27 |
 
 > Counts are files containing tests; total executed tests are higher (e.g. `Atc.Wpf.Tests` runs about 1,500 tests).
 > Source generators are consumed via the [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) NuGet packages; this repo does not ship its own generators.
@@ -147,8 +148,8 @@ The sample app (`sample/Atc.Wpf.Sample/`) serves as a control explorer with 8 ma
 | Category | TreeView | Samples |
 |----------|----------|---------|
 | Wpf | `SamplesWpfTreeView.xaml` | Commands, Layouts, Media, Markup, etc. |
-| Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Colors, Layouts |
-| Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls, Selectors, Pickers (incl. TimeZonePicker / LabelTimeZonePicker) |
+| Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Colors, Layouts, Selectors (incl. CardSelector, CascaderComboBox, CheckListBox, CheckTreeView, MultiColumnComboBox, MultiSelectComboBox, TokenBox, TreeSelectComboBox), DataDisplay (incl. Chip, ChipGroup), DataGrids (DataGridFilter) |
+| Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls (incl. LabelCascaderComboBox, LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox), Selectors, Pickers (incl. TimeZonePicker / LabelTimeZonePicker) |
 | Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers, Monitoring, Notifications (incl. TrayIcon), Capture, Printing, Progressing, Selectors, Flyouts, Zoom |
 | Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | NetworkScanner |
 | Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, DrivePicker, BluetoothDevicePicker, ProcessPicker, WindowPicker, NetworkAdapterPicker, PrinterPicker, DisplayPicker |
@@ -193,6 +194,7 @@ Place a `[ControlName]_Readme.md` file next to the control's `.cs` file. Follow 
 - Font icons: `docs/FontIcons/@Readme.md`
 - Layout controls: `docs/Layouts/@Readme.md`
 - Data display controls: `docs/DataDisplay/@Readme.md`
+- DataGrid filters, search, column chooser and layout: `src/Atc.Wpf.Controls/DataGrids/DataGridFilter_Readme.md`
 - Hardware pickers: `docs/Hardware/@Readme.md`, `src/Atc.Wpf.Hardware/Readme.md`
 - Form controls: `src/Atc.Wpf.Forms/` (LabelTextBox, LabelComboBox, etc.)
 - Base controls: `src/Atc.Wpf.Controls/Inputs/` (NumericBox, IntegerBox, etc.)

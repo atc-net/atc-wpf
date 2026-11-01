@@ -24,16 +24,16 @@ This framework provides a rich collection of reusable controls, theming support,
 
 | Nuget package                                                                                                                                                                                       | Description                                         | Dependencies                                 |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?label=Atc.Wpf&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf)                                                 | Core library: MVVM, layouts, value converters       | <ul><li>Atc</li></ul>                                          |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.svg?label=Atc.Wpf.Controls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls)                      | Atomic controls: base inputs, buttons, colors       | <ul><li>Atc.Wpf</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li></ul>                    |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Forms.svg?label=Atc.Wpf.Forms&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Forms)                               | Form field controls: 25+ labeled controls with validation | <ul><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Theming</li></ul>                    |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Components.svg?label=Atc.Wpf.Components&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Components)                | Composite components: dialogs, viewers, settings    | <ul><li>Atc.Wpf.Forms</li><li>Atc.Wpf.FontIcons</li></ul>                    |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Font-based icon rendering                           | <ul><li>Atc.Wpf</li></ul>                                      |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Light & Dark mode theming infrastructure            | <ul><li>Atc.Wpf</li><li>ControlzEx</li><li>Microsoft.Windows.CsWin32</li></ul>                                      |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Network.svg?label=Atc.Wpf.Network&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Network)                         | Network scanning and discovery controls             | <ul><li>Atc.Network</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Forms</li></ul>                                             |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Hardware.svg?label=Atc.Wpf.Hardware&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Hardware)                      | Hardware, system and inspection pickers (serial, USB, camera, audio, Bluetooth, drives, displays, printers, network adapters, processes, windows) | <ul><li>Atc.Wpf.Components</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Forms</li></ul> |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.UndoRedo.svg?label=Atc.Wpf.UndoRedo&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.UndoRedo)                      | Undo/redo history view and keyboard behavior        | <ul><li>Atc.UndoRedo</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li></ul>                |
-| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for building sample applications           | <ul><li>Atc.Wpf.Components</li><li>MdXaml</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?label=Atc.Wpf&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf)                                                 | Core library: MVVM, layouts, value converters       | <ul><li>Atc</li><li>Microsoft.Xaml.Behaviors.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.svg?label=Atc.Wpf.Controls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls)                      | Atomic controls: base inputs, buttons, colors       | <ul><li>Atc</li><li>Atc.UndoRedo</li><li>Atc.Wpf</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Forms.svg?label=Atc.Wpf.Forms&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Forms)                               | Form field controls: 25+ labeled controls with validation | <ul><li>Atc</li><li>Atc.Wpf.Controls</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Components.svg?label=Atc.Wpf.Components&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Components)                | Composite components: dialogs, viewers, settings    | <ul><li>Atc</li><li>Atc.Wpf</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Forms</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Font-based icon rendering                           | <ul><li>Atc.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Theming.svg?label=Atc.Wpf.Theming&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Theming)                         | Light & Dark mode theming infrastructure            | <ul><li>Atc</li><li>Atc.Wpf</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li><li>ControlzEx</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Network.svg?label=Atc.Wpf.Network&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Network)                         | Network scanning and discovery controls             | <ul><li>Atc</li><li>Atc.Network</li><li>Atc.Wpf</li><li>Atc.Wpf.Components</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Forms</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Hardware.svg?label=Atc.Wpf.Hardware&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Hardware)                      | Hardware, system and inspection pickers (serial, USB, camera, audio, Bluetooth, drives, displays, printers, network adapters, processes, windows) | <ul><li>Atc</li><li>Atc.Wpf</li><li>Atc.Wpf.Components</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Forms</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.UndoRedo.svg?label=Atc.Wpf.UndoRedo&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.UndoRedo)                      | Undo/redo history view and keyboard behavior        | <ul><li>Atc</li><li>Atc.UndoRedo</li><li>Atc.Wpf</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.Sample.svg?label=Atc.Wpf.Controls.Sample&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls.Sample) | Controls for building sample applications           | <ul><li>Atc</li><li>Atc.Wpf</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li><li>MdXaml</li></ul> |
 
 ## 🔎 Demonstration Application
 
@@ -73,6 +73,11 @@ Add the NuGet packages to your `.csproj` file:
 
 ```xml
 <ItemGroup>
+  <!-- MVVM base classes and source generators: reference these directly,
+       the generators do not flow through package dependencies -->
+  <PackageReference Include="Atc.XamlToolkit" Version="3.*" />
+  <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.*" />
+
   <!-- Core packages -->
   <PackageReference Include="Atc.Wpf" Version="4.*" />
   <PackageReference Include="Atc.Wpf.Theming" Version="4.*" />
@@ -237,7 +242,7 @@ A quick reference of all controls organized by category:
 | Category | Controls | Package |
 |----------|----------|---------|
 | **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
-| **Data Display** | Alert, Card, Badge, Chip, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented, Timeline, Popover | Atc.Wpf.Controls |
+| **Data Display** | Alert, Card, Badge, Chip, ChipGroup, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented (single or multiple), Timeline, Popover | Atc.Wpf.Controls |
 | **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Components |
 | **Input Controls** | NumericBox, IntegerBox, DecimalBox, CurrencyBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
@@ -245,8 +250,11 @@ A quick reference of all controls organized by category:
 | **Progress** | BusyOverlay, LoadingIndicator, Overlay, Skeleton | Atc.Wpf.Controls |
 | **Drag & Drop** | DragDropAttach | Atc.Wpf |
 | **Selectors** | CountrySelector, LanguageSelector, FontFamilySelector | Atc.Wpf.Controls |
-| **Selectors** | DualListSelector | Atc.Wpf.Components |
+| **DataGrid** | DataGridFilter (Excel-style column filters, search, column chooser and layout persistence for the stock DataGrid) | Atc.Wpf.Controls |
+| **Multi-Select** | CheckListBox, MultiSelectComboBox, TokenBox, CheckTreeView, TreeSelectComboBox, CascaderComboBox, MultiColumnComboBox, CardSelector (see [Which control when](#-which-multi-select-control-when)) | Atc.Wpf.Controls |
+| **Selectors** | DualListSelector (check boxes, one-way mode, locked items, limit, grouping, virtualization) | Atc.Wpf.Components |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
+| **Labeled Multi-Select** | LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox, LabelCascaderComboBox, LabelMultiColumnComboBox | Atc.Wpf.Forms |
 | **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox | Atc.Wpf.Forms / Components |
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
 | **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
@@ -339,7 +347,7 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **StaggeredPanel** | Masonry layout | Pinterest-style waterfall | [Readme](src/Atc.Wpf.Controls/Layouts/StaggeredPanel_Readme.md) |
 | **UniformSpacingPanel** | Uniform spacing | Consistent gaps + wrapping | [Readme](src/Atc.Wpf.Controls/Layouts/UniformSpacingPanel_Readme.md) |
 | **ResponsivePanel** | Responsive layout | Breakpoint-based responsive design | [Readme](src/Atc.Wpf.Controls/Layouts/ResponsivePanel_Readme.md) |
-| **DockPanelPro** | IDE-style docking | Resizable regions | [Readme](src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md) |
+| **DockPanelPro** | IDE-style docking | Resizable regions, tabbed and floating panes | [Readme](src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md) |
 
 ### Data Display Controls
 
@@ -355,7 +363,7 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **Breadcrumb** | Navigation path | Overflow, custom separators | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
 | **Popover** | Positioned popup | Placement modes, triggers, light dismiss | [Readme](src/Atc.Wpf.Controls/DataDisplay/Popover_Readme.md) |
 | **Stepper** | Step-by-step progress | Cancelable transitions | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
-| **Segmented** | Segment selector | Mutually exclusive selection | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
+| **Segmented** | Segment selector | Single, single-or-none or multiple selection (weekdays, B/I/U), vertical or separate pills | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
 | **Timeline** | Timeline display | Vertical/horizontal, alternate mode | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
 
 ### Media Controls
@@ -453,10 +461,11 @@ Unlabeled input controls that provide core functionality:
 | **Badge** | Status indicator overlay | [Readme](src/Atc.Wpf.Controls/DataDisplay/Badge_Readme.md) |
 | **Card** | Elevated container with header/footer | [Readme](src/Atc.Wpf.Controls/DataDisplay/Card_Readme.md) |
 | **Chip** | Tag/filter interactive elements | [Readme](src/Atc.Wpf.Controls/DataDisplay/Chip_Readme.md) |
+| **ChipGroup** | Row of toggle chips bound to `Items` / `SelectedKeys`: single, single-or-none or multiple selection, optional **All** chip | [Readme](src/Atc.Wpf.Controls/DataDisplay/ChipGroup_Readme.md) |
 | **Divider** | Visual separator (horizontal/vertical) | [Readme](src/Atc.Wpf.Controls/DataDisplay/Divider_Readme.md) |
 | **Breadcrumb** | Navigation path with overflow | [Readme](src/Atc.Wpf.Controls/DataDisplay/Breadcrumb_Readme.md) |
 | **Popover** | Positioned popup with placement and triggers | [Readme](src/Atc.Wpf.Controls/DataDisplay/Popover_Readme.md) |
-| **Segmented** | Mutually exclusive segment selector | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
+| **Segmented** | Segment selector: single or multiple selection, vertical, separate pills, icon only | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
 | **Stepper** | Step-by-step progress indicator | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
 | **Timeline** | Vertical/horizontal timeline display | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
 
@@ -475,6 +484,48 @@ Unlabeled input controls that provide core functionality:
 | **CountrySelector** | Country dropdown with flags | [Readme](src/Atc.Wpf.Controls/Selectors/CountrySelector_Readme.md) |
 | **LanguageSelector** | Language dropdown with flags | [Readme](src/Atc.Wpf.Controls/Selectors/LanguageSelector_Readme.md) |
 | **FontFamilySelector** | Font family dropdown with previews | [Readme](src/Atc.Wpf.Controls/Selectors/FontFamilySelector_Readme.md) |
+
+### Multi-Select Controls
+
+A family of multi-select controls sharing one contract: bind `Items` (or `ItemsSource`) and a `SelectedKeys` collection, get one `SelectedKeysChanged` per user action, an optional selection limit, disabled keys, keyboard support and UI Automation.
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **CheckListBox** | Always-visible check list with tri-state **Select all**, filter, groups, limit and virtualization | [Readme](src/Atc.Wpf.Controls/Selectors/CheckListBox_Readme.md) |
+| **MultiSelectComboBox** | Drop-down check list; closed it shows names, removable chips or a count | [Readme](src/Atc.Wpf.Controls/Selectors/MultiSelectComboBox_Readme.md) |
+| **TokenBox** | Text field where each pick becomes a removable token; suggestions, paste a list, optional free values | [Readme](src/Atc.Wpf.Controls/Selectors/TokenBox_Readme.md) |
+| **CheckTreeView** | Inline tree with tri-state check boxes, filter, lazy loading and a choice of which keys are reported | [Readme](src/Atc.Wpf.Controls/Selectors/CheckTreeView_Readme.md) |
+| **TreeSelectComboBox** | The tri-state check tree in a drop-down | [Readme](src/Atc.Wpf.Controls/Selectors/TreeSelectComboBox_Readme.md) |
+| **CascaderComboBox** | Drop-down with one column per level for deep, uniform hierarchies | [Readme](src/Atc.Wpf.Controls/Selectors/CascaderComboBox_Readme.md) |
+| **MultiColumnComboBox** | Drop-down with a sortable grid and a check-box column, for comparing items on several attributes | [Readme](src/Atc.Wpf.Controls/Selectors/MultiColumnComboBox_Readme.md) |
+| **CardSelector** | Wrapping grid of cards for picking one or several visual options | [Readme](src/Atc.Wpf.Controls/Selectors/CardSelector_Readme.md) |
+| **ChipGroup** | Row of toggle chips for a handful of options | [Readme](src/Atc.Wpf.Controls/DataDisplay/ChipGroup_Readme.md) |
+| **Segmented** | Joined button row; `SelectionMode="Multiple"` for weekdays or B / I / U | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
+| **DualListSelector** | Two lists with transfer buttons (in Atc.Wpf.Components) | [Readme](src/Atc.Wpf.Components/Selectors/DualListSelector_Readme.md) |
+
+### 🧭 Which Multi-Select Control When
+
+| Situation | Control |
+|-----------|---------|
+| 2–6 very short options or icons (weekdays, B / I / U) | **Segmented** (`SelectionMode="Multiple"`) |
+| 2–15 short options, all visible (quick filters, facets) | **ChipGroup** |
+| 3–1,000 known items, little space (toolbar filter, form row) | **MultiSelectComboBox** |
+| 5–1,000 items in a settings page or side panel | **CheckListBox** |
+| Large or open-ended sets; typing is the main way in (users, tags, e-mail addresses) | **TokenBox** |
+| A hierarchy, always visible (permissions, folders) | **CheckTreeView** |
+| A hierarchy, little space | **TreeSelectComboBox** |
+| A deep, uniform hierarchy (Country › Region › City) | **CascaderComboBox** |
+| Items you compare on several attributes (number + name + city) | **MultiColumnComboBox** |
+| Few, visual choices (plans, templates, devices) | **CardSelector** |
+| Building an ordered list out of a pool | **DualListSelector** |
+
+For a labeled form field with a mandatory marker and validation, use the `Label*` wrapper (see [Multi-select form fields](#-label-controls-25-controls)).
+
+### DataGrid Behaviours
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **DataGridFilter** | Attached behaviours for the stock `DataGrid`: Excel-style column filter drop-downs (distinct values, text and range filters), a debounced search, a column chooser and saving/restoring the column layout and filters | [Readme](src/Atc.Wpf.Controls/DataGrids/DataGridFilter_Readme.md) |
 
 ### Progress Controls
 
@@ -499,6 +550,7 @@ Labeled input controls with built-in validation and consistent styling:
 - **Selection**: LabelCheckBox, LabelComboBox, LabelToggleSwitch, LabelSlider
 - **Selectors**: LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelWellKnownColorSelector
 - **Pickers**: LabelColorPicker, LabelDirectoryPicker, LabelFilePicker
+- **Multi-Select**: [LabelCheckListBox](src/Atc.Wpf.Forms/LabelCheckListBox_Readme.md), [LabelMultiSelectComboBox](src/Atc.Wpf.Forms/LabelMultiSelectComboBox_Readme.md), [LabelChipGroup](src/Atc.Wpf.Forms/LabelChipGroup_Readme.md), [LabelTokenBox](src/Atc.Wpf.Forms/LabelTokenBox_Readme.md), [LabelTreeSelectComboBox](src/Atc.Wpf.Forms/LabelTreeSelectComboBox_Readme.md), [LabelCascaderComboBox](src/Atc.Wpf.Forms/LabelCascaderComboBox_Readme.md), [LabelMultiColumnComboBox](src/Atc.Wpf.Forms/LabelMultiColumnComboBox_Readme.md)
 - **Network**: LabelEndpointBox (protocol + host + port with validation)
 - **Display**: LabelContent, LabelTextInfo
 
@@ -547,7 +599,7 @@ Sliding panel overlays that slide in from window edges - inspired by Azure Porta
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
-| **DualListSelector** | Dual-list transfer control with filtering, reordering, and drag-drop | [Readme](src/Atc.Wpf.Components/Selectors/DualListSelector_Readme.md) |
+| **DualListSelector** | Dual-list transfer control with filtering, reordering and drag-drop; optional check boxes with tri-state **Select all**, one-way mode, locked items, a limit, grouping and virtualization | [Readme](src/Atc.Wpf.Components/Selectors/DualListSelector_Readme.md) |
 
 ### Viewers
 
@@ -730,11 +782,17 @@ Every picker has a `Label*` wrapper (e.g. `LabelSerialPortPicker`) for forms. Se
 
 ## 🎯 Source Generators
 
-Atc.Wpf includes powerful source generators from [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) to reduce boilerplate code:
+The [Atc.XamlToolkit](https://github.com/atc-net/atc-xaml-toolkit) packages (referenced directly, see [Installation](#installation)) provide source generators that reduce boilerplate code:
 
 - **[ViewModel Generator](docs/SourceGenerators/ViewModel.md)** - Auto-generate ViewModels with `[ObservableProperty]` and `[RelayCommand]`
 - **[DependencyProperty Generator](docs/SourceGenerators/DependencyProperty.md)** - Auto-generate WPF dependency properties with `[DependencyProperty]`
 - **[AttachedProperty Generator](docs/SourceGenerators/AttachedProperty.md)** - Auto-generate WPF attached properties with `[AttachedProperty]`
+
+---
+
+## ♿ Accessibility
+
+- [Accessibility](docs/Accessibility/@Readme.md) — UI Automation peers, keyboard rules, high contrast and right-to-left support
 
 ---
 

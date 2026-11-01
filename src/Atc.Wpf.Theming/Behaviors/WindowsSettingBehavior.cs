@@ -9,6 +9,21 @@ namespace Atc.Wpf.Theming.Behaviors;
 [SuppressMessage("Security", "S6640:Make sure that using \"unsafe\" is safe here", Justification = "OK - By design.")]
 public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
 {
+    /// <summary>
+    /// The height, in physical pixels, of the strip at the top of a window that is treated as its title bar.
+    /// </summary>
+    internal const double TitleBarHeight = 32;
+
+    /// <summary>
+    /// The width, in physical pixels, of the title bar that must be on a work area for a saved placement to be applied.
+    /// </summary>
+    internal const double MinVisibleTitleBarWidth = 100;
+
+    /// <summary>
+    /// The height, in physical pixels, of the title bar that must be on a work area for a saved placement to be applied.
+    /// </summary>
+    internal const double MinVisibleTitleBarHeight = 16;
+
     /// <inheritdoc />
     protected override void OnAttached()
     {
@@ -149,12 +164,11 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
             return;
         }
 
-        // A placement saved on a monitor that is no longer attached would open the window off-screen;
-        // leave the default placement in that case.
-        var screenBounds = GetVirtualScreenBounds();
-        if (screenBounds.Width > 0 &&
-            screenBounds.Height > 0 &&
-            !IsPlacementOnScreen(settings.Placement.normalPosition, screenBounds))
+        // A placement saved on a monitor that is no longer attached, or with its title bar out of reach,
+        // would open the window where it cannot be moved; leave the default placement in that case.
+        var monitors = GetMonitorWorkAreas();
+        if (monitors.Count > 0 &&
+            !IsPlacementOnScreen(settings.Placement.normalPosition, monitors))
         {
             Trace.TraceInformation($"{this}: The saved placement for {window} is outside the current screens and is not applied.");
             return;
@@ -174,24 +188,60 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
     }
 
     /// <summary>
-    /// Determines whether a saved window placement is at least partly visible on the current screens.
+    /// Determines whether the title bar of a saved window placement is visible enough on one monitor's
+    /// work area for the window to be grabbed and moved.
     /// </summary>
-    /// <param name="normalPosition">The saved bounds of the window in its restored state, in physical pixels.</param>
-    /// <param name="screenBounds">The bounds of the virtual screen (all monitors), in physical pixels.</param>
-    /// <returns><see langword="true"/> when the two rectangles overlap by more than an edge; otherwise <see langword="false"/>.</returns>
+    /// <param name="normalPosition">
+    /// The saved bounds of the window in its restored state, in physical pixels and workspace coordinates
+    /// (relative to the work area, as <c>WINDOWPLACEMENT</c> stores them).
+    /// </param>
+    /// <param name="monitors">The monitors attached now, in physical pixels and screen coordinates.</param>
+    /// <returns>
+    /// <see langword="true"/> when the title-bar strip lies on a single work area with at least
+    /// <see cref="MinVisibleTitleBarWidth"/> by <see cref="MinVisibleTitleBarHeight"/> pixels
+    /// (or the whole strip when it is smaller); otherwise <see langword="false"/>.
+    /// </returns>
     internal static bool IsPlacementOnScreen(
         Rect normalPosition,
-        Rect screenBounds)
+        IReadOnlyList<MonitorWorkArea> monitors)
     {
-        if (normalPosition.IsEmpty || screenBounds.IsEmpty)
+        ArgumentNullException.ThrowIfNull(monitors);
+
+        if (normalPosition.IsEmpty ||
+            normalPosition.Width <= 0 ||
+            normalPosition.Height <= 0)
         {
             return false;
         }
 
-        var visible = Rect.Intersect(normalPosition, screenBounds);
-        return !visible.IsEmpty &&
-               visible.Width > 0 &&
-               visible.Height > 0;
+        var titleBarHeight = System.Math.Min(TitleBarHeight, normalPosition.Height);
+        var requiredWidth = System.Math.Min(MinVisibleTitleBarWidth, normalPosition.Width);
+        var requiredHeight = System.Math.Min(MinVisibleTitleBarHeight, titleBarHeight);
+
+        foreach (var monitor in monitors)
+        {
+            if (monitor.WorkArea.IsEmpty)
+            {
+                continue;
+            }
+
+            // Workspace coordinates are relative to the work area; convert them to screen coordinates.
+            var titleBar = new Rect(
+                normalPosition.X + (monitor.WorkArea.X - monitor.Bounds.X),
+                normalPosition.Y + (monitor.WorkArea.Y - monitor.Bounds.Y),
+                normalPosition.Width,
+                titleBarHeight);
+
+            var visible = Rect.Intersect(titleBar, monitor.WorkArea);
+            if (!visible.IsEmpty &&
+                visible.Width >= requiredWidth &&
+                visible.Height >= requiredHeight)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -222,14 +272,41 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
     }
 
     /// <summary>
-    /// Gets the bounding rectangle of all monitors in physical pixels, the unit <c>WINDOWPLACEMENT</c> uses.
+    /// Gets the bounds and work area of every attached monitor in physical pixels.
     /// </summary>
-    private static Rect GetVirtualScreenBounds()
+    internal static unsafe List<MonitorWorkArea> GetMonitorWorkAreas()
+    {
+        var monitors = new List<MonitorWorkArea>();
+        PInvoke.EnumDisplayMonitors(
+            HDC.Null,
+            (RECT?)null,
+            (hMonitor, _, _, _) =>
+            {
+                var monitorInfo = new MONITORINFO
+                {
+                    cbSize = (uint)Marshal.SizeOf<MONITORINFO>(),
+                };
+
+                if (PInvoke.GetMonitorInfo(hMonitor, &monitorInfo))
+                {
+                    monitors.Add(new MonitorWorkArea(
+                        ToRect(monitorInfo.rcMonitor),
+                        ToRect(monitorInfo.rcWork)));
+                }
+
+                return true;
+            },
+            default);
+
+        return monitors;
+    }
+
+    private static Rect ToRect(RECT rect)
         => new(
-            PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_XVIRTUALSCREEN),
-            PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_YVIRTUALSCREEN),
-            System.Math.Max(0, PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_CXVIRTUALSCREEN)),
-            System.Math.Max(0, PInvoke.GetSystemMetrics(SYSTEM_METRICS_INDEX.SM_CYVIRTUALSCREEN)));
+            rect.left,
+            rect.top,
+            System.Math.Max(0, rect.GetWidth()),
+            System.Math.Max(0, rect.GetHeight()));
 
     [SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "OK.")]
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]

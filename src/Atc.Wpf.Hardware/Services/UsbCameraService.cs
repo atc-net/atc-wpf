@@ -8,7 +8,7 @@ public sealed class UsbCameraService : IUsbCameraService
     private static readonly TimeSpan JustConnectedDuration = TimeSpan.FromSeconds(3);
 
     private readonly IDeviceWatcherHost watcher;
-    private bool started;
+    private int watchCount;
     private bool initialEnumerationCompleted;
     private bool disposed;
 
@@ -38,25 +38,37 @@ public sealed class UsbCameraService : IUsbCameraService
     /// <inheritdoc />
     public void StartWatching()
     {
-        if (started)
+        // Several pickers can share one service: the watcher runs while at least one of them watches.
+        watchCount++;
+        if (watchCount != 1)
         {
             return;
         }
 
-        started = true;
-        watcher.StartWatching();
+        try
+        {
+            watcher.StartWatching();
+        }
+        catch
+        {
+            watchCount--;
+            throw;
+        }
     }
 
     /// <inheritdoc />
     public void StopWatching()
     {
-        if (!started)
+        if (watchCount == 0)
         {
             return;
         }
 
-        started = false;
-        watcher.StopWatching();
+        watchCount--;
+        if (watchCount == 0)
+        {
+            watcher.StopWatching();
+        }
     }
 
     /// <inheritdoc />
@@ -122,11 +134,38 @@ public sealed class UsbCameraService : IUsbCameraService
         }
     }
 
-    private static void OnUpdated(
+    private void OnUpdated(
         object? sender,
         DeviceSnapshotEventArgs e)
     {
-        // No-op for camera enumeration changes today.
+        var snapshot = e.Snapshot;
+        var existing = FindByDeviceId(snapshot.Id);
+        if (existing is null)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(snapshot.UpdatedName))
+        {
+            existing.FriendlyName = snapshot.UpdatedName;
+        }
+
+        if (snapshot.UpdatedIsEnabled is not { } isEnabled)
+        {
+            return;
+        }
+
+        existing.IsEnabled = isEnabled;
+
+        // A disabled camera is shown as in use, as on enumeration; a removed one stays disconnected.
+        if (!isEnabled && existing.State is not DeviceState.Disconnected)
+        {
+            existing.State = DeviceState.InUse;
+        }
+        else if (isEnabled && existing.State is DeviceState.InUse)
+        {
+            existing.State = DeviceState.Available;
+        }
     }
 
     private void OnEnumerationCompleted(

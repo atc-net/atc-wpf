@@ -13,7 +13,7 @@ using Atc.Wpf.FontIcons;
 The library contains two parallel sets of controls:
 
 - **Font controls** (`Font*`) — extend `TextBlock`, render icons as font glyphs
-- **Image controls** (`Image*`) — extend `Image`, render icons as `ImageSource` bitmaps
+- **Image controls** (`Image*`) — extend `Image`, render icons as shared vector `DrawingImage` sources (crisp at any DPI; `CreateImageSource` still returns a bitmap)
 
 Both sets support the same icon font families and share common animation/transformation features.
 
@@ -137,7 +137,7 @@ Font controls inherit `Foreground` from `TextBlock`.
 ## 📝 Notes
 
 - Font controls render as text glyphs (lighter, scalable via `FontSize`)
-- Image controls render as bitmaps (better for `Image.Source` bindings, menus, toolbars)
+- Image controls render as vector images shared per glyph and color (better for `Image.Source` bindings, menus, toolbars)
 - All icon enum types include a `None` value (0x0) as default
 - Enum values are Unicode code points; the font glyph is resolved via `char.ConvertFromUtf32()`
 - Spin, Rotation, and FlipOrientation can be combined simultaneously

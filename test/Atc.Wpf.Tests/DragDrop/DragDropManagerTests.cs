@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Tests.DragDrop;
 
+[Collection(nameof(DragDropTestGroup))]
 public sealed class DragDropManagerTests
 {
     private static readonly FieldInfo DragStartPointField = typeof(DragDropManager)

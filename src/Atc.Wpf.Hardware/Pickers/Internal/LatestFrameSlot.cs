@@ -1,70 +1,60 @@
 namespace Atc.Wpf.Hardware.Pickers.Internal;
 
 /// <summary>
-/// Hands camera frames from the capture thread to the UI thread without allocating a buffer per frame and
-/// without queueing one dispatcher operation per frame: while a render is scheduled, a newer frame simply
-/// replaces the pending one (latest wins), and buffers of the current frame size are recycled.
+/// Hands camera frames from the capture thread to the UI thread without queueing one dispatcher operation per
+/// frame: while a render is scheduled, a newer frame replaces the pending one (latest wins) and the older one is
+/// disposed. The frame itself is handed over, not a copy, so the UI thread copies its pixels exactly once.
 /// </summary>
-internal sealed class LatestFrameSlot
+/// <typeparam name="TFrame">The frame type; the slot disposes frames it drops.</typeparam>
+internal sealed class LatestFrameSlot<TFrame>
+    where TFrame : class, IDisposable
 {
     private readonly Lock gate = new();
-    private readonly Stack<byte[]> spareBuffers = new();
-    private LatestFrame? pending;
+    private TFrame? pending;
     private bool renderScheduled;
 
     /// <summary>
-    /// Capture thread: gets a buffer of <paramref name="length"/> bytes to fill with the next frame.
+    /// Gets a value indicating whether a frame is waiting for the UI thread, i.e. the UI is behind and the
+    /// capture thread can skip acquiring the next frame altogether.
     /// </summary>
-    public byte[] RentWriteBuffer(int length)
+    public bool HasPendingFrame
     {
-        lock (gate)
+        get
         {
-            while (spareBuffers.Count > 0)
+            lock (gate)
             {
-                var spare = spareBuffers.Pop();
-                if (spare.Length == length)
-                {
-                    return spare;
-                }
+                return pending is not null;
             }
         }
-
-        return new byte[length];
     }
 
     /// <summary>
-    /// Capture thread: publishes a filled buffer.
+    /// Capture thread: publishes a frame; the slot owns it from now on.
     /// </summary>
     /// <returns><see langword="true"/> when the caller must schedule a render; <see langword="false"/> when one is already scheduled.</returns>
-    public bool Publish(
-        byte[] buffer,
-        int width,
-        int height)
+    public bool Publish(TFrame frame)
     {
+        ArgumentNullException.ThrowIfNull(frame);
+
+        TFrame? dropped;
+        bool scheduleRender;
         lock (gate)
         {
-            if (pending is not null)
-            {
-                // The UI has not caught up: drop the older frame and recycle its buffer.
-                spareBuffers.Push(pending.Buffer);
-            }
-
-            pending = new LatestFrame(buffer, width, height);
-
-            if (renderScheduled)
-            {
-                return false;
-            }
-
+            dropped = pending;
+            pending = frame;
+            scheduleRender = !renderScheduled;
             renderScheduled = true;
-            return true;
         }
+
+        // The UI has not caught up: drop the older frame.
+        dropped?.Dispose();
+        return scheduleRender;
     }
 
     /// <summary>
-    /// UI thread: takes the latest frame. Return its buffer with <see cref="Return"/> once it has been copied.
+    /// UI thread: takes the latest frame. The caller owns and disposes it.
     /// </summary>
-    public bool TryTake([NotNullWhen(true)] out LatestFrame? frame)
+    public bool TryTake([NotNullWhen(true)] out TFrame? frame)
     {
         lock (gate)
         {
@@ -76,13 +66,17 @@ internal sealed class LatestFrameSlot
     }
 
     /// <summary>
-    /// UI thread: gives a rendered frame's buffer back for reuse.
+    /// Disposes the pending frame, if any (when the preview stops).
     /// </summary>
-    public void Return(byte[] buffer)
+    public void Clear()
     {
+        TFrame? dropped;
         lock (gate)
         {
-            spareBuffers.Push(buffer);
+            dropped = pending;
+            pending = null;
         }
+
+        dropped?.Dispose();
     }
 }

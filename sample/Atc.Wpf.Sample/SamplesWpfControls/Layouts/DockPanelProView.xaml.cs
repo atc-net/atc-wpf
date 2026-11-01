@@ -7,6 +7,9 @@ public partial class DockPanelProView
     public DockPanelProView()
     {
         InitializeComponent();
+        MainDockPanel.AddHandler(
+            DockRegion.ActivePaneChangedEvent,
+            new RoutedPropertyChangedEventHandler<DockPane?>(MainDockPanel_ActivePaneChanged));
     }
 
     private void SaveLayoutButton_Click(
@@ -14,11 +17,7 @@ public partial class DockPanelProView
         RoutedEventArgs e)
     {
         savedLayout = MainDockPanel.SaveLayout();
-        MessageBox.Show(
-            "Layout saved successfully!",
-            "Layout Saved",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        Log("Layout saved");
     }
 
     private void LoadLayoutButton_Click(
@@ -27,20 +26,12 @@ public partial class DockPanelProView
     {
         if (string.IsNullOrEmpty(savedLayout))
         {
-            MessageBox.Show(
-                "No layout has been saved yet. Please save a layout first.",
-                "No Saved Layout",
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
+            Log("No layout saved yet");
             return;
         }
 
         MainDockPanel.LoadLayout(savedLayout);
-        MessageBox.Show(
-            "Layout loaded successfully!",
-            "Layout Loaded",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        Log("Layout loaded");
     }
 
     private void ResetLayoutButton_Click(
@@ -48,10 +39,44 @@ public partial class DockPanelProView
         RoutedEventArgs e)
     {
         MainDockPanel.ResetLayout();
-        MessageBox.Show(
-            "Layout reset to defaults.",
-            "Layout Reset",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        Log("Layout reset");
+    }
+
+    private void RestoreClosedButton_Click(
+        object sender,
+        RoutedEventArgs e)
+    {
+        foreach (var pane in MainDockPanel.GetPanes().Where(x => x.State == DockPaneState.Closed))
+        {
+            MainDockPanel.RestorePane(pane);
+        }
+    }
+
+    private void RedockAllButton_Click(
+        object sender,
+        RoutedEventArgs e)
+        => MainDockPanel.RedockAllPanes();
+
+    private void MainDockPanel_PaneStateChanged(
+        object? sender,
+        DockPaneStateChangedEventArgs e)
+        => Log($"{e.Pane.Header}: {e.OldState} -> {e.NewState}");
+
+    private void MainDockPanel_ActivePaneChanged(
+        object sender,
+        RoutedPropertyChangedEventArgs<DockPane?> e)
+    {
+        if (e.NewValue is not null)
+        {
+            Log($"Active: {e.NewValue.Header}");
+        }
+    }
+
+    private void Log(string message)
+    {
+        var lines = (DockLog.Text + Environment.NewLine + message)
+            .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+            .TakeLast(20);
+        DockLog.Text = string.Join(Environment.NewLine, lines);
     }
 }

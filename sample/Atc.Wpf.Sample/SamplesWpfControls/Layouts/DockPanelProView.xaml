@@ -10,42 +10,69 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <atc:GridEx Rows="Auto,*">
+    <atc:GridEx Rows="Auto,*,Auto">
 
         <!--  Toolbar  -->
-        <StackPanel
+        <WrapPanel
             Grid.Row="0"
             Margin="8"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
+            <CheckBox
+                x:Name="AllowFloatingCheckBox"
+                Margin="0,0,16,0"
+                VerticalAlignment="Center"
+                AutomationProperties.AutomationId="AllowFloating"
+                Content="Allow floating"
+                IsChecked="{Binding AllowFloating, ElementName=MainDockPanel}" />
             <Button
                 x:Name="SaveLayoutButton"
                 Width="100"
                 Margin="0,0,8,0"
+                AutomationProperties.AutomationId="SaveLayout"
                 Click="SaveLayoutButton_Click"
                 Content="Save Layout" />
             <Button
                 x:Name="LoadLayoutButton"
                 Width="100"
                 Margin="0,0,8,0"
+                AutomationProperties.AutomationId="LoadLayout"
                 Click="LoadLayoutButton_Click"
                 Content="Load Layout" />
             <Button
                 x:Name="ResetLayoutButton"
                 Width="100"
+                Margin="0,0,8,0"
+                AutomationProperties.AutomationId="ResetLayout"
                 Click="ResetLayoutButton_Click"
                 Content="Reset Layout" />
-        </StackPanel>
+            <Button
+                x:Name="RestoreClosedButton"
+                Width="120"
+                Margin="0,0,8,0"
+                AutomationProperties.AutomationId="RestoreClosedPanes"
+                Click="RestoreClosedButton_Click"
+                Content="Restore closed" />
+            <Button
+                x:Name="RedockAllButton"
+                Width="100"
+                AutomationProperties.AutomationId="RedockAllPanes"
+                Click="RedockAllButton_Click"
+                Content="Dock all" />
+        </WrapPanel>
 
         <!--  DockPanelPro Demo  -->
         <layouts:DockPanelPro
             x:Name="MainDockPanel"
             Grid.Row="1"
             Margin="8"
+            AllowFloating="True"
+            AutomationProperties.AutomationId="InteractiveDockPanel"
             LayoutId="DemoLayout"
+            PaneStateChanged="MainDockPanel_PaneStateChanged"
             SplitterThickness="5">
 
-            <!--  Left Panel  -->
+            <!--  Left Panel (plain content, as before)  -->
             <layouts:DockRegion
                 Width="200"
                 MinWidth="100"
@@ -56,38 +83,69 @@
                 RegionId="Left">
                 <TextBlock
                     Margin="8"
-                    Text="Drag the splitter to resize"
+                    Text="Drag the splitter to resize. A region without panes shows its content as before."
                     TextWrapping="Wrap" />
             </layouts:DockRegion>
 
-            <!--  Right Panel  -->
+            <!--  Right Panel: two tabs; Toolbox opts out of floating  -->
             <layouts:DockRegion
-                Width="200"
-                MinWidth="100"
-                MaxWidth="350"
+                Width="220"
+                MinWidth="120"
+                MaxWidth="400"
                 layouts:DockPanelPro.Dock="Right"
-                Header="Right Panel"
                 IsCollapsible="True"
                 RegionId="Right">
-                <TextBlock
-                    Margin="8"
-                    Text="Click the arrow to collapse"
-                    TextWrapping="Wrap" />
+                <layouts:DockRegion.Panes>
+                    <layouts:DockPane Header="Properties" PaneId="properties">
+                        <TextBlock
+                            Margin="8"
+                            Text="Double-click the tab or the header, use the float button, or drag the tab out to float it."
+                            TextWrapping="Wrap" />
+                    </layouts:DockPane>
+                    <layouts:DockPane
+                        CanFloat="False"
+                        Header="Toolbox"
+                        PaneId="toolbox">
+                        <TextBlock
+                            Margin="8"
+                            Text="This pane cannot float (CanFloat=False)."
+                            TextWrapping="Wrap" />
+                    </layouts:DockPane>
+                </layouts:DockRegion.Panes>
             </layouts:DockRegion>
 
-            <!--  Bottom Panel  -->
+            <!--  Bottom Panel: three tabs; Errors cannot close  -->
             <layouts:DockRegion
-                Height="120"
+                Height="150"
                 MinHeight="80"
-                MaxHeight="250"
+                MaxHeight="300"
                 layouts:DockPanelPro.Dock="Bottom"
-                Header="Bottom Panel"
                 IsCollapsible="True"
-                RegionId="Bottom">
-                <TextBlock
-                    Margin="8"
-                    Text="Supports Top, Bottom, Left, Right, and Center positions"
-                    TextWrapping="Wrap" />
+                RegionId="Bottom"
+                TabStripPlacement="Bottom">
+                <layouts:DockRegion.Panes>
+                    <layouts:DockPane Header="Output" PaneId="output">
+                        <TextBlock
+                            Margin="8"
+                            Text="Ctrl+Tab / Ctrl+Shift+Tab cycle the tabs. Shift+F10 on a tab opens Float / Close."
+                            TextWrapping="Wrap" />
+                    </layouts:DockPane>
+                    <layouts:DockPane
+                        CanClose="False"
+                        Header="Errors"
+                        PaneId="errors">
+                        <TextBlock
+                            Margin="8"
+                            Text="This pane cannot close (CanClose=False); closing its floating window docks it back."
+                            TextWrapping="Wrap" />
+                    </layouts:DockPane>
+                    <layouts:DockPane Header="Find Results" PaneId="find">
+                        <TextBlock
+                            Margin="8"
+                            Text="Close this tab and bring it back with Restore closed."
+                            TextWrapping="Wrap" />
+                    </layouts:DockPane>
+                </layouts:DockRegion.Panes>
             </layouts:DockRegion>
 
             <!--  Center Panel (fills remaining space)  -->
@@ -97,11 +155,27 @@
                 RegionId="Center">
                 <TextBlock
                     Margin="8"
-                    Text="Center region fills the remaining space"
+                    Text="Center region fills the remaining space. Save, change and load the layout: tabs, the active tab, closed and floating panes are restored."
                     TextWrapping="Wrap" />
             </layouts:DockRegion>
 
         </layouts:DockPanelPro>
+
+        <!--  Event / status log  -->
+        <Border
+            Grid.Row="2"
+            Margin="8,0,8,8"
+            Padding="6"
+            BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
+            BorderThickness="1">
+            <ScrollViewer MaxHeight="90" VerticalScrollBarVisibility="Auto">
+                <TextBlock
+                    x:Name="DockLog"
+                    AutomationProperties.AutomationId="DockLog"
+                    FontFamily="Consolas"
+                    TextWrapping="Wrap" />
+            </ScrollViewer>
+        </Border>
     </atc:GridEx>
 
 </UserControl>

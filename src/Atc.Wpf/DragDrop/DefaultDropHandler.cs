@@ -25,12 +25,13 @@ public class DefaultDropHandler : IDropHandler
             return;
         }
 
-        if (!CanMoveItem(
-                dropInfo.DragInfo.SourceCollection as IList,
-                targetCollection,
-                dropInfo.DragInfo.SourceItem))
+        var sourceCollection = dropInfo.DragInfo.SourceCollection as IList;
+        foreach (var item in dropInfo.DragInfo.SourceItems)
         {
-            return;
+            if (!CanMoveItem(sourceCollection, targetCollection, item))
+            {
+                return;
+            }
         }
 
         dropInfo.Effects = dropInfo.DragInfo.Effects;
@@ -55,22 +56,29 @@ public class DefaultDropHandler : IDropHandler
 
         var sourceCollection = dropInfo.DragInfo.SourceCollection as IList;
         var targetCollection = dropInfo.TargetCollection as IList;
-        var item = dropInfo.DragInfo.SourceItem;
+        var items = dropInfo.DragInfo.SourceItems;
 
         if (sourceCollection is null ||
             targetCollection is null ||
-            !CanMoveItem(sourceCollection, targetCollection, item))
+            !items.All(item => CanMoveItem(sourceCollection, targetCollection, item)))
         {
             return;
         }
 
         if (ReferenceEquals(sourceCollection, targetCollection))
         {
-            HandleReorder(sourceCollection, item, dropInfo.InsertIndex);
+            if (items.Count == 1)
+            {
+                HandleReorder(sourceCollection, items[0], dropInfo.InsertIndex);
+            }
+            else
+            {
+                HandleReorder(sourceCollection, items, dropInfo.InsertIndex);
+            }
         }
         else
         {
-            HandleTransfer(sourceCollection, targetCollection, item, dropInfo.InsertIndex);
+            HandleTransfer(sourceCollection, targetCollection, items, dropInfo.InsertIndex);
         }
     }
 
@@ -157,6 +165,69 @@ public class DefaultDropHandler : IDropHandler
         collection.Insert(targetIndex, item);
     }
 
+    /// <summary>
+    /// Moves several <paramref name="items"/> of <paramref name="collection"/> so they end up together,
+    /// in the given order, at <paramref name="insertIndex"/> (a slot in the collection before the move).
+    /// </summary>
+    private static void HandleReorder(
+        IList collection,
+        IReadOnlyList<object> items,
+        int insertIndex)
+    {
+        var moved = items.Where(x => collection.IndexOf(x) >= 0).ToList();
+        if (moved.Count == 0)
+        {
+            return;
+        }
+
+        insertIndex = System.Math.Clamp(insertIndex, 0, collection.Count);
+        var movedBeforeSlot = moved.Count(x => collection.IndexOf(x) < insertIndex);
+
+        var final = collection
+            .Cast<object>()
+            .Where(x => !moved.Contains(x))
+            .ToList();
+        final.InsertRange(insertIndex - movedBeforeSlot, moved);
+
+        // Reach the final order with moves, so an ObservableCollection raises Move, not Remove/Add.
+        for (var i = 0; i < final.Count; i++)
+        {
+            if (Equals(collection[i], final[i]))
+            {
+                continue;
+            }
+
+            var oldIndex = IndexOfFrom(collection, final[i], i);
+            if (oldIndex < 0)
+            {
+                return;
+            }
+
+            if (!TryMoveInObservableCollection(collection, oldIndex, i))
+            {
+                var item = collection[oldIndex];
+                collection.RemoveAt(oldIndex);
+                collection.Insert(i, item);
+            }
+        }
+    }
+
+    private static int IndexOfFrom(
+        IList collection,
+        object? item,
+        int startIndex)
+    {
+        for (var i = startIndex; i < collection.Count; i++)
+        {
+            if (Equals(collection[i], item))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     private static bool TryMoveInObservableCollection(
         IList collection,
         int oldIndex,
@@ -196,12 +267,16 @@ public class DefaultDropHandler : IDropHandler
     private static void HandleTransfer(
         IList sourceCollection,
         IList targetCollection,
-        object item,
+        IReadOnlyList<object> items,
         int insertIndex)
     {
-        sourceCollection.Remove(item);
         var safeIndex = System.Math.Clamp(insertIndex, 0, targetCollection.Count);
-        targetCollection.Insert(safeIndex, item);
+        foreach (var item in items)
+        {
+            sourceCollection.Remove(item);
+            targetCollection.Insert(safeIndex, item);
+            safeIndex++;
+        }
     }
 
     /// <summary>

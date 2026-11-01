@@ -110,6 +110,8 @@ For dedicated spacing control, you can also use `UniformSpacingPanel`:
 - `Spacing` sets both `HorizontalSpacing` and `VerticalSpacing` at once
 - Individual `HorizontalSpacing` or `VerticalSpacing` values override `Spacing`
 - Works by applying margins to child elements
+- The last child that is not collapsed gets no trailing margin; collapsing or showing a child re-applies the margins
+- Only the side facing the next item gets the spacing: the right side in a horizontal `StackPanel`, the bottom in a vertical one, and in a `DockPanel` the side facing the remaining space. Other panels (such as `WrapPanel`, which needs the gap on both axes, or `Grid`) get both right and bottom
 
 ## 🎮 Sample Application
 

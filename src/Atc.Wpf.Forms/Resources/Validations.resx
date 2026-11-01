@@ -177,6 +177,9 @@
   <data name="NotAllowedFormat1" xml:space="preserve">
     <value>Not allowed: {0}</value>
   </data>
+  <data name="SelectAtMost1" xml:space="preserve">
+    <value>Select at most {0}</value>
+  </data>
   <data name="PleaseSelect1" xml:space="preserve">
     <value>Please select a {0}</value>
   </data>

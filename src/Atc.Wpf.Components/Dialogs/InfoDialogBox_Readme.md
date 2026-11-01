@@ -57,6 +57,8 @@ dialog.ShowDialog();
 
 - The dialog is modal — it blocks interaction with the owner window
 - `ShowDialog()` returns `true` when OK is clicked
+- Escape closes the dialog with the same result as OK, like a message box
+- `DialogService` owns its dialogs by the window from its owner resolver, otherwise by the active window, otherwise by the main window
 - The dialog inherits window chrome from the theming system
 
 ## 🔗 Related Controls

@@ -12,7 +12,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
     private IDeviceWatcherHost watcher;
     private string aqs;
     private UsbDeviceClassFilter classFilter = UsbDeviceClassFilter.None;
-    private bool started;
+    private int watchCount;
     private bool initialEnumerationCompleted;
     private bool disposed;
 
@@ -55,25 +55,37 @@ public sealed class UsbDeviceService : IUsbDeviceService
     /// <inheritdoc />
     public void StartWatching()
     {
-        if (started)
+        // Several pickers can share one service: the watcher runs while at least one of them watches.
+        watchCount++;
+        if (watchCount != 1)
         {
             return;
         }
 
-        started = true;
-        watcher.StartWatching();
+        try
+        {
+            watcher.StartWatching();
+        }
+        catch
+        {
+            watchCount--;
+            throw;
+        }
     }
 
     /// <inheritdoc />
     public void StopWatching()
     {
-        if (!started)
+        if (watchCount == 0)
         {
             return;
         }
 
-        started = false;
-        watcher.StopWatching();
+        watchCount--;
+        if (watchCount == 0)
+        {
+            watcher.StopWatching();
+        }
     }
 
     /// <inheritdoc />
@@ -156,7 +168,7 @@ public sealed class UsbDeviceService : IUsbDeviceService
                 return;
             }
 
-            var wasStarted = started;
+            var wasStarted = watchCount > 0;
             if (wasStarted)
             {
                 watcher.StopWatching();

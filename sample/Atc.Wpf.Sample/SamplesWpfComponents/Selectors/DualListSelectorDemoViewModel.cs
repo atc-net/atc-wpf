@@ -33,4 +33,12 @@ public partial class DualListSelectorDemoViewModel : ViewModelBase
     [PropertyDisplay("Show Item Count", "Behavior", 5)]
     [ObservableProperty]
     private bool showItemCount = true;
+
+    [PropertyDisplay("Item Selection Style", "Behavior", 6)]
+    [ObservableProperty]
+    private DualListItemSelectionStyle itemSelectionStyle = DualListItemSelectionStyle.Highlight;
+
+    [PropertyDisplay("Is One Way", "Behavior", 7)]
+    [ObservableProperty]
+    private bool isOneWay;
 }

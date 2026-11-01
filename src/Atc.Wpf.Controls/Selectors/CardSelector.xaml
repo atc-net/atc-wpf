@@ -1,0 +1,151 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay"
+    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Controls.Selectors">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/DataDisplay/Card.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="AtcApps.Styles.CardSelectorItem" TargetType="{x:Type selectors:CardSelectorItem}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type selectors:CardSelectorItem}">
+                    <Grid Margin="0,0,0,2" Background="Transparent">
+                        <dataDisplay:Card
+                            x:Name="PART_Card"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentPadding="{TemplateBinding Padding}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            CornerRadius="6"
+                            Elevation="1"
+                            Foreground="{TemplateBinding Foreground}"
+                            Style="{StaticResource AtcApps.Styles.Card}" />
+
+                        <!--  Selection / hover / focus frame drawn over the card border  -->
+                        <Border
+                            x:Name="PART_Frame"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            CornerRadius="6"
+                            IsHitTestVisible="False" />
+
+                        <!--  Check mark (Multiple) or radio dot (single-select modes)  -->
+                        <Grid
+                            x:Name="PART_Indicator"
+                            Width="20"
+                            Height="20"
+                            Margin="0,8,8,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            IsHitTestVisible="False"
+                            Visibility="Collapsed">
+                            <Ellipse x:Name="PART_IndicatorCircle" Fill="{DynamicResource AtcApps.Brushes.Accent}" />
+                            <Path
+                                x:Name="PART_CheckMark"
+                                Margin="5,6,5,5"
+                                Data="M 0,4 L 3.5,7.5 L 10,0"
+                                Stretch="Uniform"
+                                Stroke="{DynamicResource AtcApps.Brushes.IdealForeground}"
+                                StrokeEndLineCap="Round"
+                                StrokeLineJoin="Round"
+                                StrokeStartLineCap="Round"
+                                StrokeThickness="2" />
+                            <Ellipse
+                                x:Name="PART_RadioDot"
+                                Width="8"
+                                Height="8"
+                                Fill="{DynamicResource AtcApps.Brushes.IdealForeground}"
+                                Visibility="Collapsed" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Frame" Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="PART_Frame" Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Accent2}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="PART_Frame" Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="ShowCheckMark" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Indicator" Property="Visibility" Value="Visible" />
+                        </MultiTrigger>
+                        <Trigger Property="IsRadioItem" Value="True">
+                            <Setter TargetName="PART_CheckMark" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_RadioDot" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_Card" Property="Opacity" Value="0.45" />
+                            <Setter TargetName="PART_Card" Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray10}" />
+                            <Setter TargetName="PART_IndicatorCircle" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AtcApps.Styles.CardSelector" TargetType="{x:Type selectors:CardSelector}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource AtcApps.Styles.CardSelectorItem}" />
+        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="None" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <layouts:UniformSpacingPanel
+                        ChildWrapping="Wrap"
+                        ItemHorizontalAlignment="{x:Null}"
+                        Orientation="Horizontal"
+                        Spacing="{Binding Path=ItemSpacing, RelativeSource={RelativeSource AncestorType={x:Type selectors:CardSelector}}}" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type selectors:CardSelector}">
+                    <Border
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ScrollViewer
+                            CanContentScroll="False"
+                            Focusable="False"
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                            <!--  Room for the card shadows  -->
+                            <ItemsPresenter Margin="2,2,4,4" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

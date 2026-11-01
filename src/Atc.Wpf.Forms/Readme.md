@@ -47,14 +47,21 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Features](#features-9)
       - [Usage Example](#usage-example-9)
   - [Selection Controls](#selection-controls)
+    - [LabelCascaderComboBox](#labelcascadercombobox)
     - [LabelCheckBox](#labelcheckbox)
       - [Features](#features-10)
       - [Properties](#properties-4)
       - [Usage Example](#usage-example-10)
+    - [LabelCheckListBox](#labelchecklistbox)
+    - [LabelChipGroup](#labelchipgroup)
     - [LabelComboBox](#labelcombobox)
       - [Features](#features-11)
       - [Properties](#properties-5)
       - [Usage Example](#usage-example-11)
+    - [LabelMultiColumnComboBox](#labelmulticolumncombobox)
+    - [LabelMultiSelectComboBox](#labelmultiselectcombobox)
+    - [LabelTokenBox](#labeltokenbox)
+    - [LabelTreeSelectComboBox](#labeltreeselectcombobox)
     - [LabelToggleSwitch](#labeltoggleswitch)
       - [Features](#features-12)
       - [Usage Example](#usage-example-12)
@@ -109,6 +116,9 @@ Label controls provide a consistent way to display labeled input fields with val
       - [Features](#features-26)
       - [Usage Example](#usage-example-26)
   - [Base Controls](#base-controls)
+  - [Forms Generated from a Model](#forms-generated-from-a-model)
+    - [Type Mapping](#type-mapping)
+    - [Multi-Select Properties](#multi-select-properties)
   - [Validation Behavior](#validation-behavior)
     - [Validation Implementation](#validation-implementation)
   - [Theming](#theming)
@@ -152,7 +162,7 @@ Here's a complete list of all available Label Controls organized by category:
 | **Text Input** | LabelTextBox, LabelPasswordBox |
 | **Number Input** | LabelIntegerBox, LabelDecimalBox, LabelIntegerXyBox, LabelDecimalXyBox, LabelPixelSizeBox |
 | **Date/Time** | LabelDatePicker, LabelTimePicker, LabelDateTimePicker |
-| **Selection** | LabelCheckBox, LabelComboBox, LabelToggleSwitch |
+| **Selection** | LabelCascaderComboBox, LabelCheckBox, LabelCheckListBox, LabelChipGroup, LabelComboBox, LabelMultiColumnComboBox, LabelMultiSelectComboBox, LabelTokenBox, LabelToggleSwitch, LabelTreeSelectComboBox |
 | **Selectors** | LabelAccentColorSelector, LabelCountrySelector, LabelFontFamilySelector, LabelLanguageSelector, LabelThemeSelector, LabelThemeAndAccentColorSelectors, LabelWellKnownColorSelector |
 | **Pickers** | LabelColorPicker, LabelDirectoryPicker, LabelFilePicker |
 | **Slider** | LabelSlider |
@@ -481,6 +491,21 @@ A labeled control combining date and time selection.
 
 ## Selection Controls
 
+### LabelCascaderComboBox
+
+A labeled multi-select cascader (`CascaderComboBox`): a drop-down with one column per hierarchy level and tri-state check boxes, for deep, uniform hierarchies (country › region › city). `CheckedKeysStrategy` defaults to `Parents`; `ShowFullPath` puts the full path ("Denmark / Jutland / Aarhus") in the summary and the chips; the filter searches every loaded level; `LoadChildrenAsync` loads children when a row becomes active. `IsMandatory` means at least one key is ticked; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelCascaderComboBox_Readme.md](LabelCascaderComboBox_Readme.md).
+
+```xml
+<atc:LabelCascaderComboBox
+    DisplayMode="Chips"
+    IsMandatory="True"
+    LabelText="Sales regions"
+    Nodes="{Binding Path=Regions}"
+    SelectedKeys="{Binding Path=RegionKeys}"
+    ShowFullPath="True"
+    WatermarkText="Pick regions" />
+```
+
 ### LabelCheckBox
 
 A labeled checkbox for boolean selection.
@@ -510,6 +535,30 @@ A labeled checkbox for boolean selection.
 <atc:LabelCheckBox
     LabelText="Select All"
     IsChecked="{Binding SelectAllState, Mode=TwoWay}" />
+```
+
+### LabelCheckListBox
+
+A labeled, always-visible check list (`CheckListBox`) for ticking several keys: tri-state Select all with a count, filter, groups, a selection limit, disabled keys and `CheckBox` / `Highlight` / `Switch` row styles. `IsMandatory` means at least one key is ticked. See [LabelCheckListBox_Readme.md](LabelCheckListBox_Readme.md).
+
+```xml
+<atc:LabelCheckListBox
+    IsMandatory="True"
+    Items="{Binding Path=ExportColumns}"
+    LabelText="Columns to export"
+    SelectedKeys="{Binding Path=SelectedExportColumns}" />
+```
+
+### LabelChipGroup
+
+A labeled group of toggle chips (`ChipGroup`) for 2–15 short options, all visible: `Multiple`, `Single` or `SingleOrNone` selection, `Filled` / `Outlined` chips, an optional **All** chip, icons and counts per key, a selection limit and disabled keys. `IsMandatory` means at least one key is selected; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelChipGroup_Readme.md](LabelChipGroup_Readme.md).
+
+```xml
+<atc:LabelChipGroup
+    IsMandatory="True"
+    Items="{Binding Path=WorkDays}"
+    LabelText="Work days"
+    SelectedKeys="{Binding Path=SelectedWorkDays}" />
 ```
 
 ### LabelComboBox
@@ -546,6 +595,67 @@ A labeled dropdown/combo box for item selection.
     LabelText="Status"
     ItemsSource="{Binding StatusOptions}"
     SelectedItem="{Binding CurrentStatus, Mode=TwoWay}" />
+```
+
+### LabelMultiColumnComboBox
+
+A labeled multi-column multi-select drop-down (`MultiColumnComboBox`): closed it shows a summary like `LabelMultiSelectComboBox`; open it shows a sortable grid of objects with a check-box column (header = "select all shown"), a filter across the visible columns and a "{0} of {1} selected" footer, for choosing by comparing several attributes (number, name, city). `KeyMemberPath` / `DisplayMemberPath` read the key and name; `Columns` (or `AutoGenerateColumns`) define the grid. `IsMandatory` means at least one key is ticked; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelMultiColumnComboBox_Readme.md](LabelMultiColumnComboBox_Readme.md).
+
+```xml
+<atc:LabelMultiColumnComboBox
+    DisplayMemberPath="Name"
+    IsMandatory="True"
+    ItemsSource="{Binding Path=Customers}"
+    KeyMemberPath="Number"
+    LabelText="Customers"
+    SelectedKeys="{Binding Path=CustomerNumbers}">
+    <atc:LabelMultiColumnComboBox.Columns>
+        <DataGridTextColumn Binding="{Binding Path=Number}" Header="No." />
+        <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name" />
+        <DataGridTextColumn Binding="{Binding Path=City}" Header="City" />
+    </atc:LabelMultiColumnComboBox.Columns>
+</atc:LabelMultiColumnComboBox>
+```
+
+### LabelMultiSelectComboBox
+
+A labeled multi-select drop-down (`MultiSelectComboBox`): closed it looks like `LabelComboBox` and shows a summary ("Orders, Payments", "3 of 5 selected", "All"); open it shows a check list with Select all, Clear and a filter. `DisplayMode` switches the closed box to removable chips or a count; `MaxSelectionCount`, `CommitMode="Deferred"` (OK / Cancel) and `ItemGroups` are passed through. `IsMandatory` means at least one key is ticked; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelMultiSelectComboBox_Readme.md](LabelMultiSelectComboBox_Readme.md).
+
+```xml
+<atc:LabelMultiSelectComboBox
+    IsMandatory="True"
+    Items="{Binding Path=SourceSystems}"
+    LabelText="Source systems"
+    SelectedKeys="{Binding Path=SelectedSourceSystems}"
+    WatermarkText="Pick source systems" />
+```
+
+### LabelTokenBox
+
+A labeled token field (`TokenBox`): the user types to pick several values, each shown as a removable chip, with a suggestion pop-up (the match in bold). `AllowCreate` turns unknown text into new tokens (checked by `CreateValidator`, keyed through `TokenCreating`); pasted text is split on the separators and new lines; `SuggestionsProvider` adds a debounced asynchronous lookup for huge or remote lists. `IsMandatory` means at least one token; tokens beyond `MaxSelectionCount` make `IsValid()` false. See [LabelTokenBox_Readme.md](LabelTokenBox_Readme.md).
+
+```xml
+<atc:LabelTokenBox
+    AllowCreate="True"
+    Items="{Binding Path=KnownTags}"
+    LabelText="Tags"
+    MaxSelectionCount="10"
+    SelectedKeys="{Binding Path=Tags}"
+    WatermarkText="Add tags" />
+```
+
+### LabelTreeSelectComboBox
+
+A labeled drop-down with a tri-state check tree (`TreeSelectComboBox`): ticking a parent ticks everything under it and a parent shows a partial mark when only some children are ticked. `CheckedKeysStrategy` decides whether `SelectedKeys` holds the ticked leaves, the top-most fully ticked parents or all ticked nodes; the summary shows names, chips or a count; `LoadChildrenAsync` loads children lazily. `IsMandatory` means at least one key is ticked; keys beyond `MaxSelectionCount` make `IsValid()` false. See [LabelTreeSelectComboBox_Readme.md](LabelTreeSelectComboBox_Readme.md).
+
+```xml
+<atc:LabelTreeSelectComboBox
+    CheckedKeysStrategy="Parents"
+    IsMandatory="True"
+    LabelText="Sales regions"
+    Nodes="{Binding Path=Regions}"
+    SelectedKeys="{Binding Path=RegionKeys}"
+    WatermarkText="Pick regions" />
 ```
 
 ### LabelToggleSwitch
@@ -993,6 +1103,79 @@ The following base controls (without labels) are also available in `Atc.Wpf.Cont
 - `ToggleSwitch` - On/off toggle
 
 These base controls provide the core functionality and can be used independently without the label wrapper.
+
+## Forms Generated from a Model
+
+`ModelToLabelControlExtractor.Extract(model)` creates a label control for each public property of a model, and
+`LabelControlsForm` lays them out (for example in an `InputFormDialogBox`). `LabelControlsFormToModelWriter.Update(model, form)`
+writes the edited values back into a copy of the model.
+
+```csharp
+var labelControlsForm = new LabelControlsForm();
+labelControlsForm.AddColumn(ModelToLabelControlExtractor.Extract(person));
+
+// ... the user edits the form ...
+
+var updatedPerson = LabelControlsFormToModelWriter.Update(person, labelControlsForm);
+```
+
+### Type Mapping
+
+| Property type | Control |
+|---------------|---------|
+| `string`, `Guid` | `LabelTextBox` |
+| `int`, `uint`, `long`, `ulong`, `short`, `ushort` | `LabelIntegerBox` |
+| `decimal`, `double`, `float` | `LabelDecimalBox` |
+| `bool` | `LabelCheckBox` |
+| enum | `LabelComboBox` |
+| `[Flags]` enum | `LabelMultiSelectComboBox` |
+| `T[]`, `List<T>`, `IList<T>`, `ICollection<T>`, `IEnumerable<T>`, `IReadOnlyList<T>`, `IReadOnlyCollection<T>`, `HashSet<T>`, `ISet<T>` of an enum | `LabelMultiSelectComboBox` |
+| the same collections of `string` | `LabelTokenBox` (free values, `AllowCreate="True"`) |
+| `DateTime`, `DateTimeOffset` | `LabelDateTimePicker` |
+| `DateOnly` | `LabelDatePicker` |
+| `TimeOnly` | `LabelTimePicker` |
+| `Point2D` | `LabelDecimalXyBox` |
+| `Size` | `LabelPixelSizeBox` |
+| `Color` | `LabelWellKnownColorSelector` |
+| `CultureInfo` (name contains "Country" / "Language") | `LabelCountrySelector` / `LabelLanguageSelector` |
+| `DirectoryInfo` / `FileInfo` | `LabelDirectoryPicker` / `LabelFilePicker` |
+| other class | its properties, nested up to `ModelToLabelControlExtractor.MaxNestingDepth` levels |
+
+Nullable value types map like the type they wrap. Other collections (dictionaries, collections of other element
+types) and indexed properties are skipped. A property without a public setter becomes a disabled control, or is
+skipped with `includeReadOnly: false`.
+
+### Multi-Select Properties
+
+```csharp
+[Flags]
+public enum ContactChannels { None = 0, Email = 1, Phone = 2, Sms = 4, Post = 8 }
+
+public record Person
+{
+    public ContactChannels PreferredContactChannels { get; init; }  // LabelMultiSelectComboBox
+
+    [Required]
+    public List<DayOfWeek> WorkDays { get; init; } = [];          // LabelMultiSelectComboBox
+
+    [MaxLength(5)]
+    public IList<string> Tags { get; init; } = [];                // LabelTokenBox
+}
+```
+
+- **`[Flags]` enum:** the items are the single flags. Zero (`None`) and combined values (such as `ReadWrite = Read | Write`) are not
+  items; a combined value in the model ticks the flags it is made of. The ticked flags are written back as one combined value, and
+  an empty selection writes the zero value (also for a nullable `[Flags]` enum).
+- **Collection of an enum:** the items are the enum values except `None`, `Unknown` and `Default`, as for a single enum.
+- **Collection of `string`:** a `LabelTokenBox` without items that turns any typed value into a token.
+- **Attributes:** `[Required]` sets `IsMandatory` (at least one value). `[MaxLength(n)]` or `[Length(min, n)]` sets
+  `MaxSelectionCount` to `n`.
+- **Write-back:** the selected keys are written as a new collection of the property's type. A `null` collection in the model
+  comes back as an empty collection, and an empty selection writes an empty collection.
+- To use another multi-select control (for example a `LabelCheckListBox` or `LabelChipGroup`) for a property, build that control
+  with `LabelControlFactory` and add it to the form yourself; there is no attribute that picks the control. Its `LabelText` must
+  give the property name as `Identifier`, and for a `[Flags]` enum set `InputDataType` to the enum type so the ticked keys are
+  written back as one combined value.
 
 ## Validation Behavior
 

@@ -1,0 +1,80 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfForms.LabelControls.LabelCascaderComboBoxView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
+
+                <atc:LabelCascaderComboBox
+                    x:Name="InteractiveLabelCascaderComboBox"
+                    AutomationProperties.AutomationId="InteractiveLabelCascaderComboBox"
+                    InformationText="{Binding InformationText}"
+                    IsMandatory="{Binding IsMandatory}"
+                    LabelText="{Binding LabelText}"
+                    Orientation="{Binding Orientation}"
+                    WatermarkText="Pick sales regions" />
+
+                <TextBlock
+                    x:Name="EventLog"
+                    AutomationProperties.AutomationId="LabelCascaderComboBoxLog"
+                    TextWrapping="Wrap" />
+
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <StackPanel Grid.Column="0" Margin="10">
+
+                        <atc:LabelCascaderComboBox
+                            x:Name="RegionsBox"
+                            LabelText="Regions"
+                            WatermarkText="Any region" />
+
+                        <atc:LabelCascaderComboBox
+                            x:Name="MandatoryBox"
+                            InformationText="Tick at least one region."
+                            IsMandatory="True"
+                            LabelText="Regions (mandatory)"
+                            WatermarkText="Pick regions" />
+
+                        <atc:LabelCascaderComboBox
+                            x:Name="ChipsBox"
+                            DisplayMode="Chips"
+                            LabelText="Regions (chips, full path)"
+                            ShowFullPath="True"
+                            WatermarkText="Pick regions" />
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+
+                        <atc:LabelCascaderComboBox
+                            x:Name="VerticalBox"
+                            LabelText="Products"
+                            Orientation="Vertical"
+                            WatermarkText="Any product" />
+
+                        <atc:LabelCascaderComboBox
+                            x:Name="LimitBox"
+                            AllText="Everywhere"
+                            CheckedKeysStrategy="Leaves"
+                            DisplayMode="Count"
+                            InformationText="At most three cities."
+                            IsMandatory="True"
+                            LabelText="Cities (mandatory, at most 3)"
+                            MaxSelectionCount="3"
+                            NoneText="No cities"
+                            Orientation="Vertical" />
+
+                    </StackPanel>
+                </atc:GridEx>
+
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
+</UserControl>

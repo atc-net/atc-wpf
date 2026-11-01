@@ -43,6 +43,7 @@ public static class LabelControlFactory
             LabelText = labelText.NormalizePascalCase(),
             IsEnabled = !isReadOnly,
             IsMandatory = isMandatory,
+            InputDataType = inputDataType,
             Items = new Dictionary<string, string>(StringComparer.Ordinal),
         };
 
@@ -75,6 +76,347 @@ public static class LabelControlFactory
         {
             control.SelectedKey = selectedKey;
         }
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelCheckListBox"/> with the given label, items and ticked keys.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the list is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be ticked.</param>
+    /// <param name="items">The items, keyed by their selection key, with their display value.</param>
+    /// <param name="selectedKeys">The keys ticked initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control.</returns>
+    public static LabelCheckListBox CreateLabelCheckListBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IDictionary<string, string> items,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(items);
+
+        var control = new LabelCheckListBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
+            SelectedKeys = CreateKeys(selectedKeys),
+        };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelMultiSelectComboBox"/> with the given label, items and ticked keys.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the drop-down is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be ticked.</param>
+    /// <param name="items">The items, keyed by their selection key, with their display value.</param>
+    /// <param name="selectedKeys">The keys ticked initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control.</returns>
+    public static LabelMultiSelectComboBox CreateLabelMultiSelectComboBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IDictionary<string, string> items,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(items);
+
+        var control = new LabelMultiSelectComboBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
+            SelectedKeys = CreateKeys(selectedKeys),
+        };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelMultiSelectComboBox"/> for a <c>[Flags]</c> enum property or a collection-of-enum
+    /// property (an array, <see cref="List{T}"/>, <see cref="HashSet{T}"/> or one of their collection interfaces).
+    /// The items are the enum values: for a <c>[Flags]</c> enum the single flags (no zero and no combined values),
+    /// otherwise every value except None, Unknown and Default. The label is the property name; <c>[Required]</c>
+    /// makes it mandatory and <c>[MaxLength]</c> or <c>[Length]</c> sets <c>MaxSelectionCount</c>.
+    /// </summary>
+    /// <param name="propertyInfo">The property.</param>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="isReadOnly">Whether the drop-down is read-only (disabled).</param>
+    /// <param name="selectedKeys">The names of the values ticked initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control, with <c>InputDataType</c> set to the property type.</returns>
+    /// <exception cref="ArgumentException">The property is neither a <c>[Flags]</c> enum nor a supported collection of an enum.</exception>
+    public static LabelMultiSelectComboBox CreateLabelMultiSelectComboBox(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        Type enumType;
+        if (MultiSelectPropertyHelper.IsFlagsEnum(propertyInfo.PropertyType))
+        {
+            enumType = propertyInfo.PropertyType.GetNonNullableType();
+        }
+        else if (MultiSelectPropertyHelper.TryGetCollectionElementType(propertyInfo.PropertyType, out var elementType) &&
+                 elementType.IsEnum)
+        {
+            enumType = elementType;
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"The property {propertyInfo.Name} must be a [Flags] enum or a collection of an enum.",
+                nameof(propertyInfo));
+        }
+
+        var control = CreateLabelMultiSelectComboBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            MultiSelectPropertyHelper.GetEnumItems(enumType),
+            selectedKeys);
+
+        control.InputDataType = propertyInfo.PropertyType;
+        control.MaxSelectionCount = MultiSelectPropertyHelper.GetMaxSelectionCount(propertyInfo);
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelTokenBox"/> with the given label, known values and tokens.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the field is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one token is required.</param>
+    /// <param name="items">The known values, keyed by their selection key, with their display value.</param>
+    /// <param name="selectedKeys">The tokens initially, or <see langword="null"/> for none.</param>
+    /// <param name="allowCreate">Whether text that matches no item becomes a new token.</param>
+    /// <returns>The created control.</returns>
+    public static LabelTokenBox CreateLabelTokenBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IDictionary<string, string> items,
+        IEnumerable<string>? selectedKeys,
+        bool allowCreate = false)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(items);
+
+        var control = new LabelTokenBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            AllowCreate = allowCreate,
+            Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
+            SelectedKeys = CreateKeys(selectedKeys),
+        };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelTokenBox"/> for a collection-of-string property (an array, <see cref="List{T}"/>,
+    /// <see cref="HashSet{T}"/> or one of their collection interfaces). It has no items and accepts any typed value
+    /// as a token. The label is the property name; <c>[Required]</c> makes it mandatory and <c>[MaxLength]</c> or
+    /// <c>[Length]</c> sets <c>MaxSelectionCount</c>.
+    /// </summary>
+    /// <param name="propertyInfo">The property.</param>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="isReadOnly">Whether the field is read-only (disabled).</param>
+    /// <param name="selectedKeys">The tokens initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control, with <c>InputDataType</c> set to the property type.</returns>
+    public static LabelTokenBox CreateLabelTokenBox(
+        PropertyInfo propertyInfo,
+        string groupIdentifier,
+        bool isReadOnly,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+
+        var control = CreateLabelTokenBox(
+            groupIdentifier,
+            propertyInfo.Name,
+            isReadOnly,
+            propertyInfo.HasRequiredAttribute(),
+            new Dictionary<string, string>(StringComparer.Ordinal),
+            selectedKeys,
+            allowCreate: true);
+
+        control.InputDataType = propertyInfo.PropertyType;
+        control.MaxSelectionCount = MultiSelectPropertyHelper.GetMaxSelectionCount(propertyInfo);
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelTreeSelectComboBox"/> with the given label, tree and ticked keys.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the drop-down is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be ticked.</param>
+    /// <param name="nodes">The root nodes.</param>
+    /// <param name="selectedKeys">The keys ticked initially, or <see langword="null"/> for none.</param>
+    /// <param name="checkedKeysStrategy">Which ticked nodes the selected keys hold.</param>
+    /// <returns>The created control.</returns>
+    public static LabelTreeSelectComboBox CreateLabelTreeSelectComboBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IEnumerable<CheckTreeNode> nodes,
+        IEnumerable<string>? selectedKeys,
+        CheckedKeysStrategy checkedKeysStrategy = CheckedKeysStrategy.Leaves)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        var control = new LabelTreeSelectComboBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            CheckedKeysStrategy = checkedKeysStrategy,
+            Nodes = new ObservableCollection<CheckTreeNode>(nodes),
+            SelectedKeys = CreateKeys(selectedKeys),
+        };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelCascaderComboBox"/> with the given label, tree and ticked keys.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the drop-down is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be ticked.</param>
+    /// <param name="nodes">The root nodes (the first column).</param>
+    /// <param name="selectedKeys">The keys ticked initially, or <see langword="null"/> for none.</param>
+    /// <param name="checkedKeysStrategy">Which ticked nodes the selected keys hold.</param>
+    /// <returns>The created control.</returns>
+    public static LabelCascaderComboBox CreateLabelCascaderComboBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IEnumerable<CheckTreeNode> nodes,
+        IEnumerable<string>? selectedKeys,
+        CheckedKeysStrategy checkedKeysStrategy = CheckedKeysStrategy.Parents)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        var control = new LabelCascaderComboBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            CheckedKeysStrategy = checkedKeysStrategy,
+            Nodes = new ObservableCollection<CheckTreeNode>(nodes),
+            SelectedKeys = CreateKeys(selectedKeys),
+        };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelMultiColumnComboBox"/> with the given label, items and ticked keys. Without explicit
+    /// columns, the grid shows one text column per public property of the items.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the drop-down is read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be ticked.</param>
+    /// <param name="itemsSource">The objects shown as rows.</param>
+    /// <param name="keyMemberPath">The (dotted) property path of an item's key.</param>
+    /// <param name="displayMemberPath">The (dotted) property path of an item's display value.</param>
+    /// <param name="selectedKeys">The keys ticked initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control.</returns>
+    public static LabelMultiColumnComboBox CreateLabelMultiColumnComboBox(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IEnumerable itemsSource,
+        string keyMemberPath,
+        string displayMemberPath,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(itemsSource);
+
+        var control = new LabelMultiColumnComboBox
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            AutoGenerateColumns = true,
+            KeyMemberPath = keyMemberPath,
+            DisplayMemberPath = displayMemberPath,
+            SelectedKeys = CreateKeys(selectedKeys),
+            ItemsSource = itemsSource,
+        };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LabelChipGroup"/> with the given label, items and selected keys.
+    /// </summary>
+    /// <param name="groupIdentifier">The group identifier.</param>
+    /// <param name="labelText">The label text.</param>
+    /// <param name="isReadOnly">Whether the chips are read-only (disabled).</param>
+    /// <param name="isMandatory">Whether at least one key must be selected.</param>
+    /// <param name="items">The items, keyed by their selection key, with their display value.</param>
+    /// <param name="selectedKeys">The keys selected initially, or <see langword="null"/> for none.</param>
+    /// <returns>The created control.</returns>
+    public static LabelChipGroup CreateLabelChipGroup(
+        string groupIdentifier,
+        string labelText,
+        bool isReadOnly,
+        bool isMandatory,
+        IDictionary<string, string> items,
+        IEnumerable<string>? selectedKeys)
+    {
+        ArgumentNullException.ThrowIfNull(labelText);
+        ArgumentNullException.ThrowIfNull(items);
+
+        var control = new LabelChipGroup
+        {
+            GroupIdentifier = groupIdentifier,
+            LabelText = labelText.NormalizePascalCase(),
+            IsEnabled = !isReadOnly,
+            IsMandatory = isMandatory,
+            Items = new Dictionary<string, string>(items, StringComparer.Ordinal),
+            SelectedKeys = CreateKeys(selectedKeys),
+        };
 
         return control;
     }
@@ -145,12 +487,19 @@ public static class LabelControlFactory
             var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
             if (rangeLengthAttribute is not null)
             {
-                minimum = Convert.ToDecimal(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
-                maximum = Convert.ToDecimal(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
+                minimum = NumberClampHelper.ToDecimal(((RangeAttribute)rangeLengthAttribute).Minimum);
+                maximum = NumberClampHelper.ToDecimal(((RangeAttribute)rangeLengthAttribute).Maximum);
             }
         }
 
-        return CreateLabelDecimalBox(
+        var isIntegralType = IntegralTypeHelper.TryGetBounds(inputType, out var typeMinimum, out var typeMaximum);
+        if (isIntegralType)
+        {
+            minimum = minimum.HasValue ? System.Math.Max(minimum.Value, typeMinimum) : typeMinimum;
+            maximum = maximum.HasValue ? System.Math.Min(maximum.Value, typeMaximum) : typeMaximum;
+        }
+
+        var control = CreateLabelDecimalBox(
             groupIdentifier,
             propertyInfo.Name,
             isReadOnly,
@@ -160,6 +509,13 @@ public static class LabelControlFactory
             value,
             minimum,
             maximum);
+
+        if (isIntegralType)
+        {
+            control.DecimalPlaces = 0;
+        }
+
+        return control;
     }
 
     /// <summary>
@@ -225,8 +581,8 @@ public static class LabelControlFactory
             var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
             if (rangeLengthAttribute is not null)
             {
-                minimum = Convert.ToDecimal(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
-                maximum = Convert.ToDecimal(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
+                minimum = NumberClampHelper.ToDecimal(((RangeAttribute)rangeLengthAttribute).Minimum);
+                maximum = NumberClampHelper.ToDecimal(((RangeAttribute)rangeLengthAttribute).Maximum);
             }
         }
 
@@ -304,9 +660,17 @@ public static class LabelControlFactory
             var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
             if (rangeLengthAttribute is not null)
             {
-                minimum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
-                maximum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
+                minimum = NumberClampHelper.ToInt32(((RangeAttribute)rangeLengthAttribute).Minimum);
+                maximum = NumberClampHelper.ToInt32(((RangeAttribute)rangeLengthAttribute).Maximum);
             }
+        }
+
+        if (IntegralTypeHelper.TryGetBounds(inputType, out var typeMinimum, out var typeMaximum))
+        {
+            var intMinimum = (int)System.Math.Max(typeMinimum, int.MinValue);
+            var intMaximum = (int)System.Math.Min(typeMaximum, int.MaxValue);
+            minimum = minimum.HasValue ? System.Math.Max(minimum.Value, intMinimum) : intMinimum;
+            maximum = maximum.HasValue ? System.Math.Min(maximum.Value, intMaximum) : intMaximum;
         }
 
         return CreateLabelIntegerBox(
@@ -384,8 +748,8 @@ public static class LabelControlFactory
             var rangeLengthAttribute = customAttributes.FirstOrDefault(x => x.GetType() == typeof(RangeAttribute));
             if (rangeLengthAttribute is not null)
             {
-                minimum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Minimum, CultureInfo.InvariantCulture);
-                maximum = Convert.ToInt32(((RangeAttribute)rangeLengthAttribute).Maximum, CultureInfo.InvariantCulture);
+                minimum = NumberClampHelper.ToInt32(((RangeAttribute)rangeLengthAttribute).Minimum);
+                maximum = NumberClampHelper.ToInt32(((RangeAttribute)rangeLengthAttribute).Maximum);
             }
         }
 
@@ -966,5 +1330,16 @@ public static class LabelControlFactory
         };
 
         return control;
+    }
+
+    /// <summary>
+    /// Creates a control-owned key collection: a bulk change made by the control raises a single notification.
+    /// </summary>
+    private static Atc.Wpf.Collections.ObservableCollectionEx<string> CreateKeys(
+        IEnumerable<string>? selectedKeys)
+    {
+        var keys = new Atc.Wpf.Collections.ObservableCollectionEx<string>();
+        keys.AddRange(selectedKeys ?? []);
+        return keys;
     }
 }

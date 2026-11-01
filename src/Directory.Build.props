@@ -14,10 +14,13 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/$(OrganizationName)/$(RepositoryName)</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
+    <!-- Each package ships its own nuget.org readme (absolute links only), not the repository README. -->
+    <PackageReadmeFile>README.nuget.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="README.nuget.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <PropertyGroup Label="Build instructions">
@@ -34,6 +37,17 @@
   </PropertyGroup>
 
   <!--
+    Package validation runs on 'dotnet pack' (not on build): it compares the public API of each
+    package with the last published release and fails on a breaking change.
+    After a release, bump PackageValidationBaselineVersion to the version just published and delete
+    any CompatibilitySuppressions.xml entries that only applied to the old baseline.
+  -->
+  <PropertyGroup Label="Package validation">
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>4.2.1</PackageValidationBaselineVersion>
+  </PropertyGroup>
+
+  <!--
   By default builds are non-deterministic, meaning there is no guarantee that building the same code twice(on the same or different machines)
   will produce exactly the same binary output. Deterministic builds are important as they enable verification that the resulting
   binary was built from the specified source and provides traceability.
@@ -47,7 +61,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.402" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.403" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

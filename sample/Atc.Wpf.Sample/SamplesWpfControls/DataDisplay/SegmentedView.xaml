@@ -23,14 +23,169 @@
 
                 <!--  Interactive demo  -->
                 <dataDisplay:Segmented
+                    AutomationProperties.AutomationId="ViewSwitcher"
                     CornerRadius="{Binding CornerRadius, Converter={StaticResource DoubleToCornerRadiusConverter}}"
                     EqualSegmentWidth="{Binding EqualSegmentWidth}"
-                    SelectedIndex="{Binding SelectedIndex}">
+                    IsJoined="{Binding IsJoined}"
+                    Orientation="{Binding Orientation}"
+                    SelectedIndex="{Binding SelectedIndex}"
+                    SelectionMode="{Binding SelectionMode}"
+                    Size="{Binding Size}">
                     <dataDisplay:SegmentedItem Content="Day" />
                     <dataDisplay:SegmentedItem Content="Week" />
                     <dataDisplay:SegmentedItem Content="Month" />
                     <dataDisplay:SegmentedItem Content="Year" />
                 </dataDisplay:Segmented>
+
+                <!--  Weekday picker (multiple)  -->
+                <atc:GroupBoxExpander Header="Weekday picker (SelectionMode=Multiple)">
+                    <StackPanel Margin="10">
+                        <dataDisplay:Segmented
+                            x:Name="InteractiveBox"
+                            HorizontalAlignment="Left"
+                            AutomationProperties.AutomationId="InteractiveBox"
+                            AutomationProperties.Name="Weekdays"
+                            SelectedKeys="{Binding WeekdayKeys}"
+                            SelectionMode="Multiple">
+                            <dataDisplay:SegmentedItem Key="mon" Content="Mon" />
+                            <dataDisplay:SegmentedItem Key="tue" Content="Tue" />
+                            <dataDisplay:SegmentedItem Key="wed" Content="Wed" />
+                            <dataDisplay:SegmentedItem Key="thu" Content="Thu" />
+                            <dataDisplay:SegmentedItem Key="fri" Content="Fri" />
+                            <dataDisplay:SegmentedItem Key="sat" Content="Sat" />
+                            <dataDisplay:SegmentedItem Key="sun" Content="Sun" />
+                        </dataDisplay:Segmented>
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            FontWeight="Bold"
+                            Text="SelectedKeysChanged events (one line per toggle):" />
+                        <TextBlock
+                            x:Name="SelectedKeysLog"
+                            AutomationProperties.AutomationId="SelectedKeysLog"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </atc:GroupBoxExpander>
+
+                <!--  Text style (icon only, multiple)  -->
+                <atc:GroupBoxExpander Header="Text style (IconOnly, SelectionMode=Multiple, Size=Small)">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <dataDisplay:Segmented
+                            EqualSegmentWidth="False"
+                            IconOnly="True"
+                            SelectedKeys="{Binding TextStyleKeys}"
+                            SelectionMode="Multiple"
+                            Size="Small">
+                            <dataDisplay:SegmentedItem Key="bold" Content="Bold">
+                                <dataDisplay:SegmentedItem.Icon>
+                                    <TextBlock
+                                        MinWidth="12"
+                                        FontWeight="Bold"
+                                        Text="B"
+                                        TextAlignment="Center" />
+                                </dataDisplay:SegmentedItem.Icon>
+                            </dataDisplay:SegmentedItem>
+                            <dataDisplay:SegmentedItem Key="italic" Content="Italic">
+                                <dataDisplay:SegmentedItem.Icon>
+                                    <TextBlock
+                                        MinWidth="12"
+                                        FontStyle="Italic"
+                                        Text="I"
+                                        TextAlignment="Center" />
+                                </dataDisplay:SegmentedItem.Icon>
+                            </dataDisplay:SegmentedItem>
+                            <dataDisplay:SegmentedItem Key="underline" Content="Underline">
+                                <dataDisplay:SegmentedItem.Icon>
+                                    <TextBlock
+                                        MinWidth="12"
+                                        Text="U"
+                                        TextAlignment="Center"
+                                        TextDecorations="Underline" />
+                                </dataDisplay:SegmentedItem.Icon>
+                            </dataDisplay:SegmentedItem>
+                        </dataDisplay:Segmented>
+                        <TextBlock
+                            Margin="12,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding TextStyleSummary}" />
+                    </StackPanel>
+                </atc:GroupBoxExpander>
+
+                <!--  Vertical  -->
+                <atc:GroupBoxExpander Header="Map layers (Orientation=Vertical; Multiple and SingleOrNone)">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <dataDisplay:Segmented
+                            Width="180"
+                            VerticalAlignment="Top"
+                            CornerRadius="8"
+                            Orientation="Vertical"
+                            SelectedKeys="{Binding MapLayerKeys}"
+                            SelectionMode="Multiple">
+                            <dataDisplay:SegmentedItem Key="roads" Content="Roads" />
+                            <dataDisplay:SegmentedItem Key="terrain" Content="Terrain" />
+                            <dataDisplay:SegmentedItem Key="traffic" Content="Traffic" />
+                            <dataDisplay:SegmentedItem
+                                Key="transit"
+                                Content="Transit (unavailable)"
+                                IsEnabled="False" />
+                        </dataDisplay:Segmented>
+                        <dataDisplay:Segmented
+                            Width="180"
+                            Margin="24,0,0,0"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical"
+                            SelectedIndex="1"
+                            SelectionMode="SingleOrNone">
+                            <dataDisplay:SegmentedItem Content="Satellite" />
+                            <dataDisplay:SegmentedItem Content="Hybrid" />
+                            <dataDisplay:SegmentedItem Content="Standard" />
+                        </dataDisplay:Segmented>
+                    </StackPanel>
+                </atc:GroupBoxExpander>
+
+                <!--  Separated pills  -->
+                <atc:GroupBoxExpander Header="Notification channels (IsJoined=False, ItemSpacing=8) and sizes">
+                    <StackPanel Margin="10">
+                        <dataDisplay:Segmented
+                            HorizontalAlignment="Left"
+                            CornerRadius="14"
+                            EqualSegmentWidth="False"
+                            IsJoined="False"
+                            ItemSpacing="8"
+                            SelectedKeys="{Binding ChannelKeys}"
+                            SelectionMode="Multiple">
+                            <dataDisplay:SegmentedItem Key="email" Content="E-mail" />
+                            <dataDisplay:SegmentedItem Key="sms" Content="SMS" />
+                            <dataDisplay:SegmentedItem Key="push" Content="Push" />
+                        </dataDisplay:Segmented>
+                        <TextBlock
+                            Margin="0,15,0,10"
+                            FontWeight="Bold"
+                            Text="Sizes (Small, Medium, Large)" />
+                        <StackPanel Orientation="Horizontal">
+                            <dataDisplay:Segmented
+                                VerticalAlignment="Center"
+                                SelectedIndex="0"
+                                Size="Small">
+                                <dataDisplay:SegmentedItem Content="Day" />
+                                <dataDisplay:SegmentedItem Content="Week" />
+                            </dataDisplay:Segmented>
+                            <dataDisplay:Segmented
+                                Margin="12,0"
+                                VerticalAlignment="Center"
+                                SelectedIndex="0">
+                                <dataDisplay:SegmentedItem Content="Day" />
+                                <dataDisplay:SegmentedItem Content="Week" />
+                            </dataDisplay:Segmented>
+                            <dataDisplay:Segmented
+                                VerticalAlignment="Center"
+                                SelectedIndex="0"
+                                Size="Large">
+                                <dataDisplay:SegmentedItem Content="Day" />
+                                <dataDisplay:SegmentedItem Content="Week" />
+                            </dataDisplay:Segmented>
+                        </StackPanel>
+                    </StackPanel>
+                </atc:GroupBoxExpander>
 
                 <!--  With Icons  -->
                 <dataDisplay:Segmented SelectedIndex="0">

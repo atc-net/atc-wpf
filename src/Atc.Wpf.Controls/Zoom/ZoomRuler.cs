@@ -45,7 +45,7 @@ public sealed partial class ZoomRuler : FrameworkElement
             Brushes.Gray,
             FrameworkPropertyMetadataOptions.AffectsRender));
 
-    [DependencyProperty(DefaultValue = 8.0)]
+    [DependencyProperty(DefaultValue = 10.0, Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
     private double fontSize;
 
     // Rendered on every pan/zoom frame: the pen is rebuilt only when TickBrush changes.
@@ -125,33 +125,21 @@ public sealed partial class ZoomRuler : FrameworkElement
         var extent = ActualWidth;
         var height = ActualHeight;
 
-        var spacing = CalculateTickSpacing(zoom);
         var tickPen = CreateTickPen();
 
-        var start = System.Math.Floor(offset / spacing) * spacing;
-        var pos = start;
-        var screenPos = (pos - offset) * zoom;
-
-        while (screenPos <= extent)
+        foreach (var (pos, screenPos, isMajor) in EnumerateTicks(offset, extent, zoom))
         {
-            if (screenPos >= 0)
+            var tickHeight = isMajor ? height * 0.7 : height * 0.35;
+
+            dc.DrawLine(
+                tickPen,
+                new Point(screenPos, height - tickHeight),
+                new Point(screenPos, height));
+
+            if (isMajor)
             {
-                var isMajor = IsMajorTick(pos, spacing);
-                var tickHeight = isMajor ? height * 0.7 : height * 0.35;
-
-                dc.DrawLine(
-                    tickPen,
-                    new Point(screenPos, height - tickHeight),
-                    new Point(screenPos, height));
-
-                if (isMajor)
-                {
-                    DrawLabel(dc, FormatLabel(pos, pixelsPerDip), new Point(screenPos + 2, 1));
-                }
+                DrawLabel(dc, FormatLabel(pos, pixelsPerDip), new Point(screenPos + 2, 1));
             }
-
-            pos += spacing;
-            screenPos = (pos - offset) * zoom;
         }
     }
 
@@ -164,37 +152,56 @@ public sealed partial class ZoomRuler : FrameworkElement
         var extent = ActualHeight;
         var width = ActualWidth;
 
-        var spacing = CalculateTickSpacing(zoom);
         var tickPen = CreateTickPen();
 
-        var start = System.Math.Floor(offset / spacing) * spacing;
-        var pos = start;
-        var screenPos = (pos - offset) * zoom;
-
-        while (screenPos <= extent)
+        foreach (var (pos, screenPos, isMajor) in EnumerateTicks(offset, extent, zoom))
         {
-            if (screenPos >= 0)
+            var tickWidth = isMajor ? width * 0.7 : width * 0.35;
+
+            dc.DrawLine(
+                tickPen,
+                new Point(width - tickWidth, screenPos),
+                new Point(width, screenPos));
+
+            if (isMajor)
             {
-                var isMajor = IsMajorTick(pos, spacing);
-                var tickWidth = isMajor ? width * 0.7 : width * 0.35;
+                var text = FormatLabel(pos, pixelsPerDip);
+                var rotateTransform = new RotateTransform(-90, 2, screenPos + 2);
+                dc.PushTransform(rotateTransform);
+                DrawLabel(dc, text, new Point(2, screenPos + 2));
+                dc.Pop();
+            }
+        }
+    }
 
-                dc.DrawLine(
-                    tickPen,
-                    new Point(width - tickWidth, screenPos),
-                    new Point(width, screenPos));
+    /// <summary>
+    /// Lists the ticks visible in a ruler of the given extent (in screen units).
+    /// </summary>
+    /// <remarks>
+    /// Each tick position is computed from its integer index, not by adding the spacing up, so a fractional
+    /// spacing does not drift and every 5th tick is reliably major.
+    /// </remarks>
+    internal static IEnumerable<(double Position, double ScreenPosition, bool IsMajor)> EnumerateTicks(
+        double offset,
+        double extent,
+        double zoom)
+    {
+        var spacing = CalculateTickSpacing(zoom);
 
-                if (isMajor)
-                {
-                    var text = FormatLabel(pos, pixelsPerDip);
-                    var rotateTransform = new RotateTransform(-90, 2, screenPos + 2);
-                    dc.PushTransform(rotateTransform);
-                    DrawLabel(dc, text, new Point(2, screenPos + 2));
-                    dc.Pop();
-                }
+        var index = (long)System.Math.Floor(offset / spacing);
+        var position = index * spacing;
+        var screenPosition = (position - offset) * zoom;
+
+        while (screenPosition <= extent)
+        {
+            if (screenPosition >= 0)
+            {
+                yield return (position, screenPosition, index % 5 == 0);
             }
 
-            pos += spacing;
-            screenPos = (pos - offset) * zoom;
+            index++;
+            position = index * spacing;
+            screenPosition = (position - offset) * zoom;
         }
     }
 
@@ -245,7 +252,7 @@ public sealed partial class ZoomRuler : FrameworkElement
             CultureInfo.InvariantCulture,
             FlowDirection.LeftToRight,
             LabelTypeface,
-            10.0,
+            FontSize,
             LabelBrush,
             pixelsPerDip);
     }
@@ -268,14 +275,6 @@ public sealed partial class ZoomRuler : FrameworkElement
         }
 
         return baseSpacing;
-    }
-
-    private static bool IsMajorTick(
-        double position,
-        double spacing)
-    {
-        var majorSpacing = spacing * 5;
-        return System.Math.Abs(position % majorSpacing) < spacing * 0.1;
     }
 
     private static void OnZoomBoxChanged(

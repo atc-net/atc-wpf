@@ -97,6 +97,23 @@ public partial class InfoDialogBox
     private void PopulateContentControl(string contentText)
         => ContentControl = Helpers.DialogBoxHelper.CreateContentControl(contentText, Settings.ContentSvgImage);
 
+    /// <inheritdoc />
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+
+        base.OnKeyDown(e);
+
+        // An OK-only dialog closes on Escape like a message box, with the same result as OK.
+        if (e.Handled || e.Key != Key.Escape)
+        {
+            return;
+        }
+
+        e.Handled = true;
+        OnOkClick(this, e);
+    }
+
     private void OnOkClick(
         object sender,
         RoutedEventArgs e)

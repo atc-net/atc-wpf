@@ -145,9 +145,7 @@ public abstract class SvgIconBase : MarkupExtension
                     if (isCompressed)
                     {
                         using var stream = svgStream;
-                        using var zipStream = new GZipStream(
-                            svgStream,
-                            CompressionMode.Decompress);
+                        using var zipStream = SvgLimits.Decompress(svgStream);
                         using var reader = new SvgFileReader(
                             OverrideColor,
                             OverrideStrokeColor);
@@ -212,9 +210,7 @@ public abstract class SvgIconBase : MarkupExtension
                     if (isGZipped)
                     {
                         using var stream = new MemoryStream(imageBytes);
-                        using var zipStream = new GZipStream(
-                            stream,
-                            CompressionMode.Decompress);
+                        using var zipStream = SvgLimits.Decompress(stream);
                         using var reader = new SvgFileReader(
                             OverrideColor,
                             OverrideStrokeColor);

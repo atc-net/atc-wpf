@@ -25,8 +25,10 @@ public partial class NumericBox : Control
         RegexOptions.Compiled,
         TimeSpan.FromSeconds(1));
 
+    // The atomic group keeps each 1-2 digit chunk once it has matched, so a long digit run
+    // followed by a non-hex character fails in linear time instead of backtracking exponentially.
     private static readonly Regex RegexHexadecimal = new(
-        @"^([a-fA-F0-9]{1,2}\s?)+$",
+        @"^(?>[a-fA-F0-9]{1,2}\s?)+$",
         RegexOptions.Compiled,
         TimeSpan.FromSeconds(1));
 
@@ -154,7 +156,11 @@ public partial class NumericBox : Control
         PropertyChangedCallback = nameof(OnIntervalPropertyChanged))]
     private double interval;
 
-    [DependencyProperty(DefaultValue = true)]
+    /// <summary>
+    /// Whether the mouse wheel changes the value while the pointer is over an unfocused box.
+    /// Off by default, so scrolling a form doesn't change every box the pointer passes.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false)]
     private bool trackMouseWheelWhenMouseOver;
 
     [DependencyProperty]
@@ -260,10 +266,41 @@ public partial class NumericBox : Control
     protected override AutomationPeer OnCreateAutomationPeer()
         => new NumericBoxAutomationPeer(this);
 
+    /// <summary>
+    /// Seeds <see cref="Culture"/> with the current UI culture as a current value, so the box starts in the UI culture
+    /// and keeps following it, while a local value, a style setter or a binding still takes precedence.
+    /// </summary>
+    private protected void UseUiCultureUntilSet()
+        => SetCurrentValue(
+            CultureProperty,
+            CultureInfo.CurrentUICulture);
+
     private void OnUiCultureChanged(
         object? sender,
         UiCultureEventArgs e)
-        => Culture = Thread.CurrentThread.CurrentUICulture;
+    {
+        if (!Dispatcher.CheckAccess())
+        {
+            _ = Dispatcher.BeginInvoke(new Action(() => FollowUiCulture(e.NewCulture)));
+            return;
+        }
+
+        FollowUiCulture(e.NewCulture);
+    }
+
+    private void FollowUiCulture(CultureInfo newCulture)
+    {
+        // Only a Culture nobody has set follows the UI culture: a local value, a style setter or a binding is kept.
+        // SetCurrentValue leaves the value source at Default, so the box keeps following later switches too.
+        if (DependencyPropertyHelper.GetValueSource(this, CultureProperty).BaseValueSource != BaseValueSource.Default)
+        {
+            return;
+        }
+
+        SetCurrentValue(
+            CultureProperty,
+            newCulture);
+    }
 
     private static void OnDelayPropertyChanged(
         DependencyObject d,
@@ -377,7 +414,17 @@ public partial class NumericBox : Control
             return;
         }
 
-        (d as NumericBox)?.OnValueChanged(
+        if (d is not NumericBox numericBox)
+        {
+            return;
+        }
+
+        numericBox.OnValueChanged(
+            (double?)e.OldValue,
+            (double?)e.NewValue);
+
+        // Lets Narrator / NVDA announce values changed by spin, keys, wheel, typing or binding.
+        (UIElementAutomationPeer.FromElement(numericBox) as NumericBoxAutomationPeer)?.RaiseValuePropertyChangedEvent(
             (double?)e.OldValue,
             (double?)e.NewValue);
     }
@@ -476,7 +523,7 @@ public partial class NumericBox : Control
         numericBox.OnMinimumChanged(
             (double)e.OldValue,
             (double)e.NewValue);
-        numericBox.EnableDisableUpDown();
+        numericBox.UpdateSpinButtonsEnabled();
     }
 
     private static void OnMaximumPropertyChanged(
@@ -490,7 +537,7 @@ public partial class NumericBox : Control
         numericBox.OnMaximumChanged(
             (double)e.OldValue,
             (double)e.NewValue);
-        numericBox.EnableDisableUpDown();
+        numericBox.UpdateSpinButtonsEnabled();
     }
 
     private static object CoerceMaximum(
@@ -635,6 +682,8 @@ public partial class NumericBox : Control
 
     private void ToggleReadOnlyMode(bool isReadOnly)
     {
+        UpdateSpinButtonsEnabled();
+
         if (repeatUp is null || repeatDown is null || valueTextBox is null)
         {
             return;
@@ -748,37 +797,27 @@ public partial class NumericBox : Control
 
         base.OnPreviewMouseWheel(e);
 
-        if (InterceptMouseWheel && (IsFocused || valueTextBox?.IsFocused == true || TrackMouseWheelWhenMouseOver))
+        // The wheel changes the value only when the box can be edited and is focused (or tracks the
+        // wheel on hover). Otherwise the wheel is left alone, so a surrounding page keeps scrolling.
+        var consumesWheel = InterceptMouseWheel &&
+                            IsEnabled &&
+                            !IsReadOnly &&
+                            (IsKeyboardFocusWithin || TrackMouseWheelWhenMouseOver);
+
+        if (consumesWheel && e.Delta != 0)
         {
-            var increment = e.Delta > 0;
-            ChangeValueWithSpeedUp(increment);
+            // One notch is one Interval: the hold-to-accelerate speed-up is for spin buttons and arrow keys only.
+            ChangeValueInternal(e.Delta > 0 ? Interval : -Interval);
+            e.Handled = true;
         }
 
         var sv = TryFindScrollViewer();
-
         if (sv is not null && handlesMouseWheelScrolling.Value is not null)
         {
-            if (TrackMouseWheelWhenMouseOver)
-            {
-                handlesMouseWheelScrolling.Value.SetValue(
-                    sv,
-                    value: true,
-                    index: null);
-            }
-            else if (InterceptMouseWheel)
-            {
-                handlesMouseWheelScrolling.Value.SetValue(
-                    sv,
-                    valueTextBox?.IsFocused == true,
-                    index: null);
-            }
-            else
-            {
-                handlesMouseWheelScrolling.Value.SetValue(
-                    sv,
-                    value: true,
-                    index: null);
-            }
+            handlesMouseWheelScrolling.Value.SetValue(
+                sv,
+                consumesWheel,
+                index: null);
         }
     }
 
@@ -834,6 +873,8 @@ public partial class NumericBox : Control
         double? oldValue,
         double? newValue)
     {
+        UpdateSpinButtonsEnabled();
+
         if (!manualChange)
         {
             if (!newValue.HasValue)
@@ -857,23 +898,8 @@ public partial class NumericBox : Control
                 return;
             }
 
-            if (repeatUp is { IsEnabled: false })
-            {
-                repeatUp.IsEnabled = true;
-            }
-
-            if (repeatDown is { IsEnabled: false })
-            {
-                repeatDown.IsEnabled = true;
-            }
-
             if (newValue <= Minimum)
             {
-                if (repeatDown is not null)
-                {
-                    repeatDown.IsEnabled = false;
-                }
-
                 ResetInternal();
 
                 if (IsLoaded)
@@ -884,11 +910,6 @@ public partial class NumericBox : Control
 
             if (newValue >= Maximum)
             {
-                if (repeatUp is not null)
-                {
-                    repeatUp.IsEnabled = false;
-                }
-
                 ResetInternal();
                 if (IsLoaded)
                 {
@@ -1178,26 +1199,21 @@ public partial class NumericBox : Control
             CoerceValue(this, val).Item1);
     }
 
-    private void EnableDisableDown()
-    {
-        if (repeatDown is not null)
-        {
-            repeatDown.IsEnabled = Value is null || Value > Minimum;
-        }
-    }
-
-    private void EnableDisableUp()
+    /// <summary>
+    /// The one place that enables the spin buttons: off while read-only, otherwise on until the value reaches
+    /// the matching end of the range.
+    /// </summary>
+    private void UpdateSpinButtonsEnabled()
     {
         if (repeatUp is not null)
         {
-            repeatUp.IsEnabled = Value is null || Value < Maximum;
+            repeatUp.IsEnabled = !IsReadOnly && (Value is null || Value < Maximum);
         }
-    }
 
-    private void EnableDisableUpDown()
-    {
-        EnableDisableUp();
-        EnableDisableDown();
+        if (repeatDown is not null)
+        {
+            repeatDown.IsEnabled = !IsReadOnly && (Value is null || Value > Minimum);
+        }
     }
 
     private void OnTextBoxKeyDown(
@@ -1307,29 +1323,19 @@ public partial class NumericBox : Control
                     value: null);
             }
         }
-        else if (manualChange)
+        else if (manualChange &&
+                 ValidateText(
+                     text,
+                     out var convertedValue))
         {
-            if (ValidateText(
-                text,
-                out var convertedValue))
-            {
-                convertedValue = FormattedValue(
-                    convertedValue,
-                    StringFormat,
-                    SpecificCultureInfo);
-                SetValueTo(convertedValue);
-            }
-            else if (DefaultValue.HasValue)
-            {
-                SetValueTo(DefaultValue.Value);
-                InternalSetText(Value);
-            }
-            else
-            {
-                SetCurrentValue(
-                    ValueProperty,
-                    value: null);
-            }
+            // Only parsable text updates the value. Typed text that doesn't parse yet is an edit in progress
+            // (e.g. a half-deleted currency symbol), so the value is kept instead of jumping to DefaultValue;
+            // LostFocus restores the formatted text.
+            convertedValue = FormattedValue(
+                convertedValue,
+                StringFormat,
+                SpecificCultureInfo);
+            SetValueTo(convertedValue);
         }
 
         OnValueChanged(
@@ -1377,11 +1383,6 @@ public partial class NumericBox : Control
 
     private void ResetInternal()
     {
-        if (IsReadOnly)
-        {
-            return;
-        }
-
         internalLargeChange = 100 * Interval;
         internalIntervalMultiplierForCalculation = Interval;
         intervalValueSinceReset = 0;
@@ -1415,8 +1416,14 @@ public partial class NumericBox : Control
             return false;
         }
 
-        // Hexadecimal input legitimately contains the letters A-F; any other letter is invalid.
+        // Hexadecimal input legitimately contains the letters A-F; any other letter is invalid,
+        // except the letters the StringFormat itself writes (e.g. "kr.", "zł", "CHF", " kg").
         var allowsHexLetters = ParsingNumberStyle.HasFlag(NumberStyles.AllowHexSpecifier);
+        if (!allowsHexLetters)
+        {
+            text = RemoveFormatLetterRuns(text);
+        }
+
         if (text.Any(c => char.IsLetter(c) && !(allowsHexLetters && char.IsAsciiHexDigit(c))))
         {
             return false;
@@ -1455,6 +1462,57 @@ public partial class NumericBox : Control
             ParsingNumberStyle,
             SpecificCultureInfo,
             out convertedValue);
+    }
+
+    /// <summary>
+    /// Removes the runs of letters that the current <see cref="StringFormat"/> writes around the number
+    /// (a currency symbol such as "kr" or "zł", or a unit such as "kg"), so an edited formatted text can be parsed.
+    /// </summary>
+    private string RemoveFormatLetterRuns(string text)
+    {
+        if (string.IsNullOrWhiteSpace(StringFormat) ||
+            !text.Any(char.IsLetter))
+        {
+            return text;
+        }
+
+        var formatCulture = SpecificCultureInfo;
+        var sample = FormattedValueString(1234.5, StringFormat, formatCulture) +
+                     " " +
+                     FormattedValueString(-1234.5, StringFormat, formatCulture);
+
+        var letterRuns = new HashSet<string>(StringComparer.Ordinal);
+        var start = -1;
+        for (var i = 0; i <= sample.Length; i++)
+        {
+            var isLetter = i < sample.Length && char.IsLetter(sample[i]);
+            if (isLetter && start < 0)
+            {
+                start = i;
+            }
+            else if (!isLetter && start >= 0)
+            {
+                var run = sample[start..i];
+
+                // An exponent marker is part of the number, not a literal of the format.
+                if (run is not ("E" or "e"))
+                {
+                    letterRuns.Add(run);
+                }
+
+                start = -1;
+            }
+        }
+
+        foreach (var run in letterRuns.OrderByDescending(r => r.Length))
+        {
+            text = text.Replace(
+                run,
+                string.Empty,
+                StringComparison.Ordinal);
+        }
+
+        return text.Trim();
     }
 
     private bool ConvertNumber(

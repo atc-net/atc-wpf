@@ -137,4 +137,55 @@ public static class KeySymMapper
         Key key,
         out uint keySym)
         => KeyMap.TryGetValue(key, out keySym);
+
+    /// <summary>
+    /// Tries to map a typed character to its X11 keysym value used by the VNC protocol.
+    /// </summary>
+    /// <remarks>
+    /// Latin-1 characters use their code point as keysym (for example 0x00E6 for 'æ'); every other
+    /// character uses the Unicode keysym 0x01000000 + code point (for example 0x010020AC for '€').
+    /// Control characters and lone surrogates have no keysym.
+    /// </remarks>
+    /// <param name="character">The typed character.</param>
+    /// <param name="keySym">When this method returns <see langword="true"/>, the matching keysym; otherwise zero.</param>
+    /// <returns><see langword="true"/> if the character has a keysym; otherwise <see langword="false"/>.</returns>
+    public static bool TryGetKeySym(
+        char character,
+        out uint keySym)
+    {
+        if (char.IsSurrogate(character))
+        {
+            keySym = 0;
+            return false;
+        }
+
+        return TryGetKeySym(new Rune(character), out keySym);
+    }
+
+    /// <summary>
+    /// Tries to map a typed Unicode scalar value to its X11 keysym value used by the VNC protocol.
+    /// </summary>
+    /// <remarks>
+    /// Latin-1 characters use their code point as keysym; every other character uses the Unicode
+    /// keysym 0x01000000 + code point. Control characters have no keysym.
+    /// </remarks>
+    /// <param name="rune">The typed Unicode scalar value.</param>
+    /// <param name="keySym">When this method returns <see langword="true"/>, the matching keysym; otherwise zero.</param>
+    /// <returns><see langword="true"/> if the character has a keysym; otherwise <see langword="false"/>.</returns>
+    public static bool TryGetKeySym(
+        Rune rune,
+        out uint keySym)
+    {
+        if (Rune.IsControl(rune))
+        {
+            keySym = 0;
+            return false;
+        }
+
+        var codePoint = (uint)rune.Value;
+        keySym = codePoint <= 0xFF
+            ? codePoint
+            : 0x01000000u + codePoint;
+        return true;
+    }
 }

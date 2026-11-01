@@ -12,19 +12,18 @@ public sealed partial class TerminalViewer : IDisposable
     private const double FontSizeStep = 1d;
     private const double DefaultFontSizeValue = 12d;
 
-    private readonly Channel<TerminalReceivedDataEventArgs> receivedDataChannel =
-        Channel.CreateUnbounded<TerminalReceivedDataEventArgs>(
-            new UnboundedChannelOptions
-            {
-                SingleReader = true,
-                SingleWriter = false,
-                AllowSynchronousContinuations = false,
-            });
+    private const int DefaultMaxLines = 10000;
+
+    // Lines received but not yet shown. Any thread writes; only the drain loop takes. It holds at most MaxLines
+    // lines (older ones would be trimmed on display anyway), so a paused viewer cannot grow without limit, and a
+    // clear advances its generation so a batch already on its way to the UI thread is discarded.
+    private readonly BoundedBatchQueue<string> pendingLines = new(DefaultMaxLines);
 
     private readonly CancellationTokenSource cts = new();
     private readonly Task? queueProcessingTask;
 
-    private Regex? compiledSearchRegex;
+    private readonly TerminalLineBuffer lineBuffer = new();
+
     private int nextLineNumber = 1;
     private AnsiSgrState ansiState = AnsiSgrState.Default;
     private bool isDisposed;
@@ -61,6 +60,8 @@ public sealed partial class TerminalViewer : IDisposable
     public TerminalViewer()
     {
         InitializeComponent();
+
+        ListViewTerminal.ItemsSource = lineBuffer.Lines;
 
         // Intentionally NOT setting DataContext = this. Doing so would
         // override the inherited DataContext on the <atc:TerminalViewer>
@@ -167,8 +168,9 @@ public sealed partial class TerminalViewer : IDisposable
 
     /// <summary>
     /// When <c>true</c>, the drain loop stops dispatching incoming lines while
-    /// the channel keeps capturing them. The Pause toolbar toggle shows the
-    /// live <see cref="BufferedCount"/> while paused. Default <c>false</c>.
+    /// it keeps capturing them (the newest <see cref="MaxLines"/> lines). The
+    /// Pause toolbar toggle shows the live <see cref="BufferedCount"/> while
+    /// paused. Default <c>false</c>.
     /// </summary>
     [DependencyProperty(
         DefaultValue = false,
@@ -180,10 +182,12 @@ public sealed partial class TerminalViewer : IDisposable
     /// Maximum number of lines kept in the visible buffer. When new lines push
     /// the count past this value, the oldest lines are dropped. <c>0</c>
     /// disables the cap (only safe for short-running sessions). Default <c>10000</c>.
+    /// While paused, at most this many received lines are kept for display.
     /// </summary>
     [DependencyProperty(
-        DefaultValue = 10000,
-        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+        DefaultValue = DefaultMaxLines,
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnMaxLinesChanged))]
     private int maxLines;
 
     /// <summary>
@@ -282,6 +286,16 @@ public sealed partial class TerminalViewer : IDisposable
         }
     }
 
+    private static void OnMaxLinesChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        if (d is TerminalViewer tv)
+        {
+            tv.pendingLines.Capacity = (int)e.NewValue;
+        }
+    }
+
     private static void OnEnableAnsiParsingChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -317,7 +331,7 @@ public sealed partial class TerminalViewer : IDisposable
         Messenger.Default.UnRegister<TerminalReceivedDataEventArgs>(this, TerminalReceivedDataHandle);
         Messenger.Default.UnRegister<TerminalClearEventArgs>(this, TerminalClearEventArgsHandle);
 
-        receivedDataChannel.Writer.TryComplete();
+        pendingLines.Complete();
         cts.Cancel();
 
         // Dispose the CTS only after the background loop has actually exited,
@@ -359,74 +373,20 @@ public sealed partial class TerminalViewer : IDisposable
     {
         if (d is TerminalViewer tv)
         {
-            tv.RebuildSearchRegex();
-            tv.ApplyFilterAndCountMatches();
-        }
-    }
-
-    private void RebuildSearchRegex()
-    {
-        compiledSearchRegex = null;
-        if (string.IsNullOrEmpty(SearchText) || !UseRegex)
-        {
-            return;
-        }
-
-        try
-        {
-            compiledSearchRegex = new Regex(
-                SearchText,
-                RegexOptions.IgnoreCase | RegexOptions.Compiled,
-                TimeSpan.FromMilliseconds(50));
-        }
-        catch (ArgumentException)
-        {
-            // Invalid pattern — leave compiledSearchRegex null; LineMatches treats this as "no match".
+            tv.lineBuffer.ApplySearch(tv.SearchText, tv.UseRegex, tv.HideNonMatching);
+            tv.SyncMatchCount();
         }
     }
 
     private bool LineMatches(string text)
+        => lineBuffer.Matcher.IsMatch(text);
+
+    private void SyncMatchCount()
     {
-        if (string.IsNullOrEmpty(SearchText))
-        {
-            return true;
-        }
-
-        if (UseRegex)
-        {
-            return compiledSearchRegex is not null && compiledSearchRegex.IsMatch(text);
-        }
-
-        return text.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+        MatchCount = lineBuffer.MatchCount;
+        NextMatchCommand.RaiseCanExecuteChanged();
+        PreviousMatchCommand.RaiseCanExecuteChanged();
     }
-
-    private void ApplyFilterAndCountMatches()
-    {
-        var filterEnabled = HideNonMatching && !string.IsNullOrEmpty(SearchText);
-        ListViewTerminal.Items.Filter = filterEnabled
-            ? FilterPredicate
-            : null;
-
-        if (string.IsNullOrEmpty(SearchText))
-        {
-            MatchCount = 0;
-            return;
-        }
-
-        var count = 0;
-        foreach (var item in ListViewTerminal.Items.SourceCollection)
-        {
-            if (item is TerminalLineItem line && LineMatches(line.Text))
-            {
-                count++;
-            }
-        }
-
-        MatchCount = count;
-    }
-
-    private bool FilterPredicate(object item)
-        => item is not TerminalLineItem line || LineMatches(line.Text);
 
     [RelayCommand]
     private void FocusSearch()
@@ -602,47 +562,39 @@ public sealed partial class TerminalViewer : IDisposable
     [RelayCommand(CanExecute = nameof(CanExecuteHasItems))]
     private void ClearScreen()
     {
-        var pinned = ListViewTerminal.Items
-            .OfType<TerminalLineItem>()
-            .Where(line => line.IsPinned)
-            .ToList();
-
-        ListViewTerminal.Items.Clear();
+        lineBuffer.ClearUnpinned();
 
         // Reset the line-number counter so the next received line starts fresh.
         // Pinned lines keep their original numbers (purely informational).
         nextLineNumber = 1;
 
-        foreach (var p in pinned)
-        {
-            ListViewTerminal.Items.Add(p);
-        }
-
         ResetTailState();
-        ApplyFilterAndCountMatches();
+        SyncMatchCount();
     }
 
     [RelayCommand]
     private void TogglePinSelected()
     {
+        var lines = lineBuffer.Lines;
         var indices = new List<int>();
         foreach (var item in ListViewTerminal.SelectedItems)
         {
-            var idx = ListViewTerminal.Items.IndexOf(item);
-            if (idx >= 0)
+            if (item is TerminalLineItem line)
             {
-                indices.Add(idx);
+                var idx = lines.IndexOf(line);
+                if (idx >= 0)
+                {
+                    indices.Add(idx);
+                }
             }
         }
 
         // Replace each selected item with a pin-toggled copy. Done in a
-        // separate pass since the indices reference the live ItemCollection.
+        // separate pass since the indices reference the live collection.
         foreach (var idx in indices)
         {
-            if (ListViewTerminal.Items[idx] is TerminalLineItem line)
-            {
-                ListViewTerminal.Items[idx] = line with { IsPinned = !line.IsPinned };
-            }
+            var line = lines[idx];
+            lines[idx] = line with { IsPinned = !line.IsPinned };
         }
     }
 
@@ -665,7 +617,7 @@ public sealed partial class TerminalViewer : IDisposable
             return;
         }
 
-        receivedDataChannel.Writer.TryWrite(obj);
+        pendingLines.EnqueueRange(obj.Lines);
     }
 
     private void TerminalClearEventArgsHandle(TerminalClearEventArgs obj)
@@ -675,28 +627,29 @@ public sealed partial class TerminalViewer : IDisposable
             return;
         }
 
-        while (receivedDataChannel.Reader.TryRead(out _))
-        {
-            // Drain whatever was buffered so the cleared screen stays clear.
-        }
+        // Drop what is waiting and invalidate a batch already taken by the drain loop, so the cleared screen stays
+        // clear. The drain loop is the only reader; clearing goes through the queue's lock instead of reading it.
+        pendingLines.Clear();
 
         var dispatcher = ListViewTerminal.Dispatcher;
         if (dispatcher.CheckAccess())
         {
-            ListViewTerminal.Items.Clear();
-            ResetTailState();
+            ClearAllLines();
         }
         else
         {
             _ = dispatcher.InvokeAsync(
-                () =>
-                {
-                    ListViewTerminal.Items.Clear();
-                    ResetTailState();
-                },
+                ClearAllLines,
                 DispatcherPriority.Render,
                 CancellationToken.None);
         }
+    }
+
+    private void ClearAllLines()
+    {
+        lineBuffer.Clear();
+        ResetTailState();
+        SyncMatchCount();
     }
 
     private void ResetTailState()
@@ -705,7 +658,7 @@ public sealed partial class TerminalViewer : IDisposable
         IsDetachedFromTail = false;
         NewSinceDetached = 0;
         UpdateBufferedCount();
-        if (ListViewTerminal.Items.Count == 0)
+        if (lineBuffer.Lines.Count == 0)
         {
             nextLineNumber = 1;
             ansiState = AnsiSgrState.Default;
@@ -714,8 +667,6 @@ public sealed partial class TerminalViewer : IDisposable
 
     private async Task ProcessQueueContinuously(CancellationToken token)
     {
-        var reader = receivedDataChannel.Reader;
-
         try
         {
             while (!token.IsCancellationRequested)
@@ -727,12 +678,12 @@ public sealed partial class TerminalViewer : IDisposable
                     continue;
                 }
 
-                if (!await reader.WaitToReadAsync(token).ConfigureAwait(false))
+                if (!await pendingLines.WaitToReadAsync(token).ConfigureAwait(false))
                 {
                     return;
                 }
 
-                if (!await DrainAndDispatchBatchAsync(reader, token).ConfigureAwait(false))
+                if (!await DrainAndDispatchBatchAsync(token).ConfigureAwait(false))
                 {
                     return;
                 }
@@ -745,36 +696,30 @@ public sealed partial class TerminalViewer : IDisposable
     }
 
     /// <summary>
-    /// Drains everything currently in the channel, dispatches it as a single
-    /// batch on the UI thread, and (when auto-scroll is on) issues one tail
-    /// scroll for the batch. Returns <c>false</c> when the loop should exit.
+    /// Takes everything currently waiting, dispatches it as a single batch on
+    /// the UI thread (at Background priority, so input stays responsive under
+    /// load), and (when auto-scroll is on) issues one tail scroll for the batch.
+    /// Returns <c>false</c> when the loop should exit.
     /// </summary>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive transient dispatch failures during shutdown.")]
-    private async Task<bool> DrainAndDispatchBatchAsync(
-        ChannelReader<TerminalReceivedDataEventArgs> reader,
-        CancellationToken token)
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Drain loop must survive a failing batch and stop cleanly on shutdown.")]
+    private async Task<bool> DrainAndDispatchBatchAsync(CancellationToken token)
     {
         if (isPausedSnapshot)
         {
             return true;
         }
 
-        var batch = new List<TerminalReceivedDataEventArgs>(capacity: 16);
-        while (reader.TryRead(out var data))
-        {
-            batch.Add(data);
-        }
-
-        if (batch.Count == 0)
+        if (!pendingLines.TryTakeAll(out var batch))
         {
             return true;
         }
 
+        var dispatcher = ListViewTerminal.Dispatcher;
         try
         {
-            await ListViewTerminal.Dispatcher.InvokeAsync(
+            await dispatcher.InvokeAsync(
                 () => CommitBatchOnUiThread(batch),
-                DispatcherPriority.Render,
+                DispatcherPriority.Background,
                 token);
 
             UpdateBufferedCount();
@@ -793,18 +738,33 @@ public sealed partial class TerminalViewer : IDisposable
         {
             return false;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // App tearing down; give up cleanly.
-            return false;
+            if (isDisposed || token.IsCancellationRequested || dispatcher.HasShutdownStarted)
+            {
+                // App tearing down; give up cleanly.
+                return false;
+            }
+
+            // One failing batch must not stop the output for good: drop it and keep draining.
+            Trace.TraceWarning($"TerminalViewer dropped a batch of {batch.Items.Count} lines: {ex.Message}");
+            return true;
         }
     }
 
-    private void CommitBatchOnUiThread(
-        List<TerminalReceivedDataEventArgs> batch)
+    private void CommitBatchOnUiThread(BoundedBatch<string> batch)
     {
-        var addedCount = 0;
-        foreach (var line in batch.SelectMany(e => e.Lines))
+        if (batch.Generation != pendingLines.Generation)
+        {
+            // Cleared while this batch was on its way to the UI thread.
+            return;
+        }
+
+        // Lines dropped while the queue was full keep their numbers, so the numbering shows the gap.
+        nextLineNumber += batch.DroppedCount;
+
+        var items = new List<TerminalLineItem>(batch.Items.Count);
+        foreach (var line in batch.Items)
         {
             var text = line;
             IReadOnlyList<TerminalRun>? runs = null;
@@ -827,44 +787,31 @@ public sealed partial class TerminalViewer : IDisposable
                 LineNumber = nextLineNumber++,
                 Runs = runs,
             };
-            ListViewTerminal.Items.Add(item);
-            addedCount++;
+            items.Add(item);
         }
 
-        TrimToCap();
+        // Adds, trims and keeps the search filter and match count current without resetting the list.
+        lineBuffer.Add(items, MaxLines);
 
-        if (isUserDetachedSnapshot && addedCount > 0)
+        if (isUserDetachedSnapshot && items.Count > 0)
         {
-            NewSinceDetached += addedCount;
-        }
-
-        // Recount matches whenever new lines arrive (or get trimmed) so the
-        // toolbar badge stays live.
-        if (!string.IsNullOrEmpty(SearchText))
-        {
-            ApplyFilterAndCountMatches();
+            NewSinceDetached += items.Count;
         }
 
         CopyToClipboardCommand.RaiseCanExecuteChanged();
         ClearScreenCommand.RaiseCanExecuteChanged();
         ExportCommand.RaiseCanExecuteChanged();
-        NextMatchCommand.RaiseCanExecuteChanged();
-        PreviousMatchCommand.RaiseCanExecuteChanged();
+        SyncMatchCount();
 
         ListViewTerminal.UpdateLayout();
     }
 
-    private void TrimToCap()
-        => TerminalLineTrimmer.TrimToCap(ListViewTerminal.Items, MaxLines);
-
     private void UpdateBufferedCount()
     {
-        var count = receivedDataChannel.Reader.CanCount
-            ? receivedDataChannel.Reader.Count
-            : 0;
+        var count = pendingLines.Count;
 
-        var dispatcher = Application.Current?.Dispatcher;
-        if (dispatcher is null)
+        var dispatcher = ListViewTerminal.Dispatcher;
+        if (dispatcher.HasShutdownStarted)
         {
             return;
         }

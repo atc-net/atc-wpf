@@ -11,7 +11,8 @@ internal static class AutoScrollTestHelpers
     [SuppressMessage("Major Bug", "S2925:Do not use Thread.Sleep", Justification = "FlaUI E2E tests must yield real wall time for the WPF UI thread to render between actions.")]
     public static Application LaunchSample(
         out UIA3Automation automation,
-        out Window mainWindow)
+        out Window mainWindow,
+        bool traceBindingErrors = false)
     {
         var exePath = SampleAppPath.Resolve();
         var startInfo = new ProcessStartInfo(exePath)
@@ -19,6 +20,13 @@ internal static class AutoScrollTestHelpers
             UseShellExecute = false,
             WorkingDirectory = Path.GetDirectoryName(exePath)!,
         };
+
+        if (traceBindingErrors)
+        {
+            // The sample app then shows every data binding error in a "Binding Error" dialog
+            // (see BindingErrorWindows).
+            startInfo.Environment[BindingErrorWindows.TraceBindingErrorsVariable] = "1";
+        }
 
         var application = Application.Launch(startInfo);
         automation = new UIA3Automation();

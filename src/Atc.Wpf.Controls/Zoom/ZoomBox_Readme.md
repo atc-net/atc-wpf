@@ -49,7 +49,7 @@ using Atc.Wpf.Controls.Zoom;
 |----------|------|---------|-------------|
 | `UseAnimations` | `bool` | `true` | Enable/disable zoom animations |
 | `AnimationDuration` | `double` | `0.4` | Animation duration in seconds |
-| `ZoomInitialPosition` | `ZoomInitialPositionType` | `Default` | Initial zoom position on load |
+| `ZoomInitialPosition` | `ZoomInitialPositionType` | `Default` | Initial zoom position on load; re-applied when the content resizes until the user zooms or pans |
 | `ViewportZoom` | `double` | `1.0` | Current zoom level |
 | `MinimumZoom` | `double` | `0.1` | Minimum zoom level |
 | `MaximumZoom` | `double` | `10.0` | Maximum zoom level |
@@ -99,6 +99,8 @@ using Atc.Wpf.Controls.Zoom;
 | `Ctrl+Alt` + `8` | Zoom to fill |
 | `Ctrl+Alt` + `9` | Zoom to fit |
 | `Ctrl+Alt` + `0` | Zoom to 100% |
+
+Shortcuts (and `Space` for panning) are ignored while a text input inside the content (a `TextBox`, `RichTextBox`, `PasswordBox` or an editable `ComboBox`) has the keyboard focus, so typing a space or an AltGr character such as `[`, `]` or `}` (AltGr+8/9/0 on Danish and German keyboards) works there.
 
 ## 🖱️ Mouse Interactions
 

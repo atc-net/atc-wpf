@@ -146,25 +146,15 @@ public sealed class GridExTests
         // Act
         grid.Measure(new Size(200, 200));
 
-        // Assert - first child [0,0] should have right and bottom margin
-        Assert.Equal(10, child1.Margin.Right);
-        Assert.Equal(10, child1.Margin.Bottom);
-
-        // Assert - second child [0,1] should have bottom margin only (last column)
-        Assert.Equal(0, child2.Margin.Right);
-        Assert.Equal(10, child2.Margin.Bottom);
-
-        // Assert - third child [1,0] should have right margin only (last row)
-        Assert.Equal(10, child3.Margin.Right);
-        Assert.Equal(0, child3.Margin.Bottom);
-
-        // Assert - fourth child [1,1] should have no spacing margin (last row and column)
-        Assert.Equal(0, child4.Margin.Right);
-        Assert.Equal(0, child4.Margin.Bottom);
+        // Assert - each gap is split over the cells on both sides; the outer edges get none
+        Assert.Equal(new Thickness(0, 0, 5, 5), child1.Margin);
+        Assert.Equal(new Thickness(5, 0, 0, 5), child2.Margin);
+        Assert.Equal(new Thickness(0, 5, 5, 0), child3.Margin);
+        Assert.Equal(new Thickness(5, 5, 0, 0), child4.Margin);
     }
 
     [StaFact]
-    public void HorizontalSpacing_AppliedToChildren_AddsOnlyRightMargin()
+    public void HorizontalSpacing_AppliedToChildren_SplitsTheGapBetweenTheColumns()
     {
         // Arrange
         var grid = new GridEx
@@ -188,17 +178,13 @@ public sealed class GridExTests
         // Act
         grid.Measure(new Size(200, 100));
 
-        // Assert - first child should have right margin
-        Assert.Equal(15, child1.Margin.Right);
-        Assert.Equal(0, child1.Margin.Bottom);
-
-        // Assert - second child should have no margin (last column)
-        Assert.Equal(0, child2.Margin.Right);
-        Assert.Equal(0, child2.Margin.Bottom);
+        // Assert
+        Assert.Equal(new Thickness(0, 0, 7.5, 0), child1.Margin);
+        Assert.Equal(new Thickness(7.5, 0, 0, 0), child2.Margin);
     }
 
     [StaFact]
-    public void VerticalSpacing_AppliedToChildren_AddsOnlyBottomMargin()
+    public void VerticalSpacing_AppliedToChildren_SplitsTheGapBetweenTheRows()
     {
         // Arrange
         var grid = new GridEx
@@ -222,13 +208,9 @@ public sealed class GridExTests
         // Act
         grid.Measure(new Size(100, 200));
 
-        // Assert - first child should have bottom margin
-        Assert.Equal(0, child1.Margin.Right);
-        Assert.Equal(20, child1.Margin.Bottom);
-
-        // Assert - second child should have no margin (last row)
-        Assert.Equal(0, child2.Margin.Right);
-        Assert.Equal(0, child2.Margin.Bottom);
+        // Assert
+        Assert.Equal(new Thickness(0, 0, 0, 10), child1.Margin);
+        Assert.Equal(new Thickness(0, 10, 0, 0), child2.Margin);
     }
 
     [StaFact]
@@ -253,8 +235,8 @@ public sealed class GridExTests
         grid.Measure(new Size(200, 200));
 
         // Assert - individual spacing should override unified spacing
-        Assert.Equal(20, child1.Margin.Right);
-        Assert.Equal(5, child1.Margin.Bottom);
+        Assert.Equal(10, child1.Margin.Right);
+        Assert.Equal(2.5, child1.Margin.Bottom);
     }
 
     [StaFact]
@@ -296,18 +278,18 @@ public sealed class GridExTests
         var child = new Border();
         grid.Children.Add(child);
         grid.Measure(new Size(200, 200));
-        Assert.Equal(new Thickness(0, 0, 10, 10), child.Margin);
+        Assert.Equal(new Thickness(0, 0, 5, 5), child.Margin);
 
         // Act
         grid.Spacing = 20;
         grid.Measure(new Size(200, 200));
 
         // Assert
-        Assert.Equal(new Thickness(0, 0, 20, 20), child.Margin);
+        Assert.Equal(new Thickness(0, 0, 10, 10), child.Margin);
     }
 
     [StaFact]
-    public void Spacing_ChildMovedToLastCell_LosesTrailingSpacing()
+    public void Spacing_ChildMovedToLastCell_GetsOnlyLeadingSpacing()
     {
         // Arrange
         var grid = new GridEx
@@ -327,7 +309,7 @@ public sealed class GridExTests
         grid.Measure(new Size(200, 200));
 
         // Assert
-        Assert.Equal(new Thickness(0), child.Margin);
+        Assert.Equal(new Thickness(5, 5, 0, 0), child.Margin);
     }
 
     [StaFact]
@@ -396,5 +378,89 @@ public sealed class GridExTests
 
         // Assert
         Assert.Equal(new Thickness(3), child.Margin);
+    }
+
+    [StaFact]
+    public void Spacing_EqualStarColumns_GiveTheContentEqualWidths()
+    {
+        // Arrange
+        var grid = new GridEx
+        {
+            Columns = "*,*",
+            Spacing = 10,
+        };
+
+        var left = new Border();
+        var right = new Border();
+        Grid.SetColumn(right, 1);
+        grid.Children.Add(left);
+        grid.Children.Add(right);
+
+        // Act
+        grid.Measure(new Size(210, 50));
+        grid.Arrange(new Rect(0, 0, 210, 50));
+
+        // Assert
+        Assert.Equal(100, left.ActualWidth, precision: 6);
+        Assert.Equal(100, right.ActualWidth, precision: 6);
+        Assert.Equal(10, right.TranslatePoint(default, grid).X - left.ActualWidth, precision: 6);
+    }
+
+    [StaFact]
+    public void Spacing_ThreeColumnsAndASpan_KeepEqualCellsAndGaps()
+    {
+        // Arrange
+        var grid = new GridEx
+        {
+            Columns = "*,*,*",
+            Rows = "Auto,Auto",
+            Spacing = 10,
+        };
+
+        var cells = Enumerable.Range(0, 3).Select(_ => new Border { Height = 10 }).ToList();
+        for (var i = 0; i < cells.Count; i++)
+        {
+            Grid.SetColumn(cells[i], i);
+            grid.Children.Add(cells[i]);
+        }
+
+        var spanning = new Border { Height = 10 };
+        Grid.SetRow(spanning, 1);
+        Grid.SetColumnSpan(spanning, 2);
+        grid.Children.Add(spanning);
+
+        // Act
+        grid.Measure(new Size(320, 100));
+        grid.Arrange(new Rect(0, 0, 320, 100));
+
+        // Assert
+        Assert.All(cells, x => Assert.Equal(100, x.ActualWidth, precision: 6));
+        Assert.Equal(0, cells[0].TranslatePoint(default, grid).X, precision: 6);
+        Assert.Equal(110, cells[1].TranslatePoint(default, grid).X, precision: 6);
+        Assert.Equal(220, cells[2].TranslatePoint(default, grid).X, precision: 6);
+        Assert.Equal(210, spanning.ActualWidth, precision: 6);
+    }
+
+    [Theory]
+    [InlineData(10, 0, 1, 2, 0, 5)]
+    [InlineData(10, 1, 1, 2, 5, 0)]
+    [InlineData(9, 1, 1, 3, 3, 3)]
+    [InlineData(9, 0, 2, 3, 0, 3)]
+    [InlineData(10, 0, 1, 1, 0, 0)]
+    [InlineData(10, 5, 1, 2, 5, 0)]
+    public void SplitGap_SharesEachGapBetweenNeighbours(
+        double spacing,
+        int index,
+        int span,
+        int trackCount,
+        double expectedLeading,
+        double expectedTrailing)
+    {
+        // Act
+        var (leading, trailing) = GridEx.SplitGap(spacing, index, span, trackCount);
+
+        // Assert
+        Assert.Equal(expectedLeading, leading, precision: 6);
+        Assert.Equal(expectedTrailing, trailing, precision: 6);
     }
 }

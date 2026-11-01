@@ -13,6 +13,7 @@ This document provides a comprehensive overview of all data display controls ava
 | [Badge](#-badge) | Status indicator overlay | ❌ No | ✅ Yes |
 | [Card](#-card) | Content grouping with elevation | ✅ Expandable | ✅ Yes |
 | [Chip](#-chip) | Tags, filters, selections | ✅ Selectable | ✅ Yes |
+| [ChipGroup](../../src/Atc.Wpf.Controls/DataDisplay/ChipGroup_Readme.md) | A set of toggle chips bound to `Items` / `SelectedKeys` (quick filters, facets) | ✅ Single / multiple | ✅ Yes |
 | [Divider](#-divider) | Visual separator | ❌ No | ✅ Yes |
 
 ---

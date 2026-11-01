@@ -5,7 +5,6 @@
     xmlns:atcTheming="https://github.com/atc-net/atc-wpf/tree/main/schemas"
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:decorators="clr-namespace:Atc.Wpf.Theming.Decorators;assembly=Atc.Wpf.Theming"
-    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter x:Key="StringNullOrEmptyToVisibilityCollapsedValueConverter" />
@@ -317,8 +316,6 @@
                             <Setter Property="InterceptArrowKeys" Value="False" />
                             <Setter Property="InterceptManualEnter" Value="False" />
                             <Setter Property="InterceptMouseWheel" Value="False" />
-                            <Setter TargetName="PART_NumericDownButton" Property="IsEnabled" Value="False" />
-                            <Setter TargetName="PART_NumericUpButton" Property="IsEnabled" Value="False" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -340,7 +337,7 @@
                             <Setter TargetName="PART_NumericDownButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Accent}" />
                         </Trigger>
                         <Trigger SourceName="PART_NumericDownButton" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_NumericUpButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
+                            <Setter TargetName="PART_NumericDownButtonIcon" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray1}" />
                         </Trigger>
                         <Trigger SourceName="PART_TextBox" Property="IsSelectionActive" Value="True">
                             <Setter TargetName="FocusBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atcTheming:ControlsHelper.FocusBorderBrush)}" />
@@ -351,11 +348,8 @@
                             <Setter TargetName="PART_NumericUpButton" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="IsReadOnly" Value="True">
-                            <Setter TargetName="PART_NumericDownButton" Property="IsEnabled" Value="False" />
                             <Setter TargetName="PART_NumericDownButtonIcon" Property="Opacity" Value="0.4" />
-                            <Setter TargetName="PART_NumericUpButton" Property="IsEnabled" Value="False" />
                             <Setter TargetName="PART_NumericUpButtonIcon" Property="Opacity" Value="0.4" />
-                            <Setter TargetName="PART_TextBox" Property="IsEnabled" Value="False" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -381,7 +375,6 @@
         x:Key="AtcApps.Styles.DecimalBox"
         BasedOn="{StaticResource AtcApps.Styles.NumericBox}"
         TargetType="{x:Type atc:DecimalBox}">
-        <Setter Property="Culture" Value="{Binding Source={x:Static globalization:CultureInfo.CurrentUICulture}}" />
         <Setter Property="DecimalPointCorrection" Value="Number" />
         <Setter Property="DefaultValue" Value="0" />
         <Setter Property="Minimum" Value="{Binding Source={x:Static system:Decimal.MinValue}}" />
@@ -396,7 +389,6 @@
         x:Key="AtcApps.Styles.CurrencyBox"
         BasedOn="{StaticResource AtcApps.Styles.NumericBox}"
         TargetType="{x:Type atc:CurrencyBox}">
-        <Setter Property="Culture" Value="{Binding Source={x:Static globalization:CultureInfo.CurrentUICulture}}" />
         <Setter Property="DecimalPointCorrection" Value="Currency" />
         <Setter Property="DefaultValue" Value="0" />
         <Setter Property="Minimum" Value="{Binding Source={x:Static system:Decimal.MinValue}}" />
@@ -411,7 +403,6 @@
         x:Key="AtcApps.Styles.IntegerBox"
         BasedOn="{StaticResource AtcApps.Styles.NumericBox}"
         TargetType="{x:Type atc:IntegerBox}">
-        <Setter Property="Culture" Value="{Binding Source={x:Static globalization:CultureInfo.CurrentUICulture}}" />
         <Setter Property="DefaultValue" Value="0" />
         <Setter Property="Minimum" Value="{Binding Source={x:Static system:Int32.MinValue}}" />
         <Setter Property="Maximum" Value="{Binding Source={x:Static system:Int32.MaxValue}}" />

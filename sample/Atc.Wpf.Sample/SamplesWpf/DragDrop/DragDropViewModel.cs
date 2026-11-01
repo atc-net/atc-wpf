@@ -10,6 +10,20 @@ public class DragDropViewModel : ViewModelBase, IDropHandler
         "Delta",
         "Echo",
         "Foxtrot",
+        "Golf",
+        "Hotel",
+        "India",
+        "Juliett",
+        "Kilo",
+        "Lima",
+        "Mike",
+        "November",
+        "Oscar",
+        "Papa",
+        "Quebec",
+        "Romeo",
+        "Sierra",
+        "Tango",
     ];
 
     public ObservableCollection<string> SourceItems { get; } =

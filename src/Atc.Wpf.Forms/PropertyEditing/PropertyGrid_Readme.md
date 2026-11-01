@@ -137,6 +137,7 @@ propertyGrid.Refresh();
 ## 📝 Notes
 
 - Properties without a setter are treated as read-only
+- Write-only properties and indexers are not shown
 - Properties with no matching editor are shown as italic, grayed-out text (`ToString()` or `(null)`)
 - Nested objects are not expanded for primitives, enums, strings, `decimal`, date/time types, `Guid`, `Color`, `Thickness`, brushes, file system types, arrays or collections
 - `IsReadOnly` disables editors that derive from `Control`

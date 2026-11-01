@@ -33,30 +33,19 @@ public sealed class IntegerPropertyEditor : PropertyGridEditorBase
             HideUpDownButtons = true,
         };
 
-        // Apply Range attribute if present
+        // Bound by the property type, narrowed by a Range attribute if present
+        var (typeMinimum, typeMaximum) = GetTypeBounds(GetNonNullableType(item.PropertyType));
+        var minimum = (double)typeMinimum;
+        var maximum = (double)typeMaximum;
         var rangeAttr = item.GetAttribute<RangeAttribute>();
         if (rangeAttr is not null)
         {
-            integerBox.Minimum = rangeAttr.Minimum switch
-            {
-                int minInt => minInt,
-                double minDouble => minDouble,
-                _ => integerBox.Minimum,
-            };
+            minimum = System.Math.Max(minimum, Convert.ToDouble(rangeAttr.Minimum, CultureInfo.InvariantCulture));
+            maximum = System.Math.Min(maximum, Convert.ToDouble(rangeAttr.Maximum, CultureInfo.InvariantCulture));
+        }
 
-            integerBox.Maximum = rangeAttr.Maximum switch
-            {
-                int maxInt => maxInt,
-                double maxDouble => maxDouble,
-                _ => integerBox.Maximum,
-            };
-        }
-        else
-        {
-            // Set type-specific defaults
-            var underlyingType = GetNonNullableType(item.PropertyType);
-            SetTypeBounds(integerBox, underlyingType);
-        }
+        integerBox.Minimum = minimum;
+        integerBox.Maximum = maximum;
 
         return integerBox;
     }
@@ -81,8 +70,7 @@ public sealed class IntegerPropertyEditor : PropertyGridEditorBase
         integerBox.ValueChanged += (_, _) =>
         {
             var underlyingType = GetNonNullableType(item.PropertyType);
-            var intValue = (int)(integerBox.Value ?? 0);
-            item.Value = ConvertToTargetType(intValue, underlyingType);
+            item.Value = ConvertToTargetType(integerBox.Value ?? 0, underlyingType);
         };
 
         // Subscribe to property changes
@@ -95,71 +83,77 @@ public sealed class IntegerPropertyEditor : PropertyGridEditorBase
         };
     }
 
-    private static void SetTypeBounds(
-        IntegerBox integerBox,
-        Type type)
+    private static (decimal Minimum, decimal Maximum) GetTypeBounds(Type type)
     {
         if (type == typeof(byte))
         {
-            integerBox.Minimum = byte.MinValue;
-            integerBox.Maximum = byte.MaxValue;
+            return (byte.MinValue, byte.MaxValue);
         }
-        else if (type == typeof(sbyte))
+
+        if (type == typeof(sbyte))
         {
-            integerBox.Minimum = sbyte.MinValue;
-            integerBox.Maximum = sbyte.MaxValue;
+            return (sbyte.MinValue, sbyte.MaxValue);
         }
-        else if (type == typeof(short))
+
+        if (type == typeof(short))
         {
-            integerBox.Minimum = short.MinValue;
-            integerBox.Maximum = short.MaxValue;
+            return (short.MinValue, short.MaxValue);
         }
-        else if (type == typeof(ushort))
+
+        if (type == typeof(ushort))
         {
-            integerBox.Minimum = ushort.MinValue;
-            integerBox.Maximum = ushort.MaxValue;
+            return (ushort.MinValue, ushort.MaxValue);
         }
+
+        if (type == typeof(uint))
+        {
+            return (uint.MinValue, uint.MaxValue);
+        }
+
+        if (type == typeof(long))
+        {
+            return (long.MinValue, long.MaxValue);
+        }
+
+        if (type == typeof(ulong))
+        {
+            return (ulong.MinValue, ulong.MaxValue);
+        }
+
+        return (int.MinValue, int.MaxValue);
     }
 
+    /// <summary>
+    /// Rounds the editor value to a whole number and converts it to the property type, clamping it to the type's
+    /// range. The bounds are compared as <see cref="double"/> first, because <see cref="long.MaxValue"/> and
+    /// <see cref="ulong.MaxValue"/> round up beyond the type as a double, and then set exactly from <see cref="decimal"/>.
+    /// </summary>
     private static object ConvertToTargetType(
-        int value,
+        double value,
         Type targetType)
     {
-        if (targetType == typeof(byte))
+        var (minimum, maximum) = GetTypeBounds(targetType);
+        decimal wholeNumber;
+        if (double.IsNaN(value))
         {
-            return (byte)value;
+            wholeNumber = 0;
+        }
+        else if (value <= (double)minimum)
+        {
+            wholeNumber = minimum;
+        }
+        else if (value >= (double)maximum)
+        {
+            wholeNumber = maximum;
+        }
+        else
+        {
+            wholeNumber = System.Math.Clamp(
+                System.Math.Round((decimal)value, MidpointRounding.AwayFromZero),
+                minimum,
+                maximum);
         }
 
-        if (targetType == typeof(sbyte))
-        {
-            return (sbyte)value;
-        }
-
-        if (targetType == typeof(short))
-        {
-            return (short)value;
-        }
-
-        if (targetType == typeof(ushort))
-        {
-            return (ushort)value;
-        }
-
-        if (targetType == typeof(uint))
-        {
-            return (uint)value;
-        }
-
-        if (targetType == typeof(long))
-        {
-            return (long)value;
-        }
-
-        if (targetType == typeof(ulong))
-        {
-            return (ulong)value;
-        }
-
-        return value;
+        return Convert.ChangeType(wholeNumber, targetType, CultureInfo.InvariantCulture);
     }
 }

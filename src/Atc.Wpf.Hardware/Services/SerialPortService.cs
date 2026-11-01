@@ -16,7 +16,7 @@ public sealed class SerialPortService : ISerialPortService
 
     private readonly IDeviceWatcherHost watcher;
     private readonly System.Threading.Lock syncRoot = new();
-    private bool started;
+    private int watchCount;
     private bool initialEnumerationCompleted;
     private bool disposed;
 
@@ -45,25 +45,37 @@ public sealed class SerialPortService : ISerialPortService
     /// <inheritdoc />
     public void StartWatching()
     {
-        if (started)
+        // Several pickers can share one service: the watcher runs while at least one of them watches.
+        watchCount++;
+        if (watchCount != 1)
         {
             return;
         }
 
-        started = true;
-        watcher.StartWatching();
+        try
+        {
+            watcher.StartWatching();
+        }
+        catch
+        {
+            watchCount--;
+            throw;
+        }
     }
 
     /// <inheritdoc />
     public void StopWatching()
     {
-        if (!started)
+        if (watchCount == 0)
         {
             return;
         }
 
-        started = false;
-        watcher.StopWatching();
+        watchCount--;
+        if (watchCount == 0)
+        {
+            watcher.StopWatching();
+        }
     }
 
     /// <inheritdoc />

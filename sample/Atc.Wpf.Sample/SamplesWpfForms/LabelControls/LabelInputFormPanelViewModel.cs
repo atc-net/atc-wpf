@@ -179,7 +179,11 @@ public sealed class LabelInputFormPanelViewModel : ViewModelBase
                 streetName: "My street",
                 cityName: "My city",
                 postalCode: "1234",
-                country: new CultureInfo("da-DK")));
+                country: new CultureInfo("da-DK")))
+        {
+            PreferredContactChannels = ContactChannels.Email | ContactChannels.Sms,
+            Tags = ["customer", "newsletter"],
+        };
 
         var labelControls = ModelToLabelControlExtractor.Extract(
             person,

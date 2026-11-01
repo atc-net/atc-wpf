@@ -3,6 +3,12 @@ namespace Atc.Wpf.Sample;
 
 public partial class App
 {
+    /// <summary>
+    /// The environment variable that, set to <c>1</c>, shows every data binding error in a dialog
+    /// (as when a debugger is attached). The UI tests set it to catch binding errors.
+    /// </summary>
+    public const string TraceBindingErrorsVariable = "ATC_WPF_SAMPLE_TRACE_BINDING_ERRORS";
+
     private readonly IHost host;
     private IConfiguration? configuration;
 
@@ -61,6 +67,14 @@ public partial class App
 
         if (Debugger.IsAttached)
         {
+            BindingErrorTraceListener.StartTrace();
+        }
+        else if (string.Equals(Environment.GetEnvironmentVariable(TraceBindingErrorsVariable), "1", StringComparison.Ordinal))
+        {
+            // UI tests opt in through the environment. Without a debugger WPF does not trace data binding
+            // until the trace sources are refreshed and given a level.
+            PresentationTraceSources.Refresh();
+            PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Error;
             BindingErrorTraceListener.StartTrace();
         }
     }

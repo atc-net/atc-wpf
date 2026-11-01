@@ -54,6 +54,52 @@
         </Setter>
     </Style>
 
+    <!--  DockRegion header button (float / close the active pane); hidden while its command cannot execute  -->
+    <Style x:Key="AtcApps.Styles.DockRegion.HeaderButton" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <!--  Follow the header/tab text colour; the system Button style would otherwise force black.  -->
+        <Setter Property="Foreground" Value="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}}" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Margin" Value="0,0,2,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Width" Value="22" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="Transparent">
+                        <Border
+                            x:Name="Highlight"
+                            Background="{TemplateBinding Foreground}"
+                            CornerRadius="2"
+                            Opacity="0" />
+                        <Border
+                            x:Name="FocusBorder"
+                            BorderBrush="{TemplateBinding Foreground}"
+                            BorderThickness="1"
+                            CornerRadius="2"
+                            Visibility="Collapsed" />
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Highlight" Property="Opacity" Value="0.2" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Highlight" Property="Opacity" Value="0.35" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--  DockRegion Style  -->
     <Style x:Key="AtcApps.Styles.DockRegion" TargetType="{x:Type layouts:DockRegion}">
         <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
@@ -108,9 +154,23 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 UseLayoutRounding="True">
                                 <Grid>
+                                    <TextElement.Foreground>
+                                        <MultiBinding Converter="{x:Static atcValueConverters:BackgroundToForegroundValueConverter.Instance}">
+                                            <Binding
+                                                Mode="OneWay"
+                                                Path="HeaderBackground"
+                                                RelativeSource="{RelativeSource TemplatedParent}" />
+                                            <Binding
+                                                Mode="OneWay"
+                                                Path="HeaderForeground"
+                                                RelativeSource="{RelativeSource TemplatedParent}" />
+                                        </MultiBinding>
+                                    </TextElement.Foreground>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="ToggleButtonColumn" Width="Auto" />
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
                                     <ToggleButton
@@ -134,20 +194,54 @@
                                         ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
                                         RecognizesAccessKey="True"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                        UseLayoutRounding="False">
-                                        <TextElement.Foreground>
-                                            <MultiBinding Converter="{x:Static atcValueConverters:BackgroundToForegroundValueConverter.Instance}">
-                                                <Binding
-                                                    Mode="OneWay"
-                                                    Path="HeaderBackground"
-                                                    RelativeSource="{RelativeSource TemplatedParent}" />
-                                                <Binding
-                                                    Mode="OneWay"
-                                                    Path="HeaderForeground"
-                                                    RelativeSource="{RelativeSource TemplatedParent}" />
-                                            </MultiBinding>
-                                        </TextElement.Foreground>
-                                    </ContentPresenter>
+                                        UseLayoutRounding="False" />
+
+                                    <!--  Title of the active pane when the region has panes but no header  -->
+                                    <TextBlock
+                                        x:Name="ActivePaneTitle"
+                                        Grid.Column="1"
+                                        Margin="{TemplateBinding HeaderPadding}"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding ActivePane.Header, RelativeSource={RelativeSource TemplatedParent}}"
+                                        TextTrimming="CharacterEllipsis"
+                                        Visibility="Collapsed" />
+
+                                    <Button
+                                        x:Name="PART_FloatButton"
+                                        Grid.Column="2"
+                                        AutomationProperties.AutomationId="{Binding RegionId, RelativeSource={RelativeSource TemplatedParent}, StringFormat='FloatPane_{0}'}"
+                                        Command="{x:Static layouts:DockPanelProCommands.FloatPane}"
+                                        CommandParameter="{Binding ActivePane, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Style="{StaticResource AtcApps.Styles.DockRegion.HeaderButton}"
+                                        Visibility="Collapsed">
+                                        <Path
+                                            Width="11"
+                                            Height="11"
+                                            Data="M 0.5,3.5 H 7.5 V 10.5 H 0.5 Z M 3.5,3.5 V 0.5 H 10.5 V 7.5 H 7.5"
+                                            SnapsToDevicePixels="True"
+                                            Stretch="Uniform"
+                                            Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                            StrokeThickness="1.2" />
+                                    </Button>
+
+                                    <Button
+                                        x:Name="PART_CloseButton"
+                                        Grid.Column="3"
+                                        Margin="0,0,4,0"
+                                        AutomationProperties.AutomationId="{Binding RegionId, RelativeSource={RelativeSource TemplatedParent}, StringFormat='ClosePane_{0}'}"
+                                        Command="{x:Static layouts:DockPanelProCommands.ClosePane}"
+                                        CommandParameter="{Binding ActivePane, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Style="{StaticResource AtcApps.Styles.DockRegion.HeaderButton}"
+                                        Visibility="Collapsed">
+                                        <Path
+                                            Width="9"
+                                            Height="9"
+                                            Data="M 0,0 L 8,8 M 8,0 L 0,8"
+                                            SnapsToDevicePixels="True"
+                                            Stretch="Uniform"
+                                            Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                            StrokeThickness="1.4" />
+                                    </Button>
                                 </Grid>
                             </Border>
 
@@ -158,12 +252,21 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 UseLayoutRounding="True"
                                 Visibility="Visible">
-                                <ContentPresenter
-                                    Margin="{TemplateBinding ContentPadding}"
-                                    Content="{TemplateBinding Content}"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    Cursor="{TemplateBinding Cursor}"
-                                    UseLayoutRounding="False" />
+                                <Grid>
+                                    <ContentPresenter
+                                        x:Name="ContentHost"
+                                        Margin="{TemplateBinding ContentPadding}"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        Cursor="{TemplateBinding Cursor}"
+                                        UseLayoutRounding="False" />
+
+                                    <!--  Tabbed panes (the tab control is created by the region)  -->
+                                    <Border
+                                        x:Name="PART_PaneHost"
+                                        Margin="{TemplateBinding ContentPadding}"
+                                        Visibility="Collapsed" />
+                                </Grid>
                             </Border>
                         </Grid>
                     </Border>
@@ -178,16 +281,181 @@
                             <Setter TargetName="ContentBorder" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
-                        <!--  Hide header when Header is null  -->
-                        <Trigger Property="Header" Value="{x:Null}">
+                        <!--  Hide header when Header is null and there are no panes  -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Header" Value="{x:Null}" />
+                                <Condition Property="HasPanes" Value="False" />
+                            </MultiTrigger.Conditions>
                             <Setter TargetName="HeaderBorder" Property="Visibility" Value="Collapsed" />
+                        </MultiTrigger>
+
+                        <!--  Tabbed panes replace the content  -->
+                        <Trigger Property="HasPanes" Value="True">
+                            <Setter TargetName="ContentHost" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_PaneHost" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_FloatButton" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_CloseButton" Property="Visibility" Value="Visible" />
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Header" Value="{x:Null}" />
+                                <Condition Property="HasPanes" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="HeaderContent" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="ActivePaneTitle" Property="Visibility" Value="Visible" />
+                        </MultiTrigger>
 
                         <!--  Disabled state  -->
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Tab of a docked DockPane  -->
+    <Style x:Key="AtcApps.Styles.DockRegion.TabItem" TargetType="{x:Type TabItem}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray3}" />
+        <Setter Property="Padding" Value="8,4,4,4" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Border
+                        x:Name="TabBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="0,0,0,2"
+                        SnapsToDevicePixels="True">
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                ContentSource="Header"
+                                RecognizesAccessKey="True" />
+                            <Button
+                                x:Name="PART_CloseButton"
+                                Grid.Column="1"
+                                Width="18"
+                                Height="18"
+                                Margin="4,0,0,0"
+                                AutomationProperties.AutomationId="{Binding Content.PaneId, RelativeSource={RelativeSource TemplatedParent}, StringFormat='CloseTab_{0}'}"
+                                Command="{x:Static layouts:DockPanelProCommands.ClosePane}"
+                                Focusable="False"
+                                Style="{StaticResource AtcApps.Styles.DockRegion.HeaderButton}">
+                                <Path
+                                    Width="7"
+                                    Height="7"
+                                    Data="M 0,0 L 8,8 M 8,0 L 0,8"
+                                    Stretch="Uniform"
+                                    Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                    StrokeThickness="1.4" />
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray9}" />
+                            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Bottom">
+                            <Setter TargetName="TabBorder" Property="BorderThickness" Value="0,2,0,0" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Tab strip of a DockRegion with panes; the strip hides while only one pane is docked  -->
+    <Style x:Key="AtcApps.Styles.DockRegion.TabControl" TargetType="{x:Type TabControl}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource AtcApps.Styles.DockRegion.TabItem}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid KeyboardNavigation.TabNavigation="Local">
+                        <Grid.RowDefinitions>
+                            <RowDefinition x:Name="HeaderRowDefinition" Height="Auto" />
+                            <RowDefinition x:Name="ContentRowDefinition" Height="*" />
+                        </Grid.RowDefinitions>
+                        <Border
+                            x:Name="HeaderPanelBorder"
+                            Grid.Row="0"
+                            Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
+                            BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
+                            BorderThickness="0,0,0,1">
+                            <TabPanel
+                                x:Name="HeaderPanel"
+                                IsItemsHost="True"
+                                KeyboardNavigation.TabIndex="1" />
+                        </Border>
+                        <Border
+                            x:Name="ContentPanel"
+                            Grid.Row="1"
+                            Background="{TemplateBinding Background}"
+                            KeyboardNavigation.TabIndex="2"
+                            KeyboardNavigation.TabNavigation="Local">
+                            <ContentPresenter
+                                x:Name="PART_SelectedContentHost"
+                                Margin="{TemplateBinding Padding}"
+                                ContentSource="SelectedContent" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TabStripPlacement" Value="Bottom">
+                            <Setter TargetName="HeaderPanelBorder" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="HeaderPanelBorder" Property="BorderThickness" Value="0,1,0,0" />
+                            <Setter TargetName="ContentPanel" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="HeaderRowDefinition" Property="Height" Value="*" />
+                            <Setter TargetName="ContentRowDefinition" Property="Height" Value="Auto" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}" Value="1">
+                            <Setter TargetName="HeaderPanelBorder" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}" Value="0">
+                            <Setter TargetName="HeaderPanelBorder" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  DockPane Style  -->
+    <Style x:Key="AtcApps.Styles.DockPane" TargetType="{x:Type layouts:DockPane}">
+        <Setter Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type layouts:DockPane}">
+                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            Content="{TemplateBinding Content}"
+                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

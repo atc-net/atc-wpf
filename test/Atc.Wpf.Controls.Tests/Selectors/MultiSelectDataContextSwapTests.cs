@@ -1,0 +1,489 @@
+namespace Atc.Wpf.Controls.Tests.Selectors;
+
+/// <summary>
+/// Swapping the DataContext between two view models with disjoint items must not let the stale-key cleanup of the
+/// new items write into either view model's SelectedKeys, whichever binding updates first.
+/// </summary>
+[Collection(nameof(PackResourceTestGroup))]
+public sealed class MultiSelectDataContextSwapTests : IDisposable
+{
+    public void Dispose()
+        => Dispatcher.FromThread(Thread.CurrentThread)?.InvokeShutdown();
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CheckListBox_keeps_both_view_models_unchanged(bool itemsFirst)
+    {
+        var sut = new CheckListBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, CheckListBox.ItemsProperty, CheckListBox.SelectedKeysProperty, itemsFirst, () => events);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void ChipGroup_keeps_both_view_models_unchanged(bool itemsFirst)
+    {
+        var sut = new ChipGroup();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, ChipGroup.ItemsProperty, ChipGroup.SelectedKeysProperty, itemsFirst, () => events);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void ChipGroup_with_a_bound_selection_mode_keeps_both_view_models_unchanged(
+        bool modeFirst)
+    {
+        var first = CreateFirst();
+        var second = CreateSecond();
+        second.SelectionMode = ChipSelectionMode.Single;
+        var sut = new ChipGroup { DataContext = first };
+        if (modeFirst)
+        {
+            Bind(sut, ChipGroup.SelectionModeProperty, nameof(ViewModel.SelectionMode));
+        }
+
+        Bind(sut, ChipGroup.ItemsProperty, nameof(ViewModel.Items));
+        Bind(sut, ChipGroup.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        if (!modeFirst)
+        {
+            Bind(sut, ChipGroup.SelectionModeProperty, nameof(ViewModel.SelectionMode));
+        }
+
+        Pump();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        sut.DataContext = second;
+        Pump();
+
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(0, events);
+
+        sut.DataContext = first;
+        Pump();
+
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(0, events);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Segmented_with_a_bound_selection_mode_keeps_both_view_models_unchanged(
+        bool modeFirst)
+    {
+        var first = CreateFirst();
+        first.SegmentedMode = SegmentedSelectionMode.Multiple;
+        var second = CreateSecond();
+        var sut = new Segmented { DataContext = first };
+        foreach (var key in new[] { "a1", "a2", "a3", "b1", "b2" })
+        {
+            sut.Items.Add(new SegmentedItem { Key = key, Content = key });
+        }
+
+        if (modeFirst)
+        {
+            Bind(sut, Segmented.SelectionModeProperty, nameof(ViewModel.SegmentedMode));
+        }
+
+        Bind(sut, Segmented.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        if (!modeFirst)
+        {
+            Bind(sut, Segmented.SelectionModeProperty, nameof(ViewModel.SegmentedMode));
+        }
+
+        Pump();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        sut.DataContext = second;
+        Pump();
+
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(SegmentedSelectionMode.Single, sut.SelectionMode);
+
+        sut.DataContext = first;
+        Pump();
+
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(SegmentedSelectionMode.Multiple, sut.SelectionMode);
+        Assert.Equal(2, sut.SelectedItems.Count);
+    }
+
+    [StaFact]
+    public void Unbound_Segmented_keeps_only_one_key_at_once_when_leaving_the_multiple_mode()
+    {
+        var sut = new Segmented { SelectionMode = SegmentedSelectionMode.Multiple };
+        foreach (var key in new[] { "a1", "a2", "a3" })
+        {
+            sut.Items.Add(new SegmentedItem { Key = key, Content = key });
+        }
+
+        sut.SelectedKeys.Add("a1");
+        sut.SelectedKeys.Add("a2");
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        sut.SelectionMode = SegmentedSelectionMode.Single;
+
+        Assert.Equal(["a2"], sut.SelectedKeys);
+        Assert.Equal(1, events);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void TokenBox_keeps_both_view_models_unchanged(bool itemsFirst)
+    {
+        var sut = new TokenBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, TokenBox.ItemsProperty, TokenBox.SelectedKeysProperty, itemsFirst, () => events);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void MultiSelectComboBox_keeps_both_view_models_unchanged(
+        bool itemsFirst)
+    {
+        var sut = new MultiSelectComboBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, MultiSelectComboBox.ItemsProperty, MultiSelectComboBox.SelectedKeysProperty, itemsFirst, () => events);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Open_deferred_MultiSelectComboBox_keeps_both_view_models_unchanged(
+        bool itemsFirst)
+    {
+        var sut = new MultiSelectComboBox { CommitMode = MultiSelectCommitMode.Deferred };
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+        try
+        {
+            AssertSwapKeepsViewModels(
+                sut,
+                MultiSelectComboBox.ItemsProperty,
+                MultiSelectComboBox.SelectedKeysProperty,
+                itemsFirst,
+                () => events,
+                afterBind: () =>
+                {
+                    sut.SetCurrentValue(MultiSelectComboBox.IsDropDownOpenProperty, true);
+                    Assert.True(sut.IsDrafting);
+                });
+        }
+        finally
+        {
+            sut.SetCurrentValue(MultiSelectComboBox.IsDropDownOpenProperty, false);
+        }
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void MultiColumnComboBox_keeps_both_view_models_unchanged(
+        bool itemsFirst)
+    {
+        var sut = new MultiColumnComboBox { KeyMemberPath = nameof(Row.Key), DisplayMemberPath = nameof(Row.Name) };
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(
+            sut,
+            MultiColumnComboBox.ItemsSourceProperty,
+            MultiColumnComboBox.SelectedKeysProperty,
+            itemsFirst,
+            () => events,
+            nameof(ViewModel.Rows));
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CheckTreeView_keeps_both_view_models_unchanged(bool itemsFirst)
+    {
+        var sut = new CheckTreeView();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, CheckTreeView.NodesProperty, CheckTreeView.SelectedKeysProperty, itemsFirst, () => events, nameof(ViewModel.Nodes));
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void TreeSelectComboBox_keeps_both_view_models_unchanged(
+        bool itemsFirst)
+    {
+        var sut = new TreeSelectComboBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, TreeSelectComboBox.NodesProperty, TreeSelectComboBox.SelectedKeysProperty, itemsFirst, () => events, nameof(ViewModel.Nodes));
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CascaderComboBox_keeps_both_view_models_unchanged(
+        bool itemsFirst)
+    {
+        var sut = new CascaderComboBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, CascaderComboBox.NodesProperty, CascaderComboBox.SelectedKeysProperty, itemsFirst, () => events, nameof(ViewModel.Nodes));
+    }
+
+    [StaFact]
+    public void Bound_CheckListBox_drops_stale_keys_in_one_event_once_the_bindings_settle()
+    {
+        var first = CreateFirst();
+        var sut = new CheckListBox { DataContext = first };
+        Bind(sut, CheckListBox.ItemsProperty, nameof(ViewModel.Items));
+        Bind(sut, CheckListBox.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        Pump();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        sut.Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["a1"] = "A1" };
+        sut.Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["a1"] = "A1", ["a9"] = "A9" };
+        Pump();
+
+        Assert.Equal(["a1"], first.SelectedKeys);
+        Assert.Equal(1, events);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CheckListBox_with_SelectNewItems_ticks_nothing_in_the_new_view_model(
+        bool itemsFirst)
+    {
+        var sut = new CheckListBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, CheckListBox.ItemsProperty, CheckListBox.SelectedKeysProperty, itemsFirst, () => events, afterBind: () => sut.SelectNewItems = true);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void ChipGroup_with_SelectNewItems_ticks_nothing_in_the_new_view_model(
+        bool itemsFirst)
+    {
+        var sut = new ChipGroup();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, ChipGroup.ItemsProperty, ChipGroup.SelectedKeysProperty, itemsFirst, () => events, afterBind: () => sut.SelectNewItems = true);
+    }
+
+    [StaTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void MultiSelectComboBox_with_SelectNewItems_ticks_nothing_in_the_new_view_model(
+        bool itemsFirst)
+    {
+        var sut = new MultiSelectComboBox();
+        var events = 0;
+        sut.SelectedKeysChanged += (_, _) => events++;
+
+        AssertSwapKeepsViewModels(sut, MultiSelectComboBox.ItemsProperty, MultiSelectComboBox.SelectedKeysProperty, itemsFirst, () => events, afterBind: () => sut.SelectNewItems = true);
+    }
+
+    [StaFact]
+    public void Chained_swaps_with_SelectNewItems_tick_nothing_in_the_last_view_model()
+    {
+        var first = CreateFirst();
+        var second = CreateSecond();
+        var third = new ViewModel(
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["c1"] = "C1", ["c2"] = "C2" },
+            ["c1"]);
+        var sut = new CheckListBox { DataContext = first };
+        Bind(sut, CheckListBox.ItemsProperty, nameof(ViewModel.Items));
+        Bind(sut, CheckListBox.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        Pump();
+        sut.SelectNewItems = true;
+
+        sut.DataContext = second;
+        sut.DataContext = third;
+        Pump();
+
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(["c1"], third.SelectedKeys);
+    }
+
+    [StaFact]
+    public void A_bound_SelectNewItems_cleanup_still_ticks_new_items_of_the_same_view_model()
+    {
+        var first = CreateFirst();
+        var sut = new CheckListBox { DataContext = first };
+        Bind(sut, CheckListBox.ItemsProperty, nameof(ViewModel.Items));
+        Bind(sut, CheckListBox.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        Pump();
+        sut.SelectNewItems = true;
+
+        sut.Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["a1"] = "A1", ["a2"] = "A2", ["a3"] = "A3", ["a4"] = "A4" };
+        Pump();
+
+        Assert.Equal(["a1", "a2", "a4"], first.SelectedKeys);
+    }
+
+    [StaFact]
+    public void A_cleanup_waits_while_the_control_is_unloaded()
+    {
+        var first = CreateFirst();
+        var sut = new CheckListBox { DataContext = first };
+        Bind(sut, CheckListBox.ItemsProperty, nameof(ViewModel.Items));
+        Bind(sut, CheckListBox.SelectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        var window = new Window
+        {
+            Content = sut,
+            Left = -10000,
+            Top = -10000,
+            Width = 200,
+            Height = 200,
+            ShowActivated = false,
+            ShowInTaskbar = false,
+        };
+        window.Show();
+        try
+        {
+            Pump();
+            sut.SelectNewItems = true;
+            window.Content = null;
+            Pump();
+
+            sut.Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["a1"] = "A1", ["a4"] = "A4" };
+            Pump();
+
+            Assert.Equal(["a1", "a2"], first.SelectedKeys);
+
+            window.Content = sut;
+            Pump();
+
+            Assert.Equal(["a1", "a4"], first.SelectedKeys);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    private static void AssertSwapKeepsViewModels(
+        FrameworkElement sut,
+        DependencyProperty itemsProperty,
+        DependencyProperty selectedKeysProperty,
+        bool itemsFirst,
+        Func<int> events,
+        string itemsPath = nameof(ViewModel.Items),
+        Action? afterBind = null)
+    {
+        var first = CreateFirst();
+        var second = CreateSecond();
+        sut.DataContext = first;
+        if (itemsFirst)
+        {
+            Bind(sut, itemsProperty, itemsPath);
+            Bind(sut, selectedKeysProperty, nameof(ViewModel.SelectedKeys));
+        }
+        else
+        {
+            Bind(sut, selectedKeysProperty, nameof(ViewModel.SelectedKeys));
+            Bind(sut, itemsProperty, itemsPath);
+        }
+
+        Pump();
+        afterBind?.Invoke();
+        var eventsBefore = events();
+
+        sut.DataContext = second;
+        Pump();
+
+        Assert.Same(second.SelectedKeys, sut.GetValue(selectedKeysProperty));
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(eventsBefore, events());
+
+        sut.DataContext = first;
+        Pump();
+
+        Assert.Same(first.SelectedKeys, sut.GetValue(selectedKeysProperty));
+        Assert.Equal(["a1", "a2"], first.SelectedKeys);
+        Assert.Equal(["b2"], second.SelectedKeys);
+        Assert.Equal(eventsBefore, events());
+    }
+
+    private static void Bind(
+        FrameworkElement target,
+        DependencyProperty property,
+        string path)
+        => BindingOperations.SetBinding(target, property, new Binding(path));
+
+    private static void Pump()
+    {
+        var frame = new DispatcherFrame();
+        _ = Dispatcher.CurrentDispatcher.BeginInvoke(
+            DispatcherPriority.Background,
+            () => frame.Continue = false);
+        Dispatcher.PushFrame(frame);
+    }
+
+    private static ViewModel CreateFirst()
+        => new(
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["a1"] = "A1", ["a2"] = "A2", ["a3"] = "A3" },
+            ["a1", "a2"]);
+
+    private static ViewModel CreateSecond()
+        => new(
+            new Dictionary<string, string>(StringComparer.Ordinal) { ["b1"] = "B1", ["b2"] = "B2" },
+            ["b2"]);
+
+    private sealed record Row(string Key, string Name);
+
+    private sealed class ViewModel
+    {
+        public ViewModel(
+            Dictionary<string, string> items,
+            IEnumerable<string> selectedKeys)
+        {
+            Items = items;
+            Rows = items.Select(x => new Row(x.Key, x.Value)).ToList();
+            Nodes = new System.Collections.ObjectModel.ObservableCollection<CheckTreeNode>(
+                items.Select(x => new CheckTreeNode(x.Key, x.Value)));
+            SelectedKeys = new System.Collections.ObjectModel.ObservableCollection<string>(selectedKeys);
+        }
+
+        public Dictionary<string, string> Items { get; set; }
+
+        public IReadOnlyList<Row> Rows { get; set; }
+
+        public System.Collections.ObjectModel.ObservableCollection<CheckTreeNode> Nodes { get; set; }
+
+        public System.Collections.ObjectModel.ObservableCollection<string> SelectedKeys { get; set; }
+
+        public ChipSelectionMode SelectionMode { get; set; } = ChipSelectionMode.Multiple;
+
+        public SegmentedSelectionMode SegmentedMode { get; set; } = SegmentedSelectionMode.Single;
+    }
+}

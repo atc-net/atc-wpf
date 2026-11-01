@@ -68,6 +68,7 @@ await WindowArea.ShowAsync(content, TimeSpan.MaxValue, onClick: null, onClose: n
 |----------|------|---------|-------------|
 | `Position` | `ToastNotificationPosition` | `BottomRight` | Corner where notifications appear (`TopLeft`, `TopRight`, `BottomLeft`, `BottomRight`) |
 | `MaxItems` | `int` | `int.MaxValue` | Maximum number of simultaneously visible notifications |
+| `PauseOnHover` | `bool` | `true` | The expiration time stops running while the mouse is over a notification and resumes when it leaves; set to `false` for a fixed lifetime |
 
 ## 🔧 Methods
 
@@ -86,6 +87,7 @@ await WindowArea.ShowAsync(content, TimeSpan.MaxValue, onClick: null, onClose: n
 - Nothing is shown until the area is loaded and attached to a window
 - The default template uses a `ReversibleStackPanel` named `PART_Items`; bottom positions reverse the stacking order
 - The `ToastNotificationManager` default expiration time is 5 seconds
+- With `PauseOnHover`, a notification does not close while the mouse is over it, so it can be read or its button reached
 
 ## 🔗 Related Controls
 

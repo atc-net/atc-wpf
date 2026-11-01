@@ -22,6 +22,44 @@ public sealed class ModelToLabelControlExtractorTests
     }
 
     [StaFact]
+    public void Extract_NonFiniteAndUnboundedValues_DoesNotThrow()
+    {
+        // Arrange
+        var model = new NonFiniteModel();
+
+        // Act
+        var actual = ModelToLabelControlExtractor.Extract(model);
+
+        // Assert
+        Assert.Equal(11, actual.Count);
+        Assert.Equal(0m, Control<LabelDecimalBox>(actual, nameof(NonFiniteModel.NotNumber)).Value);
+        Assert.Equal(decimal.MaxValue, Control<LabelDecimalBox>(actual, nameof(NonFiniteModel.Infinity)).Value);
+        Assert.Equal(decimal.MaxValue, Control<LabelDecimalBox>(actual, nameof(NonFiniteModel.Huge)).Value);
+        Assert.Equal(decimal.MinValue, Control<LabelDecimalBox>(actual, nameof(NonFiniteModel.HugeFloat)).Value);
+
+        var unboundedDouble = Control<LabelDecimalBox>(actual, nameof(NonFiniteModel.UnboundedDouble));
+        Assert.Equal(0m, unboundedDouble.Minimum);
+        Assert.Equal(decimal.MaxValue, unboundedDouble.Maximum);
+        Assert.Equal(3.5m, unboundedDouble.Value);
+
+        var unboundedInt = Control<LabelIntegerBox>(actual, nameof(NonFiniteModel.UnboundedInt));
+        Assert.Equal(0, unboundedInt.Minimum);
+        Assert.Equal(int.MaxValue, unboundedInt.Maximum);
+
+        var unboundedLong = Control<LabelDecimalBox>(actual, nameof(NonFiniteModel.UnboundedLong));
+        Assert.Equal(0m, unboundedLong.Minimum);
+        Assert.Equal(long.MaxValue, unboundedLong.Maximum);
+
+        var unboundedSize = Control<LabelPixelSizeBox>(actual, nameof(NonFiniteModel.UnboundedSize));
+        Assert.Equal(0, unboundedSize.Minimum);
+        Assert.Equal(int.MaxValue, unboundedSize.Maximum);
+
+        var unboundedPoint = Control<LabelDecimalXyBox>(actual, nameof(NonFiniteModel.UnboundedPoint));
+        Assert.Equal(0m, unboundedPoint.Minimum);
+        Assert.Equal(decimal.MaxValue, unboundedPoint.Maximum);
+    }
+
+    [StaFact]
     public void GetLabelControls_Address()
     {
         // Arrange
@@ -141,7 +179,7 @@ public sealed class ModelToLabelControlExtractorTests
     }
 
     [StaFact]
-    public void GetLabelControls_CollectionsModel_SkipsCollectionProperties()
+    public void GetLabelControls_CollectionsModel_SkipsUnsupportedCollectionProperties()
     {
         // Arrange
         var model = new CollectionsModel
@@ -159,9 +197,12 @@ public sealed class ModelToLabelControlExtractorTests
 
         // Assert
         Assert.NotNull(actual);
-        Assert.Equal(2, actual.Count);
+        Assert.Equal(3, actual.Count);
         Assert.Contains(actual, x => x.Identifier == "Name");
         Assert.Contains(actual, x => x.Identifier == "Age");
+        var tags = Assert.IsType<LabelTokenBox>(actual.Single(x => x.Identifier == "Tags"));
+        Assert.False(tags.IsEnabled);
+        Assert.DoesNotContain(actual, x => x.Identifier == "Counts");
     }
 
     [StaFact]
@@ -202,4 +243,12 @@ public sealed class ModelToLabelControlExtractorTests
         Assert.NotNull(actual);
         Assert.Equal(ModelToLabelControlExtractor.MaxNestingDepth + 1, actual.Count);
     }
+
+    private static TControl Control<TControl>(
+        IEnumerable<ILabelControlBase> labelControls,
+        string identifier)
+        where TControl : ILabelControlBase
+        => labelControls
+            .OfType<TControl>()
+            .Single(x => x.Identifier == identifier);
 }

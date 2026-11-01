@@ -1,0 +1,170 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Selectors.TokenBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:decorators="clr-namespace:Atc.Wpf.Theming.Decorators;assembly=Atc.Wpf.Theming"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Controls.Selectors"
+    MinHeight="26"
+    Padding="2,1"
+    VerticalContentAlignment="Center"
+    atc:ControlsHelper.CornerRadius="{DynamicResource AtcApps.CornerRadius.ComboBox}"
+    atc:ControlsHelper.FocusBorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.Border.Focus}"
+    atc:ControlsHelper.MouseOverBorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.Border.MouseOver}"
+    Background="{DynamicResource AtcApps.Brushes.Control.Background}"
+    BorderBrush="{DynamicResource AtcApps.Brushes.TextBox.Border}"
+    BorderThickness="1"
+    Focusable="True"
+    FontFamily="{DynamicResource AtcApps.Fonts.Family.Control}"
+    FontSize="{DynamicResource AtcApps.Font.Size.Content}"
+    Foreground="{DynamicResource AtcApps.Brushes.Text}"
+    IsTabStop="False"
+    SnapsToDevicePixels="True"
+    d:DesignHeight="26"
+    d:DesignWidth="260"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!--  The default suggestion row: the display value with the typed text in bold.  -->
+        <DataTemplate x:Key="DefaultSuggestionTemplate" DataType="{x:Type selectors:TokenSuggestion}">
+            <TextBlock TextTrimming="CharacterEllipsis">
+                <Run Text="{Binding Path=TextBeforeMatch, Mode=OneWay}" /><Run FontWeight="Bold" Text="{Binding Path=MatchedText, Mode=OneWay}" /><Run Text="{Binding Path=TextAfterMatch, Mode=OneWay}" />
+            </TextBlock>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.Template>
+        <ControlTemplate TargetType="{x:Type selectors:TokenBox}">
+            <Grid x:Name="PartRoot">
+                <Border
+                    x:Name="PartBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                <ContentPresenter Margin="{TemplateBinding BorderThickness}" />
+                <Border
+                    x:Name="DisabledVisualElement"
+                    Background="{DynamicResource AtcApps.Brushes.Control.Disabled}"
+                    BorderBrush="{DynamicResource AtcApps.Brushes.Control.Disabled}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding atc:ControlsHelper.CornerRadius}"
+                    IsHitTestVisible="False"
+                    Opacity="0"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="PartBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.ThemeBackground1}" />
+                    <Setter TargetName="PartBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.MouseOverBorderBrush)}" />
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter TargetName="PartBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(atc:ControlsHelper.FocusBorderBrush)}" />
+                </Trigger>
+                <Trigger Property="HasError" Value="True">
+                    <Setter TargetName="PartBorder" Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Control.Validation}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Template>
+
+    <!--  Bindings to the control itself are set in code (Source = this), so they work before the control is loaded.  -->
+    <Grid x:Name="PartContentGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!--  The tokens and the text box; code puts the chip panel in it.  -->
+        <ScrollViewer
+            x:Name="PartScrollViewer"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Focusable="False"
+            HorizontalScrollBarVisibility="Disabled"
+            IsTabStop="False"
+            VerticalScrollBarVisibility="Disabled" />
+
+        <!--  Removes every token that is not fixed.  -->
+        <Button
+            x:Name="PartClearButton"
+            Grid.Column="1"
+            Width="20"
+            Margin="2,0,2,0"
+            VerticalAlignment="Center"
+            AutomationProperties.AutomationId="ClearButton"
+            Click="OnClearButtonClick"
+            Cursor="Hand"
+            Focusable="False"
+            IsTabStop="False"
+            Visibility="Collapsed">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="Transparent">
+                        <Ellipse
+                            x:Name="Circle"
+                            Width="16"
+                            Height="16"
+                            Fill="Transparent" />
+                        <Path
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="M 0,0 L 7,7 M 0,7 L 7,0"
+                            Stroke="{DynamicResource AtcApps.Brushes.Text}"
+                            StrokeThickness="1.5" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Circle" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray8}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Circle" Property="Fill" Value="{DynamicResource AtcApps.Brushes.Gray6}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Popup
+            x:Name="PartPopup"
+            AllowsTransparency="True"
+            Focusable="False"
+            Placement="Bottom"
+            PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+            StaysOpen="True">
+            <decorators:ClipBorder
+                x:Name="PartPopupBorder"
+                Background="{DynamicResource AtcApps.Brushes.ThemeBackground}"
+                BorderBrush="{DynamicResource AtcApps.Brushes.ComboBox.PopupBorder}"
+                BorderThickness="1"
+                SnapsToDevicePixels="True">
+                <DockPanel>
+                    <!--  "Please wait..." while the suggestions provider runs; "No matches" when nothing matches.  -->
+                    <TextBlock
+                        x:Name="PartStatusText"
+                        Margin="6,4"
+                        DockPanel.Dock="Top"
+                        Style="{DynamicResource AtcApps.Styles.TextBlock.Watermark}"
+                        Visibility="Collapsed" />
+                    <ListBox
+                        x:Name="PartSuggestionList"
+                        AutomationProperties.AutomationId="Suggestions"
+                        BorderThickness="0"
+                        Focusable="False"
+                        IsTabStop="False"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        SelectionMode="Single"
+                        VirtualizingPanel.IsVirtualizing="True"
+                        VirtualizingPanel.VirtualizationMode="Recycling" />
+                </DockPanel>
+            </decorators:ClipBorder>
+        </Popup>
+    </Grid>
+
+</UserControl>

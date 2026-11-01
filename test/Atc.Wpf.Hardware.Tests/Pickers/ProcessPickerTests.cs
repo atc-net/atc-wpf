@@ -25,6 +25,34 @@ public sealed class ProcessPickerTests
     }
 
     [WpfFact]
+    public async Task SelectedProcessExits_IsShownDisconnectedForOnePoll_ThenLeavesTheList()
+    {
+        using var service = new ProcessService(() => snapshots, _ => null);
+        var picker = new ProcessPicker(service)
+        {
+            ClearValueOnDisconnect = false,
+        };
+        var lost = 0;
+        picker.DeviceLost += (_, _) => lost++;
+
+        snapshots = [new ProcessSnapshot(100, "notepad", "a.txt", HasMainWindow: true)];
+        await service.RefreshAsync();
+        var selected = service.Processes[0];
+        picker.Value = selected;
+
+        snapshots = [];
+        await service.RefreshAsync();
+
+        Assert.Same(selected, picker.Value);
+        Assert.Equal(Miscellaneous.DeviceDisconnected, picker.SelectedStateMessage);
+
+        await service.RefreshAsync();
+
+        Assert.Empty(service.Processes);
+        Assert.Equal(1, lost);
+    }
+
+    [WpfFact]
     [SuppressMessage("Major Code Smell", "S1215:\"GC.Collect\" should not be called", Justification = "Forcing a collection is how the leak is detected.")]
     public async Task PickerOnASharedService_IsCollectedOnceDropped()
     {

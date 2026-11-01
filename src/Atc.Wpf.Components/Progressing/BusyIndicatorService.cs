@@ -90,7 +90,7 @@ public class BusyIndicatorService : IBusyIndicatorService
                 progress,
                 ct).ConfigureAwait(true);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
             BusyIndicatorManager.MarkCancelled(token);
         }
@@ -125,7 +125,7 @@ public class BusyIndicatorService : IBusyIndicatorService
                 progress,
                 ct).ConfigureAwait(true);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
             BusyIndicatorManager.MarkCancelled(token);
             return default!;

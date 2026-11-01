@@ -275,9 +275,19 @@ public sealed class GridEx : Grid
     /// Applies spacing margins to all children based on their grid position.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// Each gap is split over the cells on both sides of it, in proportion to their position:
+    /// a cell starting at track <c>i</c> of <c>n</c> and spanning <c>k</c> tracks gets a leading margin
+    /// of <c>spacing * i / n</c> and a trailing margin of <c>spacing * (n - i - k) / n</c>. So every gap
+    /// between neighbouring cells is exactly the spacing, the outer edges get none, and the content of
+    /// equally sized (for example <c>*,*</c>) tracks gets equal sizes. With weighted star tracks
+    /// (<c>2*,*</c>) the content keeps the gap but is only approximately proportional.
+    /// </para>
+    /// <para>
     /// The margin GridEx applies is remembered on each child, so a later change of spacing,
     /// rows, columns or cell position re-applies it. A margin the child got from anywhere else
-    /// (local value, style, binding) is never overwritten.
+    /// (local value, style, binding) is never overwritten, so such a child gets no spacing.
+    /// </para>
     /// </remarks>
     private void ApplySpacingToChildren()
     {
@@ -300,22 +310,35 @@ public sealed class GridEx : Grid
                 continue;
             }
 
-            var col = GetColumn(child);
-            var row = GetRow(child);
-            var colSpan = GetColumnSpan(child);
-            var rowSpan = GetRowSpan(child);
+            var (left, right) = SplitGap(hSpacing, GetColumn(child), GetColumnSpan(child), colCount);
+            var (top, bottom) = SplitGap(vSpacing, GetRow(child), GetRowSpan(child), rowCount);
 
-            var isLastColumn = colCount == 0 || col + colSpan >= colCount;
-            var isLastRow = rowCount == 0 || row + rowSpan >= rowCount;
-
-            ApplySpacingMargin(
-                fe,
-                new Thickness(
-                    0,
-                    0,
-                    isLastColumn ? 0 : hSpacing,
-                    isLastRow ? 0 : vSpacing));
+            ApplySpacingMargin(fe, new Thickness(left, top, right, bottom));
         }
+    }
+
+    /// <summary>
+    /// Gets the leading and trailing margin of a cell starting at track <paramref name="index"/> and
+    /// spanning <paramref name="span"/> of <paramref name="trackCount"/> tracks, so each gap of
+    /// <paramref name="spacing"/> is shared by the cells on both sides of it.
+    /// </summary>
+    internal static (double Leading, double Trailing) SplitGap(
+        double spacing,
+        int index,
+        int span,
+        int trackCount)
+    {
+        if (spacing <= 0 || trackCount <= 1)
+        {
+            return (0, 0);
+        }
+
+        var first = System.Math.Clamp(index, 0, trackCount - 1);
+        var end = System.Math.Clamp(first + System.Math.Max(span, 1), first + 1, trackCount);
+
+        return (
+            spacing * first / trackCount,
+            spacing * (trackCount - end) / trackCount);
     }
 
     /// <summary>

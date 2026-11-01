@@ -8,15 +8,10 @@
     <PackageId>Atc.Wpf.Theming</PackageId>
     <PackageTags>wpf;theming;styles;light-theme;dark-theme</PackageTags>
     <Description>WPF theming library providing light and dark themes with customizable styles for WPF applications.</Description>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);SYSLIB0051;CS0169;CS0649;CS8618;CA1823</NoWarn>
     <!-- Every public member is documented: report missing XML comments. -->
     <NoWarn>$(NoWarn.Replace('1591', ''))</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Remove="**\*.png;**\*.jpg;**\*.ico;**\*.ttf" />
@@ -33,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atc" Version="3.0.186" />
+    <PackageReference Include="Atc" Version="4.0.0" />
     <PackageReference Include="Atc.XamlToolkit" Version="3.2.1" />
     <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.2.1" />
     <PackageReference Include="ControlzEx" version="7.0.4" />
@@ -41,7 +36,7 @@
     <!-- Uncomment XAMLTools.MSBuild to run Tool for generating Themes-xaml files  -->
     <!--<PackageReference Include="XAMLTools.MSBuild" Version="1.0.0-alpha.189" PrivateAssets="all" IncludeAssets="build" />-->
 
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.363">
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.367">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

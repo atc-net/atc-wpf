@@ -155,7 +155,12 @@ public sealed class ImageWeather : Image, ISpinable, IRotatable, IFlippable
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageWeather.Icon, imageWeather.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            FontIconHelper.GetIconImageSource(
+                FontWeatherTypeface,
+                char.ConvertFromUtf32((int)imageWeather.Icon),
+                imageWeather.Foreground));
     }
 
     private static void OnSpinDurationChanged(
@@ -197,8 +202,8 @@ public sealed class ImageWeather : Image, ISpinable, IRotatable, IFlippable
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var imageWeather = d as ImageWeather;
-        if (imageWeather?.Spin != true ||
+        if (d is not ImageWeather imageWeather ||
+            imageWeather.Spin ||
             e.NewValue is not double ||
             e.NewValue.Equals(e.OldValue))
         {

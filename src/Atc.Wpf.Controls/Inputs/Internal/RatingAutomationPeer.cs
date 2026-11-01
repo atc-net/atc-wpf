@@ -79,9 +79,13 @@ public class RatingAutomationPeer : FrameworkElementAutomationPeer, IRangeValueP
             return;
         }
 
+        LastRaisedValueChange = (oldValue, newValue);
         RaisePropertyChangedEvent(
             RangeValuePatternIdentifiers.ValueProperty,
             oldValue,
             newValue);
     }
+
+    /// <summary>Gets the last value change raised to UI Automation; null until one is raised.</summary>
+    internal (double OldValue, double NewValue)? LastRaisedValueChange { get; private set; }
 }

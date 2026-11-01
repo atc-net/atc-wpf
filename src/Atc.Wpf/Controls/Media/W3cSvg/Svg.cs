@@ -150,10 +150,8 @@ internal sealed class Svg
             return;
         }
 
-        var doc = new XmlDocument();
-        doc.LoadXml(fileXml);
-
-        Load(doc);
+        using var stringReader = new StringReader(fileXml);
+        Load(SvgLimits.LoadDocument(settings => XmlReader.Create(stringReader, settings)));
     }
 
     public void Load(string filePath)
@@ -178,18 +176,13 @@ internal sealed class Svg
                     ".svgz",
                     StringComparison.OrdinalIgnoreCase))
             {
-                using var fileStream = File.OpenRead(fileUri.Uri.LocalPath);
-                using var zipStream = new GZipStream(
-                    fileStream,
-                    CompressionMode.Decompress);
+                using var zipStream = SvgLimits.Decompress(File.OpenRead(fileUri.Uri.LocalPath));
                 Load(zipStream);
                 return;
             }
         }
 
-        var doc = new XmlDocument();
-        doc.Load(filePath);
-        Load(doc);
+        Load(SvgLimits.LoadDocument(settings => XmlReader.Create(filePath, settings)));
     }
 
     public void Load(Uri fileUri)
@@ -218,36 +211,28 @@ internal sealed class Svg
         }
 
         Filename = filePath;
-        var doc = new XmlDocument();
-        doc.Load(filePath);
-        Load(doc);
+        Load(SvgLimits.LoadDocument(settings => XmlReader.Create(filePath, settings)));
     }
 
     public void Load(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream);
 
-        var doc = new XmlDocument();
-        doc.Load(stream);
-        Load(doc);
+        Load(SvgLimits.LoadDocument(settings => XmlReader.Create(stream, settings)));
     }
 
     public void Load(XmlReader xmlReader)
     {
         ArgumentNullException.ThrowIfNull(xmlReader);
 
-        var doc = new XmlDocument();
-        doc.Load(xmlReader);
-        Load(doc);
+        Load(SvgLimits.LoadDocument(settings => XmlReader.Create(xmlReader, settings)));
     }
 
     public void Load(TextReader txtReader)
     {
         ArgumentNullException.ThrowIfNull(txtReader);
 
-        var doc = new XmlDocument();
-        doc.Load(txtReader);
-        Load(doc);
+        Load(SvgLimits.LoadDocument(settings => XmlReader.Create(txtReader, settings)));
     }
 
     private void Load(XmlDocument svgDocument)

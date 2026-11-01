@@ -14,6 +14,7 @@ public sealed partial class DecimalBox : NumericBox
     /// <summary>Initializes a new instance of the <see cref="DecimalBox"/> class.</summary>
     public DecimalBox()
     {
+        UseUiCultureUntilSet();
         Loaded += OnLoaded;
     }
 

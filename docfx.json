@@ -44,6 +44,18 @@
         ],
         "src": ".",
         "dest": "."
+      },
+      {
+        "files": [
+          "**/*.md"
+        ],
+        "exclude": [
+          "**/bin/**",
+          "**/obj/**",
+          "**/README.nuget.md"
+        ],
+        "src": "src",
+        "dest": "Controls"
       }
     ],
     "resource": [
@@ -53,6 +65,17 @@
         ],
         "src": ".",
         "dest": "."
+      },
+      {
+        "files": [
+          "**/*.{png,gif,jpg,jpeg,svg,webp}"
+        ],
+        "exclude": [
+          "**/bin/**",
+          "**/obj/**"
+        ],
+        "src": "src",
+        "dest": "Controls"
       }
     ],
     "output": "_site",

@@ -59,6 +59,96 @@ public sealed class FlyoutEscapeTests : IDisposable
         }
     }
 
+    [StaFact]
+    public void Escape_RaisesClosingOnceAsLightDismiss()
+    {
+        var older = new Flyout();
+        var newer = new Flyout();
+        var window = CreateWindow(older, newer);
+        var closingEvents = new List<FlyoutClosingEventArgs>();
+        newer.Closing += (_, e) => closingEvents.Add(e);
+
+        try
+        {
+            newer.IsOpen = true;
+
+            PressEscape(window);
+
+            Assert.False(newer.IsOpen);
+            var closing = Assert.Single(closingEvents);
+            Assert.True(closing.IsLightDismiss);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [StaFact]
+    public void Escape_ClosingCancelled_StaysOpenWithoutRaisingOpening()
+    {
+        var older = new Flyout();
+        var newer = new Flyout();
+        var window = CreateWindow(older, newer);
+
+        try
+        {
+            newer.IsOpen = true;
+            var openingCount = 0;
+            var closingCount = 0;
+            newer.Opening += (_, _) => openingCount++;
+            newer.Closing += (_, e) =>
+            {
+                closingCount++;
+                e.Cancel = true;
+            };
+
+            PressEscape(window);
+
+            Assert.True(newer.IsOpen);
+            Assert.Equal(1, closingCount);
+            Assert.Equal(0, openingCount);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
+    [StaFact]
+    public void IsOpenFalse_ClosingCancelled_StaysOpenTopmostWithoutRaisingOpening()
+    {
+        var older = new Flyout();
+        var newer = new Flyout();
+        var window = CreateWindow(older, newer);
+
+        try
+        {
+            older.IsOpen = true;
+            newer.IsOpen = true;
+            var openingCount = 0;
+            var cancelClose = true;
+            newer.Opening += (_, _) => openingCount++;
+            newer.Closing += (_, e) => e.Cancel = cancelClose;
+
+            newer.IsOpen = false;
+
+            Assert.True(newer.IsOpen);
+            Assert.Equal(0, openingCount);
+
+            // The cancelled close keeps the flyout topmost, so Escape still targets it.
+            cancelClose = false;
+            PressEscape(window);
+
+            Assert.False(newer.IsOpen);
+            Assert.True(older.IsOpen);
+        }
+        finally
+        {
+            window.Close();
+        }
+    }
+
     private static Window CreateWindow(
         Flyout older,
         Flyout newer)

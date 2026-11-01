@@ -1,82 +1,79 @@
 namespace Atc.Wpf.Hardware.Tests.Pickers.Internal;
 
+[SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "The slot owns the published frames; the tests check what it disposes.")]
 public sealed class LatestFrameSlotTests
 {
-    private const int Width = 4;
-    private const int Height = 2;
-    private const int Length = Width * Height * 4;
-
     [Fact]
     public void Publish_WhileARenderIsAlreadyScheduled_DoesNotAskForAnotherRender()
     {
-        var sut = new LatestFrameSlot();
+        var sut = new LatestFrameSlot<Frame>();
 
-        var first = sut.Publish(sut.RentWriteBuffer(Length), Width, Height);
-        var second = sut.Publish(sut.RentWriteBuffer(Length), Width, Height);
+        var first = sut.Publish(new Frame(1));
+        var second = sut.Publish(new Frame(2));
 
         Assert.True(first);
         Assert.False(second);
     }
 
     [Fact]
-    public void TryTake_AfterSeveralPublishes_ReturnsOnlyTheLatestFrame()
+    public void TryTake_AfterSeveralPublishes_ReturnsOnlyTheLatestFrameAndDisposesTheDroppedOnes()
     {
-        var sut = new LatestFrameSlot();
-        var older = sut.RentWriteBuffer(Length);
-        older[0] = 1;
-        sut.Publish(older, Width, Height);
-        var latest = sut.RentWriteBuffer(Length);
-        latest[0] = 2;
-        sut.Publish(latest, Width, Height);
+        var sut = new LatestFrameSlot<Frame>();
+        var older = new Frame(1);
+        var latest = new Frame(2);
+        sut.Publish(older);
+        sut.Publish(latest);
 
         Assert.True(sut.TryTake(out var frame));
-        Assert.Equal(2, frame.Buffer[0]);
-        Assert.Equal(Width, frame.Width);
-        Assert.Equal(Height, frame.Height);
+        Assert.Same(latest, frame);
+        Assert.True(older.IsDisposed);
+        Assert.False(latest.IsDisposed);
         Assert.False(sut.TryTake(out _));
     }
 
     [Fact]
     public void Publish_AfterTheScheduledRenderTookItsFrame_AsksForANewRender()
     {
-        var sut = new LatestFrameSlot();
-        sut.Publish(sut.RentWriteBuffer(Length), Width, Height);
-        sut.TryTake(out var frame);
-        sut.Return(frame.Buffer);
+        var sut = new LatestFrameSlot<Frame>();
+        sut.Publish(new Frame(1));
+        sut.TryTake(out _);
 
-        Assert.True(sut.Publish(sut.RentWriteBuffer(Length), Width, Height));
+        Assert.True(sut.Publish(new Frame(2)));
     }
 
     [Fact]
-    public void RentWriteBuffer_ReusesReturnedAndDroppedBuffersOfTheSameSize()
+    public void HasPendingFrame_IsTrueUntilTheUiTakesTheFrame()
     {
-        var sut = new LatestFrameSlot();
-        var a = sut.RentWriteBuffer(Length);
-        sut.Publish(a, Width, Height);
-        var b = sut.RentWriteBuffer(Length);
-        sut.Publish(b, Width, Height); // a is dropped and recycled
+        var sut = new LatestFrameSlot<Frame>();
+        Assert.False(sut.HasPendingFrame);
 
-        var c = sut.RentWriteBuffer(Length);
-        sut.TryTake(out var frame); // b
-        sut.Return(frame.Buffer);
-        var d = sut.RentWriteBuffer(Length);
+        sut.Publish(new Frame(1));
+        Assert.True(sut.HasPendingFrame);
 
-        Assert.Same(a, c);
-        Assert.Same(b, d);
+        sut.TryTake(out _);
+        Assert.False(sut.HasPendingFrame);
     }
 
     [Fact]
-    public void RentWriteBuffer_ForADifferentFrameSize_AllocatesAMatchingBuffer()
+    public void Clear_DisposesThePendingFrame()
     {
-        var sut = new LatestFrameSlot();
-        var small = sut.RentWriteBuffer(Length);
-        sut.Publish(small, Width, Height);
-        sut.TryTake(out var frame);
-        sut.Return(frame.Buffer);
+        var sut = new LatestFrameSlot<Frame>();
+        var pending = new Frame(1);
+        sut.Publish(pending);
 
-        var large = sut.RentWriteBuffer(Length * 4);
+        sut.Clear();
 
-        Assert.NotSame(small, large);
-        Assert.Equal(Length * 4, large.Length);
+        Assert.True(pending.IsDisposed);
+        Assert.False(sut.TryTake(out _));
+    }
+
+    private sealed class Frame(int number) : IDisposable
+    {
+        public int Number { get; } = number;
+
+        public bool IsDisposed { get; private set; }
+
+        public void Dispose()
+            => IsDisposed = true;
     }
 }

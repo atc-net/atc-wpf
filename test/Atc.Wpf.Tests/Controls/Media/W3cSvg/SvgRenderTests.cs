@@ -261,6 +261,56 @@ public sealed class SvgRenderTests
         Assert.Equal(2d, GeometryDrawings(restored).Single().Pen.Thickness);
     }
 
+    [StaFact]
+    public void Path_WithInvalidData_IsSkippedAndTheOtherShapesRender()
+    {
+        var drawing = Render(
+            $$"""
+            {{SvgOpen}}
+              <rect width="2" height="2" fill="red" />
+              <path d="M 0 0 L x y Q" fill="blue" />
+              <rect x="5" width="2" height="2" fill="green" />
+            </svg>
+            """);
+
+        Assert.Equal(2, GeometryDrawings(drawing).Count());
+    }
+
+    [StaFact]
+    public void Animate_WithInvalidValues_IsSkippedAndTheOtherShapesRender()
+    {
+        var svgRender = new SvgRender { UseAnimations = true };
+
+        var drawing = svgRender.LoadXmlDrawing(
+            $$"""
+            {{SvgOpen}}
+              <g>
+                <circle id="c" cx="5" cy="5" r="2" />
+                <animate xlink:href="#c" attributeName="r" values="2;oops;2" dur="1s" />
+              </g>
+              <rect width="2" height="2" />
+            </svg>
+            """);
+
+        Assert.Equal(2, GeometryDrawings(drawing).Count());
+    }
+
+    [StaTheory]
+    [InlineData("0.5 1.5", 1d, new[] { 0.5, 1.5 })]
+    [InlineData("0.5,1.5", 2d, new[] { 0.25, 0.75 })]
+    [InlineData("3 1", 1d, new[] { 3d, 1d })]
+    public void StrokeDashArray_FractionalValues_AreKept(
+        string dashArray,
+        double strokeWidth,
+        double[] expectedDashes)
+    {
+        var drawing = Render(
+            $"""{SvgOpen}<line x1="0" y1="0" x2="10" y2="0" stroke="red" stroke-width="{strokeWidth.ToString(CultureInfo.InvariantCulture)}" stroke-dasharray="{dashArray}" /></svg>""");
+
+        var dashes = GeometryDrawings(drawing).Single().Pen.DashStyle.Dashes;
+        Assert.Equal(expectedDashes, dashes.ToArray());
+    }
+
     private static DrawingGroup Render(string svg)
         => new SvgRender().LoadXmlDrawing(svg);
 

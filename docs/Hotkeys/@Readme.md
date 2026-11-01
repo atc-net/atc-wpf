@@ -153,6 +153,8 @@ The JSON format uses enum names for readability. Chord bindings include `SecondM
 
 - Global hotkeys use Win32 `RegisterHotKey` via a message-only `HwndSource` window
 - Local hotkeys use WPF `InputBinding` + `KeyGesture` on the target window
+- Local letter or digit hotkeys with no modifier or Shift only (which `KeyGesture` refuses) are matched in `PreviewKeyDown` instead, and do not fire while a `TextBox` or `PasswordBox` has focus
+- `Register` and `Unregister` can be called from any thread; the Win32 and window work runs on the service's dispatcher
 - Chords are always local scope and use `PreviewKeyDown` with a 1.5-second timeout
 - Call `StartListening(window)` before hotkeys will fire
 - Call `Dispose()` to clean up all registrations and Win32 resources

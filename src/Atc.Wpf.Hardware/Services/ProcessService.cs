@@ -66,16 +66,20 @@ public sealed class ProcessService : IProcessService
     private static IReadOnlyList<ProcessSnapshot> EnumerateProcesses()
     {
         var snapshots = new List<ProcessSnapshot>();
+        var processes = System.Diagnostics.Process.GetProcesses();
 
-        foreach (var p in System.Diagnostics.Process.GetProcesses())
+        // One pass over the top-level windows; Process.MainWindowHandle would enumerate them once per process.
+        var mainWindows = ProcessMainWindowMap.Capture();
+
+        foreach (var p in processes)
         {
             try
             {
-                var hasWindow = p.MainWindowHandle != IntPtr.Zero;
+                var hasWindow = mainWindows.TryGetValue(p.Id, out var mainWindowHandle);
                 snapshots.Add(new ProcessSnapshot(
                     p.Id,
                     p.ProcessName,
-                    hasWindow ? p.MainWindowTitle : string.Empty,
+                    hasWindow ? NativeWindowMethods.ReadWindowTitle(mainWindowHandle) : string.Empty,
                     hasWindow));
             }
             catch (Exception)
@@ -171,9 +175,16 @@ public sealed class ProcessService : IProcessService
     {
         var newcomers = new List<(ProcessSnapshot Snapshot, RunningProcessInfo? Stale)>();
 
+        // One index per poll keeps the diff linear; the collection itself stays the only state.
+        var known = new Dictionary<int, RunningProcessInfo>(Processes.Count);
+        foreach (var process in Processes)
+        {
+            known.TryAdd(process.ProcessId, process);
+        }
+
         foreach (var snapshot in snapshots)
         {
-            var existing = FindByProcessId(snapshot.ProcessId);
+            var existing = known.GetValueOrDefault(snapshot.ProcessId);
             if (existing is not null &&
                 string.Equals(existing.ProcessName, snapshot.ProcessName, StringComparison.OrdinalIgnoreCase))
             {
@@ -194,13 +205,28 @@ public sealed class ProcessService : IProcessService
         return newcomers;
     }
 
+    /// <summary>
+    /// Marks the processes that have exited as <see cref="DeviceState.Disconnected"/>, and removes the ones
+    /// already shown as disconnected by the previous poll. A process id never comes back, so keeping them
+    /// would only grow the list (and the poll) for as long as the application runs.
+    /// </summary>
     private void MarkMissingAsDisconnected(HashSet<int> found)
     {
         for (var i = Processes.Count - 1; i >= 0; i--)
         {
-            if (!found.Contains(Processes[i].ProcessId))
+            var process = Processes[i];
+            if (found.Contains(process.ProcessId))
             {
-                Processes[i].State = DeviceState.Disconnected;
+                continue;
+            }
+
+            if (process.State is DeviceState.Disconnected)
+            {
+                Processes.RemoveAt(i);
+            }
+            else
+            {
+                process.State = DeviceState.Disconnected;
             }
         }
     }
@@ -236,18 +262,5 @@ public sealed class ProcessService : IProcessService
     {
         stale.State = DeviceState.Disconnected;
         Processes.Remove(stale);
-    }
-
-    private RunningProcessInfo? FindByProcessId(int processId)
-    {
-        for (var i = 0; i < Processes.Count; i++)
-        {
-            if (Processes[i].ProcessId == processId)
-            {
-                return Processes[i];
-            }
-        }
-
-        return null;
     }
 }

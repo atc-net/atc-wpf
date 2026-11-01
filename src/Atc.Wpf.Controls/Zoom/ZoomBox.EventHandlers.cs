@@ -13,6 +13,7 @@ public partial class ZoomBox
     private Point contentMouseDownPoint;
     private MouseButton mouseButtonDown;
     private bool isSpacebarHeld;
+    private ViewportState? appliedInitialViewport;
     private Cursor? cursorBeforeSpacebar;
 
     private RelayCommand? zoomFillCommand;
@@ -189,10 +190,17 @@ public partial class ZoomBox
     /// <summary>
     /// Attempts to handle key down events and execute corresponding zoom commands.
     /// Also handles spacebar for temporary pan mode.
+    /// Keys typed into a text input (e.g. a TextBox in the content) are left alone, so Space and
+    /// AltGr characters (reported as Ctrl+Alt, e.g. AltGr+8/9/0 on Danish and German keyboards) still reach it.
     /// </summary>
     public bool TryHandleKeyDown(KeyEventArgs e)
     {
         ArgumentNullException.ThrowIfNull(e);
+
+        if (IsTextInput(e.OriginalSource))
+        {
+            return false;
+        }
 
         if (IsSpacebarPanEnabled && e.Key == Key.Space && !isSpacebarHeld)
         {
@@ -259,6 +267,9 @@ public partial class ZoomBox
 
         return false;
     }
+
+    private static bool IsTextInput(object? source)
+        => source is TextBoxBase or PasswordBox;
 
     private ICommand? GetCommandForAction(ZoomActionType action)
         => action switch
@@ -357,8 +368,7 @@ public partial class ZoomBox
         }
         else if (mouseHandlingMode == MouseHandlingModeType.DragZooming)
         {
-            var finalContentMousePoint = e.GetPosition(content);
-            ApplyDragZoomRect(finalContentMousePoint);
+            ApplyDragZoomRect(contentMouseDownPoint, e.GetPosition(content));
         }
 
         ReleaseMouseCapture();
@@ -407,13 +417,14 @@ public partial class ZoomBox
                  System.Math.Abs(dragOffset.Y) > DragZoomThreshold))
             {
                 mouseHandlingMode = MouseHandlingModeType.DragZooming;
-                InitDragZoomRect(contentMouseDownPoint, curContentMousePoint);
+
+                // The overlay canvas covers the control, so it is drawn in control coordinates.
+                InitDragZoomRect(zoomControlMouseDownPoint, curZoomControlMousePoint);
             }
         }
         else if (mouseHandlingMode == MouseHandlingModeType.DragZooming)
         {
-            curContentMousePoint = e.GetPosition(this);
-            SetDragZoomRect(zoomControlMouseDownPoint, curContentMousePoint);
+            SetDragZoomRect(zoomControlMouseDownPoint, e.GetPosition(this));
         }
     }
 
@@ -481,6 +492,8 @@ public partial class ZoomBox
         {
             oldElement.SizeChanged -= SetZoomInitialPosition;
         }
+
+        appliedInitialViewport = null;
 
         if (newContent is FrameworkElement newElement)
         {
@@ -561,19 +574,21 @@ public partial class ZoomBox
         e.Handled = true;
     }
 
-    private void OnZoomCommandMessageHandler(ZoomCommandMessage obj)
+    internal void OnZoomCommandMessageHandler(ZoomCommandMessage obj)
     {
+        // Use the command properties, not their lazily created backing fields: the message may come
+        // before anything (a button binding or a key press) has created the command.
         switch (obj.CommandType)
         {
             case ZoomCommandMessageType.ZoomToFill:
             {
-                zoomFillCommand?.Execute(parameter: null);
+                ExecuteIfPossible(ZoomFillCommand, parameter: null);
                 break;
             }
 
             case ZoomCommandMessageType.ZoomToFit:
             {
-                zoomFitCommand?.Execute(parameter: null);
+                ExecuteIfPossible(ZoomFitCommand, parameter: null);
                 break;
             }
 
@@ -581,7 +596,7 @@ public partial class ZoomBox
             {
                 if (obj.Percentage is > 0 and <= 1000)
                 {
-                    zoomPercentCommand?.Execute(obj.Percentage);
+                    ExecuteIfPossible(ZoomPercentCommand, (double)obj.Percentage);
                 }
 
                 break;
@@ -589,6 +604,16 @@ public partial class ZoomBox
 
             default:
                 throw new SwitchCaseDefaultException(obj.CommandType);
+        }
+    }
+
+    private static void ExecuteIfPossible(
+        ICommand command,
+        object? parameter)
+    {
+        if (command.CanExecute(parameter))
+        {
+            command.Execute(parameter);
         }
     }
 
@@ -601,10 +626,18 @@ public partial class ZoomBox
             return;
         }
 
+        // Re-apply the initial position while the content settles (e.g. an image that loads), but never
+        // once the user has zoomed or panned away from it: a later resize must not wipe their view.
+        if (appliedInitialViewport is not null &&
+            !IsSameViewport(appliedInitialViewport, CurrentViewportState, compareOffsets: ZoomInitialPosition != ZoomInitialPositionType.FitScreen))
+        {
+            return;
+        }
+
         switch (ZoomInitialPosition)
         {
             case ZoomInitialPositionType.Default:
-                break;
+                return;
             case ZoomInitialPositionType.FitScreen:
                 InternalViewportZoom = FitZoomValue;
                 break;
@@ -621,7 +654,19 @@ public partial class ZoomBox
             default:
                 throw new SwitchCaseDefaultException(ZoomInitialPosition);
         }
+
+        appliedInitialViewport = CurrentViewportState;
     }
+
+    // Fit only sets the zoom (the offsets follow the layout), so only the zoom tells whether the user moved away.
+    private static bool IsSameViewport(
+        ViewportState a,
+        ViewportState b,
+        bool compareOffsets)
+        => System.Math.Abs(a.Zoom - b.Zoom) < 1e-9 &&
+           (!compareOffsets ||
+            (System.Math.Abs(a.OffsetX - b.OffsetX) < 1e-6 &&
+             System.Math.Abs(a.OffsetY - b.OffsetY) < 1e-6));
 
     private void ZoomOut(Point contentZoomCenter)
         => ZoomAboutPoint(InternalViewportZoom * 0.90909090909, contentZoomCenter);
@@ -663,20 +708,30 @@ public partial class ZoomBox
         ViewportHelpers.PositionBorderOnCanvas(partDragZoomBorder, rect);
     }
 
-    private void ApplyDragZoomRect(Point finalContentMousePoint)
+    /// <summary>
+    /// Zooms to the rectangle dragged between two points in content coordinates, clipped to the content.
+    /// </summary>
+    internal void ApplyDragZoomRect(
+        Point contentStartPoint,
+        Point contentEndPoint)
     {
-        if (partDragZoomCanvas is null)
+        if (content is null)
         {
             return;
         }
 
+        // Both points are in content coordinates, so clip against the content, not the (control-sized) overlay.
         var rect = ViewportHelpers.Clip(
-            finalContentMousePoint,
-            contentMouseDownPoint,
+            contentStartPoint,
+            contentEndPoint,
             new Point(0, 0),
-            new Point(partDragZoomCanvas.ActualWidth, partDragZoomCanvas.ActualHeight));
+            new Point(content.ActualWidth, content.ActualHeight));
 
-        AnimatedZoomTo(rect);
+        if (rect is { Width: > 0, Height: > 0 })
+        {
+            AnimatedZoomTo(rect);
+        }
+
         FadeOutDragZoomRect();
     }
 

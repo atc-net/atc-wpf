@@ -28,7 +28,7 @@ using Atc.Wpf.Controls.ColorEditing;
 
 ```xml
 <atc:WellKnownColorPicker
-    SelectedColor="{Binding SelectedColor}"
+    ColorBrush="{Binding SelectedColorBrush, Mode=TwoWay}"
     ShowOnlyBasicColors="False" />
 ```
 
@@ -37,7 +37,7 @@ using Atc.Wpf.Controls.ColorEditing;
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `ShowOnlyBasicColors` | `bool` | `false` | Limit display to 16 basic colors |
-| `SelectedColor` | `Color?` | `null` | Currently selected color |
+| `ColorBrush` | `Brush` | `Transparent` | Brush of the last clicked color (see also the `ColorChanged` event) |
 
 ## 🎨 Basic Colors (16)
 

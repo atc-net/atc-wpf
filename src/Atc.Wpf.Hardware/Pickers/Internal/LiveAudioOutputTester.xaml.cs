@@ -36,6 +36,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable, 
     }
 
     private readonly float[] ring = new float[RingCapacity];
+    private readonly WaveformPointBuffers waveformPoints = new(RingCapacity);
     private readonly DispatcherTimer renderTimer;
 
     private int ringHead;
@@ -346,26 +347,7 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable, 
             return;
         }
 
-        var midY = height / 2;
-        var halfHeight = (height / 2) - 2;
-
-        var topPoints = new PointCollection(RingCapacity);
-        var bottomPoints = new PointCollection(RingCapacity);
-
-        for (var i = 0; i < RingCapacity; i++)
-        {
-            var index = (ringHead + i) % RingCapacity;
-            var sample = ring[index];
-            if (sample > 1f)
-            {
-                sample = 1f;
-            }
-
-            var x = (i / (double)(RingCapacity - 1)) * (width - 12);
-            topPoints.Add(new System.Windows.Point(x, midY - (sample * halfHeight)));
-            bottomPoints.Add(new System.Windows.Point(x, midY + (sample * halfHeight)));
-        }
-
+        var (topPoints, bottomPoints) = waveformPoints.Fill(ring, ringHead, width, height);
         PartTopLine.Points = topPoints;
         PartBottomLine.Points = bottomPoints;
 

@@ -147,6 +147,8 @@ public sealed partial class Popover : Control
     {
         MaxPopoverWidth = double.PositiveInfinity;
         MaxPopoverHeight = double.PositiveInfinity;
+
+        Unloaded += OnUnloaded;
     }
 
     /// <inheritdoc />
@@ -196,10 +198,17 @@ public sealed partial class Popover : Control
                     MouseLeftButtonDownEvent,
                     new MouseButtonEventHandler(OnAnchorClick),
                     handledEventsToo: true);
+                anchorPresenter.AddHandler(
+                    ButtonBase.ClickEvent,
+                    new RoutedEventHandler(OnAnchorButtonClick),
+                    handledEventsToo: true);
+                anchorPresenter.KeyDown += OnAnchorKeyDown;
                 break;
             case PopoverTriggerMode.Hover:
                 anchorPresenter.MouseEnter += OnAnchorMouseEnter;
                 anchorPresenter.MouseLeave += OnAnchorMouseLeave;
+                anchorPresenter.GotKeyboardFocus += OnAnchorGotKeyboardFocus;
+                anchorPresenter.LostKeyboardFocus += OnAnchorLostKeyboardFocus;
                 if (popup is not null)
                 {
                     popup.MouseEnter += OnPopupMouseEnter;
@@ -220,8 +229,14 @@ public sealed partial class Popover : Control
             anchorPresenter.RemoveHandler(
                 MouseLeftButtonDownEvent,
                 new MouseButtonEventHandler(OnAnchorClick));
+            anchorPresenter.RemoveHandler(
+                ButtonBase.ClickEvent,
+                new RoutedEventHandler(OnAnchorButtonClick));
+            anchorPresenter.KeyDown -= OnAnchorKeyDown;
             anchorPresenter.MouseEnter -= OnAnchorMouseEnter;
             anchorPresenter.MouseLeave -= OnAnchorMouseLeave;
+            anchorPresenter.GotKeyboardFocus -= OnAnchorGotKeyboardFocus;
+            anchorPresenter.LostKeyboardFocus -= OnAnchorLostKeyboardFocus;
         }
 
         if (popup is not null)
@@ -238,7 +253,92 @@ public sealed partial class Popover : Control
         object sender,
         MouseButtonEventArgs e)
     {
+        // A button anchor toggles on its Click (mouse, Enter, Space or access key); toggling here as well
+        // would open and immediately close it again.
+        if (IsInsideButton(e.OriginalSource as DependencyObject))
+        {
+            return;
+        }
+
         SetCurrentValue(IsOpenProperty, !IsOpen);
+    }
+
+    private void OnAnchorButtonClick(
+        object sender,
+        RoutedEventArgs e)
+        => SetCurrentValue(IsOpenProperty, !IsOpen);
+
+    private void OnAnchorKeyDown(
+        object sender,
+        KeyEventArgs e)
+    {
+        // A focusable anchor that is not a button (those raise Click themselves) opens with Enter or Space.
+        if (e.Key is not (Key.Enter or Key.Space) ||
+            e.Handled ||
+            !ReferenceEquals(e.OriginalSource, Anchor) ||
+            e.OriginalSource is ButtonBase or TextBoxBase or PasswordBox)
+        {
+            return;
+        }
+
+        SetCurrentValue(IsOpenProperty, !IsOpen);
+        e.Handled = true;
+    }
+
+    private bool IsInsideButton(DependencyObject? element)
+    {
+        while (element is not null &&
+               !ReferenceEquals(element, anchorPresenter))
+        {
+            if (element is ButtonBase)
+            {
+                return true;
+            }
+
+            element = element is Visual or System.Windows.Media.Media3D.Visual3D
+                ? VisualTreeHelper.GetParent(element)
+                : LogicalTreeHelper.GetParent(element);
+        }
+
+        return false;
+    }
+
+    private void OnAnchorGotKeyboardFocus(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
+    {
+        StopCloseTimer();
+        StartOpenTimer();
+    }
+
+    private void OnAnchorLostKeyboardFocus(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
+    {
+        // Keep it open while focus stays in the anchor or moves into the popover content.
+        if (e.NewFocus is DependencyObject newFocus &&
+            (anchorPresenter?.IsAncestorOf(newFocus) == true ||
+             (popup?.Child is { } child && child.IsAncestorOf(newFocus))))
+        {
+            return;
+        }
+
+        StopOpenTimer();
+        StartCloseTimer();
+    }
+
+    private void OnUnloaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        // Close (which detaches the light-dismiss handler from the window) so the window does not keep this alive.
+        StopTimers();
+        if (IsOpen)
+        {
+            SetCurrentValue(IsOpenProperty, false);
+        }
+
+        DetachDismissWindow();
     }
 
     private void OnAnchorMouseEnter(
@@ -495,15 +595,22 @@ public sealed partial class Popover : Control
 
     private void OnClosed()
     {
-        if (dismissWindow is not null)
-        {
-            dismissWindow.RemoveHandler(
-                UIElement.PreviewMouseDownEvent,
-                new MouseButtonEventHandler(OnWindowPreviewMouseDown));
-            dismissWindow = null;
-        }
+        DetachDismissWindow();
 
         Closed?.Invoke(this, new RoutedEventArgs());
+    }
+
+    private void DetachDismissWindow()
+    {
+        if (dismissWindow is null)
+        {
+            return;
+        }
+
+        dismissWindow.RemoveHandler(
+            UIElement.PreviewMouseDownEvent,
+            new MouseButtonEventHandler(OnWindowPreviewMouseDown));
+        dismissWindow = null;
     }
 
     private void OnWindowPreviewMouseDown(

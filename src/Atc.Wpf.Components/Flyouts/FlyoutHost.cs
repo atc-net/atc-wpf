@@ -138,6 +138,50 @@ public partial class FlyoutHost : ItemsControl
     }
 
     /// <inheritdoc />
+    protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+
+        base.OnItemsChanged(e);
+
+        // Track flyouts added after the host was created (e.g. by FlyoutService), not only the
+        // ones present when it loaded.
+        if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            var remaining = Items.OfType<Flyout>().ToList();
+            foreach (var flyout in openFlyouts.Where(f => !remaining.Contains(f)).ToList())
+            {
+                UnsubscribeFromFlyout(flyout);
+                RemoveFromOpenFlyouts(flyout);
+            }
+
+            foreach (var flyout in remaining)
+            {
+                SubscribeToFlyout(flyout);
+            }
+
+            return;
+        }
+
+        if (e.OldItems is not null)
+        {
+            foreach (var flyout in e.OldItems.OfType<Flyout>())
+            {
+                UnsubscribeFromFlyout(flyout);
+                RemoveFromOpenFlyouts(flyout);
+            }
+        }
+
+        if (e.NewItems is not null)
+        {
+            foreach (var flyout in e.NewItems.OfType<Flyout>())
+            {
+                SubscribeToFlyout(flyout);
+            }
+        }
+    }
+
+    /// <inheritdoc />
     protected override bool IsItemItsOwnContainerOverride(object item)
         => item is Flyout;
 
@@ -178,6 +222,8 @@ public partial class FlyoutHost : ItemsControl
 
     private void SubscribeToFlyout(Flyout flyout)
     {
+        // Unsubscribe first: a flyout is subscribed both when it is added and when the host loads.
+        UnsubscribeFromFlyout(flyout);
         flyout.Opening += OnFlyoutOpening;
         flyout.Closed += OnFlyoutClosed;
     }
@@ -221,7 +267,16 @@ public partial class FlyoutHost : ItemsControl
             return;
         }
 
-        // Remove from stack
+        RemoveFromOpenFlyouts(flyout);
+    }
+
+    private void RemoveFromOpenFlyouts(Flyout flyout)
+    {
+        if (!openFlyouts.Contains(flyout))
+        {
+            return;
+        }
+
         var tempStack = new Stack<Flyout>();
         while (openFlyouts.Count > 0)
         {

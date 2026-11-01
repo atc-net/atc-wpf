@@ -10,6 +10,7 @@ internal sealed class VisualPaginator : DocumentPaginator
     private readonly Visual sourceVisual;
     private readonly PrintSettings settings;
     private readonly double headerFooterHeight;
+    private readonly double pixelsPerDip;
     private RenderTargetBitmap? renderedBitmap;
     private int pageCount;
     private double scaleFactor = 1.0;
@@ -25,6 +26,7 @@ internal sealed class VisualPaginator : DocumentPaginator
         PageSize = pageSize;
         this.settings = settings;
         headerFooterHeight = settings.HeaderFooter is not null ? settings.HeaderFooter.FontSize * 2 : 0;
+        pixelsPerDip = PrintDpiHelper.GetPixelsPerDip(sourceVisual);
 
         RenderAndPaginate();
     }
@@ -180,7 +182,7 @@ internal sealed class VisualPaginator : DocumentPaginator
     }
 
     [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "Drawing context helper requires all parameters.")]
-    private static void DrawTextLine(
+    private void DrawTextLine(
         DrawingContext dc,
         string leftTemplate,
         string centerTemplate,
@@ -195,8 +197,6 @@ internal sealed class VisualPaginator : DocumentPaginator
         int totalPages,
         string title)
     {
-        var pixelsPerDip = VisualTreeHelper.GetDpi(Application.Current.MainWindow!).PixelsPerDip;
-
         if (!string.IsNullOrEmpty(leftTemplate))
         {
             var text = HeaderFooterFormatter.Format(leftTemplate, pageNumber, totalPages, title);

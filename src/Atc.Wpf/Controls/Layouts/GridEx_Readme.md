@@ -114,9 +114,9 @@ The above is equivalent to this verbose standard Grid definition:
 
 - `Spacing` sets both `HorizontalSpacing` and `VerticalSpacing`
 - Individual spacing values (`HorizontalSpacing`, `VerticalSpacing`) override unified `Spacing`
-- Spacing is applied as margin to children: right margin for horizontal, bottom margin for vertical
-- Last column children get no right margin, last row children get no bottom margin
-- Spacing only applies if the child doesn't already have a margin set
+- Spacing is applied as margin to children, each gap split over the cells on both sides of it: a cell in column `i` of `n` gets a left margin of `spacing * i / n` and a right margin of `spacing * (n - i - span) / n` (rows likewise)
+- So every gap between neighbouring cells is exactly the spacing, the outer edges get none, and equally sized tracks (`*,*`) give their content equal sizes; with weighted stars (`2*,*`) the content is only approximately proportional
+- Spacing only applies if the child doesn't already have a margin set (locally, by a style or a binding)
 
 ## 🔗 Related Controls
 

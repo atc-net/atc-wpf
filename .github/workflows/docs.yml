@@ -38,6 +38,11 @@ jobs:
       - name: 🧰 Install docfx
         run: dotnet tool install --global docfx --version 2.81.0
 
+      # Build the libraries first: docfx loads each project on its own, and without the referenced
+      # assemblies in bin/ the XAML compile step fails and the API pages lose generated members.
+      - name: 🛠️ Build libraries
+        run: dotnet build Atc.Wpf.slnx -c Release
+
       - name: 📚 Build documentation site
         run: docfx docfx.json
 

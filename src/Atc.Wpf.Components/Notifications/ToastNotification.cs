@@ -25,9 +25,11 @@ public sealed partial class ToastNotification : ContentControl
         HandlerType = typeof(RoutedEventHandler))]
     private static readonly RoutedEvent notificationClosed;
 
-    [DependencyProperty(
-        DefaultValue = false,
-        PropertyChangedCallback = nameof(CloseOnClickChanged))]
+    /// <summary>
+    /// Gets or sets a value indicating whether clicking the notification closes it.
+    /// A click that a button inside the notification has already handled does not close it.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false)]
     private bool closeOnClick;
 
     /// <summary>
@@ -96,26 +98,28 @@ public sealed partial class ToastNotification : ContentControl
         RaiseEvent(new RoutedEventArgs(NotificationClosedEvent));
     }
 
-    private static void CloseOnClickChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    /// <inheritdoc />
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
-        if (d is not Button button)
-        {
-            return;
-        }
+        base.OnMouseLeftButtonDown(e);
 
-        var value = (bool)e.NewValue;
-
-        if (value)
+        if (CloseOnClick && !e.Handled)
         {
-            button.Click += (_, _) =>
-            {
-                var notification = VisualTreeHelperEx.GetParent<ToastNotification>(button);
-                notification?.Close();
-            };
+            Close();
         }
     }
+
+    /// <summary>
+    /// Completes when the notification has been shown for <paramref name="expirationTime"/>, or when it starts closing.
+    /// With <paramref name="pauseOnHover"/>, the time does not run while the mouse is over the notification.
+    /// </summary>
+    /// <param name="expirationTime">How long the notification is shown.</param>
+    /// <param name="pauseOnHover">Whether the time stops running while the mouse is over the notification.</param>
+    /// <returns>A task that completes when the notification has expired.</returns>
+    internal Task WaitForExpiryAsync(
+        TimeSpan expirationTime,
+        bool pauseOnHover)
+        => new ToastNotificationExpiry(this, expirationTime, pauseOnHover).Task;
 
     private void OnCloseButtonOnClick(
         object sender,

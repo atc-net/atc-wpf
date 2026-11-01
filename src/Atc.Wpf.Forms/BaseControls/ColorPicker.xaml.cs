@@ -103,8 +103,10 @@ public partial class ColorPicker
         object sender,
         RoutedEventArgs e)
     {
+        // The dialog accepts a missing owner (no application or main window) and then opens unowned.
+        var ownerWindow = Window.GetWindow(this) ?? Application.Current?.MainWindow;
         var colorDialog = new ColorPickerDialogBox(
-            Application.Current.MainWindow!,
+            ownerWindow!,
             ColorValue ?? Colors.Transparent);
 
         var dialogResult = colorDialog.ShowDialog();

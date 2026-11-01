@@ -19,6 +19,47 @@ public sealed class ProcessServiceTests
     }
 
     [WpfFact]
+    public async Task RefreshAsync_ExitedProcesses_AreRemovedOnceTheyHaveBeenShownDisconnectedForOnePoll()
+    {
+        using var service = CreateService();
+        snapshots =
+        [
+            new ProcessSnapshot(1, "a", "A", HasMainWindow: true),
+            new ProcessSnapshot(2, "b", "B", HasMainWindow: true),
+            new ProcessSnapshot(3, "c", "C", HasMainWindow: true),
+        ];
+        await service.RefreshAsync();
+
+        snapshots =
+        [
+            new ProcessSnapshot(4, "d", "D", HasMainWindow: true),
+            new ProcessSnapshot(5, "e", "E", HasMainWindow: true),
+        ];
+        await service.RefreshAsync();
+
+        Assert.Equal(5, service.Processes.Count);
+        Assert.Equal(3, service.Processes.Count(p => p.State is DeviceState.Disconnected));
+
+        await service.RefreshAsync();
+
+        Assert.Equal([4, 5], service.Processes.Select(p => p.ProcessId).Order());
+    }
+
+    [WpfFact]
+    public async Task RefreshAsync_ManyProcessesComeAndGo_TheListDoesNotGrow()
+    {
+        using var service = CreateService();
+
+        for (var generation = 0; generation < 50; generation++)
+        {
+            snapshots = Generation(generation * 100, 100);
+            await service.RefreshAsync();
+        }
+
+        Assert.True(service.Processes.Count <= 200, $"{service.Processes.Count} entries are kept");
+    }
+
+    [WpfFact]
     public async Task RefreshAsync_PidReusedByAnotherProcess_ReplacesTheStaleEntry()
     {
         using var service = CreateService();
@@ -105,6 +146,20 @@ public sealed class ProcessServiceTests
 
         Assert.Equal(1, enumerateCalls);
         Assert.Single(service.Processes);
+    }
+
+    private static ProcessSnapshot[] Generation(
+        int firstProcessId,
+        int count)
+    {
+        var generation = new ProcessSnapshot[count];
+        for (var i = 0; i < count; i++)
+        {
+            var pid = firstProcessId + i;
+            generation[i] = new ProcessSnapshot(pid, "p" + pid.ToString(CultureInfo.InvariantCulture), string.Empty, HasMainWindow: true);
+        }
+
+        return generation;
     }
 
     private ProcessService CreateService()

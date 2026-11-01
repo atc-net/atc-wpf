@@ -54,7 +54,7 @@ using Atc.Wpf.Controls.Media;
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `Source` | `string` | `null` | Relative URL to SVG resource. Set "Build Action=Resource" for embedded files |
+| `Source` | `string` | `null` | Relative URL or absolute pack URI (`pack://application:,,,/...`) of an SVG resource. Set "Build Action=Resource" for embedded files |
 | `ControlSizeType` | `ControlSizeType` | `None` | How to stretch/resize/scale the drawing |
 | `Background` | `Brush` | `null` | Background brush behind the SVG |
 | `OverrideColor` | `Color?` | `null` | Override all fill colors in the SVG |
@@ -65,6 +65,23 @@ using Atc.Wpf.Controls.Media;
 | `UseAnimations` | `bool` | `false` | Enable SVG animations |
 | `CustomBrushes` | `Dictionary` | `null` | Custom brush mappings |
 | `ExternalFileLoader` | `IExternalFileLoader` | `null` | Custom file loader for external resources |
+
+## ⚡ Events
+
+| Event | Args | Description |
+|-------|------|-------------|
+| `ImageFailed` | `SvgImageFailedEventArgs` | Raised (bubbling routed event) when `Source`, `FileSource` or `SetImage(string/Stream)` cannot load the SVG: a missing file or resource, an invalid path or malformed SVG. `ErrorException` holds the cause. The image then shows nothing; nothing is thrown, like `Image.ImageFailed` |
+
+```xml
+<atc:SvgImage
+    FileSource="{Binding IconPath}"
+    ImageFailed="OnSvgImageFailed" />
+```
+
+```csharp
+private void OnSvgImageFailed(object? sender, SvgImageFailedEventArgs e)
+    => logger.LogWarning(e.ErrorException, "Could not load the SVG icon");
+```
 
 ## 📋 ControlSizeType Enumeration
 
@@ -89,6 +106,8 @@ using Atc.Wpf.Controls.Media;
 - SVG files are rendered as vector graphics, maintaining quality at any size
 - Color overrides apply to all matching elements in the SVG
 - Images loaded through `Source` or `FileSource` share one frozen drawing per source and render settings (`OverrideColor`, `OverrideStrokeColor`, `OverrideStrokeWidth`, `UseAnimations`), so an icon repeated in an item template is parsed and rendered once. Animated SVGs, images with `CustomBrushes` set by the application, and a custom `ExternalFileLoader` are not shared; `SetImage(...)` always loads its own copy. A file is identified by its full path, write time and size, so a changed file is loaded again
+- A broken element (e.g. invalid path data or animation values) is skipped and the rest of the image still renders
+- Hostile or runaway SVGs are bounded: elements nested deeper than 256 levels are dropped, at most 100,000 elements are rendered (counting what `<use>` expands to), DTDs are ignored (no entity expansion), and documents and decompressed `.svgz` files are capped at 64 MB
 - `CustomBrushes` exposes the SVG's paint servers after loading; brushes set before loading replace the matching paint servers. After changing an entry in place, call `ReRenderSvg()`
 
 ## 🔗 Related Controls

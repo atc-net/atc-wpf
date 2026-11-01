@@ -5,6 +5,7 @@ global using System.Runtime.CompilerServices;
 global using System.Threading;
 global using System.Windows;
 global using System.Windows.Controls;
+global using System.Windows.Controls.Primitives;
 global using System.Windows.Data;
 global using System.Windows.Documents;
 global using System.Windows.Interop;
@@ -12,6 +13,7 @@ global using System.Windows.Media;
 global using System.Windows.Threading;
 
 global using Atc.Wpf.Theming.Behaviors;
+global using Atc.Wpf.Theming.Behaviors.Internal;
 global using Atc.Wpf.Theming.Controls.Selectors;
 global using Atc.Wpf.Theming.Controls.Windows;
 global using Atc.Wpf.Theming.Helpers;
@@ -24,5 +26,6 @@ global using Atc.XUnit;
 global using ControlzEx.Theming;
 
 global using Windows.Win32.Foundation;
+global using Windows.Win32.UI.WindowsAndMessaging;
 
 global using Xunit;

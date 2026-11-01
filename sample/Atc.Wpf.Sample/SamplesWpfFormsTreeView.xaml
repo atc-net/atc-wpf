@@ -75,9 +75,21 @@
                 SamplePath="LabelControls.LabelTimeZonePickerView" />
         </TreeViewItem>
         <sample:SampleTreeViewItem
+            Header="LabelCascaderComboBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelCascaderComboBoxView" />
+        <sample:SampleTreeViewItem
             Header="LabelCheckBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelCheckBoxView" />
+        <sample:SampleTreeViewItem
+            Header="LabelCheckListBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelCheckListBoxView" />
+        <sample:SampleTreeViewItem
+            Header="LabelChipGroup"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelChipGroupView" />
         <sample:SampleTreeViewItem
             Header="LabelComboBox"
             IsExpanded="True"
@@ -111,6 +123,14 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelIntegerXyBoxView" />
         <sample:SampleTreeViewItem
+            Header="LabelMultiColumnComboBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelMultiColumnComboBoxView" />
+        <sample:SampleTreeViewItem
+            Header="LabelMultiSelectComboBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelMultiSelectComboBoxView" />
+        <sample:SampleTreeViewItem
             Header="LabelPasswordBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelPasswordBoxView" />
@@ -131,9 +151,17 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelTextInfoView" />
         <sample:SampleTreeViewItem
+            Header="LabelTokenBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelTokenBoxView" />
+        <sample:SampleTreeViewItem
             Header="LabelToggleSwitch"
             IsExpanded="True"
             SamplePath="LabelControls.LabelToggleSwitchView" />
+        <sample:SampleTreeViewItem
+            Header="LabelTreeSelectComboBox"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelTreeSelectComboBoxView" />
         <sample:SampleTreeViewItem
             Header="Label-MIX"
             IsExpanded="True"

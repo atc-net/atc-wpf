@@ -106,4 +106,79 @@
   <data name="SelectTimeZone" xml:space="preserve">
     <value>Select time zone…</value>
   </data>
+  <data name="CountOfMax2" xml:space="preserve">
+    <value>{0} of max {1}</value>
+  </data>
+  <data name="CountOf2" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
+  <data name="CountOfSelected2" xml:space="preserve">
+    <value>{0} of {1} selected</value>
+  </data>
+  <data name="NoMatches" xml:space="preserve">
+    <value>No matches</value>
+  </data>
+  <data name="MoreCount1" xml:space="preserve">
+    <value>+{0}</value>
+  </data>
+  <data name="Remove1" xml:space="preserve">
+    <value>Remove {0}</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
+  <data name="Float" xml:space="preserve">
+    <value>Float</value>
+  </data>
+  <data name="Float1" xml:space="preserve">
+    <value>Float {0}</value>
+  </data>
+  <data name="Dock1" xml:space="preserve">
+    <value>Dock {0}</value>
+  </data>
+  <data name="Resize1" xml:space="preserve">
+    <value>Resize {0}</value>
+  </data>
+  <data name="Close1" xml:space="preserve">
+    <value>Close {0}</value>
+  </data>
+  <data name="FilterColumn1" xml:space="preserve">
+    <value>Filter {0}</value>
+  </data>
+  <data name="FilterNotSupported" xml:space="preserve">
+    <value>This data source cannot be filtered</value>
+  </data>
+  <data name="Blanks" xml:space="preserve">
+    <value>(Blanks)</value>
+  </data>
+  <data name="ClearFilter" xml:space="preserve">
+    <value>Clear filter</value>
+  </data>
+  <data name="Columns" xml:space="preserve">
+    <value>Columns</value>
+  </data>
+  <data name="Values" xml:space="preserve">
+    <value>Values</value>
+  </data>
+  <data name="TextFilter" xml:space="preserve">
+    <value>Text filter</value>
+  </data>
+  <data name="Range" xml:space="preserve">
+    <value>Range</value>
+  </data>
+  <data name="Contains" xml:space="preserve">
+    <value>Contains</value>
+  </data>
+  <data name="IsEqualTo" xml:space="preserve">
+    <value>Equals</value>
+  </data>
+  <data name="StartsWith" xml:space="preserve">
+    <value>Starts with</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>To</value>
+  </data>
 </root>

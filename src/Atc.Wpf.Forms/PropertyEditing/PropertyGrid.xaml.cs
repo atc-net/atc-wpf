@@ -185,9 +185,12 @@ public partial class PropertyGrid
             Header = category.DisplayName,
             IsExpanded = category.IsExpanded,
             Margin = new Thickness(0, 0, 0, 5),
-            BorderBrush = (Brush)FindResource("AtcApps.Brushes.Gray7"),
             BorderThickness = new Thickness(0, 0, 0, 1),
         };
+
+        // A resource reference (like DynamicResource in XAML) follows theme switches and does not throw
+        // when the brush is not defined.
+        expander.SetResourceReference(BorderBrushProperty, "AtcApps.Brushes.Gray7");
 
         expander.Expanded += (_, _) => category.IsExpanded = true;
         expander.Collapsed += (_, _) => category.IsExpanded = false;
@@ -319,8 +322,9 @@ public partial class PropertyGrid
 
         foreach (var propertyInfo in properties)
         {
-            // Skip non-readable properties
-            if (!propertyInfo.CanRead)
+            // Skip non-readable properties and indexers (they need an index to be read)
+            if (!propertyInfo.CanRead ||
+                propertyInfo.GetIndexParameters().Length > 0)
             {
                 continue;
             }

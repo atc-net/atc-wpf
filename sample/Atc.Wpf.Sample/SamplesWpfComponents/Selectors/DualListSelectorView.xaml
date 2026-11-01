@@ -17,19 +17,108 @@
         <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
             <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
 
-                <atc:DualListSelector
-                    x:Name="InteractiveDualListSelector"
-                    Margin="10"
-                    AllowDragDrop="{Binding AllowDragDrop}"
-                    AllowMultiSelect="{Binding AllowMultiSelect}"
-                    AutoRecalculateSortOrder="{Binding AutoRecalculateSortOrder}"
-                    AvailableHeader="Available Permissions"
-                    LayoutMode="{Binding LayoutMode}"
-                    SelectedHeader="Granted Permissions"
-                    ShowFilter="{Binding ShowFilter}"
-                    ShowItemCount="{Binding ShowItemCount}"
-                    ShowReorderButtons="{Binding ShowReorderButtons}"
-                    ShowTransferAllButtons="{Binding ShowTransferAllButtons}" />
+                <!--  Interactive demo  -->
+                <atc:GroupBoxExpander Header="Interactive (use the side panel)">
+                    <atc:DualListSelector
+                        x:Name="InteractiveDualListSelector"
+                        Margin="10"
+                        AllowDragDrop="{Binding AllowDragDrop}"
+                        AllowMultiSelect="{Binding AllowMultiSelect}"
+                        AutoRecalculateSortOrder="{Binding AutoRecalculateSortOrder}"
+                        AvailableHeader="Available Permissions"
+                        IsOneWay="{Binding IsOneWay}"
+                        ItemSelectionStyle="{Binding ItemSelectionStyle}"
+                        LayoutMode="{Binding LayoutMode}"
+                        SelectedHeader="Granted Permissions"
+                        ShowFilter="{Binding ShowFilter}"
+                        ShowItemCount="{Binding ShowItemCount}"
+                        ShowReorderButtons="{Binding ShowReorderButtons}"
+                        ShowTransferAllButtons="{Binding ShowTransferAllButtons}" />
+                </atc:GroupBoxExpander>
+
+                <!--  Check-box style  -->
+                <atc:GroupBoxExpander Header="Check-box style (a check box per row, Select all of the shown rows with checked / total)">
+                    <StackPanel Margin="10">
+                        <atc:DualListSelector
+                            x:Name="CheckBoxDualList"
+                            AutomationProperties.AutomationId="CheckBoxDualList"
+                            AvailableHeader="Fruits"
+                            ItemSelectionStyle="CheckBox"
+                            ListMaxHeight="260"
+                            SelectedHeader="Basket"
+                            ShowFilter="True"
+                            ShowItemCount="True" />
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            FontWeight="Bold"
+                            Text="Selected list after each transfer:" />
+                        <TextBlock
+                            x:Name="SelectedItemsLog"
+                            AutomationProperties.AutomationId="SelectedItemsLog"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </atc:GroupBoxExpander>
+
+                <!--  One-way  -->
+                <atc:GroupBoxExpander Header="One-way (no move-back buttons; × per selected row, Delete removes)">
+                    <atc:DualListSelector
+                        x:Name="OneWayDualList"
+                        Margin="10"
+                        AvailableHeader="Tags"
+                        IsOneWay="True"
+                        ListMaxHeight="260"
+                        SelectedHeader="Picked tags"
+                        ShowReorderButtons="False" />
+                </atc:GroupBoxExpander>
+
+                <!--  Locked columns  -->
+                <atc:GroupBoxExpander Header="Locked columns (Id and Name cannot leave the visible columns, but can be reordered)">
+                    <atc:DualListSelector
+                        x:Name="LockedColumnsDualList"
+                        Margin="10"
+                        AllowDragDrop="True"
+                        AvailableHeader="Hidden columns"
+                        ListMaxHeight="260"
+                        SelectedHeader="Visible columns" />
+                </atc:GroupBoxExpander>
+
+                <!--  Limit  -->
+                <atc:GroupBoxExpander Header="Limit of 5 (transfers and drops that would exceed it are blocked)">
+                    <atc:DualListSelector
+                        x:Name="LimitDualList"
+                        Margin="10"
+                        AllowDragDrop="True"
+                        AvailableHeader="Columns"
+                        ListMaxHeight="260"
+                        MaxSelectedCount="5"
+                        SelectedHeader="Export (up to 5)"
+                        ShowItemCount="True" />
+                </atc:GroupBoxExpander>
+
+                <!--  Grouped  -->
+                <atc:GroupBoxExpander Header="Grouped by DualListSelectorItem.Group (the filter keeps groups with matches)">
+                    <atc:DualListSelector
+                        x:Name="GroupedDualList"
+                        Margin="10"
+                        AvailableHeader="Permissions"
+                        ItemSelectionStyle="CheckBox"
+                        ListMaxHeight="300"
+                        SelectedHeader="Granted"
+                        ShowFilter="True" />
+                </atc:GroupBoxExpander>
+
+                <!--  5,000 items  -->
+                <atc:GroupBoxExpander Header="5,000 items (virtualized; a bounded list height keeps it virtual)">
+                    <atc:DualListSelector
+                        x:Name="LargeDualList"
+                        Margin="10"
+                        AllowDragDrop="True"
+                        AvailableHeader="Available"
+                        ListMaxHeight="300"
+                        SelectedHeader="Selected"
+                        ShowFilter="True"
+                        ShowItemCount="True" />
+                </atc:GroupBoxExpander>
 
             </atc:UniformSpacingPanel>
         </ScrollViewer>

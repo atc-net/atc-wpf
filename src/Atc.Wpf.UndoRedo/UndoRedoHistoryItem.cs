@@ -6,6 +6,8 @@ namespace Atc.Wpf.UndoRedo;
 public sealed class UndoRedoHistoryItem : INotifyPropertyChanged
 {
     private bool isExpanded;
+    private bool isRedo;
+    private bool isHighlighted;
 
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -24,12 +26,22 @@ public sealed class UndoRedoHistoryItem : INotifyPropertyChanged
     /// <summary>
     /// Gets a value indicating whether this item is in the redo portion of the history.
     /// </summary>
-    public bool IsRedo { get; init; }
+    [SuppressMessage("Major Code Smell", "S2292:Trivial properties should be auto-implemented", Justification = "The field is also set by UpdateState; the public setter stays init-only.")]
+    public bool IsRedo
+    {
+        get => isRedo;
+        init => isRedo = value;
+    }
 
     /// <summary>
     /// Gets a value indicating whether this item represents the current position.
     /// </summary>
-    public bool IsHighlighted { get; init; }
+    [SuppressMessage("Major Code Smell", "S2292:Trivial properties should be auto-implemented", Justification = "The field is also set by UpdateState; the public setter stays init-only.")]
+    public bool IsHighlighted
+    {
+        get => isHighlighted;
+        init => isHighlighted = value;
+    }
 
     /// <summary>
     /// Gets a value indicating whether this item represents the save point.
@@ -75,6 +87,39 @@ public sealed class UndoRedoHistoryItem : INotifyPropertyChanged
 
             isExpanded = value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsExpanded)));
+        }
+    }
+
+    /// <summary>
+    /// Updates the position flags of this row (and its child rows) in place, so a list showing it
+    /// keeps its selection, focus and scroll position when the history moves.
+    /// </summary>
+    /// <param name="redo">Whether the row is in the redo portion of the history.</param>
+    /// <param name="highlighted">Whether the row represents the current position.</param>
+    internal void UpdateState(
+        bool redo,
+        bool highlighted)
+    {
+        if (isRedo != redo)
+        {
+            isRedo = redo;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRedo)));
+        }
+
+        if (isHighlighted != highlighted)
+        {
+            isHighlighted = highlighted;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsHighlighted)));
+        }
+
+        if (Children is null)
+        {
+            return;
+        }
+
+        foreach (var child in Children)
+        {
+            child.UpdateState(redo, highlighted);
         }
     }
 }

@@ -1,0 +1,104 @@
+<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfForms.LabelControls.LabelMultiColumnComboBoxView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="900"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+    <atc:GridEx Columns="*,400">
+        <ScrollViewer Grid.Column="0" Style="{StaticResource SampleScrollViewerStyle}">
+            <atc:UniformSpacingPanel x:Name="UsageArea" Style="{StaticResource SampleUsageAreaStyle}">
+
+                <atc:LabelMultiColumnComboBox
+                    x:Name="InteractiveLabelMultiColumnComboBox"
+                    AutomationProperties.AutomationId="InteractiveLabelMultiColumnComboBox"
+                    DisplayMemberPath="Name"
+                    InformationText="{Binding InformationText}"
+                    IsMandatory="{Binding IsMandatory}"
+                    KeyMemberPath="Number"
+                    LabelText="{Binding LabelText}"
+                    Orientation="{Binding Orientation}"
+                    WatermarkText="Pick customers">
+                    <atc:LabelMultiColumnComboBox.Columns>
+                        <DataGridTextColumn Binding="{Binding Path=Number}" Header="No." />
+                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name" />
+                        <DataGridTextColumn Binding="{Binding Path=City}" Header="City" />
+                    </atc:LabelMultiColumnComboBox.Columns>
+                </atc:LabelMultiColumnComboBox>
+
+                <TextBlock
+                    x:Name="EventLog"
+                    AutomationProperties.AutomationId="LabelMultiColumnComboBoxLog"
+                    TextWrapping="Wrap" />
+
+                <atc:GridEx Columns="*,*" ShowGridLines="True">
+                    <StackPanel Grid.Column="0" Margin="10">
+
+                        <atc:LabelMultiColumnComboBox
+                            x:Name="CustomersBox"
+                            AutoGenerateColumns="True"
+                            DisplayMemberPath="Name"
+                            KeyMemberPath="Number"
+                            LabelText="Customers"
+                            WatermarkText="Any customer" />
+
+                        <atc:LabelMultiColumnComboBox
+                            x:Name="MandatoryBox"
+                            DisplayMemberPath="Name"
+                            InformationText="Tick at least one customer."
+                            IsMandatory="True"
+                            KeyMemberPath="Number"
+                            LabelText="Customers (mandatory)"
+                            WatermarkText="Pick customers">
+                            <atc:LabelMultiColumnComboBox.Columns>
+                                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name" />
+                                <DataGridTextColumn Binding="{Binding Path=Country}" Header="Country" />
+                            </atc:LabelMultiColumnComboBox.Columns>
+                        </atc:LabelMultiColumnComboBox>
+
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="10">
+
+                        <atc:LabelMultiColumnComboBox
+                            x:Name="ChipsBox"
+                            DisplayMemberPath="Name"
+                            DisplayMode="Chips"
+                            KeyMemberPath="Number"
+                            LabelText="Key accounts (chips)"
+                            Orientation="Vertical"
+                            WatermarkText="Pick customers">
+                            <atc:LabelMultiColumnComboBox.Columns>
+                                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name" />
+                                <DataGridTextColumn Binding="{Binding Path=City}" Header="City" />
+                            </atc:LabelMultiColumnComboBox.Columns>
+                        </atc:LabelMultiColumnComboBox>
+
+                        <atc:LabelMultiColumnComboBox
+                            x:Name="LimitBox"
+                            DisplayMemberPath="Name"
+                            DisplayMode="Count"
+                            InformationText="At most three customers."
+                            IsMandatory="True"
+                            KeyMemberPath="Number"
+                            LabelText="Customers (mandatory, at most 3)"
+                            MaxSelectionCount="3"
+                            NoneText="No customers"
+                            Orientation="Vertical">
+                            <atc:LabelMultiColumnComboBox.Columns>
+                                <DataGridTextColumn Binding="{Binding Path=Number}" Header="No." />
+                                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name" />
+                            </atc:LabelMultiColumnComboBox.Columns>
+                        </atc:LabelMultiColumnComboBox>
+
+                    </StackPanel>
+                </atc:GridEx>
+
+            </atc:UniformSpacingPanel>
+        </ScrollViewer>
+        <sample:SampleSidePanel Grid.Column="1" SourceObject="{Binding}" />
+    </atc:GridEx>
+</UserControl>

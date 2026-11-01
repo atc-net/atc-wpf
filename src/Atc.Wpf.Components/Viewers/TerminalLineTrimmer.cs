@@ -13,6 +13,16 @@ internal static class TerminalLineTrimmer
     public static void TrimToCap(
         IList items,
         int maxLines)
+        => TrimToCap(items, maxLines, onRemoved: null);
+
+    /// <summary>
+    /// Removes the oldest unpinned lines until <paramref name="items"/> holds at most <paramref name="maxLines"/>
+    /// entries, calling <paramref name="onRemoved"/> for each removed line.
+    /// </summary>
+    public static void TrimToCap(
+        IList items,
+        int maxLines,
+        Action<object?>? onRemoved)
     {
         ArgumentNullException.ThrowIfNull(items);
 
@@ -30,7 +40,9 @@ internal static class TerminalLineTrimmer
                 continue;
             }
 
+            var removed = items[index];
             items.RemoveAt(index);
+            onRemoved?.Invoke(removed);
         }
     }
 }

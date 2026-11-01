@@ -155,7 +155,12 @@ public sealed class ImageAwesomeRegular7 : Image, ISpinable, IRotatable, IFlippa
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageAwesome.Icon, imageAwesome.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            FontIconHelper.GetIconImageSource(
+                FontAwesomeRegular7Typeface,
+                char.ConvertFromUtf32((int)imageAwesome.Icon),
+                imageAwesome.Foreground));
     }
 
     private static void OnSpinDurationChanged(

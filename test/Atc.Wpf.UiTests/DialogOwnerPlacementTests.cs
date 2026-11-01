@@ -2,7 +2,7 @@ namespace Atc.Wpf.UiTests;
 
 /// <summary>
 /// E2E test: on the Standard DialogBox sample page, the Info dialog opens as a separate modal window owned by
-/// the main window, centred over it, and closing it gives focus back to the main window.
+/// the main window, centred over it, and closing it gives focus back to the main window. Escape closes it.
 /// </summary>
 /// <remarks>
 /// The main window is moved away from the middle of the screen first, so a dialog centred on the screen
@@ -82,6 +82,43 @@ public sealed class DialogOwnerPlacementTests : IDisposable
         var mainWindowHandle = mainWindow.Properties.NativeWindowHandle.Value;
         WaitUntil(() => FocusedWindowHandle() == mainWindowHandle);
         Assert.Equal(mainWindowHandle, FocusedWindowHandle());
+    }
+
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Info_dialog_closes_on_escape()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            tabAutomationId: "TabWpfComponents",
+            parentTreeNodeName: "Dialogs",
+            leafTreeNodeName: "Standard DialogBox");
+
+        var view = Retry.WhileNull(
+            () => mainWindow.FindFirstDescendant(cf => cf.ByClassName("StandardDialogBoxView")),
+            timeout: TimeSpan.FromSeconds(10),
+            interval: TimeSpan.FromMilliseconds(200)).Result;
+        Assert.NotNull(view);
+
+        FindButton(view, "Info").Patterns.Invoke.Pattern.Invoke();
+        var dialog = Retry.WhileNull(
+            () => mainWindow.ModalWindows.FirstOrDefault(),
+            timeout: TimeSpan.FromSeconds(10),
+            interval: TimeSpan.FromMilliseconds(200)).Result;
+        Assert.NotNull(dialog);
+
+        try
+        {
+            dialog.Focus();
+            Keyboard.Type(VirtualKeyShort.ESCAPE);
+
+            WaitUntil(() => mainWindow.ModalWindows.Length == 0);
+            Assert.Empty(mainWindow.ModalWindows);
+        }
+        finally
+        {
+            CloseDialogIfStillOpen();
+        }
     }
 
     /// <summary>

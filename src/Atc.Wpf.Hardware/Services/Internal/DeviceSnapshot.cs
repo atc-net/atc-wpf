@@ -20,4 +20,14 @@ internal sealed class DeviceSnapshot
     public bool? IsConnected { get; init; }
 
     public string? PortName { get; init; }
+
+    /// <summary>
+    /// The new display name from an Updated event; <see langword="null"/> when the name did not change.
+    /// </summary>
+    public string? UpdatedName { get; init; }
+
+    /// <summary>
+    /// The new enabled state from an Updated event; <see langword="null"/> when it did not change.
+    /// </summary>
+    public bool? UpdatedIsEnabled { get; init; }
 }

@@ -173,9 +173,16 @@ public sealed class WindowService : IWindowService
     {
         var newcomers = new List<(WindowSnapshot Snapshot, TopLevelWindowInfo? Stale)>();
 
+        // One index per poll keeps the diff linear; the collection itself stays the only state.
+        var known = new Dictionary<IntPtr, TopLevelWindowInfo>(Windows.Count);
+        foreach (var window in Windows)
+        {
+            known.TryAdd(window.Handle, window);
+        }
+
         foreach (var snapshot in snapshots)
         {
-            var existing = FindByHandle(snapshot.Handle);
+            var existing = known.GetValueOrDefault(snapshot.Handle);
             if (existing is not null &&
                 existing.ProcessId == snapshot.ProcessId &&
                 string.Equals(existing.ClassName, snapshot.ClassName, StringComparison.Ordinal))
@@ -197,13 +204,28 @@ public sealed class WindowService : IWindowService
         return newcomers;
     }
 
+    /// <summary>
+    /// Marks the windows that have closed as <see cref="DeviceState.Disconnected"/>, and removes the ones
+    /// already shown as disconnected by the previous poll. A window handle never comes back, so keeping them
+    /// would only grow the list (and the poll) for as long as the application runs.
+    /// </summary>
     private void MarkMissingAsDisconnected(HashSet<IntPtr> found)
     {
         for (var i = Windows.Count - 1; i >= 0; i--)
         {
-            if (!found.Contains(Windows[i].Handle))
+            var window = Windows[i];
+            if (found.Contains(window.Handle))
             {
-                Windows[i].State = DeviceState.Disconnected;
+                continue;
+            }
+
+            if (window.State is DeviceState.Disconnected)
+            {
+                Windows.RemoveAt(i);
+            }
+            else
+            {
+                window.State = DeviceState.Disconnected;
             }
         }
     }
@@ -240,18 +262,5 @@ public sealed class WindowService : IWindowService
     {
         stale.State = DeviceState.Disconnected;
         Windows.Remove(stale);
-    }
-
-    private TopLevelWindowInfo? FindByHandle(IntPtr handle)
-    {
-        for (var i = 0; i < Windows.Count; i++)
-        {
-            if (Windows[i].Handle == handle)
-            {
-                return Windows[i];
-            }
-        }
-
-        return null;
     }
 }

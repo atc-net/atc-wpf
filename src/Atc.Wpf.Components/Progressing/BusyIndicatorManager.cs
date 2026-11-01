@@ -10,6 +10,8 @@ public static class BusyIndicatorManager
 
     private static readonly ConcurrentDictionary<Guid, BusySession> ActiveSessions = new();
 
+    private static long sessionSequence;
+
     /// <summary>
     /// Attached property to register a BusyOverlay as a named region.
     /// </summary>
@@ -50,26 +52,25 @@ public static class BusyIndicatorManager
     {
         var token = new BusyToken { RegionName = regionName };
         var cts = allowCancellation ? new CancellationTokenSource() : null;
-        var session = new BusySession(cts) { RegionName = regionName };
+        var session = new BusySession(
+            token,
+            message,
+            cts,
+            Interlocked.Increment(ref sessionSequence))
+        {
+            RegionName = regionName,
+        };
 
         ActiveSessions[token.Id] = session;
 
         if (!dispatcher.CheckAccess())
         {
             _ = dispatcher.BeginInvoke(
-                new Action(() => ApplyBusy(
-                    token,
-                    message,
-                    allowCancellation,
-                    cts)));
+                new Action(() => ApplyBusy(token)));
             return token;
         }
 
-        ApplyBusy(
-            token,
-            message,
-            allowCancellation,
-            cts);
+        ApplyBusy(token);
         return token;
     }
 
@@ -86,7 +87,16 @@ public static class BusyIndicatorManager
 
         if (IsRegionBusy(token.RegionName))
         {
-            // Another session still owns the region, so its overlay stays up.
+            // Another session still owns the region, so its overlay stays up, showing the newest
+            // remaining session's message and Cancel button instead of the hidden session's.
+            if (!dispatcher.CheckAccess())
+            {
+                _ = dispatcher.BeginInvoke(
+                    new Action(() => ReapplyNewestSession(token.RegionName)));
+                return;
+            }
+
+            ReapplyNewestSession(token.RegionName);
             return;
         }
 
@@ -242,11 +252,7 @@ public static class BusyIndicatorManager
         Regions[regionName] = newBag;
     }
 
-    private static void ApplyBusy(
-        BusyToken token,
-        string message,
-        bool allowCancellation,
-        CancellationTokenSource? cts)
+    private static void ApplyBusy(BusyToken token)
     {
         if (!ActiveSessions.TryGetValue(token.Id, out var session))
         {
@@ -254,15 +260,33 @@ public static class BusyIndicatorManager
             return;
         }
 
-        session.RegionName = token.RegionName;
+        ApplySession(session);
+    }
 
-        foreach (var overlay in GetOverlays(token.RegionName))
+    private static void ReapplyNewestSession(string regionName)
+    {
+        var newest = ActiveSessions.Values
+            .Where(s => string.Equals(s.RegionName, regionName, StringComparison.Ordinal))
+            .MaxBy(s => s.Sequence);
+
+        if (newest is not null)
         {
-            overlay.BusyContent = string.IsNullOrEmpty(message)
-                ? null
-                : message;
+            ApplySession(newest);
+        }
+    }
 
-            if (allowCancellation && cts is not null)
+    private static void ApplySession(BusySession session)
+    {
+        var token = session.Token;
+        var cts = session.Cts;
+
+        foreach (var overlay in GetOverlays(session.RegionName))
+        {
+            overlay.BusyContent = string.IsNullOrEmpty(session.Message)
+                ? null
+                : session.Message;
+
+            if (cts is not null)
             {
                 var cancelButton = new Button
                 {
@@ -272,16 +296,38 @@ public static class BusyIndicatorManager
                     HorizontalAlignment = HorizontalAlignment.Center,
                 };
 
-                cancelButton.Click += (_, _) =>
-                {
-                    token.IsCancelled = true;
-                    cts.Cancel();
-                };
+                cancelButton.Click += (_, _) => CancelSession(token, cts);
 
                 overlay.BusyContentAfter = cancelButton;
             }
+            else
+            {
+                // A Cancel button left by an earlier session must not outlive it.
+                overlay.BusyContentAfter = null;
+            }
 
             overlay.IsBusy = true;
+        }
+    }
+
+    private static void CancelSession(
+        BusyToken token,
+        CancellationTokenSource cts)
+    {
+        if (!ActiveSessions.ContainsKey(token.Id))
+        {
+            // The session ended (and disposed its source) after the button was shown.
+            return;
+        }
+
+        try
+        {
+            token.IsCancelled = true;
+            cts.Cancel();
+        }
+        catch (ObjectDisposedException)
+        {
+            // The session ended on another thread between the check and the cancel.
         }
     }
 
@@ -337,12 +383,25 @@ public static class BusyIndicatorManager
 
     private sealed class BusySession
     {
-        public BusySession(CancellationTokenSource? cts)
+        public BusySession(
+            BusyToken token,
+            string message,
+            CancellationTokenSource? cts,
+            long sequence)
         {
+            Token = token;
+            Message = message;
             Cts = cts;
+            Sequence = sequence;
         }
 
+        public BusyToken Token { get; }
+
+        public string Message { get; }
+
         public CancellationTokenSource? Cts { get; }
+
+        public long Sequence { get; }
 
         public string RegionName { get; set; } = string.Empty;
     }

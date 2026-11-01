@@ -6,8 +6,8 @@ Core WPF library for the ATC.Net WPF stack: MVVM helpers, layouts, value convert
 
 | Area | Path | Docs |
 |---|---|---|
-| MVVM (ViewModels, commands, messaging) | `Mvvm/`, re-exported from [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) | [`docs/Mvvm/@Readme.md`](../../docs/Mvvm/@Readme.md) |
-| Source generators (`[ObservableProperty]`, `[RelayCommand]`, `[DependencyProperty]`, `[AttachedProperty]`) | provided transitively via `Atc.XamlToolkit.Wpf` | [`docs/SourceGenerators/`](../../docs/SourceGenerators) |
+| MVVM (ViewModels, commands, messaging) | from [`Atc.XamlToolkit`](https://github.com/atc-net/atc-xaml-toolkit) (reference it directly) | [`docs/Mvvm/@Readme.md`](../../docs/Mvvm/@Readme.md) |
+| Source generators (`[ObservableProperty]`, `[RelayCommand]`, `[DependencyProperty]`, `[AttachedProperty]`) | reference `Atc.XamlToolkit` / `Atc.XamlToolkit.Wpf` directly | [`docs/SourceGenerators/`](../../docs/SourceGenerators/ViewModel.md) |
 | Layouts (`GridEx`, `AutoGrid`, `FlexPanel`, `StaggeredPanel`, `UniformSpacingPanel`, …) | `Controls/Layouts/` | [`docs/Layouts/@Readme.md`](../../docs/Layouts/@Readme.md) |
 | Hotkeys (`HotkeyManager`, `KeyboardHook`) | `Hotkeys/` | [`docs/Hotkeys/@Readme.md`](../../docs/Hotkeys/@Readme.md) |
 | Navigation (frame/page navigation primitives) | `Navigation/` | [`docs/Navigation/@Readme.md`](../../docs/Navigation/@Readme.md) |
@@ -28,4 +28,4 @@ Core WPF library for the ATC.Net WPF stack: MVVM helpers, layouts, value convert
 ## Notes
 
 - `CultureManager.UiCultureChanged` is a **weak event**: subscribers are held via `WeakReference`, so long-lived static subscriptions do not root WPF controls. Lambda subscribers with closures must keep the delegate referenced themselves.
-- This package targets `.NET 10.0-windows` and depends on `Atc` and `Atc.XamlToolkit.Wpf`.
+- This package targets `.NET 10.0-windows` and depends on `Atc` and `Microsoft.Xaml.Behaviors.Wpf`; it does not depend on `Atc.XamlToolkit`.

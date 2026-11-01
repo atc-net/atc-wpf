@@ -41,7 +41,16 @@ await myElement.FadeInAsync(AnimationParameters.Slow);     // 500ms
 
 // Generic method
 await myElement.AnimateAsync(AnimationKind.SlideInFromLeft);
+
+// Cancellation: stops the animation where it is and cancels the task
+await myElement.FadeOutAsync(AnimationParameters.Slow, cancellationToken);
 ```
+
+The returned task always completes:
+
+- When the animation finishes.
+- When a later helper call animates the same property (for example `FadeInAsync` while `FadeOutAsync` runs). The superseded call completes at once and skips its finishing step, so the element is not collapsed.
+- When the `CancellationToken` is cancelled. The task is then cancelled, and the element is not collapsed.
 
 ### XAML Attached Properties
 

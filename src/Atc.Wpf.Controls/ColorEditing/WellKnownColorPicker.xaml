@@ -12,7 +12,7 @@
     mc:Ignorable="d">
 
     <ItemsControl
-        ItemsSource="{Binding Path=Palette}"
+        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Palette}"
         KeyboardNavigation.DirectionalNavigation="Cycle"
         KeyboardNavigation.TabNavigation="Once">
         <ItemsControl.ItemsPanel>

@@ -806,6 +806,12 @@ public class ResponsivePanel : Panel
         return result;
     }
 
+    private static double GetSpannedWidth(
+        int span,
+        double columnWidth,
+        double columnGap)
+        => System.Math.Max(0, (span * columnWidth) + ((span - 1) * columnGap));
+
     /// <inheritdoc/>
     protected override Size MeasureOverride(Size availableSize)
     {
@@ -828,16 +834,18 @@ public class ResponsivePanel : Panel
         var totalGapWidth = (columnCount - 1) * columnGap;
         var columnWidth = System.Math.Max(0, (availableWidth - totalGapWidth) / columnCount);
 
-        // Measure all children
-        var childConstraint = new Size(columnWidth, double.PositiveInfinity);
-
-        foreach (UIElement child in children)
-        {
-            child.Measure(childConstraint);
-        }
-
         // Get ordered visible children
         var orderedChildren = GetOrderedVisibleChildren(breakpoint);
+
+        // Children hidden at this breakpoint are arranged at zero size; measure them at one column.
+        var visibleElements = new HashSet<UIElement>(orderedChildren.Select(x => x.Element));
+        foreach (UIElement child in children)
+        {
+            if (!visibleElements.Contains(child))
+            {
+                child.Measure(new Size(columnWidth, double.PositiveInfinity));
+            }
+        }
 
         // Calculate total height
         double currentRowHeight = 0;
@@ -848,6 +856,9 @@ public class ResponsivePanel : Panel
         {
             var span = GetSpanForBreakpoint(child, breakpoint);
             var effectiveSpan = span > 0 ? System.Math.Min(span, columnCount) : 1;
+
+            // Measure at the width the child is arranged at, so wrapping content reports its real height.
+            child.Measure(new Size(GetSpannedWidth(effectiveSpan, columnWidth, columnGap), double.PositiveInfinity));
 
             // Check if we need to wrap to next row
             if (currentColumn + effectiveSpan > columnCount)
@@ -937,7 +948,7 @@ public class ResponsivePanel : Panel
             // Second pass: arrange children
             foreach (var (element, span) in row)
             {
-                var childWidth = System.Math.Max(0, (span * columnWidth) + ((span - 1) * columnGap));
+                var childWidth = GetSpannedWidth(span, columnWidth, columnGap);
                 var rect = new Rect(xOffset, yOffset, childWidth, rowHeight);
                 element.Arrange(rect);
 

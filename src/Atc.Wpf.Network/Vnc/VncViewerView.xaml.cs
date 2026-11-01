@@ -2,7 +2,11 @@ namespace Atc.Wpf.Network.Vnc;
 
 public partial class VncViewerView
 {
+    private readonly VncKeyboardTranslator keyboardTranslator = new();
     private VncViewerViewModel? viewModel;
+    private int lastPointerX;
+    private int lastPointerY;
+    private byte lastButtonMask;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="VncViewerView"/> class.
@@ -15,14 +19,16 @@ public partial class VncViewerView
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
 
-        VncImage.MouseLeftButtonDown += OnVncImageMouseButtonDown;
-        VncImage.MouseLeftButtonUp += OnVncImageMouseButtonUp;
-        VncImage.MouseRightButtonDown += OnVncImageMouseButtonDown;
-        VncImage.MouseRightButtonUp += OnVncImageMouseButtonUp;
+        VncImage.MouseDown += OnVncImageMouseButtonDown;
+        VncImage.MouseUp += OnVncImageMouseButtonUp;
         VncImage.MouseMove += OnVncImageMouseMove;
+        VncImage.MouseWheel += OnVncImageMouseWheel;
+        VncImage.LostMouseCapture += OnVncImageLostMouseCapture;
 
         PreviewKeyDown += OnPreviewKeyDown;
         PreviewKeyUp += OnPreviewKeyUp;
+        PreviewTextInput += OnPreviewTextInput;
+        LostKeyboardFocus += OnLostKeyboardFocus;
     }
 
     private void OnDataContextChanged(
@@ -75,8 +81,15 @@ public partial class VncViewerView
             return;
         }
 
+        // Keep receiving the move and release while the pointer is dragged outside the image,
+        // so the server never keeps a button down.
+        if (!VncImage.IsMouseCaptured)
+        {
+            VncImage.CaptureMouse();
+        }
+
         var buttonMask = GetButtonMask(e, pressed: true);
-        await viewModel.SendPointerEventAsync(buttonMask, x, y).ConfigureAwait(false);
+        await SendPointerAsync(buttonMask, x, y).ConfigureAwait(false);
     }
 
     private async void OnVncImageMouseButtonUp(
@@ -85,17 +98,25 @@ public partial class VncViewerView
     {
         if (viewModel is null || !viewModel.IsConnected)
         {
+            ReleaseCaptureIfNoButtonHeld(e);
             return;
         }
 
         var (x, y) = TranslateToVnc(e);
+        var buttonMask = GetButtonMask(e, pressed: false);
+        if (buttonMask == 0)
+        {
+            // Released before the capture is lost, so the release below is the one the server sees.
+            lastButtonMask = 0;
+            ReleaseCaptureIfNoButtonHeld(e);
+        }
+
         if (x < 0)
         {
             return;
         }
 
-        var buttonMask = GetButtonMask(e, pressed: false);
-        await viewModel.SendPointerEventAsync(buttonMask, x, y).ConfigureAwait(false);
+        await SendPointerAsync(buttonMask, x, y).ConfigureAwait(false);
     }
 
     private async void OnVncImageMouseMove(
@@ -113,23 +134,81 @@ public partial class VncViewerView
             return;
         }
 
-        byte buttonMask = 0;
-        if (e.LeftButton == MouseButtonState.Pressed)
+        var buttonMask = VncPointerMask.FromButtons(
+            e.LeftButton == MouseButtonState.Pressed,
+            e.MiddleButton == MouseButtonState.Pressed,
+            e.RightButton == MouseButtonState.Pressed);
+
+        await SendPointerAsync(buttonMask, x, y).ConfigureAwait(false);
+    }
+
+    private async void OnVncImageMouseWheel(
+        object sender,
+        MouseWheelEventArgs e)
+    {
+        if (viewModel is null || !viewModel.IsConnected)
         {
-            buttonMask |= 1;
+            return;
         }
 
-        if (e.MiddleButton == MouseButtonState.Pressed)
+        var (x, y) = TranslateToVnc(e);
+        if (x < 0)
         {
-            buttonMask |= 2;
+            return;
         }
 
-        if (e.RightButton == MouseButtonState.Pressed)
+        e.Handled = true;
+
+        var heldMask = VncPointerMask.FromButtons(
+            e.LeftButton == MouseButtonState.Pressed,
+            e.MiddleButton == MouseButtonState.Pressed,
+            e.RightButton == MouseButtonState.Pressed);
+
+        // RFB has no wheel delta: each notch is a press and release of button 4 (up) or 5 (down).
+        var (wheelMask, clicks) = VncPointerMask.GetWheel(e.Delta, heldMask);
+        var vm = viewModel;
+        for (var i = 0; i < clicks; i++)
         {
-            buttonMask |= 4;
+            await vm.SendPointerEventAsync(wheelMask, x, y).ConfigureAwait(true);
+            await vm.SendPointerEventAsync(heldMask, x, y).ConfigureAwait(true);
+        }
+    }
+
+    private async void OnVncImageLostMouseCapture(
+        object sender,
+        MouseEventArgs e)
+    {
+        // Capture taken away mid-drag (Alt+Tab, a pop-up): release the buttons on the server.
+        if (lastButtonMask == 0 ||
+            viewModel is null ||
+            !viewModel.IsConnected)
+        {
+            return;
         }
 
-        await viewModel.SendPointerEventAsync(buttonMask, x, y).ConfigureAwait(false);
+        await SendPointerAsync(0, lastPointerX, lastPointerY).ConfigureAwait(false);
+    }
+
+    private void ReleaseCaptureIfNoButtonHeld(MouseEventArgs e)
+    {
+        if (VncImage.IsMouseCaptured &&
+            e.LeftButton == MouseButtonState.Released &&
+            e.MiddleButton == MouseButtonState.Released &&
+            e.RightButton == MouseButtonState.Released)
+        {
+            VncImage.ReleaseMouseCapture();
+        }
+    }
+
+    private Task SendPointerAsync(
+        byte buttonMask,
+        int x,
+        int y)
+    {
+        lastButtonMask = buttonMask;
+        lastPointerX = x;
+        lastPointerY = y;
+        return viewModel?.SendPointerEventAsync(buttonMask, x, y) ?? Task.CompletedTask;
     }
 
     private async void OnPreviewKeyDown(
@@ -141,13 +220,15 @@ public partial class VncViewerView
             return;
         }
 
-        var key = e.Key == Key.System ? e.SystemKey : e.Key;
-
-        if (KeySymMapper.TryGetKeySym(key, out var keySym))
+        // Printable keys give no events here; they are sent from the text they type.
+        var events = keyboardTranslator.KeyDown(GetRealKey(e));
+        if (events.Count == 0)
         {
-            e.Handled = true;
-            await viewModel.SendKeyEventAsync(keySym, pressed: true).ConfigureAwait(false);
+            return;
         }
+
+        e.Handled = true;
+        await SendKeyEventsAsync(events).ConfigureAwait(false);
     }
 
     private async void OnPreviewKeyUp(
@@ -159,14 +240,78 @@ public partial class VncViewerView
             return;
         }
 
-        var key = e.Key == Key.System ? e.SystemKey : e.Key;
-
-        if (KeySymMapper.TryGetKeySym(key, out var keySym))
+        var events = keyboardTranslator.KeyUp(GetRealKey(e));
+        if (events.Count == 0)
         {
-            e.Handled = true;
-            await viewModel.SendKeyEventAsync(keySym, pressed: false).ConfigureAwait(false);
+            return;
+        }
+
+        e.Handled = true;
+        await SendKeyEventsAsync(events).ConfigureAwait(false);
+    }
+
+    private async void OnPreviewTextInput(
+        object sender,
+        TextCompositionEventArgs e)
+    {
+        if (viewModel is null || !viewModel.IsConnected)
+        {
+            return;
+        }
+
+        var events = keyboardTranslator.TextInput(e.Text);
+        if (events.Count == 0)
+        {
+            return;
+        }
+
+        e.Handled = true;
+        await SendKeyEventsAsync(events).ConfigureAwait(false);
+    }
+
+    private async void OnLostKeyboardFocus(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
+    {
+        if (IsKeyboardFocusWithin)
+        {
+            return;
+        }
+
+        // Keys released while another window has focus never reach us: release them on the server.
+        var events = keyboardTranslator.ReleaseAll();
+        if (events.Count == 0 ||
+            viewModel is null ||
+            !viewModel.IsConnected)
+        {
+            return;
+        }
+
+        await SendKeyEventsAsync(events).ConfigureAwait(false);
+    }
+
+    private async Task SendKeyEventsAsync(IReadOnlyList<VncKeyEvent> events)
+    {
+        var vm = viewModel;
+        if (vm is null)
+        {
+            return;
+        }
+
+        foreach (var keyEvent in events)
+        {
+            await vm.SendKeyEventAsync(keyEvent.KeySym, keyEvent.Pressed).ConfigureAwait(false);
         }
     }
+
+    private static Key GetRealKey(KeyEventArgs e)
+        => e.Key switch
+        {
+            Key.System => e.SystemKey,
+            Key.ImeProcessed => e.ImeProcessedKey,
+            Key.DeadCharProcessed => e.DeadCharProcessedKey,
+            _ => e.Key,
+        };
 
     private (int X, int Y) TranslateToVnc(MouseEventArgs e)
     {
@@ -204,20 +349,12 @@ public partial class VncViewerView
     private static byte GetButtonMask(
         MouseButtonEventArgs e,
         bool pressed)
-    {
-        if (!pressed)
-        {
-            return 0;
-        }
-
-        return e.ChangedButton switch
-        {
-            MouseButton.Left => 1,
-            MouseButton.Middle => 2,
-            MouseButton.Right => 4,
-            _ => 0,
-        };
-    }
+        => VncPointerMask.ForButtonChange(
+            e.LeftButton == MouseButtonState.Pressed,
+            e.MiddleButton == MouseButtonState.Pressed,
+            e.RightButton == MouseButtonState.Pressed,
+            e.ChangedButton,
+            pressed);
 
     private void OnLoaded(
         object sender,

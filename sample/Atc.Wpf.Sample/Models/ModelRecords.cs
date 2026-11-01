@@ -67,6 +67,11 @@ public record Person
 
     public CultureInfo? PreferredLanguage { get; init; }
 
+    public ContactChannels PreferredContactChannels { get; init; } = ContactChannels.Email;
+
+    [MaxLength(5)]
+    public IList<string> Tags { get; init; } = [];
+
     public Address MyAddress { get; init; }
 }
 

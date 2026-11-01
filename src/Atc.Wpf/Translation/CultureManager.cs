@@ -163,8 +163,8 @@ public static class CultureManager
         CultureInfo uiCultureInfo,
         bool synchronizeThreadCultures)
         => SetCultures(
-            uiCultureInfo,
             GlobalizationConstants.EnglishCultureInfo,
+            uiCultureInfo,
             synchronizeThreadCultures);
 
     /// <summary>
@@ -197,20 +197,20 @@ public static class CultureManager
     {
         ArgumentNullException.ThrowIfNull(cultureName);
 
-        SynchronizeThreadCulture = synchronizeThreadCultures;
-
+        CultureInfo uiCultureInfo;
         try
         {
-            SetCultures(
-                GlobalizationConstants.EnglishCultureInfo,
-                cultureName is null ? GlobalizationConstants.EnglishCultureInfo : new CultureInfo(cultureName));
+            uiCultureInfo = new CultureInfo(cultureName);
         }
         catch
         {
-            SetCultures(
-                GlobalizationConstants.EnglishCultureInfo,
-                GlobalizationConstants.EnglishCultureInfo);
+            uiCultureInfo = GlobalizationConstants.EnglishCultureInfo;
         }
+
+        SetCultures(
+            GlobalizationConstants.EnglishCultureInfo,
+            uiCultureInfo,
+            synchronizeThreadCultures);
     }
 
     /// <summary>

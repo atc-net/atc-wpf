@@ -80,12 +80,78 @@ public sealed class SvgImageTests : IDisposable
     }
 
     [StaFact]
-    public void FileSource_MissingFile_ThrowsFileNotFoundException()
+    public void FileSource_MissingFile_RaisesImageFailedInsteadOfThrowing()
     {
         var sut = new SvgImage();
+        var failures = new List<Exception>();
+        sut.ImageFailed += (_, e) => failures.Add(e.ErrorException);
         var missingFile = Path.Combine(Path.GetTempPath(), $"atc-svgimage-missing-{Guid.NewGuid():N}.svg");
 
-        Assert.Throws<FileNotFoundException>(() => sut.FileSource = missingFile);
+        sut.BeginInit();
+        sut.FileSource = missingFile;
+        sut.EndInit();
+
+        Assert.IsType<FileNotFoundException>(Assert.Single(failures));
+        Assert.Empty(Assert.IsType<DrawingGroup>(sut.CurrentDrawing).Children);
+    }
+
+    [StaFact]
+    public void FileSource_MalformedSvg_RaisesImageFailedInsteadOfThrowing()
+    {
+        File.WriteAllText(svgFile, "<svg xmlns=\"http://www.w3.org/2000/svg\"><rect");
+        var failures = new List<Exception>();
+        var sut = new SvgImage { Width = 20, Height = 20 };
+        sut.BeginInit();
+        sut.ImageFailed += (_, e) => failures.Add(e.ErrorException);
+        sut.FileSource = svgFile;
+
+        sut.EndInit();
+
+        Assert.IsType<XmlException>(Assert.Single(failures));
+        Assert.Empty(Assert.IsType<DrawingGroup>(sut.CurrentDrawing).Children);
+    }
+
+    [StaFact]
+    public void ImageFailed_IsARoutedEventThatBubbles()
+    {
+        var sut = new SvgImage();
+        var parent = new Border { Child = sut };
+        Exception? failure = null;
+        parent.AddHandler(SvgImage.ImageFailedEvent, new EventHandler<SvgImageFailedEventArgs>((_, e) => failure = e.ErrorException));
+
+        sut.BeginInit();
+        sut.FileSource = Path.Combine(Path.GetTempPath(), $"atc-svgimage-missing-{Guid.NewGuid():N}.svg");
+        sut.EndInit();
+
+        Assert.IsType<FileNotFoundException>(failure);
+    }
+
+    [StaFact]
+    public void Source_AbsolutePackUri_IsAcceptedAndAMissingResourceRaisesImageFailed()
+    {
+        var sut = new SvgImage();
+        var failures = new List<Exception>();
+        sut.ImageFailed += (_, e) => failures.Add(e.ErrorException);
+
+        sut.BeginInit();
+        sut.Source = "pack://application:,,,/Atc.Wpf.Tests;component/Missing.svg";
+        sut.EndInit();
+
+        var failure = Assert.Single(failures);
+        Assert.IsNotType<UriFormatException>(failure);
+    }
+
+    [StaFact]
+    public void FileSource_FixedAfterAFailure_ShowsTheImage()
+    {
+        var sut = new SvgImage { Width = 20, Height = 20 };
+        sut.BeginInit();
+        sut.FileSource = Path.Combine(Path.GetTempPath(), $"atc-svgimage-missing-{Guid.NewGuid():N}.svg");
+        sut.EndInit();
+
+        sut.FileSource = svgFile;
+
+        Assert.NotEmpty(Assert.IsType<DrawingGroup>(sut.CurrentDrawing).Children);
     }
 
     [StaFact]

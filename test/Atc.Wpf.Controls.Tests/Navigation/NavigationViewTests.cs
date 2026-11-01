@@ -227,6 +227,70 @@ public sealed class NavigationViewTests : IDisposable
         Assert.Null(sut.SelectedItem);
     }
 
+    [StaFact]
+    public void MenuItemsCleared_ClearsTheSelectionAndTheItemsAreNoLongerInvokable()
+    {
+        var home = new NavigationViewItem { Content = "Home" };
+        var about = new NavigationViewItem { Content = "About" };
+        var sut = CreateView(home, about);
+        Invoke(home);
+
+        sut.MenuItems.Clear();
+
+        Assert.Null(sut.SelectedItem);
+        Assert.False(home.IsSelected);
+
+        Invoke(about);
+
+        Assert.Null(sut.SelectedItem);
+    }
+
+    [StaFact]
+    public void FooterMenuItemsCleared_ClearsAFooterSelection()
+    {
+        var settings = new NavigationViewItem { Content = "Settings" };
+        var sut = CreateView();
+        sut.FooterMenuItems.Add(settings);
+        Invoke(settings);
+
+        sut.FooterMenuItems.Clear();
+
+        Assert.Null(sut.SelectedItem);
+    }
+
+    [StaFact]
+    public void AViewDroppedWhileItsNavigationServiceLivesOn_IsCollected()
+    {
+        var service = CreateService();
+
+        var view = CreateDroppedViewFollowing(service);
+
+        Assert.True(ControlLeakProbe.IsCollected(view));
+        GC.KeepAlive(service);
+    }
+
+    [StaFact]
+    public void ANavigationServiceSetOnAnUnloadedView_IsStillFollowed()
+    {
+        var service = CreateService();
+        var settings = new NavigationViewItem { TargetViewModelType = typeof(SettingsViewModel) };
+        var sut = CreateView(settings);
+        sut.NavigationService = service;
+
+        service.NavigateTo<SettingsViewModel>();
+
+        Assert.Same(settings, sut.SelectedItem);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static WeakReference CreateDroppedViewFollowing(
+        INavigationService service)
+    {
+        var view = CreateView(new NavigationViewItem { TargetViewModelType = typeof(SettingsViewModel) });
+        view.NavigationService = service;
+        return new WeakReference(view);
+    }
+
     private static NavigationView CreateView(params NavigationViewItem[] items)
     {
         var view = new NavigationView();

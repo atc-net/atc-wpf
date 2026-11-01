@@ -123,6 +123,11 @@ public sealed partial class DockRegion : HeaderedContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(DockRegion),
             new FrameworkPropertyMetadata(typeof(DockRegion)));
+
+        // A side region whose panes are all floating or closed collapses, so it takes no space.
+        VisibilityProperty.OverrideMetadata(
+            typeof(DockRegion),
+            new FrameworkPropertyMetadata(Visibility.Visible, propertyChangedCallback: null, CoerceVisibility));
     }
 
     /// <summary>
@@ -171,6 +176,12 @@ public sealed partial class DockRegion : HeaderedContentControl
         else
         {
             region.OnCollapsed();
+        }
+
+        if (AutomationPeer.ListenerExists(AutomationEvents.PropertyChanged) &&
+            UIElementAutomationPeer.FromElement(region) is DockRegionAutomationPeer peer)
+        {
+            peer.RaiseExpandCollapseStateChanged(!isExpanded, isExpanded);
         }
     }
 }

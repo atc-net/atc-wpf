@@ -155,7 +155,12 @@ public sealed class ImageMaterialDesign : Image, ISpinable, IRotatable, IFlippab
             return;
         }
 
-        d.SetCurrentValue(SourceProperty, CreateImageSource(imageMaterialDesign.Icon, imageMaterialDesign.Foreground));
+        d.SetCurrentValue(
+            SourceProperty,
+            FontIconHelper.GetIconImageSource(
+                FontMaterialDesignTypeface,
+                char.ConvertFromUtf32((int)imageMaterialDesign.Icon),
+                imageMaterialDesign.Foreground));
     }
 
     private static void OnSpinDurationChanged(
@@ -197,8 +202,8 @@ public sealed class ImageMaterialDesign : Image, ISpinable, IRotatable, IFlippab
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var imageMaterialDesign = d as ImageMaterialDesign;
-        if (imageMaterialDesign?.Spin != true ||
+        if (d is not ImageMaterialDesign imageMaterialDesign ||
+            imageMaterialDesign.Spin ||
             e.NewValue is not double ||
             e.NewValue.Equals(e.OldValue))
         {

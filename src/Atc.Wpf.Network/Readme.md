@@ -31,7 +31,7 @@ Network controls provide specialized WPF controls for network scanning and host 
     - [NetworkScannerFilterViewModel](#networkscannerfilterviewmodel)
       - [Properties](#properties-4)
   - [Value Converters](#value-converters)
-    - [IpStatusToLocalizedDescriptionValueConverter](#ipstatustolocalizedescriptionvalueconverter)
+    - [IpStatusToLocalizedDescriptionValueConverter](#ipstatustolocalizeddescriptionvalueconverter)
     - [NetworkQualityCategoryTypeToResourceImageValueConverter](#networkqualitycategorytypetoresourceimagevalueconverter)
   - [Configuration Examples](#configuration-examples)
     - [Basic Scanner Setup](#basic-scanner-setup)

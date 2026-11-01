@@ -36,6 +36,18 @@ public class DualListSelectorItem
     /// </summary>
     public object? Tag { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether this item is locked in the Selected list.
+    /// A locked item cannot be moved back, dragged back or removed, shows a lock icon and can still be reordered.
+    /// </summary>
+    public bool IsLocked { get; set; }
+
+    /// <summary>
+    /// Gets or sets the group this item is shown under. Used when <see cref="DualListSelector.GroupMemberPath"/> is not set:
+    /// as soon as an item in a list has a group, that list is grouped by it.
+    /// </summary>
+    public string? Group { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
         => Name;

@@ -1,0 +1,245 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Selectors.CheckListBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:inputs="clr-namespace:Atc.Wpf.Controls.Inputs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selectors="clr-namespace:Atc.Wpf.Controls.Selectors"
+    MinWidth="120"
+    d:DesignHeight="300"
+    d:DesignWidth="250"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+
+        <!--  The text part of a row: the consumer's ItemTemplate, or the display value  -->
+        <DataTemplate x:Key="CheckListRowTextTemplate" DataType="{x:Type selectors:CheckListItem}">
+            <ContentPresenter
+                VerticalAlignment="Center"
+                Content="{Binding}"
+                ContentTemplate="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CheckListBox}}, Path=ItemTemplate}">
+                <ContentPresenter.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                    </Style>
+                </ContentPresenter.Resources>
+            </ContentPresenter>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CheckListCheckBoxRowTemplate" DataType="{x:Type selectors:CheckListItem}">
+            <CheckBox
+                Padding="6,0,0,0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                AutomationProperties.Name="{Binding Path=DisplayValue}"
+                Background="Transparent"
+                Content="{Binding}"
+                ContentTemplate="{StaticResource CheckListRowTextTemplate}"
+                Focusable="False"
+                IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"
+                IsEnabled="{Binding Path=IsEnabled}" />
+        </DataTemplate>
+
+        <Style x:Key="CheckListHighlightToggleStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border
+                            x:Name="RowBorder"
+                            Padding="6,3"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="2">
+                            <DockPanel>
+                                <TextBlock
+                                    x:Name="CheckMark"
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center"
+                                    DockPanel.Dock="Right"
+                                    FontWeight="Bold"
+                                    Foreground="{DynamicResource AtcApps.Brushes.Accent}"
+                                    Text="✓"
+                                    Visibility="Hidden" />
+                                <ContentPresenter VerticalAlignment="Center" />
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="RowBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent3}" />
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Gray}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="CheckListHighlightRowTemplate" DataType="{x:Type selectors:CheckListItem}">
+            <ToggleButton
+                AutomationProperties.Name="{Binding Path=DisplayValue}"
+                Content="{Binding}"
+                ContentTemplate="{StaticResource CheckListRowTextTemplate}"
+                IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"
+                IsEnabled="{Binding Path=IsEnabled}"
+                Style="{StaticResource CheckListHighlightToggleStyle}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="CheckListSwitchRowTemplate" DataType="{x:Type selectors:CheckListItem}">
+            <DockPanel Background="Transparent" IsEnabled="{Binding Path=IsEnabled}">
+                <inputs:ToggleSwitch
+                    MinWidth="0"
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    AutomationProperties.Name="{Binding Path=DisplayValue}"
+                    DockPanel.Dock="Right"
+                    Focusable="False"
+                    IsOn="{Binding Path=IsChecked, Mode=TwoWay}"
+                    OffContent=""
+                    OnContent="" />
+                <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource CheckListRowTextTemplate}" />
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CheckListGroupHeaderTemplate" DataType="{x:Type selectors:CheckListItem}">
+            <CheckBox
+                Margin="0,4,0,0"
+                Padding="6,0,0,0"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="{Binding Path=DisplayValue}"
+                Background="Transparent"
+                Focusable="False"
+                IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"
+                IsEnabled="{Binding Path=IsEnabled}">
+                <TextBlock
+                    FontWeight="SemiBold"
+                    Text="{Binding Path=DisplayValue}"
+                    TextTrimming="CharacterEllipsis" />
+            </CheckBox>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CheckListPlainGroupHeaderTemplate" DataType="{x:Type selectors:CheckListItem}">
+            <TextBlock
+                Margin="0,4,0,0"
+                FontWeight="SemiBold"
+                Text="{Binding Path=DisplayValue}"
+                TextTrimming="CharacterEllipsis" />
+        </DataTemplate>
+
+        <Style x:Key="CheckListItemContainerStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Foreground" Value="{DynamicResource AtcApps.Brushes.Text}" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="4,2" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="AutomationProperties.Name" Value="{Binding Path=DisplayValue}" />
+            <EventSetter Event="KeyDown" Handler="OnItemKeyDown" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border
+                            x:Name="ItemBorder"
+                            Padding="{TemplateBinding Padding}"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="1"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource AtcApps.Brushes.Accent4}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource AtcApps.Brushes.Accent}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel
+            x:Name="PartSelectAllRow"
+            Grid.Row="0"
+            Margin="5,4,5,4">
+            <Button
+                x:Name="PartClear"
+                Margin="8,0,0,0"
+                Padding="8,1"
+                VerticalAlignment="Center"
+                Click="OnClearClick"
+                DockPanel.Dock="Right"
+                Visibility="Collapsed" />
+            <TextBlock
+                x:Name="PartCount"
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                AutomationProperties.AutomationId="SelectionCount"
+                DockPanel.Dock="Right"
+                Foreground="{DynamicResource AtcApps.Brushes.Gray}" />
+            <CheckBox
+                x:Name="PartSelectAll"
+                Padding="6,0,0,0"
+                VerticalContentAlignment="Center"
+                AutomationProperties.AutomationId="SelectAll"
+                Checked="OnSelectAllIsCheckedChanged"
+                Focusable="True"
+                Indeterminate="OnSelectAllIsCheckedChanged"
+                IsChecked="False"
+                Unchecked="OnSelectAllIsCheckedChanged" />
+        </DockPanel>
+
+        <TextBox
+            x:Name="PartFilter"
+            Grid.Row="1"
+            Margin="4,0,4,4"
+            atc:TextBoxHelper.ClearTextButton="True"
+            AutomationProperties.AutomationId="Filter"
+            PreviewKeyDown="OnFilterPreviewKeyDown"
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type selectors:CheckListBox}}, Path=FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Visibility="Collapsed" />
+
+        <ListBox
+            x:Name="PartList"
+            Grid.Row="2"
+            AutomationProperties.AutomationId="Items"
+            BorderThickness="0"
+            ItemContainerStyle="{StaticResource CheckListItemContainerStyle}"
+            KeyboardNavigation.DirectionalNavigation="Contained"
+            PreviewMouseLeftButtonDown="OnListPreviewMouseLeftButtonDown"
+            ScrollViewer.CanContentScroll="True"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectionMode="Single"
+            VirtualizingPanel.IsVirtualizing="True"
+            VirtualizingPanel.VirtualizationMode="Recycling" />
+
+        <TextBlock
+            x:Name="PartNoMatches"
+            Grid.Row="2"
+            Margin="8"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Foreground="{DynamicResource AtcApps.Brushes.Gray}"
+            Visibility="Collapsed" />
+    </Grid>
+
+</UserControl>

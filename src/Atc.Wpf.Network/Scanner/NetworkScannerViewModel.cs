@@ -7,12 +7,17 @@ namespace Atc.Wpf.Network.Scanner;
 public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
 {
     private readonly ICollectionView view;
+    private readonly Dispatcher dispatcher;
+    private readonly ConcurrentQueue<PendingProgress> pendingProgress = new();
     private readonly Dictionary<IPAddress, NetworkHostViewModel> entriesByIp = [];
     private GridViewColumnHeader? lastHeaderClicked;
     private ListSortDirection lastDirection = ListSortDirection.Ascending;
     private DispatcherTimer? elapsedTimer;
     private Stopwatch? stopwatch;
     private int totalIpCount;
+    private int progressDrainScheduled;
+    [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned and disposed by the running Scan; Dispose only cancels it.")]
+    private CancellationTokenSource? scanCancellation;
     private bool disposed;
 
     /// <summary>
@@ -98,6 +103,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     /// </summary>
     public NetworkScannerViewModel()
     {
+        dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
         Entries = [];
         columns = new NetworkScannerColumnsViewModel();
         filter = new NetworkScannerFilterViewModel();
@@ -318,6 +324,10 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
 
         IPScanner? ipScanner = null;
 
+        // Linked to the command's token, so Dispose can stop a scan that is still running.
+        using var scanCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        scanCancellation = scanCts;
+
         try
         {
             // Inside the try, so an invalid range ends up in ErrorMessage and releases IsBusy like every
@@ -340,7 +350,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
             ipScanner.ProgressReporting += IpScannerOnProgressReporting;
 
             var ipScanResults = await ipScanner
-                .ScanRange(startIp, endIp, cancellationToken)
+                .ScanRange(startIp, endIp, scanCts.Token)
                 .ConfigureAwait(true);
 
             if (ipScanResults.End.HasValue)
@@ -386,6 +396,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
             }
 
             ipScanner?.Dispose();
+            scanCancellation = null;
             IsBusy = false;
         }
     }
@@ -435,14 +446,62 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
             return;
         }
 
-        // Capture values before dispatch to avoid race conditions
-        var latestUpdate = e.LatestUpdate;
-        var tasksToProcess = e.TasksToProcessCount;
-        var tasksProcessed = e.TasksProcessedCount;
-        var percentageCompleted = e.PercentageCompleted;
+        // Capture values before queuing to avoid race conditions
+        EnqueueProgress(
+            e.LatestUpdate,
+            e.TasksToProcessCount,
+            e.TasksProcessedCount,
+            e.PercentageCompleted);
+    }
 
-        _ = Application.Current.Dispatcher.BeginInvoke(
-            () => ApplyProgress(latestUpdate, tasksToProcess, tasksProcessed, percentageCompleted));
+    /// <summary>
+    /// Gets the number of dispatcher callbacks that applied queued progress reports.
+    /// </summary>
+    internal int ProgressDispatchCount { get; private set; }
+
+    /// <summary>
+    /// Queues one scanner progress report. Safe to call from any thread; one dispatcher callback
+    /// applies every report queued until it runs, so a large range doesn't flood the dispatcher.
+    /// </summary>
+    internal void EnqueueProgress(
+        IPScanResult latestUpdate,
+        int tasksToProcess,
+        int tasksProcessed,
+        double percentageCompleted)
+    {
+        if (disposed)
+        {
+            return;
+        }
+
+        pendingProgress.Enqueue(new PendingProgress(latestUpdate, tasksToProcess, tasksProcessed, percentageCompleted));
+
+        if (Interlocked.Exchange(ref progressDrainScheduled, 1) == 0)
+        {
+            _ = dispatcher.BeginInvoke(DispatcherPriority.Background, ApplyPendingProgress);
+        }
+    }
+
+    private void ApplyPendingProgress()
+    {
+        // Cleared before draining: a report queued while draining schedules the next callback.
+        Interlocked.Exchange(ref progressDrainScheduled, 0);
+
+        if (disposed)
+        {
+            pendingProgress.Clear();
+            return;
+        }
+
+        ProgressDispatchCount++;
+        while (pendingProgress.TryDequeue(out var progress))
+        {
+            ApplyProgress(
+                progress.LatestUpdate,
+                progress.TasksToProcess,
+                progress.TasksProcessed,
+                progress.PercentageCompleted);
+        }
     }
 
     /// <summary>
@@ -549,12 +608,20 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
             return;
         }
 
+        disposed = true;
+
         if (disposing)
         {
             filter.PropertyChanged -= OnFilterPropertyChanged;
+            scanCancellation?.Cancel();
             StopElapsedTimer();
+            pendingProgress.Clear();
         }
-
-        disposed = true;
     }
+
+    private sealed record PendingProgress(
+        IPScanResult LatestUpdate,
+        int TasksToProcess,
+        int TasksProcessed,
+        double PercentageCompleted);
 }

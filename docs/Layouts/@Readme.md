@@ -118,7 +118,7 @@ Use this table to quickly identify which panel best suits your layout needs:
 
 **Location:** `Atc.Wpf.Controls.Layouts`
 
-**Description:** An enhanced dock panel with resizable splitters, collapsible regions, and layout persistence. Perfect for building IDE-style interfaces with tool windows.
+**Description:** An enhanced dock panel with resizable splitters, collapsible regions, tabbed pane groups, floating tool windows and layout persistence. Perfect for building IDE-style interfaces with tool windows.
 
 **When to Use:**
 - IDE-style layouts with resizable tool windows
@@ -134,6 +134,7 @@ Use this table to quickly identify which panel best suits your layout needs:
 | AutoSaveLayout | bool | false | Automatically save layout changes |
 | SplitterThickness | double | 5 | Thickness of resizable splitters |
 | SplitterBackground | Brush | from theme | Background brush for splitters |
+| AllowFloating | bool | false | Allow panes (`DockPane`) to float into their own tool windows |
 
 **DockPanelPro Attached Properties:**
 
@@ -216,6 +217,8 @@ dockPanel.LoadLayout(layout);
 // Reset to defaults
 dockPanel.ResetLayout();
 ```
+
+**Tabbed and floating panes:** put `DockPane` elements in `DockRegion.Panes` to show them as tabs (with close buttons, Ctrl+Tab and a Float / Close menu); with `AllowFloating="True"` a pane floats into an owned, themed tool window and docks back to its previous position. `SaveLayout` (layout version 2) also stores the tabs, the active tab, closed and floating panes.
 
 **See Also:** [Full DockPanelPro Documentation](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Controls/Layouts/DockPanelPro_Readme.md)
 

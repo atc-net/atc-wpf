@@ -24,6 +24,10 @@ internal sealed class DevicePickerController<TInfo>
     private string? lostDeviceId;
     private bool isLoaded;
 
+    // The services count watchers, so a service shared by several pickers keeps watching until the last one
+    // stops. Each controller holds at most one of those counts and only ever releases its own.
+    private bool holdsWatch;
+
     public DevicePickerController(
         IDevicePickerHost<TInfo> host,
         ObservableCollection<TInfo> items,
@@ -59,7 +63,7 @@ internal sealed class DevicePickerController<TInfo>
         {
             try
             {
-                startWatching();
+                StartWatchingOnce();
             }
             catch (Exception ex)
             {
@@ -85,7 +89,7 @@ internal sealed class DevicePickerController<TInfo>
     public void Unloaded()
     {
         isLoaded = false;
-        stopWatching();
+        StopWatchingIfHeld();
     }
 
     /// <summary>
@@ -101,12 +105,34 @@ internal sealed class DevicePickerController<TInfo>
 
         if (host.AutoRefreshOnDeviceChange)
         {
-            startWatching();
+            StartWatchingOnce();
         }
         else
         {
-            stopWatching();
+            StopWatchingIfHeld();
         }
+    }
+
+    private void StartWatchingOnce()
+    {
+        if (holdsWatch)
+        {
+            return;
+        }
+
+        startWatching();
+        holdsWatch = true;
+    }
+
+    private void StopWatchingIfHeld()
+    {
+        if (!holdsWatch)
+        {
+            return;
+        }
+
+        holdsWatch = false;
+        stopWatching();
     }
 
     /// <summary>

@@ -107,8 +107,6 @@ public partial class LanguageSelector
     {
         InitializeComponent();
 
-        DataContext = this;
-
         Loaded += OnLoaded;
         CultureManager.UiCultureChanged += OnUiCultureChanged;
     }
@@ -155,6 +153,8 @@ public partial class LanguageSelector
             var (_, bitmapImage) = flags.FirstOrDefault(x => x.Key.Contains(culture.CountryCodeA2 + ".png", StringComparison.Ordinal));
             Items.Add(new LanguageItem(culture.Clone(), bitmapImage));
         }
+
+        SortItems();
 
         if (string.IsNullOrEmpty(SelectedKey))
         {
@@ -237,12 +237,13 @@ public partial class LanguageSelector
         processingUiCultureChanged = false;
     }
 
+    // Localized names are sorted with the UI culture's rules (e.g. "Ägypten" before "Albanien" in German).
     private void SortItems()
     {
         var firstItem = Items.FirstOrDefault(x => x.Culture.Lcid <= 0);
         var sortedList = Items
             .Where(x => x.Culture.Lcid > 0)
-            .OrderBy(x => x.Culture.LanguageDisplayName, StringComparer.Ordinal)
+            .OrderBy(x => x.Culture.LanguageDisplayName, StringComparer.Create(CultureInfo.CurrentUICulture, ignoreCase: true))
             .ToList();
 
         Items.Clear();

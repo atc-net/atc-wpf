@@ -9,9 +9,6 @@ public sealed class PrintServicePageSizeTests
 {
     private const string PdfQueueName = "Microsoft Print to PDF";
 
-    private static readonly MethodInfo ApplySettingsMethod = GetPrivateStaticMethod("ApplySettings");
-    private static readonly MethodInfo GetPageSizeMethod = GetPrivateStaticMethod("GetPageSize");
-
     [StaFact]
     public void Landscape_PageSize_IsWiderThanTall_AndMatchesPrintDialog()
     {
@@ -56,17 +53,15 @@ public sealed class PrintServicePageSizeTests
     }
 
     /// <summary>
-    /// The page size the service paginates with: the settings are applied to a fresh dialog the way
-    /// <see cref="PrintService"/> does, then the size is read through the service's own helper.
+    /// The page size the service paginates with: the settings are applied to a dialog on the queue through
+    /// the same adapter <see cref="PrintService"/> uses, which then reports the size.
     /// </summary>
     private static Size GetPageSize(
         PrintQueue queue,
         PrintOrientation orientation)
-    {
-        var dialog = new PrintDialog { PrintQueue = queue };
-        ApplySettingsMethod.Invoke(null, [dialog, new PrintSettings { Orientation = orientation }]);
-        return (Size)GetPageSizeMethod.Invoke(null, [dialog])!;
-    }
+        => new PrintDialogAdapter(
+            new PrintDialog { PrintQueue = queue },
+            new PrintSettings { Orientation = orientation }).PageSize;
 
     /// <summary>
     /// What <see cref="PrintDialog"/> itself reports for a print ticket with the given orientation.
@@ -96,8 +91,4 @@ public sealed class PrintServicePageSizeTests
             throw;
         }
     }
-
-    private static MethodInfo GetPrivateStaticMethod(string name)
-        => typeof(PrintService).GetMethod(name, BindingFlags.NonPublic | BindingFlags.Static)
-           ?? throw new InvalidOperationException($"PrintService.{name} was not found; update this test to the renamed helper.");
 }

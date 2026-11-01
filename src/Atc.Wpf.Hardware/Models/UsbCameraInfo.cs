@@ -5,6 +5,9 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class UsbCameraInfo : ObservableObject, IDeviceInfo
 {
+    private string friendlyName;
+    private bool isEnabled;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="UsbCameraInfo"/> class.
     /// </summary>
@@ -19,16 +22,31 @@ public sealed partial class UsbCameraInfo : ObservableObject, IDeviceInfo
         bool isEnabled)
     {
         DeviceId = deviceId;
-        FriendlyName = friendlyName;
+        this.friendlyName = friendlyName;
         Panel = panel;
-        IsEnabled = isEnabled;
+        this.isEnabled = isEnabled;
     }
 
     /// <inheritdoc />
     public string DeviceId { get; }
 
     /// <inheritdoc />
-    public string FriendlyName { get; }
+    /// <remarks>Follows a rename of the camera while the service is watching.</remarks>
+    public string FriendlyName
+    {
+        get => friendlyName;
+        internal set
+        {
+            if (string.Equals(value, friendlyName, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            friendlyName = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(DisplayName));
+        }
+    }
 
     /// <summary>
     /// Gets where the camera is mounted on the enclosure.
@@ -37,8 +55,30 @@ public sealed partial class UsbCameraInfo : ObservableObject, IDeviceInfo
 
     /// <summary>
     /// Gets a value indicating whether the camera interface is enabled.
+    /// Follows the camera being disabled or enabled while the service is watching.
     /// </summary>
-    public bool IsEnabled { get; }
+    public bool IsEnabled
+    {
+        get => isEnabled;
+        internal set
+        {
+            if (value == isEnabled)
+            {
+                return;
+            }
+
+            isEnabled = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets the text shown for the camera: its name, followed by where it is mounted when that is known.
+    /// </summary>
+    public string DisplayName
+        => Panel is CameraPanel.Unknown
+            ? FriendlyName
+            : $"{FriendlyName} ({Panel})";
 
     /// <summary>
     /// The current state of the camera.
@@ -54,7 +94,5 @@ public sealed partial class UsbCameraInfo : ObservableObject, IDeviceInfo
 
     /// <inheritdoc />
     public override string ToString()
-        => Panel is CameraPanel.Unknown
-            ? FriendlyName
-            : $"{FriendlyName} ({Panel})";
+        => DisplayName;
 }

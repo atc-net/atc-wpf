@@ -162,6 +162,9 @@
   <data name="ValueShouldBeAInteger" xml:space="preserve">
     <value>Der Wert sollte eine Ganzzahl sein</value>
   </data>
+  <data name="SelectAtMost1" xml:space="preserve">
+    <value>Wähle höchstens {0} aus</value>
+  </data>
   <data name="PleaseSelect1" xml:space="preserve">
     <value>Bitte wähle ein {0}</value>
   </data>

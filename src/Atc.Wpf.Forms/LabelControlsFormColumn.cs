@@ -123,10 +123,31 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.GetFullIdentifier(), labelToggleSwitch.IsOn);
                     break;
                 case LabelComboBox labelComboBox:
-                    result.Add(control.GetFullIdentifier(), labelComboBox.SelectedKey);
+                    AddComboBoxValue(result, labelComboBox);
+                    break;
+                case LabelCheckListBox labelCheckListBox:
+                    result.Add(control.GetFullIdentifier(), GetSelectedKeysValue(control, labelCheckListBox.SelectedKeys));
+                    break;
+                case LabelMultiSelectComboBox labelMultiSelectComboBox:
+                    result.Add(control.GetFullIdentifier(), GetSelectedKeysValue(control, labelMultiSelectComboBox.SelectedKeys));
+                    break;
+                case LabelChipGroup labelChipGroup:
+                    result.Add(control.GetFullIdentifier(), GetSelectedKeysValue(control, labelChipGroup.SelectedKeys));
+                    break;
+                case LabelTokenBox labelTokenBox:
+                    result.Add(control.GetFullIdentifier(), (labelTokenBox.SelectedKeys ?? []).ToList());
+                    break;
+                case LabelTreeSelectComboBox labelTreeSelectComboBox:
+                    result.Add(control.GetFullIdentifier(), (labelTreeSelectComboBox.SelectedKeys ?? []).ToList());
+                    break;
+                case LabelCascaderComboBox labelCascaderComboBox:
+                    result.Add(control.GetFullIdentifier(), (labelCascaderComboBox.SelectedKeys ?? []).ToList());
+                    break;
+                case LabelMultiColumnComboBox labelMultiColumnComboBox:
+                    result.Add(control.GetFullIdentifier(), (labelMultiColumnComboBox.SelectedKeys ?? []).ToList());
                     break;
                 case LabelDecimalBox labelDecimalBox:
-                    result.Add(control.GetFullIdentifier(), labelDecimalBox.Value);
+                    AddNumberValue(result, control, labelDecimalBox.Value, labelDecimalBox.Value);
                     break;
                 case LabelDecimalXyBox labelDecimalXyBox:
                     if (labelDecimalXyBox.InputDataType == typeof(Point2D) ||
@@ -141,7 +162,7 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
 
                     break;
                 case LabelIntegerBox labelIntegerBox:
-                    result.Add(control.GetFullIdentifier(), labelIntegerBox.Value);
+                    AddNumberValue(result, control, labelIntegerBox.Value, labelIntegerBox.Value);
                     break;
                 case LabelPixelSizeBox labelPixelSizeBox:
                     result.Add(
@@ -157,13 +178,13 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                     result.Add(control.GetFullIdentifier(), labelTextBox.Text);
                     break;
                 case LabelDateTimePicker labelDateTimePicker:
-                    result.Add(control.GetFullIdentifier(), labelDateTimePicker.SelectedDate ?? DateTime.MinValue);
+                    AddDateValue(result, control, labelDateTimePicker.SelectedDate);
                     break;
                 case LabelDatePicker labelDatePicker:
-                    result.Add(control.GetFullIdentifier(), labelDatePicker.SelectedDate ?? DateTime.MinValue);
+                    AddDateValue(result, control, labelDatePicker.SelectedDate);
                     break;
                 case LabelTimePicker labelTimePicker:
-                    result.Add(control.GetFullIdentifier(), labelTimePicker.SelectedTime ?? DateTime.MinValue);
+                    AddDateValue(result, control, labelTimePicker.SelectedTime);
                     break;
                 case LabelDirectoryPicker labelDirectoryPicker:
                     if (labelDirectoryPicker.Value is not null)
@@ -219,6 +240,145 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
 
         return result;
     }
+
+    /// <summary>
+    /// Adds the selected key of a combo box. For an enum property (see <see cref="ILabelControlBase.InputDataType"/>)
+    /// an empty or placeholder selection gives <see langword="null"/> for a nullable property and no value at all for
+    /// a non-nullable one, so the model keeps its current value.
+    /// </summary>
+    private static void AddComboBoxValue(
+        Dictionary<string, object> result,
+        LabelComboBox labelComboBox)
+    {
+        var inputDataType = labelComboBox.InputDataType;
+        var nonNullableType = inputDataType is null
+            ? null
+            : Nullable.GetUnderlyingType(inputDataType) ?? inputDataType;
+        var selectedKey = labelComboBox.SelectedKey;
+
+        if (nonNullableType is { IsEnum: true } &&
+            (string.IsNullOrWhiteSpace(selectedKey) ||
+             Guid.TryParse(selectedKey, out _)))
+        {
+            if (nonNullableType != inputDataType)
+            {
+                result.Add(labelComboBox.GetFullIdentifier(), null!);
+            }
+
+            return;
+        }
+
+        result.Add(labelComboBox.GetFullIdentifier(), selectedKey);
+    }
+
+    /// <summary>
+    /// Adds the value of a number box. For an integral property (see <see cref="ILabelControlBase.InputDataType"/>)
+    /// the value is written as a whole number, and a value outside the type's range is left out, so the model
+    /// keeps its current value. Any other property gets <paramref name="controlValue"/> as is.
+    /// </summary>
+    private static void AddNumberValue(
+        Dictionary<string, object> result,
+        ILabelControlBase control,
+        decimal value,
+        object controlValue)
+    {
+        if (!IntegralTypeHelper.TryGetBounds(control.InputDataType, out _, out _))
+        {
+            result.Add(control.GetFullIdentifier(), controlValue);
+            return;
+        }
+
+        if (IntegralTypeHelper.TryGetWholeNumber(value, control.InputDataType, out var integralValue))
+        {
+            // An int control value fits every type it edits; keep it so the dictionary still holds an int.
+            result.Add(
+                control.GetFullIdentifier(),
+                controlValue is int ? controlValue : integralValue);
+        }
+    }
+
+    /// <summary>
+    /// Adds the value of a date or time picker, converted to the type of the edited property
+    /// (see <see cref="ILabelControlBase.InputDataType"/>): <see cref="DateOnly"/>, <see cref="TimeOnly"/>,
+    /// <see cref="DateTimeOffset"/> or <see cref="DateTime"/>. An empty picker gives <see langword="null"/> for a
+    /// nullable property and no value at all for a non-nullable one, so the model keeps its current value.
+    /// </summary>
+    private static void AddDateValue(
+        Dictionary<string, object> result,
+        ILabelControlBase control,
+        DateTime? selectedDate)
+    {
+        var inputDataType = control.InputDataType;
+        if (selectedDate is null)
+        {
+            if (inputDataType is null ||
+                !inputDataType.IsValueType ||
+                Nullable.GetUnderlyingType(inputDataType) is not null)
+            {
+                result.Add(control.GetFullIdentifier(), null!);
+            }
+
+            return;
+        }
+
+        var value = selectedDate.Value;
+        var nonNullableType = inputDataType is null
+            ? typeof(DateTime)
+            : Nullable.GetUnderlyingType(inputDataType) ?? inputDataType;
+
+        object convertedValue;
+        if (nonNullableType == typeof(DateOnly))
+        {
+            convertedValue = DateOnly.FromDateTime(value);
+        }
+        else if (nonNullableType == typeof(TimeOnly))
+        {
+            convertedValue = TimeOnly.FromDateTime(value);
+        }
+        else if (nonNullableType == typeof(DateTimeOffset))
+        {
+            convertedValue = ToDateTimeOffset(value);
+        }
+        else
+        {
+            convertedValue = value;
+        }
+
+        result.Add(control.GetFullIdentifier(), convertedValue);
+    }
+
+    /// <summary>
+    /// Converts a picker's local clock time to a <see cref="DateTimeOffset"/>, clamping at the ends of the range
+    /// where the local offset would move the instant outside <see cref="DateTimeOffset.MinValue"/>/<see cref="DateTimeOffset.MaxValue"/>.
+    /// </summary>
+    private static DateTimeOffset ToDateTimeOffset(DateTime value)
+    {
+        var localValue = DateTime.SpecifyKind(value, DateTimeKind.Local);
+        var offset = TimeZoneInfo.Local.GetUtcOffset(localValue);
+        var utcTicks = localValue.Ticks - offset.Ticks;
+        if (utcTicks < DateTimeOffset.MinValue.UtcTicks)
+        {
+            return DateTimeOffset.MinValue;
+        }
+
+        if (utcTicks > DateTimeOffset.MaxValue.UtcTicks)
+        {
+            return DateTimeOffset.MaxValue;
+        }
+
+        return new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Unspecified), offset);
+    }
+
+    /// <summary>
+    /// Gets the form value of a multi-select control: the combined flags when the control edits a <c>[Flags]</c> enum
+    /// (see <see cref="ILabelControlBase.InputDataType"/>), otherwise the list of selected keys.
+    /// </summary>
+    private static object GetSelectedKeysValue(
+        ILabelControlBase control,
+        IEnumerable<string>? selectedKeys)
+        => MultiSelectPropertyHelper.IsFlagsEnum(control.InputDataType)
+            ? MultiSelectPropertyHelper.CombineFlags(control.InputDataType!, selectedKeys)
+            : (selectedKeys ?? []).ToList();
 
     /// <summary>
     /// Calculates the column height when the controls are wrapped in group boxes, using the tallest group.

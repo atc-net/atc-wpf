@@ -18,7 +18,7 @@ public static class InputDialogBoxHelper
     /// </returns>
     /// <remarks>
     /// This method creates an <see cref="InputDialogBox"/> with a <see cref="LabelTextBox"/> control configured with the specified parameters.
-    /// The dialog is displayed modally relative to the application's main window.
+    /// The dialog is displayed modally relative to the application's main window, or unowned when there is none.
     /// </remarks>
     public static string? RequestText(
         string titleBarText,
@@ -39,8 +39,9 @@ public static class InputDialogBoxHelper
             labelTextBox.Text = textValue;
         }
 
+        // InputDialogBox accepts a missing owner and then opens unowned.
         var dialogBox = new InputDialogBox(
-            Application.Current.MainWindow!,
+            GetOwnerWindow()!,
             titleBarText,
             labelTextBox);
 
@@ -54,4 +55,11 @@ public static class InputDialogBoxHelper
             ? dialogBoxData.Text
             : null;
     }
+
+    /// <summary>
+    /// Gets the application's main window, or <see langword="null"/> when there is no
+    /// application or main window (tray-only, during startup, or hosted in another UI framework).
+    /// </summary>
+    internal static Window? GetOwnerWindow()
+        => Application.Current?.MainWindow;
 }

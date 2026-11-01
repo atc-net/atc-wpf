@@ -5,4 +5,5 @@
 |                           | ColorToNameValueConverter                                |                                         | Not supported                           |
 |                           | CornerRadiusBindingValueConverter                        |                                         | DependencyProperty.UnsetValue           |
 |                           | CornerRadiusFilterValueConverter                         |                                         | DependencyProperty.UnsetValue           |
+|                           | IsNiceWindowValueConverter                               | NiceWindow -> true, Window -> false     | DependencyProperty.UnsetValue           |
 |                           | TreeViewMarginValueConverter                             |                                         | DependencyProperty.UnsetValue           |

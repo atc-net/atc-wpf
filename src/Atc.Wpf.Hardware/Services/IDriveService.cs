@@ -23,6 +23,8 @@ public interface IDriveService : IDisposable
     /// <summary>
     /// Stops polling for drive changes.
     /// </summary>
+    /// <remarks>Start and stop calls are counted, so a service shared by several pickers keeps watching until each
+    /// <see cref="StartWatching"/> has been matched by a call to this method.</remarks>
     void StopWatching();
 
     /// <summary>

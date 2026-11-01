@@ -18,8 +18,11 @@ public static class ModelToLabelControlExtractor
     /// Creates a label control for each supported public property of the model, including nested complex types.
     /// </summary>
     /// <remarks>
-    /// Collection properties (any type implementing <see cref="IEnumerable"/> other than <see cref="string"/>)
-    /// and indexed properties are skipped. Nested models are followed at most <see cref="MaxNestingDepth"/>
+    /// A <c>[Flags]</c> enum property and a collection of an enum become a <see cref="LabelMultiSelectComboBox"/>, and a
+    /// collection of <see cref="string"/> becomes a <see cref="LabelTokenBox"/> that accepts any value. Supported
+    /// collections are arrays, <see cref="List{T}"/>, <see cref="HashSet{T}"/> and the collection interfaces they
+    /// implement. Other collection properties (any other type implementing <see cref="IEnumerable"/>, such as a
+    /// dictionary) and indexed properties are skipped. Nested models are followed at most <see cref="MaxNestingDepth"/>
     /// levels below the root model; deeper models are skipped instead of being extracted, so a
     /// self-referencing type cannot recurse forever.
     /// </remarks>
@@ -190,6 +193,12 @@ public static class ModelToLabelControlExtractor
         string typeGroupIdentifier,
         bool isReadOnly)
     {
+        if (MultiSelectPropertyHelper.IsFlagsEnum(propertyInfo.PropertyType))
+        {
+            labelControls.Add(CreateLabelMultiSelectComboBox(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
         var nonNullableType = propertyInfo.PropertyType.GetNonNullableType();
         if (nonNullableType.IsEnum)
         {
@@ -219,6 +228,12 @@ public static class ModelToLabelControlExtractor
             propertyInfo.PropertyType == typeof(Point2D?))
         {
             labelControls.Add(CreateLabelDecimalXyBox(propertyInfo, model, typeGroupIdentifier, isReadOnly, propertyInfo.PropertyType));
+            return true;
+        }
+
+        if (IntegralTypeHelper.IsWideIntegralType(propertyInfo.PropertyType))
+        {
+            labelControls.Add(CreateLabelWideIntegerBox(propertyInfo, model, typeGroupIdentifier, isReadOnly, propertyInfo.PropertyType));
             return true;
         }
 
@@ -311,6 +326,18 @@ public static class ModelToLabelControlExtractor
             }
         }
 
+        if (MultiSelectPropertyHelper.TryGetCollectionElementType(propertyInfo.PropertyType, out var elementType))
+        {
+            if (elementType.IsEnum)
+            {
+                labelControls.Add(CreateLabelMultiSelectComboBox(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+                return true;
+            }
+
+            labelControls.Add(CreateLabelTokenBox(propertyInfo, model, typeGroupIdentifier, isReadOnly));
+            return true;
+        }
+
         return false;
     }
 
@@ -345,6 +372,24 @@ public static class ModelToLabelControlExtractor
         return GetPropertyInfo(target, fieldName)?.GetValue(target);
     }
 
+    /// <summary>
+    /// Gets the local clock time of a <see cref="DateTimeOffset"/> for a date-time picker, clamped to the
+    /// <see cref="DateTime"/> range at its ends.
+    /// </summary>
+    private static DateTime ToLocalDateTime(DateTimeOffset value)
+    {
+        var offset = TimeZoneInfo.Local.GetUtcOffset(value.UtcDateTime);
+        var localTicks = value.UtcTicks + offset.Ticks;
+        if (localTicks < DateTime.MinValue.Ticks)
+        {
+            return DateTime.MinValue;
+        }
+
+        return localTicks > DateTime.MaxValue.Ticks
+            ? DateTime.MaxValue
+            : new DateTime(localTicks, DateTimeKind.Unspecified);
+    }
+
     private static PropertyInfo? GetPropertyInfo(
         object target,
         string fieldName)
@@ -377,6 +422,36 @@ public static class ModelToLabelControlExtractor
             groupIdentifier,
             isReadOnly,
             selectedKey);
+    }
+
+    private static LabelMultiSelectComboBox CreateLabelMultiSelectComboBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        return LabelControlFactory.CreateLabelMultiSelectComboBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            MultiSelectPropertyHelper.GetSelectedKeys(GetPropertyValue(model, propertyInfo.Name)));
+    }
+
+    private static LabelTokenBox CreateLabelTokenBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        return LabelControlFactory.CreateLabelTokenBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            MultiSelectPropertyHelper.GetSelectedKeys(GetPropertyValue(model, propertyInfo.Name)));
     }
 
     private static LabelCheckBox CreateLabelCheckBox<T>(
@@ -417,8 +492,8 @@ public static class ModelToLabelControlExtractor
         var value = propertyObjectValue switch
         {
             decimal dec => dec,
-            double dub => (decimal)dub,
-            float flo => (decimal)flo,
+            double dub => NumberClampHelper.ToDecimal(dub),
+            float flo => NumberClampHelper.ToDecimal(flo),
             _ => 0,
         };
 
@@ -445,12 +520,12 @@ public static class ModelToLabelControlExtractor
         switch (propertyObjectValue)
         {
             case Size size:
-                valueX = (decimal)size.Width;
-                valueY = (decimal)size.Height;
+                valueX = NumberClampHelper.ToDecimal(size.Width);
+                valueY = NumberClampHelper.ToDecimal(size.Height);
                 break;
             case Point2D point2D:
-                valueX = (decimal)point2D.X;
-                valueY = (decimal)point2D.Y;
+                valueX = NumberClampHelper.ToDecimal(point2D.X);
+                valueY = NumberClampHelper.ToDecimal(point2D.Y);
                 break;
         }
 
@@ -492,6 +567,35 @@ public static class ModelToLabelControlExtractor
             value);
     }
 
+    /// <summary>
+    /// Creates a whole-number <see cref="LabelDecimalBox"/> for a <see cref="uint"/>, <see cref="long"/> or
+    /// <see cref="ulong"/> property, whose values do not all fit in the <see cref="int"/> of a <see cref="LabelIntegerBox"/>.
+    /// </summary>
+    private static LabelDecimalBox CreateLabelWideIntegerBox<T>(
+        PropertyInfo propertyInfo,
+        T model,
+        string groupIdentifier,
+        bool isReadOnly,
+        Type inputType)
+    {
+        ArgumentNullException.ThrowIfNull(model);
+
+        var value = GetPropertyValue(model, propertyInfo.Name) switch
+        {
+            uint u => u,
+            long l => l,
+            ulong ul => ul,
+            _ => 0m,
+        };
+
+        return LabelControlFactory.CreateLabelDecimalBox(
+            propertyInfo,
+            groupIdentifier,
+            isReadOnly,
+            inputType,
+            value);
+    }
+
     private static LabelPixelSizeBox CreateLabelPixelSizeBox<T>(
         PropertyInfo propertyInfo,
         T model,
@@ -507,8 +611,8 @@ public static class ModelToLabelControlExtractor
         switch (propertyObjectValue)
         {
             case Size size:
-                valueWidth = (int)size.Width;
-                valueHeight = (int)size.Height;
+                valueWidth = NumberClampHelper.ToInt32(size.Width);
+                valueHeight = NumberClampHelper.ToInt32(size.Height);
                 break;
         }
 
@@ -551,12 +655,12 @@ public static class ModelToLabelControlExtractor
     {
         ArgumentNullException.ThrowIfNull(model);
 
-        DateTime? value = null;
-        var propertyObjectValue = GetPropertyValue(model, propertyInfo.Name);
-        if (propertyObjectValue is not null)
+        var value = GetPropertyValue(model, propertyInfo.Name) switch
         {
-            value = propertyObjectValue as DateTime?;
-        }
+            DateTime dateTime => dateTime,
+            DateTimeOffset dateTimeOffset => ToLocalDateTime(dateTimeOffset),
+            _ => (DateTime?)null,
+        };
 
         return LabelControlFactory.CreateLabelDateTimePicker(
             propertyInfo,

@@ -97,12 +97,21 @@ notificationService.ShowInformation("Alert", "Background task completed.", useDe
 |----------|------|---------|-------------|
 | `Position` | `ToastNotificationPosition` | `BottomRight` | Corner where notifications appear |
 | `MaxItems` | `int` | `int.MaxValue` | Maximum simultaneous notifications (oldest auto-closed) |
+| `PauseOnHover` | `bool` | `true` | The expiration time stops running while the mouse is over a notification and resumes (with the time that was left) when it leaves |
 
 ### ToastNotification Properties
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `CloseOnClick` | `bool` | `false` | Whether clicking the notification closes it |
+| `CloseOnClick` | `bool` | `false` | Whether clicking the notification closes it (a click a button inside the notification handles does not) |
+
+The area creates the `ToastNotification` controls, so set `CloseOnClick` with a style:
+
+```xml
+<Style TargetType="notifications:ToastNotification" BasedOn="{StaticResource {x:Type notifications:ToastNotification}}">
+    <Setter Property="CloseOnClick" Value="True" />
+</Style>
+```
 
 ## 📊 Enumerations
 
@@ -137,7 +146,8 @@ All methods accept optional parameters: `areaName`, `expirationTime` (default 5s
 
 ## 📝 Notes
 
-- Notifications auto-dismiss after `expirationTime` (default 5 seconds)
+- Notifications auto-dismiss after `expirationTime` (default 5 seconds); with `PauseOnHover` (the default) the time does not run while the mouse is over the notification, so it does not close while it is being read
+- A notification with an `onClick` action closes when clicked, after the action runs
 - When `MaxItems` is exceeded, the oldest notification is auto-closed
 - The `ToastNotificationArea` registers itself with the manager while it is loaded
 - All components handle dispatcher marshalling for cross-thread safety

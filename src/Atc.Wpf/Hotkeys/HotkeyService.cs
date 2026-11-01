@@ -18,6 +18,10 @@ public sealed class HotkeyService : IHotkeyService
     private readonly Lock registrationLock = new();
     private readonly List<HotkeyRegistration> registrations = [];
 
+    // Ids of local hotkeys that KeyGesture refuses (letters and digits without Control/Alt/Windows);
+    // they are matched in the window's PreviewKeyDown instead of through an InputBinding.
+    private readonly HashSet<int> keyDownMatchedIds = [];
+
     private int nextId;
 
     [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Disposed in DestroyListener() via StopListening().")]
@@ -102,14 +106,17 @@ public sealed class HotkeyService : IHotkeyService
             registrations.Add(registration);
         }
 
-        if (scope == HotkeyScope.Global && hwndSource is not null)
+        RunOnDispatcher(() =>
         {
-            RegisterGlobalHotkey(registration);
-        }
-        else if (scope == HotkeyScope.Local && targetWindow is not null)
-        {
-            RegisterLocalHotkey(registration);
-        }
+            if (scope == HotkeyScope.Global && hwndSource is not null)
+            {
+                RegisterGlobalHotkey(registration);
+            }
+            else if (scope == HotkeyScope.Local && targetWindow is not null)
+            {
+                RegisterLocalHotkey(registration);
+            }
+        });
 
         return registration;
     }
@@ -174,14 +181,17 @@ public sealed class HotkeyService : IHotkeyService
             }
         }
 
-        if (reg.Scope == HotkeyScope.Global && hwndSource is not null)
+        RunOnDispatcher(() =>
         {
-            UnregisterGlobalHotkey(reg);
-        }
-        else if (reg.Scope == HotkeyScope.Local && targetWindow is not null)
-        {
-            RemoveLocalHotkey(reg);
-        }
+            if (reg.Scope == HotkeyScope.Global && hwndSource is not null)
+            {
+                UnregisterGlobalHotkey(reg);
+            }
+            else if (reg.Scope == HotkeyScope.Local && targetWindow is not null)
+            {
+                RemoveLocalHotkey(reg);
+            }
+        });
     }
 
     /// <inheritdoc />
@@ -472,7 +482,22 @@ public sealed class HotkeyService : IHotkeyService
             return;
         }
 
-        var gesture = new KeyGesture(registration.Key, registration.Modifiers);
+        KeyGesture gesture;
+        try
+        {
+            gesture = new KeyGesture(registration.Key, registration.Modifiers);
+        }
+        catch (NotSupportedException)
+        {
+            // KeyGesture refuses letters and digits with no modifier or Shift only.
+            lock (registrationLock)
+            {
+                keyDownMatchedIds.Add(registration.Id);
+            }
+
+            return;
+        }
+
         var command = new HotkeyRoutedCommand(registration, this);
         var binding = new InputBinding(command, gesture) { CommandParameter = registration };
         targetWindow.InputBindings.Add(binding);
@@ -480,6 +505,11 @@ public sealed class HotkeyService : IHotkeyService
 
     private void RemoveLocalHotkey(HotkeyRegistration registration)
     {
+        lock (registrationLock)
+        {
+            keyDownMatchedIds.Remove(registration.Id);
+        }
+
         if (targetWindow is null)
         {
             return;
@@ -530,21 +560,25 @@ public sealed class HotkeyService : IHotkeyService
         KeyEventArgs e)
     {
         var key = e.Key == Key.System ? e.SystemKey : e.Key;
-        if (ProcessPreviewKeyDown(key, Keyboard.Modifiers))
+        var isTextInputFocused = e.OriginalSource is TextBoxBase or PasswordBox;
+        if (ProcessPreviewKeyDown(key, Keyboard.Modifiers, isTextInputFocused))
         {
             e.Handled = true;
         }
     }
 
     /// <summary>
-    /// Feeds one key-down into the chord state machine.
+    /// Feeds one key-down into the chord state machine, and matches the local hotkeys
+    /// that cannot be bound as a <see cref="KeyGesture"/>.
     /// </summary>
     /// <param name="key">The pressed key (the system key for Alt combinations).</param>
     /// <param name="modifiers">The modifier keys held while the key was pressed.</param>
-    /// <returns><see langword="true"/> when the key was consumed as a chord stroke.</returns>
+    /// <param name="isTextInputFocused">Whether the key goes to a text input (a text box or password box).</param>
+    /// <returns><see langword="true"/> when the key was consumed as a chord stroke or a local hotkey.</returns>
     internal bool ProcessPreviewKeyDown(
         Key key,
-        ModifierKeys modifiers)
+        ModifierKeys modifiers,
+        bool isTextInputFocused = false)
     {
         if (pendingChordFirstStroke is not null)
         {
@@ -572,12 +606,53 @@ public sealed class HotkeyService : IHotkeyService
 
         if (chordRegistrations.Count == 0)
         {
-            return false;
+            return !isTextInputFocused &&
+                   InvokeKeyDownMatchedHotkeys(key, modifiers);
         }
 
         pendingChordFirstStroke = chordRegistrations[0];
         StartChordTimer();
         return true;
+    }
+
+    private bool InvokeKeyDownMatchedHotkeys(
+        Key key,
+        ModifierKeys modifiers)
+    {
+        List<HotkeyRegistration> matches;
+        lock (registrationLock)
+        {
+            if (keyDownMatchedIds.Count == 0)
+            {
+                return false;
+            }
+
+            matches = registrations
+                .Where(r =>
+                    keyDownMatchedIds.Contains(r.Id) &&
+                    r.Modifiers == modifiers &&
+                    r.Key == key)
+                .ToList();
+        }
+
+        foreach (var match in matches)
+        {
+            InvokeCallback(match);
+        }
+
+        return matches.Count > 0;
+    }
+
+    private void RunOnDispatcher(Action action)
+    {
+        if (dispatcher.CheckAccess())
+        {
+            action();
+        }
+        else
+        {
+            dispatcher.Invoke(action);
+        }
     }
 
     private bool HandleChordSecondStroke(

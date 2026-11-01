@@ -1,5 +1,6 @@
 namespace Atc.Wpf.Tests.Documents.ColorSchemas;
 
+[Collection(nameof(JsonColorSchemaTestGroup))]
 public sealed class JsonColorSchemaTests
 {
     [StaTheory]

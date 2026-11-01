@@ -16,7 +16,7 @@ using Atc.Wpf.Controls.Selectors;
 
 ```xml
 <selectors:CountrySelector
-    SelectedKey="{Binding SelectedCountryCode}"
+    SelectedKey="{Binding SelectedCountryCode, Mode=TwoWay}"
     UseOnlySupportedCountries="True"
     RenderFlagIndicatorType="Flat16" />
 ```
@@ -40,6 +40,7 @@ using Atc.Wpf.Controls.Selectors;
 
 ## 📝 Notes
 
+- The control keeps the inherited `DataContext`, so bindings on it resolve against your view model. `SelectedKey` binds one-way by default; use `Mode=TwoWay` to get the user's pick back
 - Country names are localized based on the current UI culture
 - Flag icons update when the theme changes
 

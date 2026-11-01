@@ -14,6 +14,7 @@ public sealed partial class CurrencyBox : NumericBox
     /// <summary>Initializes a new instance of the <see cref="CurrencyBox"/> class.</summary>
     public CurrencyBox()
     {
+        UseUiCultureUntilSet();
         Loaded += OnLoaded;
     }
 

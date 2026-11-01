@@ -108,7 +108,7 @@ internal static class AudioBufferAccess
     /// route cannot reach for read-mode frames.
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Buffer access must not crash on transient COM failures.")]
-    private static unsafe bool TryGetBufferPointer(
+    internal static unsafe bool TryGetBufferPointer(
         Windows.Foundation.IMemoryBufferReference reference,
         out byte* dataInBytes,
         out uint capacity)
