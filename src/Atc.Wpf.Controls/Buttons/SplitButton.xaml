@@ -65,10 +65,12 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
+                                <!--  Foreground passed on: the inner buttons would otherwise get the system button text color (black in dark mode)  -->
                                 <Button
                                     x:Name="PART_ActionButton"
                                     Grid.Column="0"
                                     Padding="{TemplateBinding Padding}"
+                                    Foreground="{TemplateBinding Foreground}"
                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Style="{StaticResource AtcApps.Styles.SplitButton.InnerButton}">
@@ -90,6 +92,7 @@
                                     Grid.Column="2"
                                     Width="24"
                                     Padding="0"
+                                    Foreground="{TemplateBinding Foreground}"
                                     HorizontalContentAlignment="Center"
                                     VerticalContentAlignment="Center"
                                     Style="{StaticResource AtcApps.Styles.SplitButton.InnerButton}">
@@ -124,7 +127,8 @@
                                 BorderBrush="{DynamicResource AtcApps.Brushes.Gray6}"
                                 BorderThickness="1"
                                 CornerRadius="{TemplateBinding CornerRadius}"
-                                SnapsToDevicePixels="True">
+                                SnapsToDevicePixels="True"
+                                TextElement.Foreground="{DynamicResource AtcApps.Brushes.ThemeForeground}">
                                 <Border.Effect>
                                     <DropShadowEffect
                                         BlurRadius="8"
