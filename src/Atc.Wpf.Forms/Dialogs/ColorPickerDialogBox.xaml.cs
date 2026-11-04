@@ -52,6 +52,8 @@ public partial class ColorPickerDialogBox
         Height = Settings.Height;
 
         InitializeDialogBox();
+
+        PickerDialogBoxHelper.ApplyOwnerAndFitToWorkArea(this, OwningWindow);
     }
 
     /// <summary>

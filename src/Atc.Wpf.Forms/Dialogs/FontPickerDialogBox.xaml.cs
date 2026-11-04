@@ -123,6 +123,8 @@ public partial class FontPickerDialogBox
         Height = Settings.Height;
 
         InitializeDialogBox();
+
+        PickerDialogBoxHelper.ApplyOwnerAndFitToWorkArea(this, OwningWindow);
     }
 
     /// <summary>

@@ -114,31 +114,51 @@ public sealed class DialogLongTextTests : IDisposable
     }
 
     /// <summary>
-    /// The colour picker hosts a fixed-size picker, not text, so it keeps its own scrolling. It sets no owner, so it
-    /// is found among the application's top-level windows.
+    /// The colour and font pickers host fixed-size pickers, not text, so they keep their own layout; they open owned
+    /// by the main window, centred on it, inside the work area and with their whole header.
     /// </summary>
     [Trait("Category", "UI")]
     [Fact]
-    public void Color_picker_dialog_still_opens_with_its_picker()
+    public void Picker_dialogs_are_owned_centred_inside_the_work_area_and_show_their_header()
     {
-        var mainHandle = mainWindow.Properties.NativeWindowHandle.Value;
-        FindByAutomationId(mainWindow, "LongTextColorPicker").Patterns.Invoke.Pattern.Invoke();
-        var dialog = Retry.WhileNull(
-            () => application
-                .GetAllTopLevelWindows(automation)
-                .FirstOrDefault(x => x.Properties.NativeWindowHandle.Value != mainHandle),
-            timeout: TimeSpan.FromSeconds(10),
-            interval: TimeSpan.FromMilliseconds(200)).Result;
-        Assert.NotNull(dialog);
+        MoveMainWindowToTopLeft();
+        var ownerCentre = Centre(mainWindow.BoundingRectangle);
 
-        try
+        foreach (var buttonId in new[] { "LongTextColorPicker", "LongTextFontPicker" })
         {
-            Assert.NotNull(ContentScrollViewer(dialog));
-        }
-        finally
-        {
-            dialog.Close();
-            WaitUntil(() => application.GetAllTopLevelWindows(automation).Length == 1);
+            var dialog = OpenDialog(buttonId);
+            try
+            {
+                var screen = System.Windows.Forms.Screen.FromRectangle(dialog.BoundingRectangle);
+                Assert.True(
+                    screen.WorkingArea.Contains(dialog.BoundingRectangle),
+                    $"{buttonId}: the dialog {dialog.BoundingRectangle} should lie inside the work area {screen.WorkingArea}.");
+
+                var header = Retry.WhileNull(
+                    () => dialog.FindFirstDescendant(cf => cf.ByControlType(ControlType.Text).And(cf.ByName(HeaderText))),
+                    timeout: TimeSpan.FromSeconds(5),
+                    interval: TimeSpan.FromMilliseconds(200)).Result;
+                Assert.NotNull(header);
+                Assert.True(
+                    header.BoundingRectangle.Height > 10 && !header.IsOffscreen,
+                    $"{buttonId}: the header {header.BoundingRectangle} should be shown.");
+
+                // Centred on the owner, unless that would put part of the dialog outside the work area.
+                var bounds = dialog.BoundingRectangle;
+                var centred = new System.Drawing.Rectangle(
+                    (int)(ownerCentre.X - (bounds.Width / 2f)),
+                    (int)(ownerCentre.Y - (bounds.Height / 2f)),
+                    bounds.Width,
+                    bounds.Height);
+                if (screen.WorkingArea.Contains(centred))
+                {
+                    AssertCentredOn(dialog, ownerCentre);
+                }
+            }
+            finally
+            {
+                CloseDialogs();
+            }
         }
     }
 

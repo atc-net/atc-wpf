@@ -137,7 +137,23 @@ public sealed partial class LongTextDialogBoxViewModel : ViewModelBase
 
     [RelayCommand]
     private void ShowColorPicker()
-        => Show(new ColorPickerDialogBox(Application.Current.MainWindow!, Colors.DodgerBlue));
+        => Show(new ColorPickerDialogBox(Application.Current.MainWindow!, Colors.DodgerBlue)
+        {
+            HeaderControl = CreatePickerHeader(),
+        });
+
+    [RelayCommand]
+    private void ShowFontPicker()
+        => Show(new FontPickerDialogBox(Application.Current.MainWindow!, new FontDescription())
+        {
+            HeaderControl = CreatePickerHeader(),
+        });
+
+    private static ContentControl CreatePickerHeader()
+        => new()
+        {
+            Content = new TextBlock { Text = HeaderText, TextWrapping = TextWrapping.Wrap, FontSize = 18 },
+        };
 
     private DialogBoxSettings ApplySettings(DialogBoxSettings settings)
     {
