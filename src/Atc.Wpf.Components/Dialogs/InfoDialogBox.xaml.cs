@@ -145,6 +145,11 @@ public partial class InfoDialogBox
         Helpers.DialogBoxHelper.OnDialogPropertyChanged(this, e);
     }
 
+    private void OnCopyClicked(
+        object? sender,
+        EventArgs e)
+        => Helpers.DialogBoxHelper.TryCopy(CreateClipboardText());
+
     private string CreateClipboardText()
         => Helpers.DialogBoxHelper.CreateClipboardText(
             Title,

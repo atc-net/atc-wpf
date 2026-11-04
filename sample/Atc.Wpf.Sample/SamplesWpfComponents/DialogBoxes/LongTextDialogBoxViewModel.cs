@@ -221,6 +221,27 @@ public sealed partial class LongTextDialogBoxViewModel : ViewModelBase
             "The camera stream could not be opened. Press Ctrl+C to copy this message."));
 
     [RelayCommand]
+    private void ShowExceptionDialog()
+    {
+        try
+        {
+            try
+            {
+                throw new TimeoutException("The RTSP server at rtsp://192.168.1.20:554/stream1 did not answer within 10 seconds.");
+            }
+            catch (TimeoutException ex)
+            {
+                throw new InvalidOperationException("The camera stream could not be opened.", ex);
+            }
+        }
+        catch (InvalidOperationException ex)
+        {
+            ExceptionDialog.Show(ex, "Dispatcher Unhandled Exception");
+            Result = $"{nameof(ExceptionDialog)}: closed";
+        }
+    }
+
+    [RelayCommand]
     private void ShowQuestionWithDontAskAgain()
         => Show(new QuestionDialogBox(
             Application.Current.MainWindow!,

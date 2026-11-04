@@ -80,7 +80,8 @@ public partial class App
     }
 
     /// <summary>
-    /// Currents the domain unhandled exception.
+    /// An exception on another thread ends the process: the report is saved, copied and shown in the native
+    /// message box, which does not need the (possibly broken) UI thread.
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="e">The <see cref="UnhandledExceptionEventArgs"/> instance containing the event data.</param>
@@ -88,21 +89,17 @@ public partial class App
         object sender,
         UnhandledExceptionEventArgs e)
     {
-        if (!(e is { ExceptionObject: Exception ex }))
+        if (e is not { ExceptionObject: Exception ex })
         {
             return;
         }
 
-        var exceptionMessage = ex.GetMessage(includeInnerMessage: true);
-        _ = MessageBox.Show(
-            exceptionMessage,
-            "CurrentDomain Unhandled Exception",
-            MessageBoxButton.OK,
-            MessageBoxImage.Error);
+        _ = ExceptionReport.ShowMessageBox(ex, "CurrentDomain Unhandled Exception");
     }
 
     /// <summary>
-    /// Applications the on dispatcher unhandled exception.
+    /// An exception on the UI thread: shown in the error dialog (full report under Details, Ctrl+C or the copy
+    /// button copies it), then the app closes.
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="e">The <see cref="DispatcherUnhandledExceptionEventArgs"/> instance containing the event data.</param>
@@ -110,20 +107,13 @@ public partial class App
         object sender,
         DispatcherUnhandledExceptionEventArgs e)
     {
-        var exceptionMessage = e.Exception.GetMessage(includeInnerMessage: true);
-        if (exceptionMessage.Contains(
-                "BindingExpression:Path=HorizontalContentAlignment; DataItem=null; target element is 'ComboBoxItem'",
-                StringComparison.Ordinal))
+        if (ExceptionReport.IsKnownHarmlessWpfBindingError(e.Exception))
         {
             e.Handled = true;
             return;
         }
 
-        _ = MessageBox.Show(
-            exceptionMessage,
-            "Dispatcher Unhandled Exception",
-            MessageBoxButton.OK,
-            MessageBoxImage.Error);
+        ExceptionDialog.Show(e.Exception, "Dispatcher Unhandled Exception");
 
         e.Handled = true;
         Shutdown(-1);

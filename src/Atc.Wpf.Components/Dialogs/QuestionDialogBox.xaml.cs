@@ -160,6 +160,11 @@ public partial class QuestionDialogBox
         }
     }
 
+    private void OnCopyClicked(
+        object? sender,
+        EventArgs e)
+        => Helpers.DialogBoxHelper.TryCopy(CreateClipboardText());
+
     private string CreateClipboardText()
         => Helpers.DialogBoxHelper.CreateClipboardText(
             Title,

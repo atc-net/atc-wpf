@@ -152,6 +152,12 @@
                             AutomationProperties.AutomationId="DialogDontAskAgain"
                             Command="{Binding Path=ShowQuestionWithDontAskAgainCommand}"
                             Content="Don&apos;t ask again" />
+                        <Button
+                            MinWidth="140"
+                            Margin="0,0,10,10"
+                            AutomationProperties.AutomationId="DialogException"
+                            Command="{Binding Path=ShowExceptionDialogCommand}"
+                            Content="Exception dialog" />
                     </WrapPanel>
                 </GroupBox>
 

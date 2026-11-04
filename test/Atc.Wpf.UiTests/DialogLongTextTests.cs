@@ -417,6 +417,34 @@ public sealed class DialogLongTextTests : IDisposable
         }
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Exception_dialog_copy_button_copies_the_full_report_and_keeps_the_dialog_open()
+    {
+        var dialog = OpenDialog("DialogException");
+        try
+        {
+            var savedClipboard = ReadClipboard();
+            ClearClipboard();
+
+            FindByAutomationId(dialog, "DialogBoxCopyButton").Patterns.Invoke.Pattern.Invoke();
+            WaitUntil(() => ReadClipboard().Contains("TimeoutException", StringComparison.Ordinal));
+
+            var copied = ReadClipboard();
+            Assert.Contains("The camera stream could not be opened.", copied, StringComparison.Ordinal);
+            Assert.Contains("System.TimeoutException", copied, StringComparison.Ordinal);
+            Assert.Contains(" at ", copied, StringComparison.Ordinal);
+            Assert.Contains("OS: ", copied, StringComparison.Ordinal);
+            Assert.NotEmpty(mainWindow.ModalWindows);
+
+            RestoreClipboard(savedClipboard);
+        }
+        finally
+        {
+            CloseDialogs();
+        }
+    }
+
     private string ResultText()
         => FindByAutomationId(mainWindow, "LongTextResult").Name ?? string.Empty;
 
