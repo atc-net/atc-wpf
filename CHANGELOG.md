@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 From 4.0.216 onwards this file is maintained by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.4.0](https://github.com/atc-net/atc-wpf/compare/v4.3.0...v4.4.0) (2026-11-04)
+
+
+### New features
+
+* **components:** add DialogService.ShowFontPicker ([a727e3c](https://github.com/atc-net/atc-wpf/commit/a727e3ced58ea82356c51449d535ce20344ce712))
+* **components:** wrap long dialog text and size dialogs to their content ([8310357](https://github.com/atc-net/atc-wpf/commit/831035706751150c0e9c0c1bcc96ff625af40a05))
+* **dialogs:** add ExceptionDialog and ExceptionReport for unhandled exceptions ([5b34e69](https://github.com/atc-net/atc-wpf/commit/5b34e694b2f6cca546b059e5748722bfc96c01ae))
+* **dialogs:** share one button bar and add Yes/No/Cancel, default button, details, don't ask again and copy ([08b4424](https://github.com/atc-net/atc-wpf/commit/08b4424c249cdf4f70b01c9c2d1c9eb1106a109a))
+* **sample:** add an Exception dialog sample ([a77b1f1](https://github.com/atc-net/atc-wpf/commit/a77b1f1c299984dede4856db309006ef91559af3))
+
+
+### Bug fixes
+
+* **components:** give each dialog its own copy of the settings icon ([f8454f8](https://github.com/atc-net/atc-wpf/commit/f8454f8cde63ab08c170a23ed3a7d84d6d34946c))
+* **components:** size the input form dialog height to its content ([f705f1a](https://github.com/atc-net/atc-wpf/commit/f705f1a4c2abb906037e720ee50a235946ca0fcf))
+* **controls:** show SplitButton and Timeline text in the theme color ([68554f1](https://github.com/atc-net/atc-wpf/commit/68554f164947fdb1c46a63c7424d787ddbf2ca75))
+* **dialogs:** keep grown dialogs inside the work area ([7cb0dcc](https://github.com/atc-net/atc-wpf/commit/7cb0dcc627a2599442a24f8f02c3cd59dbf024ca))
+* **forms:** own, centre and fit the colour and font picker dialogs ([b5284c6](https://github.com/atc-net/atc-wpf/commit/b5284c6d3522bae85ff34d0e5ac486eea05e8829))
+* **forms:** read dialog button brushes from the current theme ([d4622c1](https://github.com/atc-net/atc-wpf/commit/d4622c1bffe69822ef396694fd58307c8c70cc59))
+* **forms:** wrap long form labels and validation texts; size the input dialog to its content ([94effa7](https://github.com/atc-net/atc-wpf/commit/94effa71170d23ab6d17530876de45bb6dabd558))
+
 ## [4.3.0](https://github.com/atc-net/atc-wpf/compare/v4.2.1...v4.3.0) (2026-11-01)
 
 
