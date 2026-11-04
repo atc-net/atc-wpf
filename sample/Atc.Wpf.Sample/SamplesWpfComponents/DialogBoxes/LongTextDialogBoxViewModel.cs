@@ -174,6 +174,60 @@ public sealed partial class LongTextDialogBoxViewModel : ViewModelBase
         }
 
         var dialogResult = dialogBox.ShowDialog();
-        Result = $"{dialogBox.GetType().Name}: {(dialogResult == true ? "OK / Yes" : "Cancel / No")}";
+        Result = dialogBox switch
+        {
+            QuestionDialogBox question => $"{nameof(QuestionDialogBox)}: {dialogResult}, clicked {question.ClickedButton?.ToString() ?? "none"}, don't ask again {question.IsDontAskAgainChecked}",
+            InfoDialogBox info => $"{nameof(InfoDialogBox)}: {dialogResult}, clicked {info.ClickedButton?.ToString() ?? "none"}",
+            _ => $"{dialogBox.GetType().Name}: {dialogResult}",
+        };
     }
+
+    [RelayCommand]
+    private void ShowYesNoCancel()
+        => Show(new QuestionDialogBox(
+            Application.Current.MainWindow!,
+            ApplySettings(new DialogBoxSettings(DialogBoxType.YesNoCancel)
+            {
+                TitleBarText = "Unsaved changes",
+                AffirmativeButtonText = "Save",
+                NegativeButtonText = "Don't save",
+            }),
+            "Save the changes to Camera layout 3 before closing?"));
+
+    [RelayCommand]
+    private void ShowDestructiveQuestion()
+        => Show(new QuestionDialogBox(
+            Application.Current.MainWindow!,
+            ApplySettings(new DialogBoxSettings(DialogBoxType.YesNo)
+            {
+                TitleBarText = "Delete recordings",
+                DefaultButton = DialogBoxButton.Negative,
+            }),
+            "Delete 40 recordings? This cannot be undone. Enter answers No."));
+
+    [RelayCommand]
+    private void ShowErrorWithDetails()
+        => Show(new InfoDialogBox(
+            Application.Current.MainWindow!,
+            ApplySettings(new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Error)
+            {
+                TitleBarText = "Error",
+                DetailsText = string.Join(
+                    "\n",
+                    "System.InvalidOperationException: The camera stream could not be opened because the RTSP server at rtsp://192.168.1.20:554/stream1 did not answer within 10 seconds.",
+                    "   at AtcSoft.Video.Streams.RtspClient.OpenAsync(Uri uri, CancellationToken cancellationToken)",
+                    "   at AtcSoft.Video.Surveillance.CameraWall.StartAsync()"),
+            }),
+            "The camera stream could not be opened. Press Ctrl+C to copy this message."));
+
+    [RelayCommand]
+    private void ShowQuestionWithDontAskAgain()
+        => Show(new QuestionDialogBox(
+            Application.Current.MainWindow!,
+            ApplySettings(new DialogBoxSettings(DialogBoxType.YesNo)
+            {
+                TitleBarText = "Close camera wall",
+                ShowDontAskAgain = true,
+            }),
+            "Close the camera wall?"));
 }

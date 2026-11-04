@@ -24,4 +24,9 @@ public enum DialogBoxType
     /// Yes and No buttons.
     /// </summary>
     YesNo,
+
+    /// <summary>
+    /// Yes, No and Cancel buttons, e.g. for "Save changes before closing?".
+    /// </summary>
+    YesNoCancel,
 }

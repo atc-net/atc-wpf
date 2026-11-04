@@ -65,6 +65,12 @@
     <value>Could not export log:
 {0}</value>
   </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="DontAskAgain" xml:space="preserve">
+    <value>Don't ask again</value>
+  </data>
   <data name="ExportFailed" xml:space="preserve">
     <value>Export failed</value>
   </data>

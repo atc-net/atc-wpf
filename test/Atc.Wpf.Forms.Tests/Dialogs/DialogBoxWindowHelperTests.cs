@@ -4,7 +4,7 @@ namespace Atc.Wpf.Forms.Tests.Dialogs;
 /// The colour and font picker dialogs are owned by (and centred on) a shown owner, and never get larger than the
 /// work area, so their buttons stay on screen on small or highly scaled monitors.
 /// </summary>
-public sealed class PickerDialogBoxHelperTests
+public sealed class DialogBoxWindowHelperTests
 {
     [StaFact]
     public void OwnerIsShown_OwnsAndCentresTheDialog_AndLimitsItToTheWorkArea()
@@ -15,7 +15,7 @@ public sealed class PickerDialogBoxHelperTests
 
         try
         {
-            Atc.Wpf.Forms.Dialogs.PickerDialogBoxHelper.ApplyOwnerAndFitToWorkArea(dialog, owner);
+            Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.ApplyOwnerAndFitToWorkArea(dialog, owner);
 
             Assert.Same(owner, dialog.Owner);
             Assert.Equal(WindowStartupLocation.CenterOwner, dialog.WindowStartupLocation);
@@ -34,12 +34,12 @@ public sealed class PickerDialogBoxHelperTests
     {
         var dialog = new Window { WindowStartupLocation = WindowStartupLocation.CenterScreen };
 
-        Atc.Wpf.Forms.Dialogs.PickerDialogBoxHelper.ApplyOwnerAndFitToWorkArea(dialog, owningWindow: null);
+        Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.ApplyOwnerAndFitToWorkArea(dialog, owningWindow: null);
 
         Assert.Null(dialog.Owner);
         Assert.Equal(WindowStartupLocation.CenterScreen, dialog.WindowStartupLocation);
-        Assert.Equal(SystemParameters.WorkArea.Width * Atc.Wpf.Forms.Dialogs.PickerDialogBoxHelper.MaxWorkAreaRatio, dialog.MaxWidth, precision: 1);
-        Assert.Equal(SystemParameters.WorkArea.Height * Atc.Wpf.Forms.Dialogs.PickerDialogBoxHelper.MaxWorkAreaRatio, dialog.MaxHeight, precision: 1);
+        Assert.Equal(SystemParameters.WorkArea.Width * Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.MaxWorkAreaRatio, dialog.MaxWidth, precision: 1);
+        Assert.Equal(SystemParameters.WorkArea.Height * Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.MaxWorkAreaRatio, dialog.MaxHeight, precision: 1);
     }
 
     [StaFact]
@@ -48,7 +48,7 @@ public sealed class PickerDialogBoxHelperTests
         var owner = CreateHiddenWindow();
         var dialog = new Window { WindowStartupLocation = WindowStartupLocation.CenterScreen };
 
-        Atc.Wpf.Forms.Dialogs.PickerDialogBoxHelper.ApplyOwnerAndFitToWorkArea(dialog, owner);
+        Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.ApplyOwnerAndFitToWorkArea(dialog, owner);
 
         Assert.Null(dialog.Owner);
         Assert.Equal(WindowStartupLocation.CenterScreen, dialog.WindowStartupLocation);

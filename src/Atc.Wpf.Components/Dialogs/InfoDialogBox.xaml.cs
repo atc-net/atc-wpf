@@ -85,13 +85,33 @@ public partial class InfoDialogBox
             Helpers.DialogBoxHelper.ApplyAutoHeight(this, owningWindow, Settings.Height);
         }
 
-        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
+        DialogBoxWindowHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>
     /// Gets the window that owns the dialog box.
     /// </summary>
     public Window OwningWindow { get; private set; }
+
+    /// <summary>
+    /// Gets the button the user clicked (Escape clicks Cancel, or the negative button), or <see langword="null"/>
+    /// when the dialog was closed another way. Use it to tell No from Cancel in a
+    /// <see cref="DialogBoxType.YesNoCancel"/> dialog; <see cref="Window.ShowDialog"/> returns <see langword="true"/>
+    /// only for the affirmative button.
+    /// </summary>
+    public DialogBoxButton? ClickedButton { get; private set; }
+
+    /// <summary>
+    /// Gets the message text; Ctrl+C copies it with the title and the button texts, like a Windows message box.
+    /// </summary>
+    public string ContentText { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// Gets a value indicating whether the user checked "Don't ask again"
+    /// (shown with <see cref="DialogBoxSettings.ShowDontAskAgain"/>).
+    /// </summary>
+    public bool IsDontAskAgainChecked
+        => Helpers.DialogBoxHelper.FindDontAskAgainCheckBox(ContentControl)?.IsChecked == true;
 
     /// <summary>
     /// Gets the settings that control the dialog box appearance and buttons.
@@ -125,6 +145,13 @@ public partial class InfoDialogBox
         Helpers.DialogBoxHelper.OnDialogPropertyChanged(this, e);
     }
 
+    private string CreateClipboardText()
+        => Helpers.DialogBoxHelper.CreateClipboardText(
+            Title,
+            Helpers.DialogBoxHelper.GetHeaderText(HeaderControl),
+            ContentText,
+            Settings);
+
     private void InitializeDialogBox(string contentText)
     {
         InitializeComponent();
@@ -135,7 +162,10 @@ public partial class InfoDialogBox
     }
 
     private void PopulateContentControl(string contentText)
-        => ContentControl = Helpers.DialogBoxHelper.CreateContentControl(contentText, Settings.ContentSvgImage);
+    {
+        ContentText = contentText;
+        ContentControl = Helpers.DialogBoxHelper.CreateContentControl(contentText, Settings.ContentSvgImage, Settings);
+    }
 
     /// <inheritdoc />
     protected override void OnKeyDown(KeyEventArgs e)
@@ -144,20 +174,43 @@ public partial class InfoDialogBox
 
         base.OnKeyDown(e);
 
+        if (Helpers.DialogBoxHelper.TryCopyOnCtrlC(e, CreateClipboardText))
+        {
+            e.Handled = true;
+            return;
+        }
+
         // An OK-only dialog closes on Escape like a message box, with the same result as OK.
-        if (e.Handled || e.Key != Key.Escape)
+        if (e.Handled ||
+            e.Key != Key.Escape ||
+            Settings.ShowNegativeButton ||
+            Settings.ShowCancelButton)
         {
             return;
         }
 
         e.Handled = true;
-        OnOkClick(this, e);
+        Confirm();
     }
 
-    private void OnOkClick(
-        object sender,
-        RoutedEventArgs e)
+    private void OnButtonClicked(
+        object? sender,
+        DialogBoxButtonClickedEventArgs e)
     {
+        if (e.Button == DialogBoxButton.Affirmative)
+        {
+            Confirm();
+            return;
+        }
+
+        ClickedButton = e.Button;
+        DialogResult = false;
+        Close();
+    }
+
+    private void Confirm()
+    {
+        ClickedButton = DialogBoxButton.Affirmative;
         DialogResult = true;
         Close();
     }

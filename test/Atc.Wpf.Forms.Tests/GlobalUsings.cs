@@ -17,6 +17,7 @@ global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.Selectors;
 global using Atc.Wpf.Forms.Abstractions;
 global using Atc.Wpf.Forms.BaseControls;
+global using Atc.Wpf.Forms.Dialogs;
 global using Atc.Wpf.Forms.Extractors;
 global using Atc.Wpf.Forms.Factories;
 global using Atc.Wpf.Forms.FontEditing;

@@ -82,7 +82,7 @@ public partial class InputDialogBox
 
         InitializeDialogBox();
 
-        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
+        DialogBoxWindowHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>
@@ -137,9 +137,21 @@ public partial class InputDialogBox
         };
     }
 
-    private void OnOkClick(
-        object sender,
-        RoutedEventArgs e)
+    private void OnButtonClicked(
+        object? sender,
+        DialogBoxButtonClickedEventArgs e)
+    {
+        if (e.Button == DialogBoxButton.Affirmative)
+        {
+            Confirm();
+        }
+        else
+        {
+            Decline();
+        }
+    }
+
+    private void Confirm()
     {
         if (!Data.IsValid())
         {
@@ -150,9 +162,7 @@ public partial class InputDialogBox
         Close();
     }
 
-    private void OnOkCancel(
-        object sender,
-        RoutedEventArgs e)
+    private void Decline()
     {
         DialogResult = false;
         Close();

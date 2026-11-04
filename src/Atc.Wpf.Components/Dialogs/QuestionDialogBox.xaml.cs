@@ -87,13 +87,33 @@ public partial class QuestionDialogBox
             Helpers.DialogBoxHelper.ApplyAutoHeight(this, owningWindow, Settings.Height);
         }
 
-        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
+        DialogBoxWindowHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>
     /// Gets the window that owns the dialog box.
     /// </summary>
     public Window OwningWindow { get; private set; }
+
+    /// <summary>
+    /// Gets the button the user clicked (Escape clicks Cancel, or the negative button), or <see langword="null"/>
+    /// when the dialog was closed another way. Use it to tell No from Cancel in a
+    /// <see cref="DialogBoxType.YesNoCancel"/> dialog; <see cref="Window.ShowDialog"/> returns <see langword="true"/>
+    /// only for the affirmative button.
+    /// </summary>
+    public DialogBoxButton? ClickedButton { get; private set; }
+
+    /// <summary>
+    /// Gets the message text; Ctrl+C copies it with the title and the button texts, like a Windows message box.
+    /// </summary>
+    public string ContentText { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// Gets a value indicating whether the user checked "Don't ask again"
+    /// (shown with <see cref="DialogBoxSettings.ShowDontAskAgain"/>).
+    /// </summary>
+    public bool IsDontAskAgainChecked
+        => Helpers.DialogBoxHelper.FindDontAskAgainCheckBox(ContentControl)?.IsChecked == true;
 
     /// <summary>
     /// Gets the settings that control the dialog box appearance and buttons.
@@ -127,6 +147,26 @@ public partial class QuestionDialogBox
         Helpers.DialogBoxHelper.OnDialogPropertyChanged(this, e);
     }
 
+    /// <inheritdoc />
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+
+        base.OnKeyDown(e);
+
+        if (Helpers.DialogBoxHelper.TryCopyOnCtrlC(e, CreateClipboardText))
+        {
+            e.Handled = true;
+        }
+    }
+
+    private string CreateClipboardText()
+        => Helpers.DialogBoxHelper.CreateClipboardText(
+            Title,
+            Helpers.DialogBoxHelper.GetHeaderText(HeaderControl),
+            ContentText,
+            Settings);
+
     private void InitializeDialogBox(string contentText)
     {
         InitializeComponent();
@@ -137,19 +177,33 @@ public partial class QuestionDialogBox
     }
 
     private void PopulateContentControl(string contentText)
-        => ContentControl = Helpers.DialogBoxHelper.CreateContentControl(contentText, Settings.ContentSvgImage);
+    {
+        ContentText = contentText;
+        ContentControl = Helpers.DialogBoxHelper.CreateContentControl(contentText, Settings.ContentSvgImage, Settings);
+    }
 
-    private void OnOkClick(
-        object sender,
-        RoutedEventArgs e)
+    private void OnButtonClicked(
+        object? sender,
+        DialogBoxButtonClickedEventArgs e)
+    {
+        ClickedButton = e.Button;
+        if (e.Button == DialogBoxButton.Affirmative)
+        {
+            Confirm();
+        }
+        else
+        {
+            Decline();
+        }
+    }
+
+    private void Confirm()
     {
         DialogResult = true;
         Close();
     }
 
-    private void OnOkCancel(
-        object sender,
-        RoutedEventArgs e)
+    private void Decline()
     {
         DialogResult = false;
         Close();

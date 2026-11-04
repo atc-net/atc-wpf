@@ -81,7 +81,7 @@ public partial class InputFormDialogBox
 
         InitializeDialogBox(labelControlsForm);
 
-        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
+        DialogBoxWindowHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public partial class InputFormDialogBox
 
         InitializeDialogBox(labelControlsForm);
 
-        Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
+        DialogBoxWindowHelper.ApplyOwner(this, owningWindow);
     }
 
     /// <summary>
@@ -220,9 +220,21 @@ public partial class InputFormDialogBox
         }
     }
 
-    private void OnOkClick(
-        object sender,
-        RoutedEventArgs e)
+    private void OnButtonClicked(
+        object? sender,
+        DialogBoxButtonClickedEventArgs e)
+    {
+        if (e.Button == DialogBoxButton.Affirmative)
+        {
+            Confirm();
+        }
+        else
+        {
+            Decline();
+        }
+    }
+
+    private void Confirm()
     {
         if (!LabelInputFormPanel.Data.IsValid())
         {
@@ -233,9 +245,7 @@ public partial class InputFormDialogBox
         Close();
     }
 
-    private void OnOkCancel(
-        object sender,
-        RoutedEventArgs e)
+    private void Decline()
     {
         DialogResult = false;
         Close();

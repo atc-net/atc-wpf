@@ -3,39 +3,11 @@ namespace Atc.Wpf.Components.Dialogs.Helpers;
 internal static class DialogBoxHelper
 {
     /// <summary>
-    /// Makes <paramref name="owningWindow"/> the owner of <paramref name="dialog"/> and centers the dialog on it,
-    /// when the owner has already been shown. A window that has no handle yet (or has been closed) cannot own
-    /// another window, so in that case the dialog keeps its current startup location.
-    /// </summary>
-    public static void ApplyOwner(
-        Window dialog,
-        Window? owningWindow)
-    {
-        ArgumentNullException.ThrowIfNull(dialog);
-
-        if (owningWindow is null ||
-            ReferenceEquals(owningWindow, dialog) ||
-            !HasWindowHandle(owningWindow))
-        {
-            return;
-        }
-
-        dialog.Owner = owningWindow;
-        dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-    }
-
-    /// <summary>
-    /// Whether the window has been shown and not yet closed. <see cref="FrameworkElement.IsLoaded"/> is not
-    /// used because it stays <see langword="true"/> until the deferred Unloaded broadcast after <see cref="Window.Close"/>.
-    /// </summary>
-    private static bool HasWindowHandle(Window window)
-        => new WindowInteropHelper(window).Handle != IntPtr.Zero &&
-           PresentationSource.FromVisual(window) is not null;
-
-    /// <summary>
     /// The largest share of the work area that a dialog grows to before its content scrolls.
     /// </summary>
     internal const double MaxWorkAreaHeightRatio = 0.8;
+
+    private const string DontAskAgainCheckBoxName = "DontAskAgainCheckBox";
 
     public static ContentControl CreateHeaderControl(string headerText)
         => new()
@@ -58,9 +30,17 @@ internal static class DialogBoxHelper
     /// the dialog; text shorter than the icon is centred on it, and taller text starts level with the icon, so the
     /// icon stays in view at the top of a long, scrolling message.
     /// </summary>
+    /// <param name="contentText">The message.</param>
+    /// <param name="contentImage">The icon, if any; the dialog shows a copy.</param>
+    /// <param name="settings">
+    /// The settings; when they have <see cref="DialogBoxSettings.DetailsText"/> or
+    /// <see cref="DialogBoxSettings.ShowDontAskAgain"/>, a collapsed details area and a "Don't ask again" check box
+    /// follow the message.
+    /// </param>
     public static ContentControl CreateContentControl(
         string contentText,
-        FrameworkElement? contentImage)
+        FrameworkElement? contentImage,
+        DialogBoxSettings? settings = null)
     {
         // Centred as a block, so a short message stays in the middle of a dialog taller than the text.
         var grid = new Grid
@@ -86,14 +66,132 @@ internal static class DialogBoxHelper
             VerticalAlignment = VerticalAlignment.Center,
         };
 
-        Grid.SetColumn(textBlock, 1);
-        grid.Children.Add(textBlock);
+        var extras = CreateExtras(settings);
+        if (extras.Count == 0)
+        {
+            Grid.SetColumn(textBlock, 1);
+            grid.Children.Add(textBlock);
+        }
+        else
+        {
+            var textPanel = new StackPanel
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+
+            textPanel.Children.Add(textBlock);
+            foreach (var extra in extras)
+            {
+                textPanel.Children.Add(extra);
+            }
+
+            Grid.SetColumn(textPanel, 1);
+            grid.Children.Add(textPanel);
+        }
 
         return new ContentControl
         {
             Content = grid,
         };
     }
+
+    /// <summary>
+    /// Gets the "Don't ask again" check box of content created by <see cref="CreateContentControl"/>, if any.
+    /// </summary>
+    public static CheckBox? FindDontAskAgainCheckBox(
+        ContentControl? contentControl)
+        => (contentControl?.Content as Grid)?.Children
+            .OfType<StackPanel>()
+            .SelectMany(x => x.Children.OfType<CheckBox>())
+            .FirstOrDefault(x => x.Name == DontAskAgainCheckBoxName);
+
+    /// <summary>
+    /// Creates the text a message dialog puts on the clipboard for Ctrl+C, laid out like a Windows message box:
+    /// the title, the header (if any), the message, the details (if any) and the button texts, separated by dashed
+    /// lines.
+    /// </summary>
+    public static string CreateClipboardText(
+        string title,
+        string? header,
+        string message,
+        DialogBoxSettings settings)
+    {
+        ArgumentNullException.ThrowIfNull(settings);
+
+        const string separator = "---------------------------";
+        var buttons = new List<string> { settings.AffirmativeButtonText };
+        if (settings.ShowNegativeButton)
+        {
+            buttons.Add(settings.NegativeButtonText);
+        }
+
+        if (settings.ShowCancelButton)
+        {
+            buttons.Add(settings.CancelButtonText);
+        }
+
+        var lines = new List<string> { separator, title, separator };
+        if (!string.IsNullOrEmpty(header))
+        {
+            lines.Add(header);
+            lines.Add(separator);
+        }
+
+        lines.Add(ToWindowsLineBreaks(message));
+        lines.Add(separator);
+        if (!string.IsNullOrWhiteSpace(settings.DetailsText))
+        {
+            lines.Add(ToWindowsLineBreaks(settings.DetailsText));
+            lines.Add(separator);
+        }
+
+        lines.Add(string.Join("   ", buttons));
+        lines.Add(separator);
+        return string.Join(Environment.NewLine, lines);
+    }
+
+    /// <summary>
+    /// Copies the dialog text when Ctrl+C is pressed and no text box has focus (it copies its own selection).
+    /// </summary>
+    /// <returns><see langword="true"/> when the key press was handled.</returns>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "The clipboard can be locked by another process; copying is best effort.")]
+    public static bool TryCopyOnCtrlC(
+        KeyEventArgs e,
+        Func<string> createText)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+        ArgumentNullException.ThrowIfNull(createText);
+
+        if (e.Handled ||
+            e.Key != Key.C ||
+            Keyboard.Modifiers != ModifierKeys.Control ||
+            Keyboard.FocusedElement is TextBoxBase)
+        {
+            return false;
+        }
+
+        try
+        {
+            System.Windows.Clipboard.SetText(createText());
+        }
+        catch (Exception)
+        {
+            // Another process holds the clipboard.
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Gets the text of the header created by <see cref="CreateHeaderControl"/>, if any.
+    /// </summary>
+    public static string? GetHeaderText(ContentControl? headerControl)
+        => headerControl?.Content switch
+        {
+            TextBlock textBlock => textBlock.Text,
+            string text => text,
+            _ => null,
+        };
 
     /// <summary>
     /// Creates a new element of the same type with the same locally set property values (bindings included), so one
@@ -150,7 +248,7 @@ internal static class DialogBoxHelper
     {
         ArgumentNullException.ThrowIfNull(dialog);
 
-        var workArea = GetWorkArea(owningWindow);
+        var workArea = DialogBoxWindowHelper.GetWorkArea(owningWindow);
         dialog.ClearValue(FrameworkElement.HeightProperty);
         dialog.MinHeight = minimumHeight;
         dialog.MaxHeight = System.Math.Max(minimumHeight, workArea.Height * MaxWorkAreaHeightRatio);
@@ -207,10 +305,51 @@ internal static class DialogBoxHelper
         window.Top -= (e.NewSize.Height - e.PreviousSize.Height) / 2;
     }
 
-    private static Rect GetWorkArea(Window? owningWindow)
-        => owningWindow is not null && HasWindowHandle(owningWindow)
-            ? Atc.Wpf.Controls.Layouts.DockScreenHelper.GetWorkAreaAt(
-                owningWindow,
-                new Point(owningWindow.ActualWidth / 2, owningWindow.ActualHeight / 2))
-            : SystemParameters.WorkArea;
+    private static List<UIElement> CreateExtras(DialogBoxSettings? settings)
+    {
+        var extras = new List<UIElement>();
+        if (settings is null)
+        {
+            return extras;
+        }
+
+        if (!string.IsNullOrWhiteSpace(settings.DetailsText))
+        {
+            extras.Add(new Expander
+            {
+                Margin = new Thickness(0, 10, 0, 0),
+                Header = Atc.Wpf.Components.Resources.Miscellaneous.Details,
+                IsExpanded = false,
+                Content = new TextBox
+                {
+                    Text = settings.DetailsText,
+                    IsReadOnly = true,
+                    IsReadOnlyCaretVisible = true,
+                    TextWrapping = TextWrapping.NoWrap,
+                    FontFamily = new FontFamily("Consolas"),
+                    MaxHeight = 200,
+                    Margin = new Thickness(0, 5, 0, 0),
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                },
+            });
+        }
+
+        if (settings.ShowDontAskAgain)
+        {
+            extras.Add(new CheckBox
+            {
+                Name = DontAskAgainCheckBoxName,
+                Margin = new Thickness(0, 10, 0, 0),
+                Content = settings.DontAskAgainText ?? Atc.Wpf.Components.Resources.Miscellaneous.DontAskAgain,
+            });
+        }
+
+        return extras;
+    }
+
+    private static string ToWindowsLineBreaks(string text)
+        => TextHelper.NormalizeLineBreaks(text)
+            .Replace("\r\n", "\n", StringComparison.Ordinal)
+            .Replace("\n", Environment.NewLine, StringComparison.Ordinal);
 }

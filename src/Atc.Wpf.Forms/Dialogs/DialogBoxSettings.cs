@@ -54,6 +54,13 @@ public sealed class DialogBoxSettings
                 NegativeButtonText = Word.No;
                 ShowNegativeButton = true;
                 break;
+            case DialogBoxType.YesNoCancel:
+                SetContentSvgImage();
+                AffirmativeButtonText = Word.Yes;
+                NegativeButtonText = Word.No;
+                ShowNegativeButton = true;
+                ShowCancelButton = true;
+                break;
             default:
                 throw new SwitchCaseDefaultException(dialogBoxType);
         }
@@ -169,6 +176,40 @@ public sealed class DialogBoxSettings
     /// Gets a value indicating whether the negative button is shown.
     /// </summary>
     public bool ShowNegativeButton { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the Cancel button of a <see cref="DialogBoxType.YesNoCancel"/> dialog is shown.
+    /// </summary>
+    public bool ShowCancelButton { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the text of the Cancel button of a <see cref="DialogBoxType.YesNoCancel"/> dialog.
+    /// </summary>
+    public string CancelButtonText { get; set; } = Word.Cancel;
+
+    /// <summary>
+    /// Gets or sets optional details, such as an error's technical text or stack trace, shown by information and
+    /// question dialogs in a collapsed "Details" area under the message (read-only, selectable, scrollable).
+    /// </summary>
+    public string? DetailsText { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether information and question dialogs show a "Don't ask again" check box
+    /// under the message. Read the choice from the dialog's <c>IsDontAskAgainChecked</c> after it closes.
+    /// </summary>
+    public bool ShowDontAskAgain { get; set; }
+
+    /// <summary>
+    /// Gets or sets the text of the "Don't ask again" check box; the localized "Don't ask again" when not set.
+    /// </summary>
+    public string? DontAskAgainText { get; set; }
+
+    /// <summary>
+    /// Gets or sets the button that Enter clicks. The default is <see cref="DialogBoxButton.Affirmative"/>; use
+    /// <see cref="DialogBoxButton.Negative"/> for a destructive question, so Enter does not confirm it.
+    /// A button the dialog does not show falls back to the affirmative button.
+    /// </summary>
+    public DialogBoxButton DefaultButton { get; set; } = DialogBoxButton.Affirmative;
 
     /// <summary>
     /// Gets or sets the text used for the Affirmative button.
@@ -296,6 +337,7 @@ public sealed class DialogBoxSettings
                 break;
             case DialogBoxType.OkCancel:
             case DialogBoxType.YesNo:
+            case DialogBoxType.YesNoCancel:
                 ContentSvgImage = new SvgImage
                 {
                     Margin = new Thickness(0.0, 0.0, 20.0, 0.0),

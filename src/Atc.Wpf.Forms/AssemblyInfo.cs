@@ -1,4 +1,5 @@
 [assembly: Atc.XamlToolkit.Mvvm.GenerateDocumentationDefault]
+[assembly: InternalsVisibleTo("Atc.Wpf.Components")]
 [assembly: InternalsVisibleTo("Atc.Wpf.Forms.Tests")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
