@@ -29,7 +29,13 @@ internal static class AutoScrollTestHelpers
         }
 
         var application = Application.Launch(startInfo);
-        automation = new UIA3Automation();
+        automation = new UIA3Automation
+        {
+            // A sample that builds thousands of elements (e.g. the font icon viewer) keeps the UI thread busy for
+            // a few seconds; the default UI Automation timeouts then fail the calls with "Operation timed out".
+            ConnectionTimeout = TimeSpan.FromSeconds(30),
+            TransactionTimeout = TimeSpan.FromSeconds(60),
+        };
         mainWindow = application.GetMainWindow(
             automation,
             TimeSpan.FromMilliseconds(LaunchTimeoutMilliseconds));
