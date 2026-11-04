@@ -107,7 +107,7 @@ public sealed partial class LongTextDialogBoxViewModel : ViewModelBase
             ApplySettings(new DialogBoxSettings(DialogBoxType.OkCancel) { TitleBarText = Title }),
             new LabelTextBox
             {
-                LabelText = "Name",
+                LabelText = "The name shown for this camera on the camera wall and in recordings",
                 Text = Text,
             })
         {

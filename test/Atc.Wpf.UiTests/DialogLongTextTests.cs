@@ -105,6 +105,8 @@ public sealed class DialogLongTextTests : IDisposable
                 Assert.True(
                     header.BoundingRectangle.Height > header.BoundingRectangle.Width / 20,
                     $"{buttonId}: the long header {header.BoundingRectangle} should wrap onto more than one line.");
+
+                Assert.False(viewer.Patterns.Scroll.Pattern.VerticallyScrollable.Value, $"{buttonId}: the dialog should grow to show the whole form.");
             }
             finally
             {

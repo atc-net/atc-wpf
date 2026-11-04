@@ -53,6 +53,18 @@ var dialog = new InfoDialogBox(ownerWindow, settings, "Custom content here.");
 dialog.ShowDialog();
 ```
 
+### Error with details
+
+```csharp
+var settings = new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Error)
+{
+    TitleBarText = "Error",
+    DetailsText = exception.ToString(),
+};
+
+new InfoDialogBox(ownerWindow, settings, "The camera stream could not be opened.").ShowDialog();
+```
+
 ## 📝 Notes
 
 - The dialog is modal — it blocks interaction with the owner window
@@ -65,6 +77,9 @@ dialog.ShowDialog();
 - The dialog keeps `DialogBoxSettings.Width` (default 500) and grows taller than `DialogBoxSettings.Height` to fit the text, up to 80 % of the work area of the owner's monitor, and then scrolls. It stays centred on its owner while it grows. Set `DialogBoxSettings.AutoHeight = false` for a fixed height
 - A long header wraps onto more lines instead of being cut off
 - `HeaderControl` and `ContentControl` are dependency properties, so setting them after construction updates the dialog
+- `DialogBoxSettings.DetailsText` adds a collapsed, read-only and scrollable details area under the message (e.g. a stack trace)
+- Ctrl+C copies the title, header, message, details and button texts, laid out like a Windows message box
+- The button colors come from the theme in use when the dialog opens, unless the settings set them
 
 ## 🔗 Related Controls
 

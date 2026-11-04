@@ -124,7 +124,7 @@ public sealed class DialogBoxSettings
     public double Height { get; set; } = 200;
 
     /// <summary>
-    /// Gets or sets a value indicating whether an information or question dialog grows taller than
+    /// Gets or sets a value indicating whether an information, question or input dialog grows taller than
     /// <see cref="Height"/> to fit its text, up to 80 % of the work area of the owner's monitor, before the
     /// text scrolls. <see cref="Height"/> stays the smallest height. The default is <see langword="true"/>.
     /// </summary>
