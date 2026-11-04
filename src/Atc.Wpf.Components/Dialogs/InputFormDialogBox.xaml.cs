@@ -149,6 +149,15 @@ public partial class InputFormDialogBox
         UpdateWidthAndHeight();
     }
 
+    /// <inheritdoc />
+    protected override void OnPropertyChanged(
+        DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        Helpers.DialogBoxHelper.OnDialogPropertyChanged(this, e);
+    }
+
     private void InitializeDialogBox(ILabelControlsForm labelControlsForm)
     {
         InitializeComponent();

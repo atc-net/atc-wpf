@@ -107,7 +107,21 @@ internal static class DialogBoxWindowHelper
         dialog.SizeChanged -= OnDialogSizeChanged;
         dialog.ContentRendered -= OnDialogContentRendered;
 
-        if (dialog.WindowState != WindowState.Normal)
+        KeepInWorkArea(dialog);
+    }
+
+    /// <summary>
+    /// Moves a shown dialog into the work area of its monitor when part of it is outside (the title bar above the
+    /// screen, or an edge past it), so it can always be seen and dragged.
+    /// </summary>
+    public static void KeepInWorkArea(Window dialog)
+    {
+        ArgumentNullException.ThrowIfNull(dialog);
+
+        if (dialog.WindowState != WindowState.Normal ||
+            !HasWindowHandle(dialog) ||
+            double.IsNaN(dialog.Left) ||
+            double.IsNaN(dialog.Top))
         {
             return;
         }

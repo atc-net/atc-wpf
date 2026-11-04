@@ -199,6 +199,23 @@ public sealed class DialogLongTextTests : IDisposable
             CloseDialogs();
         }
 
+        // Owner at the top-left (not maximised): the grown dialog would reach above the screen when centred on it,
+        // so it is moved into the work area instead.
+        SelectTextKind("VeryLong");
+        var tallDialog = OpenDialog("LongTextQuestionSettings");
+        try
+        {
+            var screen = System.Windows.Forms.Screen.FromRectangle(tallDialog.BoundingRectangle);
+            Assert.True(
+                screen.WorkingArea.Contains(tallDialog.BoundingRectangle),
+                $"The grown dialog {tallDialog.BoundingRectangle} should lie inside the work area {screen.WorkingArea}.");
+        }
+        finally
+        {
+            CloseDialogs();
+        }
+
+        SelectTextKind("SeveralLongLines");
         mainWindow.Patterns.Window.Pattern.SetWindowVisualState(WindowVisualState.Maximized);
         WaitUntil(() => mainWindow.Patterns.Window.Pattern.WindowVisualState.Value == WindowVisualState.Maximized);
         var maximizedOwnerCentre = Centre(mainWindow.BoundingRectangle);
@@ -292,6 +309,7 @@ public sealed class DialogLongTextTests : IDisposable
             WaitUntil(() => expandCollapse.ExpandCollapseState.Value == ExpandCollapseState.Expanded);
             Assert.False(ContentScrollViewer(dialog).Patterns.Scroll.Pattern.HorizontallyScrollable.Value);
 
+            var savedClipboard = ReadClipboard();
             ClearClipboard();
             dialog.Focus();
             Keyboard.TypeSimultaneously(VirtualKeyShort.CONTROL, VirtualKeyShort.KEY_C);
@@ -301,6 +319,9 @@ public sealed class DialogLongTextTests : IDisposable
             Assert.Contains("The camera stream could not be opened.", copied, StringComparison.Ordinal);
             Assert.Contains("System.InvalidOperationException", copied, StringComparison.Ordinal);
             Assert.Contains("---------------------------", copied, StringComparison.Ordinal);
+
+            // Give the clipboard back to whoever runs the tests.
+            RestoreClipboard(savedClipboard);
         }
         finally
         {
@@ -407,6 +428,22 @@ public sealed class DialogLongTextTests : IDisposable
             () =>
             {
                 System.Windows.Clipboard.Clear();
+                return string.Empty;
+            });
+
+    private static void RestoreClipboard(string text)
+        => RunOnSta(
+            () =>
+            {
+                if (text.Length == 0)
+                {
+                    System.Windows.Clipboard.Clear();
+                }
+                else
+                {
+                    System.Windows.Clipboard.SetText(text);
+                }
+
                 return string.Empty;
             });
 
