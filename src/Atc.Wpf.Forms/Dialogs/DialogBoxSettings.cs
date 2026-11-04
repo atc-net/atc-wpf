@@ -8,10 +8,13 @@ public sealed class DialogBoxSettings
     private const string DefaultButtonBackgroundResourceKey = "AtcApps.Brushes.Gray10";
     private const string DefaultButtonForegroundResourceKey = "AtcApps.Brushes.ThemeForeground";
     private const string DefaultButtonForegroundIdealResourceKey = "AtcApps.Brushes.IdealForeground";
-    private static readonly Theme CurrentTheme = ThemeManager.Current.DetectTheme()!;
     private readonly DialogBoxType dialogBoxType;
     private readonly LogCategoryType logCategoryTypeToContentSvgImage;
     private bool usePrimaryAccentColor;
+    private SolidColorBrush? affirmativeButtonBackground;
+    private SolidColorBrush? affirmativeButtonForeground;
+    private SolidColorBrush? negativeButtonBackground;
+    private SolidColorBrush? negativeButtonForeground;
     private Color? contentSvgImageColor;
 
     /// <summary>
@@ -155,16 +158,10 @@ public sealed class DialogBoxSettings
         set
         {
             usePrimaryAccentColor = value;
-            if (usePrimaryAccentColor)
-            {
-                AffirmativeButtonBackground = new SolidColorBrush(CurrentTheme.PrimaryAccentColor);
-                AffirmativeButtonForeground = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonForegroundIdealResourceKey]!;
-            }
-            else
-            {
-                AffirmativeButtonBackground = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonBackgroundResourceKey]!;
-                AffirmativeButtonForeground = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonForegroundResourceKey]!;
-            }
+
+            // The affirmative button follows the theme (accent or default) again.
+            affirmativeButtonBackground = null;
+            affirmativeButtonForeground = null;
         }
     }
 
@@ -182,14 +179,28 @@ public sealed class DialogBoxSettings
     public string AffirmativeButtonText { get; set; } = "? Affirmative ?";
 
     /// <summary>
-    /// Gets or sets the background brush of the affirmative button.
+    /// Gets or sets the background brush of the affirmative button. Unless set, it comes from the theme in use when it
+    /// is read (the primary accent color with <see cref="UsePrimaryAccentColor"/>), so a dialog follows theme changes.
     /// </summary>
-    public SolidColorBrush AffirmativeButtonBackground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonBackgroundResourceKey]!;
+    public SolidColorBrush AffirmativeButtonBackground
+    {
+        get => affirmativeButtonBackground ?? (usePrimaryAccentColor
+            ? GetPrimaryAccentBrush()
+            : GetThemeBrush(DefaultButtonBackgroundResourceKey, Colors.LightGray));
+        set => affirmativeButtonBackground = value;
+    }
 
     /// <summary>
-    /// Gets or sets the foreground brush of the affirmative button.
+    /// Gets or sets the foreground brush of the affirmative button. Unless set, it comes from the theme in use when it
+    /// is read.
     /// </summary>
-    public SolidColorBrush AffirmativeButtonForeground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonForegroundResourceKey]!;
+    public SolidColorBrush AffirmativeButtonForeground
+    {
+        get => affirmativeButtonForeground ?? (usePrimaryAccentColor
+            ? GetThemeBrush(DefaultButtonForegroundIdealResourceKey, Colors.White)
+            : GetThemeBrush(DefaultButtonForegroundResourceKey, Colors.Black));
+        set => affirmativeButtonForeground = value;
+    }
 
     /// <summary>
     /// Gets or sets the text used for the Negative button.
@@ -200,14 +211,24 @@ public sealed class DialogBoxSettings
     public string NegativeButtonText { get; set; } = "? Negative ?";
 
     /// <summary>
-    /// Gets or sets the background brush of the negative button.
+    /// Gets or sets the background brush of the negative button. Unless set, it comes from the theme in use when it is
+    /// read.
     /// </summary>
-    public SolidColorBrush NegativeButtonBackground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonBackgroundResourceKey]!;
+    public SolidColorBrush NegativeButtonBackground
+    {
+        get => negativeButtonBackground ?? GetThemeBrush(DefaultButtonBackgroundResourceKey, Colors.LightGray);
+        set => negativeButtonBackground = value;
+    }
 
     /// <summary>
-    /// Gets or sets the foreground brush of the negative button.
+    /// Gets or sets the foreground brush of the negative button. Unless set, it comes from the theme in use when it is
+    /// read.
     /// </summary>
-    public SolidColorBrush NegativeButtonForeground { get; set; } = (SolidColorBrush)CurrentTheme.Resources[DefaultButtonForegroundResourceKey]!;
+    public SolidColorBrush NegativeButtonForeground
+    {
+        get => negativeButtonForeground ?? GetThemeBrush(DefaultButtonForegroundResourceKey, Colors.Black);
+        set => negativeButtonForeground = value;
+    }
 
     /// <summary>
     /// Gets or sets the layout settings for a form shown in the dialog.
@@ -225,6 +246,21 @@ public sealed class DialogBoxSettings
     /// <inheritdoc />
     public override string ToString()
         => $"{nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(AutoHeight)}: {AutoHeight}, {nameof(TitleBarText)}: {TitleBarText}, {nameof(Form)}: ({Form})";
+
+    /// <summary>
+    /// Gets a brush of the theme in use now; without a theme (no application), a brush of the fallback color.
+    /// </summary>
+    private static SolidColorBrush GetThemeBrush(
+        string resourceKey,
+        Color fallback)
+        => ThemeManager.Current.DetectTheme()?.Resources[resourceKey] as SolidColorBrush
+           ?? Application.Current?.TryFindResource(resourceKey) as SolidColorBrush
+           ?? new SolidColorBrush(fallback);
+
+    private static SolidColorBrush GetPrimaryAccentBrush()
+        => ThemeManager.Current.DetectTheme() is { } theme
+            ? new SolidColorBrush(theme.PrimaryAccentColor)
+            : GetThemeBrush("AtcApps.Brushes.Accent", Colors.DodgerBlue);
 
     private void SetContentSvgImage()
     {
