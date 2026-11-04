@@ -171,6 +171,38 @@ public class DialogService : IDialogService
             cancellationToken);
 
     /// <summary>
+    /// Shows a font picker dialog.
+    /// </summary>
+    /// <remarks>
+    /// Not part of <see cref="IDialogService"/>, which lives in Atc.Wpf and cannot refer to
+    /// <see cref="FontDescription"/>.
+    /// </remarks>
+    /// <param name="title">The dialog title.</param>
+    /// <param name="initialFont">The font selected when the dialog opens; the default font when omitted.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
+    /// <returns>The selected font, or null if cancelled.</returns>
+    public Task<FontDescription?> ShowFontPicker(
+        string title,
+        FontDescription? initialFont = null,
+        CancellationToken cancellationToken = default)
+        => ShowDialogAsync<FontDescription?>(
+            Application.Current?.Dispatcher,
+            () =>
+            {
+                var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
+                settings.TitleBarText = title;
+                settings.Width = 925;
+                settings.Height = 720;
+
+                return new FontPickerDialogBox(GetOwnerWindow(), settings, initialFont ?? new FontDescription());
+            },
+            (dialog, dialogResult) => dialogResult == true
+                ? ((FontPickerDialogBox)dialog).SelectedFontDescription
+                : null,
+            fallback: null,
+            cancellationToken);
+
+    /// <summary>
     /// Shows a modal dialog on <paramref name="dispatcher"/> and maps its outcome.
     /// </summary>
     /// <remarks>

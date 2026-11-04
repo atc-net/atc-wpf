@@ -46,6 +46,7 @@ global using Atc.Wpf.Factories;
 global using Atc.Wpf.Forms;
 global using Atc.Wpf.Forms.Abstractions;
 global using Atc.Wpf.Forms.Dialogs;
+global using Atc.Wpf.Forms.FontEditing;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Notifications;
 global using Atc.Wpf.Options;

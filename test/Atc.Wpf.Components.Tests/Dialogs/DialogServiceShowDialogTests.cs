@@ -89,6 +89,16 @@ public sealed class DialogServiceShowDialogTests
         Assert.Equal("fallback", result);
     }
 
+    [WpfFact]
+    public async Task ShowFontPicker_WithoutAnApplication_ReturnsNull()
+    {
+        Assert.Null(Application.Current);
+
+        var result = await new DialogService().ShowFontPicker("Font");
+
+        Assert.Null(result);
+    }
+
     private static Window CreateHiddenWindow()
         => new()
         {
