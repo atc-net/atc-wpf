@@ -82,6 +82,11 @@ public partial class InputDialogBox
 
         InitializeDialogBox();
 
+        if (Settings.AutoHeight)
+        {
+            Helpers.DialogBoxHelper.ApplyAutoHeight(this, owningWindow, Settings.Height);
+        }
+
         DialogBoxWindowHelper.ApplyOwner(this, owningWindow);
     }
 
@@ -117,6 +122,15 @@ public partial class InputDialogBox
     /// Gets the input control whose value the user edits.
     /// </summary>
     public ILabelControlBase Data { get; }
+
+    /// <inheritdoc />
+    protected override void OnPropertyChanged(
+        DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        Helpers.DialogBoxHelper.OnDialogPropertyChanged(this, e);
+    }
 
     private void InitializeDialogBox()
     {
