@@ -6,6 +6,15 @@ public partial class InputFormDialogBox
     private const int ScrollBarSize = 20;
 
     /// <summary>
+    /// Identifies the <see cref="HeaderControl"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty HeaderControlProperty = DependencyProperty.Register(
+        nameof(HeaderControl),
+        typeof(ContentControl),
+        typeof(InputFormDialogBox),
+        new PropertyMetadata(defaultValue: null, OnHeaderControlChanged));
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="InputFormDialogBox"/> class with OK/Cancel buttons and the given form.
     /// </summary>
     public InputFormDialogBox(
@@ -114,7 +123,11 @@ public partial class InputFormDialogBox
     /// <summary>
     /// Gets or sets the optional header control shown above the form.
     /// </summary>
-    public ContentControl? HeaderControl { get; set; }
+    public ContentControl? HeaderControl
+    {
+        get => (ContentControl?)GetValue(HeaderControlProperty);
+        set => SetValue(HeaderControlProperty, value);
+    }
 
     /// <summary>
     /// Gets the panel that renders the form.
@@ -175,12 +188,35 @@ public partial class InputFormDialogBox
 
         if (HeaderControl is not null)
         {
-            Height += ContentTop.Height;
+            Height += GetHeaderHeight(HeaderControl);
         }
 
         if (Height > Settings.Form.MaxSize.Height)
         {
             Height = Settings.Form.MaxSize.Height;
+        }
+    }
+
+    /// <summary>
+    /// Gets the height of the header area: the header measured at the dialog width (a long header wraps), at least
+    /// the minimum height of the area.
+    /// </summary>
+    private double GetHeaderHeight(ContentControl headerControl)
+    {
+        headerControl.Measure(new Size(Width, double.PositiveInfinity));
+        return System.Math.Max(
+            ContentTop.MinHeight,
+            headerControl.DesiredSize.Height + ContentTop.BorderThickness.Top + ContentTop.BorderThickness.Bottom);
+    }
+
+    private static void OnHeaderControlChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var dialogBox = (InputFormDialogBox)d;
+        if (dialogBox.ContentCenter is not null)
+        {
+            dialogBox.UpdateWidthAndHeight();
         }
     }
 

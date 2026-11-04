@@ -4,6 +4,12 @@ namespace Atc.Wpf.Forms.Dialogs;
 
 public partial class FontPickerDialogBox
 {
+    /// <summary>
+    /// Gets or sets an optional control shown in the dialog header.
+    /// </summary>
+    [DependencyProperty]
+    private ContentControl? headerControl;
+
     [DependencyProperty]
     private FontDescription? selectedFontDescription;
 
@@ -128,11 +134,6 @@ public partial class FontPickerDialogBox
     /// Gets the dialog settings.
     /// </summary>
     public DialogBoxSettings Settings { get; }
-
-    /// <summary>
-    /// Gets or sets an optional control shown in the dialog header.
-    /// </summary>
-    public ContentControl? HeaderControl { get; set; }
 
     private void InitializeDialogBox()
     {

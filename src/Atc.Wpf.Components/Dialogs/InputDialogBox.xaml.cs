@@ -3,6 +3,24 @@ namespace Atc.Wpf.Components.Dialogs;
 public partial class InputDialogBox
 {
     /// <summary>
+    /// Identifies the <see cref="HeaderControl"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty HeaderControlProperty = DependencyProperty.Register(
+        nameof(HeaderControl),
+        typeof(ContentControl),
+        typeof(InputDialogBox),
+        new PropertyMetadata(defaultValue: null));
+
+    /// <summary>
+    /// Identifies the <see cref="ContentControl"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty ContentControlProperty = DependencyProperty.Register(
+        nameof(ContentControl),
+        typeof(ContentControl),
+        typeof(InputDialogBox),
+        new PropertyMetadata(defaultValue: null));
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="InputDialogBox"/> class with OK/Cancel buttons and the given input control.
     /// </summary>
     public InputDialogBox(
@@ -80,12 +98,20 @@ public partial class InputDialogBox
     /// <summary>
     /// Gets or sets the optional header control shown above the input control.
     /// </summary>
-    public ContentControl? HeaderControl { get; set; }
+    public ContentControl? HeaderControl
+    {
+        get => (ContentControl?)GetValue(HeaderControlProperty);
+        set => SetValue(HeaderControlProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets the control that hosts the input control.
     /// </summary>
-    public ContentControl ContentControl { get; set; } = new();
+    public ContentControl ContentControl
+    {
+        get => (ContentControl)GetValue(ContentControlProperty);
+        set => SetValue(ContentControlProperty, value);
+    }
 
     /// <summary>
     /// Gets the input control whose value the user edits.

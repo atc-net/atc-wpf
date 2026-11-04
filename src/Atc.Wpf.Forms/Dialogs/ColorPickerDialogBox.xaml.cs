@@ -4,6 +4,12 @@ namespace Atc.Wpf.Forms.Dialogs;
 
 public partial class ColorPickerDialogBox
 {
+    /// <summary>
+    /// Gets or sets an optional control shown in the dialog header.
+    /// </summary>
+    [DependencyProperty]
+    private ContentControl? headerControl;
+
     [DependencyProperty(
         DefaultValue = nameof(Brushes.Black))]
     private Color color;
@@ -57,11 +63,6 @@ public partial class ColorPickerDialogBox
     /// Gets the dialog settings.
     /// </summary>
     public DialogBoxSettings Settings { get; }
-
-    /// <summary>
-    /// Gets or sets an optional control shown in the dialog header.
-    /// </summary>
-    public ContentControl? HeaderControl { get; set; }
 
     /// <summary>
     /// Gets a new <see cref="SolidColorBrush"/> for the current color.
