@@ -1,6 +1,6 @@
 # Atc.Wpf.Components
 
-Composite components built from the controls and form fields: dialogs (`InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`), viewers (`JsonViewer`, `TerminalViewer`), flyouts, toast notifications and tray icon, application monitoring, printing, `DualListSelector` and the zoom browser.
+Composite components built from the controls and form fields: dialogs (`InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`, `ExceptionDialog` for unhandled exceptions), viewers (`JsonViewer`, `TerminalViewer`), flyouts, toast notifications and tray icon, application monitoring, printing, `DualListSelector` and the zoom browser.
 
 Part of [ATC.Net WPF](https://github.com/atc-net/atc-wpf), a set of WPF libraries for building MVVM desktop applications on .NET 10 (Windows).
 

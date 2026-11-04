@@ -6,7 +6,7 @@ Higher-level composite components built on `Atc.Wpf.Controls` and `Atc.Wpf.Forms
 
 | Area | Path | Highlights |
 |---|---|---|
-| Dialogs | `Dialogs/` | `InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`, `BasicApplicationSettingsDialogBox` |
+| Dialogs | `Dialogs/` | `InfoDialogBox`, `QuestionDialogBox` (Yes/No/Cancel), `InputDialogBox`, `InputFormDialogBox`, `BasicApplicationSettingsDialogBox`, `ExceptionDialog` (unhandled exceptions with a copyable report) |
 | Viewers | `Viewers/` | `JsonViewer`, `TerminalViewer`, `MarkdownViewer` |
 | Monitoring | `Monitoring/` | `ApplicationMonitorView` (memory, CPU, GC counters; copy-to-clipboard context menu) |
 | Notifications | `Notifications/` | `ToastNotification` system + manager |
