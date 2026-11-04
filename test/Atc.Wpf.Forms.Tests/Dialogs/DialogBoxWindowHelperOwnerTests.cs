@@ -1,12 +1,12 @@
-namespace Atc.Wpf.Components.Tests.Dialogs;
+namespace Atc.Wpf.Forms.Tests.Dialogs;
 
 /// <summary>
 /// Drives the shared owner wiring behind the dialog boxes with plain windows
 /// (the real dialog boxes need theme resources that are not available in a test host).
 /// </summary>
-public sealed class DialogBoxHelperOwnerTests
+public sealed class DialogBoxWindowHelperOwnerTests
 {
-    [WpfFact]
+    [StaFact]
     public void ApplyOwner_OwnerIsShown_SetsOwnerAndCentersOnIt()
     {
         var owner = CreateHiddenWindow();
@@ -18,7 +18,7 @@ public sealed class DialogBoxHelperOwnerTests
 
         try
         {
-            Components.Dialogs.Helpers.DialogBoxHelper.ApplyOwner(dialog, owner);
+            Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.ApplyOwner(dialog, owner);
 
             Assert.Same(owner, dialog.Owner);
             Assert.Equal(WindowStartupLocation.CenterOwner, dialog.WindowStartupLocation);
@@ -30,7 +30,7 @@ public sealed class DialogBoxHelperOwnerTests
         }
     }
 
-    [WpfFact]
+    [StaFact]
     public void ApplyOwner_OwnerNotShown_KeepsCenterScreenAndNoOwner()
     {
         var owner = CreateHiddenWindow();
@@ -39,13 +39,13 @@ public sealed class DialogBoxHelperOwnerTests
             WindowStartupLocation = WindowStartupLocation.CenterScreen,
         };
 
-        Components.Dialogs.Helpers.DialogBoxHelper.ApplyOwner(dialog, owner);
+        Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.ApplyOwner(dialog, owner);
 
         Assert.Null(dialog.Owner);
         Assert.Equal(WindowStartupLocation.CenterScreen, dialog.WindowStartupLocation);
     }
 
-    [WpfFact]
+    [StaFact]
     public void ApplyOwner_OwnerIsNull_KeepsCenterScreenAndNoOwner()
     {
         var dialog = new Window
@@ -53,13 +53,13 @@ public sealed class DialogBoxHelperOwnerTests
             WindowStartupLocation = WindowStartupLocation.CenterScreen,
         };
 
-        Components.Dialogs.Helpers.DialogBoxHelper.ApplyOwner(dialog, owningWindow: null);
+        Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.ApplyOwner(dialog, owningWindow: null);
 
         Assert.Null(dialog.Owner);
         Assert.Equal(WindowStartupLocation.CenterScreen, dialog.WindowStartupLocation);
     }
 
-    [WpfFact]
+    [StaFact]
     public void ApplyOwner_OwnerWasClosed_KeepsCenterScreenAndNoOwner()
     {
         var owner = CreateHiddenWindow();
@@ -70,7 +70,7 @@ public sealed class DialogBoxHelperOwnerTests
             WindowStartupLocation = WindowStartupLocation.CenterScreen,
         };
 
-        Components.Dialogs.Helpers.DialogBoxHelper.ApplyOwner(dialog, owner);
+        Atc.Wpf.Forms.Dialogs.DialogBoxWindowHelper.ApplyOwner(dialog, owner);
 
         Assert.Null(dialog.Owner);
         Assert.Equal(WindowStartupLocation.CenterScreen, dialog.WindowStartupLocation);

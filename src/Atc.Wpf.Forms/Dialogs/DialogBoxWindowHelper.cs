@@ -1,9 +1,9 @@
 namespace Atc.Wpf.Forms.Dialogs;
 
 /// <summary>
-/// Owner and screen-size handling shared by the colour and font picker dialogs.
+/// Owner, placement and screen-size handling shared by the dialog boxes.
 /// </summary>
-internal static class PickerDialogBoxHelper
+internal static class DialogBoxWindowHelper
 {
     /// <summary>
     /// The largest share of the work area a picker dialog takes; beyond that its content scrolls.
@@ -11,8 +11,38 @@ internal static class PickerDialogBoxHelper
     internal const double MaxWorkAreaRatio = 0.95;
 
     /// <summary>
-    /// Makes <paramref name="owningWindow"/> the owner of <paramref name="dialog"/> and centres the dialog on it, when
-    /// the owner has been shown and not closed; otherwise the dialog keeps its startup location. The dialog is then
+    /// Makes <paramref name="owningWindow"/> the owner of <paramref name="dialog"/> and centers the dialog on it,
+    /// when the owner has already been shown. A window that has no handle yet (or has been closed) cannot own
+    /// another window, so in that case the dialog keeps its current startup location.
+    /// </summary>
+    public static void ApplyOwner(
+        Window dialog,
+        Window? owningWindow)
+    {
+        ArgumentNullException.ThrowIfNull(dialog);
+
+        if (!CanOwn(dialog, owningWindow))
+        {
+            return;
+        }
+
+        dialog.Owner = owningWindow;
+        dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+    }
+
+    /// <summary>
+    /// Gets the work area, in device-independent units, of the monitor in the middle of a shown window; the
+    /// primary work area when there is no shown window.
+    /// </summary>
+    public static Rect GetWorkArea(Window? window)
+        => window is not null && HasWindowHandle(window)
+            ? Atc.Wpf.Controls.Layouts.DockScreenHelper.GetWorkAreaAt(
+                window,
+                new Point(window.ActualWidth / 2, window.ActualHeight / 2))
+            : SystemParameters.WorkArea;
+
+    /// <summary>
+    /// Like <see cref="ApplyOwner"/>, for the large picker dialogs: the dialog is also
     /// limited to <see cref="MaxWorkAreaRatio"/> of the work area of the owner's monitor (the primary monitor without
     /// an owner), so it fits on small or highly scaled screens.
     /// </summary>
@@ -22,15 +52,8 @@ internal static class PickerDialogBoxHelper
     {
         ArgumentNullException.ThrowIfNull(dialog);
 
-        var hasOwner = owningWindow is not null &&
-                       !ReferenceEquals(owningWindow, dialog) &&
-                       HasWindowHandle(owningWindow);
-
-        var workArea = hasOwner
-            ? Atc.Wpf.Controls.Layouts.DockScreenHelper.GetWorkAreaAt(
-                owningWindow!,
-                new Point(owningWindow!.ActualWidth / 2, owningWindow.ActualHeight / 2))
-            : SystemParameters.WorkArea;
+        var hasOwner = CanOwn(dialog, owningWindow);
+        var workArea = GetWorkArea(hasOwner ? owningWindow : null);
 
         dialog.MaxWidth = workArea.Width * MaxWorkAreaRatio;
         dialog.MaxHeight = workArea.Height * MaxWorkAreaRatio;
@@ -106,8 +129,17 @@ internal static class PickerDialogBoxHelper
         }
     }
 
+    private static bool CanOwn(
+        Window dialog,
+        Window? owningWindow)
+        => owningWindow is not null &&
+           !ReferenceEquals(owningWindow, dialog) &&
+           HasWindowHandle(owningWindow);
+
     /// <summary>
     /// Whether the window has been shown and not yet closed (a window without a handle cannot own another).
+    /// <see cref="FrameworkElement.IsLoaded"/> is not used because it stays <see langword="true"/> until the
+    /// deferred Unloaded broadcast after <see cref="Window.Close"/>.
     /// </summary>
     private static bool HasWindowHandle(Window window)
         => new System.Windows.Interop.WindowInteropHelper(window).Handle != IntPtr.Zero &&

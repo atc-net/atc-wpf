@@ -37,28 +37,7 @@
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,1,0,0"
             DockPanel.Dock="Bottom">
-            <atc:UniformSpacingPanel
-                HorizontalAlignment="Center"
-                Orientation="Horizontal"
-                Spacing="20"
-                Visibility="{Binding Path=Settings.ShowNegativeButton, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
-                <Button
-                    Width="100"
-                    Height="30"
-                    Background="{Binding Path=Settings.AffirmativeButtonBackground}"
-                    Click="OnOkClick"
-                    Content="{Binding Path=Settings.AffirmativeButtonText, FallbackValue=OK}"
-                    Foreground="{Binding Path=Settings.AffirmativeButtonForeground}"
-                    IsDefault="True" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    Background="{Binding Path=Settings.NegativeButtonBackground}"
-                    Click="OnOkCancel"
-                    Content="{Binding Path=Settings.NegativeButtonText, FallbackValue=Cancel}"
-                    Foreground="{Binding Path=Settings.NegativeButtonForeground}"
-                    IsCancel="True" />
-            </atc:UniformSpacingPanel>
+            <local:DialogBoxButtonBar ButtonClicked="OnButtonClicked" Settings="{Binding Path=Settings}" />
         </Border>
 
         <ScrollViewer

@@ -126,6 +126,35 @@
                     </WrapPanel>
                 </GroupBox>
 
+                <GroupBox Header="Buttons, details and options">
+                    <WrapPanel Margin="10">
+                        <Button
+                            MinWidth="140"
+                            Margin="0,0,10,10"
+                            AutomationProperties.AutomationId="DialogYesNoCancel"
+                            Command="{Binding Path=ShowYesNoCancelCommand}"
+                            Content="Yes / No / Cancel" />
+                        <Button
+                            MinWidth="140"
+                            Margin="0,0,10,10"
+                            AutomationProperties.AutomationId="DialogDestructive"
+                            Command="{Binding Path=ShowDestructiveQuestionCommand}"
+                            Content="Destructive (No is default)" />
+                        <Button
+                            MinWidth="140"
+                            Margin="0,0,10,10"
+                            AutomationProperties.AutomationId="DialogErrorDetails"
+                            Command="{Binding Path=ShowErrorWithDetailsCommand}"
+                            Content="Error with details" />
+                        <Button
+                            MinWidth="140"
+                            Margin="0,0,10,10"
+                            AutomationProperties.AutomationId="DialogDontAskAgain"
+                            Command="{Binding Path=ShowQuestionWithDontAskAgainCommand}"
+                            Content="Don&apos;t ask again" />
+                    </WrapPanel>
+                </GroupBox>
+
                 <TextBlock AutomationProperties.AutomationId="LongTextResult" Text="{Binding Path=Result}" />
 
             </atc:UniformSpacingPanel>

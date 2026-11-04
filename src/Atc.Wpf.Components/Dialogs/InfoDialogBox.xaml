@@ -5,6 +5,7 @@
     xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="clr-namespace:Atc.Wpf.Theming.Themes.Dialogs;assembly=Atc.Wpf.Theming"
+    xmlns:formsDialogs="clr-namespace:Atc.Wpf.Forms.Dialogs;assembly=Atc.Wpf.Forms"
     xmlns:local="clr-namespace:Atc.Wpf.Components.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="{Binding Path=Settings.TitleBarText}"
@@ -34,15 +35,7 @@
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,1,0,0"
             DockPanel.Dock="Bottom">
-            <Button
-                Width="100"
-                Height="30"
-                Background="{Binding Path=Settings.AffirmativeButtonBackground}"
-                Click="OnOkClick"
-                Content="{Binding Path=Settings.AffirmativeButtonText, FallbackValue=OK}"
-                Foreground="{Binding Path=Settings.AffirmativeButtonForeground}"
-                IsDefault="True"
-                Visibility="{Binding Path=Settings.ShowNegativeButton, Converter={x:Static atcValueConverters:BoolToVisibilityCollapsedValueConverter.Instance}}" />
+            <formsDialogs:DialogBoxButtonBar ButtonClicked="OnButtonClicked" Settings="{Binding Path=Settings}" />
         </Border>
 
         <ScrollViewer

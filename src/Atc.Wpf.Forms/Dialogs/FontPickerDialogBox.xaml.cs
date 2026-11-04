@@ -124,7 +124,7 @@ public partial class FontPickerDialogBox
 
         InitializeDialogBox();
 
-        PickerDialogBoxHelper.ApplyOwnerAndFitToWorkArea(this, OwningWindow);
+        DialogBoxWindowHelper.ApplyOwnerAndFitToWorkArea(this, OwningWindow);
     }
 
     /// <summary>
@@ -151,9 +151,21 @@ public partial class FontPickerDialogBox
         ContentRendered += (_, _) => UcAdvancedFontPicker.Focus();
     }
 
-    private void OnOkClick(
-        object sender,
-        RoutedEventArgs e)
+    private void OnButtonClicked(
+        object? sender,
+        DialogBoxButtonClickedEventArgs e)
+    {
+        if (e.Button == DialogBoxButton.Affirmative)
+        {
+            Confirm();
+        }
+        else
+        {
+            Decline();
+        }
+    }
+
+    private void Confirm()
     {
         SelectedFontDescription = UcAdvancedFontPicker.GetFontDescription();
         UcAdvancedFontPicker.RecordCurrentFamilyAsRecent();
@@ -162,9 +174,7 @@ public partial class FontPickerDialogBox
         Close();
     }
 
-    private void OnCancelClick(
-        object sender,
-        RoutedEventArgs e)
+    private void Decline()
     {
         DialogResult = false;
         Close();

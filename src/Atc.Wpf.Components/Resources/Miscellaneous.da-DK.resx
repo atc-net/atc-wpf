@@ -65,6 +65,12 @@
     <value>Kunne ikke eksportere log:
 {0}</value>
   </data>
+  <data name="Details" xml:space="preserve">
+    <value>Detaljer</value>
+  </data>
+  <data name="DontAskAgain" xml:space="preserve">
+    <value>Spørg ikke igen</value>
+  </data>
   <data name="ExportFailed" xml:space="preserve">
     <value>Eksport mislykkedes</value>
   </data>

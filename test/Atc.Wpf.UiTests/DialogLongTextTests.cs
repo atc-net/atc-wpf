@@ -227,6 +227,148 @@ public sealed class DialogLongTextTests : IDisposable
         }
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Yes_no_cancel_shows_three_buttons_and_escape_answers_cancel()
+    {
+        var dialog = OpenDialog("DialogYesNoCancel");
+        try
+        {
+            Assert.Equal("Save", FindByAutomationId(dialog, "DialogBoxAffirmativeButton").Name);
+            Assert.Equal("Don't save", FindByAutomationId(dialog, "DialogBoxNegativeButton").Name);
+            Assert.NotNull(FindByAutomationId(dialog, "DialogBoxCancelButton"));
+
+            dialog.Focus();
+            Keyboard.Type(VirtualKeyShort.ESCAPE);
+            WaitUntil(() => mainWindow.ModalWindows.Length == 0);
+        }
+        finally
+        {
+            CloseDialogs();
+        }
+
+        WaitUntil(() => ResultText().Contains("clicked Cancel", StringComparison.Ordinal));
+        Assert.Contains("clicked Cancel", ResultText(), StringComparison.Ordinal);
+    }
+
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Destructive_question_answers_no_on_enter()
+    {
+        var dialog = OpenDialog("DialogDestructive");
+        try
+        {
+            dialog.Focus();
+            Keyboard.Type(VirtualKeyShort.ENTER);
+            WaitUntil(() => mainWindow.ModalWindows.Length == 0);
+        }
+        finally
+        {
+            CloseDialogs();
+        }
+
+        WaitUntil(() => ResultText().Contains("clicked Negative", StringComparison.Ordinal));
+        Assert.Contains("clicked Negative", ResultText(), StringComparison.Ordinal);
+    }
+
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Error_details_start_collapsed_expand_without_horizontal_scrolling_and_are_copied()
+    {
+        var dialog = OpenDialog("DialogErrorDetails");
+        try
+        {
+            var expander = Retry.WhileNull(
+                () => dialog.FindAllDescendants().FirstOrDefault(x => x.Patterns.ExpandCollapse.IsSupported),
+                timeout: TimeSpan.FromSeconds(5),
+                interval: TimeSpan.FromMilliseconds(200)).Result;
+            Assert.NotNull(expander);
+            var expandCollapse = expander.Patterns.ExpandCollapse.Pattern;
+            Assert.Equal(ExpandCollapseState.Collapsed, expandCollapse.ExpandCollapseState.Value);
+
+            expandCollapse.Expand();
+            WaitUntil(() => expandCollapse.ExpandCollapseState.Value == ExpandCollapseState.Expanded);
+            Assert.False(ContentScrollViewer(dialog).Patterns.Scroll.Pattern.HorizontallyScrollable.Value);
+
+            ClearClipboard();
+            dialog.Focus();
+            Keyboard.TypeSimultaneously(VirtualKeyShort.CONTROL, VirtualKeyShort.KEY_C);
+            WaitUntil(() => ReadClipboard().Contains("System.InvalidOperationException", StringComparison.Ordinal));
+
+            var copied = ReadClipboard();
+            Assert.Contains("The camera stream could not be opened.", copied, StringComparison.Ordinal);
+            Assert.Contains("System.InvalidOperationException", copied, StringComparison.Ordinal);
+            Assert.Contains("---------------------------", copied, StringComparison.Ordinal);
+        }
+        finally
+        {
+            CloseDialogs();
+        }
+    }
+
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Dont_ask_again_is_reported_after_the_dialog_closes()
+    {
+        var dialog = OpenDialog("DialogDontAskAgain");
+        try
+        {
+            var checkBox = Retry.WhileNull(
+                () => dialog.FindFirstDescendant(cf => cf.ByControlType(ControlType.CheckBox)),
+                timeout: TimeSpan.FromSeconds(5),
+                interval: TimeSpan.FromMilliseconds(200)).Result;
+            Assert.NotNull(checkBox);
+            checkBox.AsCheckBox().Toggle();
+
+            FindByAutomationId(dialog, "DialogBoxAffirmativeButton").Patterns.Invoke.Pattern.Invoke();
+            WaitUntil(() => mainWindow.ModalWindows.Length == 0);
+        }
+        finally
+        {
+            CloseDialogs();
+        }
+
+        WaitUntil(() => ResultText().Contains("don't ask again True", StringComparison.Ordinal));
+        Assert.Contains("clicked Affirmative", ResultText(), StringComparison.Ordinal);
+        Assert.Contains("don't ask again True", ResultText(), StringComparison.Ordinal);
+    }
+
+    private string ResultText()
+        => FindByAutomationId(mainWindow, "LongTextResult").Name ?? string.Empty;
+
+    private static string ReadClipboard()
+        => RunOnSta(() => System.Windows.Clipboard.ContainsText() ? System.Windows.Clipboard.GetText() : string.Empty) ?? string.Empty;
+
+    private static void ClearClipboard()
+        => RunOnSta(
+            () =>
+            {
+                System.Windows.Clipboard.Clear();
+                return string.Empty;
+            });
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "The clipboard can be busy; the caller retries.")]
+    private static string? RunOnSta(Func<string> action)
+    {
+        string? result = null;
+        var thread = new Thread(
+            () =>
+            {
+                try
+                {
+                    result = action();
+                }
+                catch (Exception)
+                {
+                    result = null;
+                }
+            });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+        return result;
+    }
+
     private void AssertTextDialog(
         string buttonId,
         string textKind,

@@ -53,7 +53,7 @@ public partial class ColorPickerDialogBox
 
         InitializeDialogBox();
 
-        PickerDialogBoxHelper.ApplyOwnerAndFitToWorkArea(this, OwningWindow);
+        DialogBoxWindowHelper.ApplyOwnerAndFitToWorkArea(this, OwningWindow);
     }
 
     /// <summary>
@@ -80,9 +80,21 @@ public partial class ColorPickerDialogBox
         UcAdvancedColorPicker.OriginalColor = Color;
     }
 
-    private void OnOkClick(
-        object sender,
-        RoutedEventArgs e)
+    private void OnButtonClicked(
+        object? sender,
+        DialogBoxButtonClickedEventArgs e)
+    {
+        if (e.Button == DialogBoxButton.Affirmative)
+        {
+            Confirm();
+        }
+        else
+        {
+            Decline();
+        }
+    }
+
+    private void Confirm()
     {
         Color = UcAdvancedColorPicker.Color;
 
@@ -90,9 +102,7 @@ public partial class ColorPickerDialogBox
         Close();
     }
 
-    private void OnOkCancel(
-        object sender,
-        RoutedEventArgs e)
+    private void Decline()
     {
         DialogResult = false;
         Close();
