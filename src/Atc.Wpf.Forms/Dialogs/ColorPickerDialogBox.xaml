@@ -19,13 +19,16 @@
     <DockPanel>
 
         <Border
-            Height="50"
+            MinHeight="50"
             Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,0,0,1"
             DockPanel.Dock="Top"
             Visibility="{Binding Path=HeaderControl, Converter={x:Static atcValueConverters:ObjectNotNullToVisibilityVisibleValueConverter.Instance}}">
-            <ContentControl Margin="30" Content="{Binding Path=HeaderControl}" />
+            <ContentControl
+                Margin="30,5"
+                VerticalAlignment="Center"
+                Content="{Binding Path=HeaderControl}" />
         </Border>
 
         <Border
