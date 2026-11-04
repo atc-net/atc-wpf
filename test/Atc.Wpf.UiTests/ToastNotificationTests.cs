@@ -114,14 +114,16 @@ public sealed class ToastNotificationTests : IDisposable
             ? area.Right
             : scrollBar.BoundingRectangle.Left;
 
+        // The tolerance is in device-independent units; the bounds come in physical pixels.
+        var tolerance = CornerTolerance * DpiAwareness.GetScale(usageArea);
         var toastRight = closeButton.BoundingRectangle.Right;
         var toastTop = title.BoundingRectangle.Top;
         Assert.True(
-            areaRight - toastRight is >= 0 and <= CornerTolerance,
-            $"The toast's right edge {toastRight} should be within {CornerTolerance}px of the area's right edge {areaRight}.");
+            areaRight - toastRight >= 0 && areaRight - toastRight <= tolerance,
+            $"The toast's right edge {toastRight} should be within {tolerance}px of the area's right edge {areaRight}.");
         Assert.True(
-            toastTop - area.Top is >= 0 and <= CornerTolerance,
-            $"The toast's top {toastTop} should be within {CornerTolerance}px of the area's top {area.Top}.");
+            toastTop - area.Top >= 0 && toastTop - area.Top <= tolerance,
+            $"The toast's top {toastTop} should be within {tolerance}px of the area's top {area.Top}.");
     }
 
     /// <summary>

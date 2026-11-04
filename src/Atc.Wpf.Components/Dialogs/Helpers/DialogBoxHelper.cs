@@ -255,6 +255,8 @@ internal static class DialogBoxHelper
         dialog.SizeToContent = SizeToContent.Height;
         dialog.SizeChanged -= OnAutoHeightDialogSizeChanged;
         dialog.SizeChanged += OnAutoHeightDialogSizeChanged;
+        dialog.ContentRendered -= OnAutoHeightDialogContentRendered;
+        dialog.ContentRendered += OnAutoHeightDialogContentRendered;
     }
 
     /// <summary>
@@ -286,7 +288,8 @@ internal static class DialogBoxHelper
 
     /// <summary>
     /// Keeps the vertical centre of a placed dialog when its height follows its content, so a dialog centred on its
-    /// owner (or the screen) stays centred when it grows after it was placed. A user resize ends size-to-content.
+    /// owner (or the screen) stays centred when it grows after it was placed, and keeps it inside the work area.
+    /// A user resize ends size-to-content.
     /// </summary>
     private static void OnAutoHeightDialogSizeChanged(
         object sender,
@@ -303,6 +306,18 @@ internal static class DialogBoxHelper
         }
 
         window.Top -= (e.NewSize.Height - e.PreviousSize.Height) / 2;
+        DialogBoxWindowHelper.KeepInWorkArea(window);
+    }
+
+    private static void OnAutoHeightDialogContentRendered(
+        object? sender,
+        EventArgs e)
+    {
+        if (sender is Window window)
+        {
+            window.ContentRendered -= OnAutoHeightDialogContentRendered;
+            DialogBoxWindowHelper.KeepInWorkArea(window);
+        }
     }
 
     private static List<UIElement> CreateExtras(DialogBoxSettings? settings)
