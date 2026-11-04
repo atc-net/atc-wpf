@@ -17,6 +17,7 @@ Core WPF library for the ATC.Net WPF stack: MVVM helpers, layouts, value convert
 | Factories (`BitmapImageFactory`, …) | `Factories/` | — |
 | Collections (`ObservableDictionary`, `ObservableCollectionEx`) | `Collections/` | — |
 | Threading (`DebounceDispatcher`) | `System/Windows/Threading/` | — |
+| Exception report (`ExceptionReport`: saves, copies and shows an unhandled exception with only .NET and WPF; the last resort behind `ExceptionDialog`) | `Dialogs/` | [`ExceptionDialog_Readme.md`](../Atc.Wpf.Components/Dialogs/ExceptionDialog_Readme.md) |
 | Internal SVG renderer (`W3cSvg`) | `Controls/Media/W3cSvg/` | — |
 
 ## Install

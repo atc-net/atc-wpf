@@ -12,7 +12,7 @@ using Atc.Wpf.Components;
 
 | Category | Highlights | Path |
 |---|---|---|
-| **Dialogs** | `InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`, `BasicApplicationSettingsDialogBox` | [`Dialogs/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Dialogs) |
+| **Dialogs** | `InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`, `BasicApplicationSettingsDialogBox`, `ExceptionDialog` | [`Dialogs/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Dialogs) |
 | **Viewers** | `JsonViewer`, `TerminalViewer`, `MarkdownViewer` | [`Viewers/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Viewers) |
 | **Monitoring** | `ApplicationMonitorView` (memory, CPU, GC counters with copy-to-clipboard context menu) | [`Monitoring/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Monitoring) |
 | **Notifications** | `ToastNotification` system + manager | [`Notifications/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Notifications) |
@@ -34,6 +34,35 @@ var dialog = new InfoDialogBox(
 
 dialog.Show();
 ```
+
+### Unhandled exceptions
+
+```csharp
+// UI thread: themed dialog with the full report under Details, Ctrl+C or the copy button copies it.
+Current.DispatcherUnhandledException += (_, e) =>
+{
+    if (ExceptionReport.IsKnownHarmlessWpfBindingError(e.Exception))
+    {
+        e.Handled = true;
+        return;
+    }
+
+    ExceptionDialog.Show(e.Exception, "Dispatcher Unhandled Exception");
+    e.Handled = true;
+    Shutdown(-1);
+};
+
+// Other threads: the process ends, so use the native message box (no UI thread needed).
+AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+{
+    if (e.ExceptionObject is Exception ex)
+    {
+        _ = ExceptionReport.ShowMessageBox(ex, "CurrentDomain Unhandled Exception");
+    }
+};
+```
+
+See [`ExceptionDialog_Readme.md`](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Components/Dialogs/ExceptionDialog_Readme.md).
 
 ### Toast notification
 

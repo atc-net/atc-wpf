@@ -255,7 +255,7 @@ A quick reference of all controls organized by category:
 | **Selectors** | DualListSelector (check boxes, one-way mode, locked items, limit, grouping, virtualization) | Atc.Wpf.Components |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
 | **Labeled Multi-Select** | LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox, LabelCascaderComboBox, LabelMultiColumnComboBox | Atc.Wpf.Forms |
-| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox | Atc.Wpf.Forms / Components |
+| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox, ExceptionDialog (unhandled exceptions, copyable report), ExceptionReport | Atc.Wpf / Atc.Wpf.Forms / Components |
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
 | **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
 | **Printing** | IPrintService, PrintService, PrintPreviewWindow | Atc.Wpf / Atc.Wpf.Components |
@@ -576,12 +576,13 @@ Higher-level composite components combining multiple controls for business-ready
 
 | Control | Description | Documentation |
 |---------|-------------|---------------|
-| **InfoDialogBox** | Information-only dialog | [Readme](src/Atc.Wpf.Components/Dialogs/InfoDialogBox_Readme.md) |
-| **QuestionDialogBox** | Yes/No confirmation dialog | [Readme](src/Atc.Wpf.Components/Dialogs/QuestionDialogBox_Readme.md) |
+| **InfoDialogBox** | Information/warning/error dialog; long text wraps and the dialog grows to fit; optional details area, copy button and Ctrl+C | [Readme](src/Atc.Wpf.Components/Dialogs/InfoDialogBox_Readme.md) |
+| **QuestionDialogBox** | Yes/No and Yes/No/Cancel question; choose the default button (e.g. No for destructive questions); optional "Don't ask again" | [Readme](src/Atc.Wpf.Components/Dialogs/QuestionDialogBox_Readme.md) |
 | **InputDialogBox** | Single input dialog | [Readme](src/Atc.Wpf.Components/Dialogs/InputDialogBox_Readme.md) |
 | **InputFormDialogBox** | Multi-field form dialog | [Readme](src/Atc.Wpf.Components/Dialogs/InputFormDialogBox_Readme.md) |
 | **BasicApplicationSettingsDialogBox** | Settings dialog | [Readme](src/Atc.Wpf.Components/Dialogs/BasicApplicationSettingsDialogBox_Readme.md) |
-| **DialogService** | MVVM-friendly dialog management | - |
+| **ExceptionDialog** | Shows an (unhandled) exception with a copyable report (stack traces, app/OS/.NET versions) for bug reports or AI agents; saves it to a file; falls back to the native message box (`ExceptionReport` in Atc.Wpf) | [Readme](src/Atc.Wpf.Components/Dialogs/ExceptionDialog_Readme.md) |
+| **DialogService** | MVVM-friendly dialog management (incl. `ShowColorPicker`, `ShowFontPicker`) | - |
 
 *Note: ColorPickerDialogBox is located in `Atc.Wpf.Forms.Dialogs`*
 
