@@ -3,6 +3,24 @@ namespace Atc.Wpf.Components.Dialogs;
 public partial class QuestionDialogBox
 {
     /// <summary>
+    /// Identifies the <see cref="HeaderControl"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty HeaderControlProperty = DependencyProperty.Register(
+        nameof(HeaderControl),
+        typeof(ContentControl),
+        typeof(QuestionDialogBox),
+        new PropertyMetadata(defaultValue: null));
+
+    /// <summary>
+    /// Identifies the <see cref="ContentControl"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty ContentControlProperty = DependencyProperty.Register(
+        nameof(ContentControl),
+        typeof(ContentControl),
+        typeof(QuestionDialogBox),
+        new PropertyMetadata(defaultValue: null));
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="QuestionDialogBox"/> class with Yes/No buttons and the given content text.
     /// </summary>
     public QuestionDialogBox(
@@ -64,6 +82,11 @@ public partial class QuestionDialogBox
 
         InitializeDialogBox(contentText);
 
+        if (Settings.AutoHeight)
+        {
+            Helpers.DialogBoxHelper.ApplyAutoHeight(this, owningWindow, Settings.Height);
+        }
+
         Helpers.DialogBoxHelper.ApplyOwner(this, owningWindow);
     }
 
@@ -80,12 +103,29 @@ public partial class QuestionDialogBox
     /// <summary>
     /// Gets or sets the optional header control shown above the content.
     /// </summary>
-    public ContentControl? HeaderControl { get; set; }
+    public ContentControl? HeaderControl
+    {
+        get => (ContentControl?)GetValue(HeaderControlProperty);
+        set => SetValue(HeaderControlProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets the control that displays the question content.
     /// </summary>
-    public ContentControl ContentControl { get; set; } = new();
+    public ContentControl ContentControl
+    {
+        get => (ContentControl)GetValue(ContentControlProperty);
+        set => SetValue(ContentControlProperty, value);
+    }
+
+    /// <inheritdoc />
+    protected override void OnPropertyChanged(
+        DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        Helpers.DialogBoxHelper.OnDialogPropertyChanged(this, e);
+    }
 
     private void InitializeDialogBox(string contentText)
     {

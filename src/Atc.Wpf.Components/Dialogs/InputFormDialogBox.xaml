@@ -24,7 +24,7 @@
 
         <Border
             x:Name="ContentTop"
-            Height="50"
+            MinHeight="50"
             Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,0,0,1"

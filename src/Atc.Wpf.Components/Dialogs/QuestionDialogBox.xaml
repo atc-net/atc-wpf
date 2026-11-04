@@ -24,7 +24,7 @@
 
         <Border
             x:Name="ContentTop"
-            Height="50"
+            MinHeight="50"
             Background="{DynamicResource AtcApps.Brushes.ThemeBackground1}"
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,0,0,1"
@@ -66,7 +66,7 @@
 
         <ScrollViewer
             Padding="30"
-            HorizontalScrollBarVisibility="Auto"
+            HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Auto">
             <ContentControl Content="{Binding Path=ContentControl}" />
         </ScrollViewer>

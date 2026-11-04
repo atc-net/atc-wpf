@@ -60,6 +60,11 @@ dialog.ShowDialog();
 - Escape closes the dialog with the same result as OK, like a message box
 - `DialogService` owns its dialogs by the window from its owner resolver, otherwise by the active window, otherwise by the main window
 - The dialog inherits window chrome from the theming system
+- The text wraps to the dialog width, also inside long words or paths with no spaces; explicit line breaks (`
+`) are kept, and the content never scrolls sideways
+- The dialog keeps `DialogBoxSettings.Width` (default 500) and grows taller than `DialogBoxSettings.Height` to fit the text, up to 80 % of the work area of the owner's monitor, and then scrolls. It stays centred on its owner while it grows. Set `DialogBoxSettings.AutoHeight = false` for a fixed height
+- A long header wraps onto more lines instead of being cut off
+- `HeaderControl` and `ContentControl` are dependency properties, so setting them after construction updates the dialog
 
 ## 🔗 Related Controls
 

@@ -104,14 +104,21 @@ public sealed class DialogBoxSettings
     }
 
     /// <summary>
-    /// Gets or sets the dialog width.
+    /// Gets or sets the dialog width. The default is 500, room for a sentence or two next to the icon.
     /// </summary>
-    public double Width { get; set; } = 350;
+    public double Width { get; set; } = 500;
 
     /// <summary>
     /// Gets or sets the dialog height.
     /// </summary>
     public double Height { get; set; } = 200;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether an information or question dialog grows taller than
+    /// <see cref="Height"/> to fit its text, up to 80 % of the work area of the owner's monitor, before the
+    /// text scrolls. <see cref="Height"/> stays the smallest height. The default is <see langword="true"/>.
+    /// </summary>
+    public bool AutoHeight { get; set; } = true;
 
     /// <summary>
     /// Gets or sets the text shown in the dialog title bar.
@@ -217,7 +224,7 @@ public sealed class DialogBoxSettings
 
     /// <inheritdoc />
     public override string ToString()
-        => $"{nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(TitleBarText)}: {TitleBarText}, {nameof(Form)}: ({Form})";
+        => $"{nameof(Width)}: {Width}, {nameof(Height)}: {Height}, {nameof(AutoHeight)}: {AutoHeight}, {nameof(TitleBarText)}: {TitleBarText}, {nameof(Form)}: ({Form})";
 
     private void SetContentSvgImage()
     {

@@ -21,6 +21,9 @@
             Header="Standard DialogBox"
             IsExpanded="True"
             SamplePath="DialogBoxes.StandardDialogBoxView" />
+        <sample:SampleTreeViewItem
+            Header="Long text DialogBox"
+            SamplePath="DialogBoxes.LongTextDialogBoxView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Monitoring">

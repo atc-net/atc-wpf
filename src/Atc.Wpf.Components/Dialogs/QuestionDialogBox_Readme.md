@@ -33,6 +33,8 @@ var dialog = new QuestionDialogBox(
 
 - OK returns `DialogResult = true`, Cancel returns `false`
 - Supports the same constructor patterns as `InfoDialogBox`
+- Long text wraps to the dialog width (no sideways scrolling), and the dialog grows taller to fit it, up to 80 % of the work area, centred on its owner. Set `DialogBoxSettings.AutoHeight = false` for a fixed height
+- `HeaderControl` and `ContentControl` are dependency properties, so setting them after construction updates the dialog
 
 ## 🔗 Related Controls
 
@@ -42,4 +44,4 @@ var dialog = new QuestionDialogBox(
 
 ## 🎮 Sample Application
 
-See the dialog samples in the Atc.Wpf.Sample application under **Wpf.Components > Dialogs** for interactive examples.
+See the dialog samples in the Atc.Wpf.Sample application under **Wpf.Components > Dialogs** for interactive examples; **Long text DialogBox** opens every dialog with long texts, default (500) or narrow (350) and in both flow directions.
