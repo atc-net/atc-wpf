@@ -8,6 +8,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 [TemplatePart(Name = "PART_ItemsHost", Type = typeof(StackPanel))]
 public sealed partial class Timeline : Control
 {
+    private readonly List<TimelineItem> logicalItems = [];
     private StackPanel? itemsHost;
 
     /// <summary>
@@ -77,6 +78,14 @@ public sealed partial class Timeline : Control
     /// </summary>
     public ObservableCollection<TimelineItem> Items { get; } = [];
 
+    /// <inheritdoc />
+    /// <remarks>
+    /// The items are logical children, so their content inherits the timeline's text color, font and data context
+    /// (the presenters that show it are built in code and do not own it).
+    /// </remarks>
+    protected override IEnumerator LogicalChildren
+        => logicalItems.ToList().GetEnumerator();
+
     static Timeline()
     {
         DefaultStyleKeyProperty.OverrideMetadata(
@@ -110,8 +119,28 @@ public sealed partial class Timeline : Control
         object? sender,
         NotifyCollectionChangedEventArgs e)
     {
+        SyncLogicalItems();
         UpdateIsLastFlags();
         RebuildVisualTree();
+    }
+
+    /// <summary>
+    /// Makes the items logical children of the timeline (and releases removed ones); a reset gives no removed items,
+    /// so the current children are compared with the collection.
+    /// </summary>
+    private void SyncLogicalItems()
+    {
+        foreach (var removed in logicalItems.Where(x => !Items.Contains(x)).ToList())
+        {
+            logicalItems.Remove(removed);
+            RemoveLogicalChild(removed);
+        }
+
+        foreach (var added in Items.Where(x => !logicalItems.Contains(x)).ToList())
+        {
+            logicalItems.Add(added);
+            AddLogicalChild(added);
+        }
     }
 
     private static void OnLayoutPropertyChanged(
