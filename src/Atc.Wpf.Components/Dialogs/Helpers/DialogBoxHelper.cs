@@ -72,15 +72,11 @@ internal static class DialogBoxHelper
 
         if (contentImage is not null)
         {
-            // The icon belongs to the settings, so a settings object used for a second dialog moves it over.
-            if (contentImage.Parent is Panel previousPanel)
-            {
-                previousPanel.Children.Remove(contentImage);
-            }
-
-            contentImage.VerticalAlignment = VerticalAlignment.Top;
-            Grid.SetColumn(contentImage, 0);
-            grid.Children.Add(contentImage);
+            // The icon belongs to the settings, which can serve several dialogs, so each dialog gets its own copy.
+            var image = CopyElement(contentImage);
+            image.VerticalAlignment = VerticalAlignment.Top;
+            Grid.SetColumn(image, 0);
+            grid.Children.Add(image);
         }
 
         var textBlock = new TextBlock
@@ -97,6 +93,49 @@ internal static class DialogBoxHelper
         {
             Content = grid,
         };
+    }
+
+    /// <summary>
+    /// Creates a new element of the same type with the same locally set property values (bindings included), so one
+    /// icon description can be shown in several dialogs. An element that cannot be created again (no parameterless
+    /// constructor) is moved out of its previous panel and used itself.
+    /// </summary>
+    internal static FrameworkElement CopyElement(FrameworkElement element)
+    {
+        ArgumentNullException.ThrowIfNull(element);
+
+        if (element.GetType().GetConstructor(Type.EmptyTypes) is null ||
+            Activator.CreateInstance(element.GetType()) is not FrameworkElement copy)
+        {
+            if (element.Parent is Panel previousPanel)
+            {
+                previousPanel.Children.Remove(element);
+            }
+
+            return element;
+        }
+
+        var localValues = element.GetLocalValueEnumerator();
+        while (localValues.MoveNext())
+        {
+            var entry = localValues.Current;
+            if (entry.Property.ReadOnly ||
+                entry.Property == FrameworkElement.NameProperty)
+            {
+                continue;
+            }
+
+            if (BindingOperations.GetBindingBase(element, entry.Property) is { } binding)
+            {
+                BindingOperations.SetBinding(copy, entry.Property, binding);
+            }
+            else
+            {
+                copy.SetValue(entry.Property, entry.Value);
+            }
+        }
+
+        return copy;
     }
 
     /// <summary>

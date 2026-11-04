@@ -150,15 +150,32 @@ public sealed class DialogBoxHelperContentLayoutTests
     }
 
     [StaFact]
-    public void TheSameIcon_CanBeUsedForASecondDialog()
+    public void TheSameIcon_GivesEachDialogItsOwnCopy()
     {
-        var icon = new Border { Width = IconSize, Height = IconSize };
+        var icon = new Border { Width = IconSize, Height = IconSize, Background = Brushes.Red, Margin = new Thickness(1, 2, 3, 4) };
 
-        var first = DialogBoxHelper.CreateContentControl(ShortText, icon);
-        var second = DialogBoxHelper.CreateContentControl(ShortText, icon);
+        var first = ((Grid)DialogBoxHelper.CreateContentControl(ShortText, icon).Content).Children.OfType<Border>().Single();
+        var second = ((Grid)DialogBoxHelper.CreateContentControl(ShortText, icon).Content).Children.OfType<Border>().Single();
 
-        Assert.DoesNotContain(icon, ((Grid)first.Content).Children.OfType<Border>());
-        Assert.Contains(icon, ((Grid)second.Content).Children.OfType<Border>());
+        Assert.NotSame(icon, first);
+        Assert.NotSame(first, second);
+        Assert.Null(icon.Parent);
+        Assert.Equal(IconSize, second.Width);
+        Assert.Same(Brushes.Red, second.Background);
+        Assert.Equal(new Thickness(1, 2, 3, 4), second.Margin);
+    }
+
+    [StaFact]
+    public void ACopiedIcon_KeepsItsBindings()
+    {
+        var source = new Border { Width = 40 };
+        var icon = new Border();
+        icon.SetBinding(FrameworkElement.WidthProperty, new Binding(nameof(FrameworkElement.Width)) { Source = source });
+
+        var copy = DialogBoxHelper.CopyElement(icon);
+
+        Assert.NotNull(BindingOperations.GetBinding(copy, FrameworkElement.WidthProperty));
+        Assert.Equal(40, copy.Width);
     }
 
     /// <summary>
@@ -186,7 +203,7 @@ public sealed class DialogBoxHelperContentLayoutTests
             FlowDirection flowDirection,
             bool withIcon = true)
         {
-            Icon = new Border
+            var icon = new Border
             {
                 Width = IconSize,
                 Height = IconSize,
@@ -194,8 +211,11 @@ public sealed class DialogBoxHelperContentLayoutTests
                 Background = Brushes.Gray,
             };
 
-            var content = DialogBoxHelper.CreateContentControl(text, withIcon ? Icon : null);
+            var content = DialogBoxHelper.CreateContentControl(text, withIcon ? icon : null);
             TextBlock = ((Grid)content.Content).Children.OfType<TextBlock>().Single();
+
+            // The dialog shows its own copy of the icon.
+            Icon = ((Grid)content.Content).Children.OfType<Border>().SingleOrDefault() ?? icon;
 
             ScrollViewer = new ScrollViewer
             {
