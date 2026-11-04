@@ -168,45 +168,30 @@ public partial class InputFormDialogBox
         UpdateWidthAndHeight();
     }
 
+    /// <summary>
+    /// Sizes the dialog to the form: the width from the form's widest row, the height from the content (header,
+    /// form and buttons, so a wrapped header is included). Both stay within <see cref="LabelInputFormPanelSettings.MaxSize"/>
+    /// and <see cref="DialogBoxWindowHelper.MaxWorkAreaRatio"/> of the work area; beyond that the form scrolls.
+    /// </summary>
     private void UpdateWidthAndHeight()
     {
-        Width = ContentCenter.Padding.Left +
-                ContentCenter.Padding.Right +
-                Data.GetMaxWidth() +
-                ScrollBarSize;
+        var workArea = DialogBoxWindowHelper.GetWorkArea(OwningWindow);
+        var maxWidth = System.Math.Min(Settings.Form.MaxSize.Width, workArea.Width * DialogBoxWindowHelper.MaxWorkAreaRatio);
+        var maxHeight = System.Math.Min(Settings.Form.MaxSize.Height, workArea.Height * DialogBoxWindowHelper.MaxWorkAreaRatio);
 
-        if (Width > Settings.Form.MaxSize.Width)
+        Width = System.Math.Min(
+            ContentCenter.Padding.Left +
+            ContentCenter.Padding.Right +
+            Data.GetMaxWidth() +
+            ScrollBarSize,
+            maxWidth);
+
+        MaxHeight = maxHeight;
+        if (SizeToContent != SizeToContent.Height)
         {
-            Width = Settings.Form.MaxSize.Width;
+            ClearValue(HeightProperty);
+            SizeToContent = SizeToContent.Height;
         }
-
-        Height = ContentCenter.Padding.Top +
-                 ContentCenter.Padding.Bottom +
-                 ContentButton.Height +
-                 Data.GetMaxHeight() +
-                 ScrollBarSize;
-
-        if (HeaderControl is not null)
-        {
-            Height += GetHeaderHeight(HeaderControl);
-        }
-
-        if (Height > Settings.Form.MaxSize.Height)
-        {
-            Height = Settings.Form.MaxSize.Height;
-        }
-    }
-
-    /// <summary>
-    /// Gets the height of the header area: the header measured at the dialog width (a long header wraps), at least
-    /// the minimum height of the area.
-    /// </summary>
-    private double GetHeaderHeight(ContentControl headerControl)
-    {
-        headerControl.Measure(new Size(Width, double.PositiveInfinity));
-        return System.Math.Max(
-            ContentTop.MinHeight,
-            headerControl.DesiredSize.Height + ContentTop.BorderThickness.Top + ContentTop.BorderThickness.Bottom);
     }
 
     private static void OnHeaderControlChanged(
