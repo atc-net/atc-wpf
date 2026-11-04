@@ -83,4 +83,4 @@ None of these throw.
 
 ## 🎮 Sample Application
 
-**Wpf.Components > Dialogs > Long text DialogBox**, button **Exception dialog**. The sample app's `App.xaml.cs` uses both handlers above.
+**Wpf.Components > Dialogs > Exception dialog** shows the themed dialog and the native last-resort message box, and throws exceptions nobody catches (on the UI thread and on a background thread) so the sample app's own handlers in `App.xaml.cs`, which use both handlers above, run. Those two buttons close the sample app, so they ask first.
