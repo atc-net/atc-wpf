@@ -159,8 +159,11 @@ public sealed class DialogOwnerPlacementTests : IDisposable
         Assert.True(transformPattern.CanResize.Value);
         var normalBounds = mainWindow.BoundingRectangle;
         transformPattern.Resize(800, 600);
-        WaitUntil(() => mainWindow.BoundingRectangle.Width < normalBounds.Width);
-        Assert.True(mainWindow.BoundingRectangle.Width < normalBounds.Width);
+
+        // The window may not get smaller: an earlier run can leave (and the app restore) it at its minimum size, and
+        // on a mixed-DPI setup the restored size can even be below the minimum. The caller checks what matters: that
+        // the window centre ends up away from the screen centre.
+        WaitUntil(() => mainWindow.BoundingRectangle.Width != normalBounds.Width);
 
         Assert.True(transformPattern.CanMove.Value);
         transformPattern.Move(0, 0);

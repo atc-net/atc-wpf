@@ -154,7 +154,6 @@ internal static class DialogBoxHelper
     /// Copies the dialog text when Ctrl+C is pressed and no text box has focus (it copies its own selection).
     /// </summary>
     /// <returns><see langword="true"/> when the key press was handled.</returns>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "The clipboard can be locked by another process; copying is best effort.")]
     public static bool TryCopyOnCtrlC(
         KeyEventArgs e,
         Func<string> createText)
@@ -170,16 +169,26 @@ internal static class DialogBoxHelper
             return false;
         }
 
+        TryCopy(createText());
+        return true;
+    }
+
+    /// <summary>
+    /// Puts text on the clipboard; another process may hold the clipboard, so it is best effort.
+    /// </summary>
+    /// <returns><see langword="true"/> when the text was copied.</returns>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "The clipboard can be locked by another process; copying is best effort.")]
+    public static bool TryCopy(string text)
+    {
         try
         {
-            System.Windows.Clipboard.SetText(createText());
+            System.Windows.Clipboard.SetText(text);
+            return true;
         }
         catch (Exception)
         {
-            // Another process holds the clipboard.
+            return false;
         }
-
-        return true;
     }
 
     /// <summary>

@@ -35,7 +35,10 @@
             BorderBrush="{DynamicResource AtcApps.Brushes.Accent}"
             BorderThickness="0,1,0,0"
             DockPanel.Dock="Bottom">
-            <formsDialogs:DialogBoxButtonBar ButtonClicked="OnButtonClicked" Settings="{Binding Path=Settings}" />
+            <formsDialogs:DialogBoxButtonBar
+                ButtonClicked="OnButtonClicked"
+                CopyClicked="OnCopyClicked"
+                Settings="{Binding Path=Settings}" />
         </Border>
 
         <ScrollViewer

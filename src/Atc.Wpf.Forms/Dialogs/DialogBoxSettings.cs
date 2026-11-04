@@ -205,6 +205,12 @@ public sealed class DialogBoxSettings
     public string? DontAskAgainText { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether information and question dialogs show a copy button (a copy icon
+    /// before the other buttons) that copies the dialog text, as Ctrl+C does, without closing the dialog.
+    /// </summary>
+    public bool ShowCopyButton { get; set; }
+
+    /// <summary>
     /// Gets or sets the button that Enter clicks. The default is <see cref="DialogBoxButton.Affirmative"/>; use
     /// <see cref="DialogBoxButton.Negative"/> for a destructive question, so Enter does not confirm it.
     /// A button the dialog does not show falls back to the affirmative button.

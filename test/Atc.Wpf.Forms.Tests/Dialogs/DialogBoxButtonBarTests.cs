@@ -91,4 +91,33 @@ public sealed class DialogBoxButtonBarTests
 
         Assert.Equal(DialogBoxButton.Cancel, clicked);
     }
+
+    [StaFact]
+    public void CopyButton_IsShownOnlyWhenAsked_AndIsNeitherDefaultNorCancel()
+    {
+        Assert.Null(new DialogBoxButtonBar { Settings = new DialogBoxSettings(DialogBoxType.Ok) }.GetCopyButton());
+
+        var sut = new DialogBoxButtonBar { Settings = new DialogBoxSettings(DialogBoxType.Ok) { ShowCopyButton = true } };
+
+        var copy = sut.GetCopyButton();
+        Assert.NotNull(copy);
+        Assert.False(copy.IsDefault);
+        Assert.False(copy.IsCancel);
+        Assert.True(sut.GetButton(DialogBoxButton.Affirmative)!.IsDefault);
+    }
+
+    [StaFact]
+    public void ClickingTheCopyButton_RaisesCopyClicked_AndNoButtonClicked()
+    {
+        var sut = new DialogBoxButtonBar { Settings = new DialogBoxSettings(DialogBoxType.Ok) { ShowCopyButton = true } };
+        var copied = 0;
+        var clicked = 0;
+        sut.CopyClicked += (_, _) => copied++;
+        sut.ButtonClicked += (_, _) => clicked++;
+
+        sut.GetCopyButton()!.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+
+        Assert.Equal(1, copied);
+        Assert.Equal(0, clicked);
+    }
 }
