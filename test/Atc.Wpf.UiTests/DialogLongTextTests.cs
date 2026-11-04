@@ -333,6 +333,67 @@ public sealed class DialogLongTextTests : IDisposable
         Assert.Contains("don't ask again True", ResultText(), StringComparison.Ordinal);
     }
 
+    [Trait("Category", "UI")]
+    [Fact]
+    public void Input_forms_size_to_their_content_and_fit_on_the_screen()
+    {
+        AutoScrollTestHelpers.NavigateToSample(
+            mainWindow,
+            tabAutomationId: "TabWpfComponents",
+            parentTreeNodeName: "Dialogs",
+            leafTreeNodeName: "Standard DialogBox");
+
+        var view = Retry.WhileNull(
+            () => mainWindow.FindFirstDescendant(cf => cf.ByClassName("StandardDialogBoxView")),
+            timeout: TimeSpan.FromSeconds(10),
+            interval: TimeSpan.FromMilliseconds(200)).Result;
+        Assert.NotNull(view);
+
+        foreach (var buttonName in new[]
+                 {
+                     "IF.V. 1col, 4field",
+                     "Input Form 1 columns",
+                     "Input Form 3 columns",
+                     "Input Form - Address model with data",
+                     "Input Form - Person model with data",
+                     "Input Form - Account model with data",
+                 })
+        {
+            var button = Retry.WhileNull(
+                () => view.FindFirstDescendant(cf => cf.ByControlType(ControlType.Button).And(cf.ByName(buttonName))),
+                timeout: TimeSpan.FromSeconds(10),
+                interval: TimeSpan.FromMilliseconds(200)).Result;
+            Assert.NotNull(button);
+            button.Patterns.Invoke.Pattern.Invoke();
+
+            var dialog = Retry.WhileNull(
+                () => mainWindow.ModalWindows.FirstOrDefault(),
+                timeout: TimeSpan.FromSeconds(10),
+                interval: TimeSpan.FromMilliseconds(200)).Result;
+            Assert.NotNull(dialog);
+            try
+            {
+                var screen = System.Windows.Forms.Screen.FromRectangle(dialog.BoundingRectangle);
+                Assert.True(
+                    screen.WorkingArea.Contains(dialog.BoundingRectangle),
+                    $"{buttonName}: the dialog {dialog.BoundingRectangle} should lie inside the work area {screen.WorkingArea}.");
+
+                var scroll = ContentScrollViewer(dialog).Patterns.Scroll.Pattern;
+                var cappedHeight = screen.WorkingArea.Height * 0.95;
+                if (dialog.BoundingRectangle.Height < cappedHeight - Tolerance)
+                {
+                    Assert.False(scroll.VerticallyScrollable.Value, $"{buttonName}: the dialog ({dialog.BoundingRectangle}) should grow to show the whole form.");
+                }
+
+                Assert.NotNull(FindByAutomationId(dialog, "DialogBoxAffirmativeButton"));
+            }
+            finally
+            {
+                CloseDialogs();
+            }
+        }
+    }
+
     private string ResultText()
         => FindByAutomationId(mainWindow, "LongTextResult").Name ?? string.Empty;
 
