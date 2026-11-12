@@ -204,4 +204,10 @@
   <data name="PasswordNeedsSpecialChar" xml:space="preserve">
     <value>Adgangskoden skal indeholde mindst ét specialtegn</value>
   </data>
+  <data name="InvalidMacAddress" xml:space="preserve">
+    <value>Ugyldig MAC-adresse</value>
+  </data>
+  <data name="InvalidIPv4Cidr" xml:space="preserve">
+    <value>Ugyldigt IPv4-område (CIDR), f.eks. 192.168.1.0/24</value>
+  </data>
 </root>

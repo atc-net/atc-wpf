@@ -93,6 +93,12 @@ internal static class TextBoxValidationHelper
             case TextBoxValidationRuleType.PasswordStrong:
                 ValidatePasswordStrength(value, PasswordStrengthLevel.Strong, ref isValid, ref errorMessage);
                 break;
+            case TextBoxValidationRuleType.MacAddress:
+                ValidateMacAddress(value, ref isValid, ref errorMessage);
+                break;
+            case TextBoxValidationRuleType.IPv4Cidr:
+                ValidateIPv4Cidr(value, ref isValid, ref errorMessage);
+                break;
             default:
                 throw new SwitchCaseDefaultException(validationRule);
         }
@@ -148,6 +154,45 @@ internal static class TextBoxValidationHelper
         errorMessage = allowHttp
             ? Validations.InvalidHttpUrl
             : Validations.InvalidHttpsUrl;
+    }
+
+    private static void ValidateMacAddress(
+        string? value,
+        ref bool isValid,
+        ref string errorMessage)
+    {
+        var digits = (value ?? string.Empty)
+            .Trim()
+            .Replace("-", string.Empty, StringComparison.Ordinal)
+            .Replace(":", string.Empty, StringComparison.Ordinal)
+            .Replace(".", string.Empty, StringComparison.Ordinal);
+        if (digits.Length == 12 &&
+            digits.All(char.IsAsciiHexDigit))
+        {
+            return;
+        }
+
+        isValid = false;
+        errorMessage = Validations.InvalidMacAddress;
+    }
+
+    private static void ValidateIPv4Cidr(
+        string? value,
+        ref bool isValid,
+        ref string errorMessage)
+    {
+        var parts = (value ?? string.Empty).Split('/', StringSplitOptions.TrimEntries);
+        if (parts.Length == 2 &&
+            System.Net.IPAddress.TryParse(parts[0], out var address) &&
+            address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork &&
+            int.TryParse(parts[1], System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var prefixLength) &&
+            prefixLength <= 32)
+        {
+            return;
+        }
+
+        isValid = false;
+        errorMessage = Validations.InvalidIPv4Cidr;
     }
 
     private static void ValidateHexRgb(
