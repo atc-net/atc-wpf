@@ -58,6 +58,11 @@ public sealed class VncConnectionService : IDisposable
     public event EventHandler? Disconnected;
 
     /// <summary>
+    /// Occurs when the server sends its clipboard text.
+    /// </summary>
+    public event EventHandler<VncClipboardEventArgs>? ClipboardTextReceived;
+
+    /// <summary>
     /// Occurs when connecting or authenticating fails.
     /// </summary>
     public event EventHandler<VncConnectionFailedEventArgs>? ConnectionFailed;
@@ -93,6 +98,7 @@ public sealed class VncConnectionService : IDisposable
             vnc = clientFactory(hostname, port);
             vnc.ConnectionLost += OnConnectionLost;
             vnc.FramebufferUpdated += OnVncFramebufferUpdated;
+            vnc.ServerCutText += OnServerCutText;
 
             var connected = await vnc.Connect().ConfigureAwait(false);
             if (!connected)
@@ -225,6 +231,29 @@ public sealed class VncConnectionService : IDisposable
         }
     }
 
+    /// <summary>
+    /// Sends clipboard text to the server; does nothing when not connected.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>A task that completes when the text has been sent.</returns>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A dropped socket is reported as a disconnect.")]
+    public async Task SendClipboardTextAsync(string text)
+    {
+        if (vnc is null || !IsConnected)
+        {
+            return;
+        }
+
+        try
+        {
+            await vnc.SendClientCutText(text).ConfigureAwait(false);
+        }
+        catch (Exception)
+        {
+            OnConnectionLost();
+        }
+    }
+
     /// <inheritdoc />
     public void Dispose()
         => Cleanup();
@@ -339,6 +368,9 @@ public sealed class VncConnectionService : IDisposable
         }
     }
 
+    private void OnServerCutText(string text)
+        => ClipboardTextReceived?.Invoke(this, new VncClipboardEventArgs(text));
+
     private void OnConnectionLost()
     {
         // Both a failed send and the client's own ConnectionLost event end up here; report the loss once.
@@ -357,6 +389,7 @@ public sealed class VncConnectionService : IDisposable
         {
             vnc.FramebufferUpdated -= OnVncFramebufferUpdated;
             vnc.ConnectionLost -= OnConnectionLost;
+            vnc.ServerCutText -= OnServerCutText;
             vnc.Dispose();
             vnc = null;
         }

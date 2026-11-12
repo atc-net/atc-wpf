@@ -6,7 +6,12 @@ namespace Atc.Wpf.Network.Vnc;
 /// </summary>
 public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
 {
-    private readonly VncConnectionService connectionService = new();
+    private readonly VncConnectionService connectionService;
+    private readonly Dispatcher dispatcher;
+    private string? lastHost;
+    private int lastPort;
+    private string? lastPassword;
+    private bool isDisconnecting;
 
     [ObservableProperty]
     private bool isConnected;
@@ -14,11 +19,31 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
     [ObservableProperty]
     private string statusMessage = string.Empty;
 
+    [ObservableProperty(DependentPropertyNames = [nameof(HasError)])]
+    private string? errorMessage;
+
+    [ObservableProperty(DependentPropertyNames = [nameof(Stretch), nameof(IsScrollable)])]
+    private VncScaleMode scaleMode;
+
+    [ObservableProperty]
+    private bool viewOnly;
+
+    [ObservableProperty(AfterChangedCallback = nameof(RaiseCommandsCanExecuteChanged))]
+    private bool shareClipboard;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="VncViewerViewModel"/> class.
     /// </summary>
     public VncViewerViewModel()
+        : this(new VncConnectionService())
     {
+    }
+
+    internal VncViewerViewModel(VncConnectionService connectionService)
+    {
+        this.connectionService = connectionService;
+        dispatcher = Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+        connectionService.ClipboardTextReceived += OnServiceClipboardTextReceived;
         connectionService.Connected += OnServiceConnected;
         connectionService.Disconnected += OnServiceDisconnected;
         connectionService.ConnectionFailed += OnServiceConnectionFailed;
@@ -26,7 +51,51 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
 
         ConnectCommand = new RelayCommandAsync(ExecuteShowConnectDialogAsync, CanConnect);
         DisconnectCommand = new RelayCommandAsync(ExecuteDisconnectAsync, CanDisconnect);
+        RetryCommand = new RelayCommandAsync(ExecuteRetryAsync, CanRetry);
+        SendClipboardCommand = new RelayCommandAsync(ExecuteSendClipboardAsync, CanSendClipboard);
     }
+
+    /// <summary>
+    /// Gets the command that connects again to the last server, with the same port and password.
+    /// </summary>
+    public RelayCommandAsync RetryCommand { get; }
+
+    /// <summary>
+    /// Gets the command that sends the local clipboard text to the server, when <see cref="ShareClipboard"/> is on.
+    /// </summary>
+    public RelayCommandAsync SendClipboardCommand { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the last connection failed or was lost.
+    /// </summary>
+    public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+
+    /// <summary>
+    /// Gets how the image is stretched for <see cref="ScaleMode"/>.
+    /// </summary>
+    public Stretch Stretch
+        => ScaleMode switch
+        {
+            VncScaleMode.Fill => Stretch.UniformToFill,
+            VncScaleMode.Original => Stretch.None,
+            _ => Stretch.Uniform,
+        };
+
+    /// <summary>
+    /// Gets a value indicating whether the view scrolls the screen (<see cref="VncScaleMode.Original"/>).
+    /// </summary>
+    public bool IsScrollable
+        => ScaleMode == VncScaleMode.Original;
+
+    /// <summary>
+    /// Gets or sets how server clipboard text is put on the local clipboard; by default <c>Clipboard.SetText</c>.
+    /// </summary>
+    public Action<string> ClipboardSetter { get; set; } = SetClipboardText;
+
+    /// <summary>
+    /// Gets or sets how the local clipboard text is read; by default <c>Clipboard.GetText</c>.
+    /// </summary>
+    public Func<string?> ClipboardGetter { get; set; } = GetClipboardText;
 
     /// <summary>
     /// Occurs when <see cref="CurrentFrame"/> has been updated; raised once per rendered batch of rectangles.
@@ -74,10 +143,13 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         int port,
         string? password)
     {
+        lastHost = host;
+        lastPort = port;
+        lastPassword = password;
         IsBusy = true;
+        ErrorMessage = null;
         StatusMessage = Resources.Resources.VncConnecting;
-        ConnectCommand.RaiseCanExecuteChanged();
-        DisconnectCommand.RaiseCanExecuteChanged();
+        RaiseCommandsCanExecuteChanged();
 
         await connectionService.ConnectAsync(host, port, password).ConfigureAwait(true);
     }
@@ -90,11 +162,18 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
     public async Task DisconnectAsync()
     {
         IsBusy = true;
+        isDisconnecting = true;
         StatusMessage = Resources.Resources.VncDisconnecting;
-        ConnectCommand.RaiseCanExecuteChanged();
-        DisconnectCommand.RaiseCanExecuteChanged();
+        RaiseCommandsCanExecuteChanged();
 
-        await connectionService.DisconnectAsync().ConfigureAwait(true);
+        try
+        {
+            await connectionService.DisconnectAsync().ConfigureAwait(true);
+        }
+        finally
+        {
+            isDisconnecting = false;
+        }
     }
 
     /// <summary>
@@ -108,7 +187,9 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         byte buttonMask,
         int x,
         int y)
-        => connectionService.SendPointerEventAsync(buttonMask, x, y);
+        => ViewOnly
+            ? Task.CompletedTask
+            : connectionService.SendPointerEventAsync(buttonMask, x, y);
 
     /// <summary>
     /// Sends a key press or release event to the VNC server.
@@ -119,7 +200,9 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
     public Task SendKeyEventAsync(
         uint keySym,
         bool pressed)
-        => connectionService.SendKeyEventAsync(keySym, pressed);
+        => ViewOnly
+            ? Task.CompletedTask
+            : connectionService.SendKeyEventAsync(keySym, pressed);
 
     /// <inheritdoc />
     public void Dispose()
@@ -128,6 +211,7 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         connectionService.Disconnected -= OnServiceDisconnected;
         connectionService.ConnectionFailed -= OnServiceConnectionFailed;
         connectionService.FramebufferUpdated -= OnServiceFramebufferUpdated;
+        connectionService.ClipboardTextReceived -= OnServiceClipboardTextReceived;
         connectionService.Dispose();
     }
 
@@ -136,6 +220,71 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
 
     private bool CanDisconnect()
         => !IsBusy && IsConnected;
+
+    private bool CanRetry()
+        => !IsBusy && !IsConnected && lastHost is not null;
+
+    private Task ExecuteRetryAsync()
+        => ConnectAsync(lastHost!, lastPort, lastPassword);
+
+    private bool CanSendClipboard()
+        => ShareClipboard && IsConnected;
+
+    private Task ExecuteSendClipboardAsync()
+    {
+        var text = ClipboardGetter();
+        return string.IsNullOrEmpty(text)
+            ? Task.CompletedTask
+            : connectionService.SendClipboardTextAsync(text);
+    }
+
+    private void RaiseCommandsCanExecuteChanged()
+    {
+        ConnectCommand.RaiseCanExecuteChanged();
+        DisconnectCommand.RaiseCanExecuteChanged();
+        RetryCommand.RaiseCanExecuteChanged();
+        SendClipboardCommand.RaiseCanExecuteChanged();
+    }
+
+    private void OnServiceClipboardTextReceived(
+        object? sender,
+        VncClipboardEventArgs e)
+    {
+        if (!ShareClipboard)
+        {
+            return;
+        }
+
+        _ = dispatcher.BeginInvoke(() => ClipboardSetter(e.Text));
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Another program can hold the clipboard; the text is then dropped.")]
+    private static void SetClipboardText(string text)
+    {
+        try
+        {
+            System.Windows.Clipboard.SetText(text);
+        }
+        catch (Exception)
+        {
+            // The clipboard is locked by another program.
+        }
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Another program can hold the clipboard; nothing is sent then.")]
+    private static string? GetClipboardText()
+    {
+        try
+        {
+            return System.Windows.Clipboard.ContainsText()
+                ? System.Windows.Clipboard.GetText()
+                : null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 
     private async Task ExecuteShowConnectDialogAsync()
     {
@@ -196,13 +345,13 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         object? sender,
         EventArgs e)
     {
-        Application.Current.Dispatcher.Invoke(() =>
+        dispatcher.Invoke(() =>
         {
             IsConnected = true;
             IsBusy = false;
+            ErrorMessage = null;
             StatusMessage = Resources.Resources.VncConnected;
-            ConnectCommand.RaiseCanExecuteChanged();
-            DisconnectCommand.RaiseCanExecuteChanged();
+            RaiseCommandsCanExecuteChanged();
         });
     }
 
@@ -210,13 +359,17 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         object? sender,
         EventArgs e)
     {
-        Application.Current.Dispatcher.Invoke(() =>
+        dispatcher.Invoke(() =>
         {
             IsConnected = false;
             IsBusy = false;
             StatusMessage = Resources.Resources.VncConnectionLost;
-            ConnectCommand.RaiseCanExecuteChanged();
-            DisconnectCommand.RaiseCanExecuteChanged();
+            if (!isDisconnecting)
+            {
+                ErrorMessage = Resources.Resources.VncConnectionLost;
+            }
+
+            RaiseCommandsCanExecuteChanged();
         });
     }
 
@@ -224,13 +377,13 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         object? sender,
         VncConnectionFailedEventArgs e)
     {
-        Application.Current.Dispatcher.Invoke(() =>
+        dispatcher.Invoke(() =>
         {
             IsConnected = false;
             IsBusy = false;
             StatusMessage = e.Message;
-            ConnectCommand.RaiseCanExecuteChanged();
-            DisconnectCommand.RaiseCanExecuteChanged();
+            ErrorMessage = e.Message;
+            RaiseCommandsCanExecuteChanged();
         });
     }
 

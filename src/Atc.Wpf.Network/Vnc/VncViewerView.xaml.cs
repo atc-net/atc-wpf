@@ -327,23 +327,12 @@ public partial class VncViewerView
             return (-1, -1);
         }
 
-        var pos = e.GetPosition(VncImage);
-        var actualWidth = VncImage.ActualWidth;
-        var actualHeight = VncImage.ActualHeight;
-
-        var scale = System.Math.Min(actualWidth / fbWidth, actualHeight / fbHeight);
-        var renderedW = fbWidth * scale;
-        var renderedH = fbHeight * scale;
-        var offsetX = (actualWidth - renderedW) / 2;
-        var offsetY = (actualHeight - renderedH) / 2;
-
-        var vncX = (int)((pos.X - offsetX) / scale);
-        var vncY = (int)((pos.Y - offsetY) / scale);
-
-        vncX = System.Math.Clamp(vncX, 0, fbWidth - 1);
-        vncY = System.Math.Clamp(vncY, 0, fbHeight - 1);
-
-        return (vncX, vncY);
+        return VncPointerMapping.MapToFramebuffer(
+            e.GetPosition(VncImage),
+            new Size(VncImage.ActualWidth, VncImage.ActualHeight),
+            fbWidth,
+            fbHeight,
+            viewModel.ScaleMode);
     }
 
     private static byte GetButtonMask(
