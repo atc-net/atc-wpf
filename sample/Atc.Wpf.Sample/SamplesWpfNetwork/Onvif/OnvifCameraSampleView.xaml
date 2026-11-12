@@ -1,0 +1,37 @@
+﻿<UserControl
+    x:Class="Atc.Wpf.Sample.SamplesWpfNetwork.Onvif.OnvifCameraSampleView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Atc.Wpf.Sample.SamplesWpfNetwork.Onvif"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:onvif="clr-namespace:Atc.Wpf.Network.Onvif;assembly=Atc.Wpf.Network"
+    d:DataContext="{d:DesignInstance Type=local:OnvifCameraSampleViewModel}"
+    d:DesignHeight="600"
+    d:DesignWidth="1000"
+    mc:Ignorable="d">
+
+    <atc:GridEx Columns="*" Rows="*,Auto">
+
+        <GroupBox
+            Grid.Row="0"
+            Padding="10"
+            Header="ONVIF Camera">
+            <onvif:OnvifCameraView DataContext="{Binding Path=OnvifCamera}" />
+        </GroupBox>
+
+        <GroupBox
+            Grid.Row="1"
+            Margin="0,10,0,0"
+            Padding="10"
+            Header="StreamSelected events (the app adds the camera here)">
+            <ListBox
+                Height="90"
+                FontFamily="Consolas"
+                ItemsSource="{Binding Path=SelectedStreams}" />
+        </GroupBox>
+
+    </atc:GridEx>
+
+</UserControl>
