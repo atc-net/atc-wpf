@@ -12,16 +12,31 @@ internal static class SampleCatalog
     /// <summary>
     /// Gets every sample as (tree view automation id, header, sample path).
     /// </summary>
-    /// <returns>The samples, in tree order.</returns>
+    /// <returns>
+    /// The samples in the order of the tabs in <c>SamplesTabControl</c> (Wpf first, Wpf.UndoRedo last),
+    /// and within a tab from the top of its tree to the bottom.
+    /// </returns>
     public static IReadOnlyList<SampleEntry> Load()
     {
         var sampleFolder = Path.Combine(FindRepositoryRoot(), SampleProjectFolder);
-        var treeNames = LoadTreeViewNames(Path.Combine(sampleFolder, "MainWindow.xaml"));
+        var mainWindowFile = Path.Combine(sampleFolder, "MainWindow.xaml");
+        var treeNames = LoadTreeViewNames(mainWindowFile);
+        var treeTypes = LoadTreeViewTypesInTabOrder(mainWindowFile);
+
+        var treeFiles = Directory
+            .EnumerateFiles(sampleFolder, "Samples*TreeView.xaml")
+            .Select(Path.GetFileNameWithoutExtension)
+            .ToHashSet(StringComparer.Ordinal);
+        var treeFilesWithoutTab = treeFiles.Except(treeTypes, StringComparer.Ordinal).ToList();
+        if (treeFilesWithoutTab.Count > 0)
+        {
+            throw new InvalidOperationException($"SamplesTabControl in MainWindow.xaml has no tab for {string.Join(", ", treeFilesWithoutTab)}, so its samples cannot be reached.");
+        }
 
         var samples = new List<SampleEntry>();
-        foreach (var file in Directory.EnumerateFiles(sampleFolder, "Samples*TreeView.xaml").Order(StringComparer.Ordinal))
+        foreach (var treeType in treeTypes.Where(treeFiles.Contains))
         {
-            var treeType = Path.GetFileNameWithoutExtension(file);
+            var file = Path.Combine(sampleFolder, treeType + ".xaml");
             if (!treeNames.TryGetValue(treeType, out var treeName))
             {
                 throw new InvalidOperationException($"MainWindow.xaml has no named {treeType}, so its samples cannot be reached.");
@@ -39,6 +54,26 @@ internal static class SampleCatalog
         }
 
         return samples;
+    }
+
+    private static List<string> LoadTreeViewTypesInTabOrder(
+        string mainWindowFile)
+    {
+        // <TabControl x:Name="SamplesTabControl"> <TabItem x:Name="TabWpfControls" Tag="WpfControls"> => SamplesWpfControlsTreeView
+        var document = System.Xml.Linq.XDocument.Load(mainWindowFile);
+        var tabControl = document
+            .Descendants()
+            .FirstOrDefault(x => string.Equals(x.Name.LocalName, "TabControl", StringComparison.Ordinal) &&
+                                 string.Equals((string?)x.Attribute(System.Xml.Linq.XName.Get("Name", XamlNamespace)), "SamplesTabControl", StringComparison.Ordinal))
+            ?? throw new InvalidOperationException("MainWindow.xaml has no TabControl named SamplesTabControl.");
+
+        return tabControl
+            .Elements()
+            .Where(x => string.Equals(x.Name.LocalName, "TabItem", StringComparison.Ordinal))
+            .Select(x => (string?)x.Attribute("Tag"))
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Select(x => $"Samples{x}TreeView")
+            .ToList();
     }
 
     private static Dictionary<string, string> LoadTreeViewNames(
