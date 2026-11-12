@@ -1,8 +1,8 @@
 namespace Atc.Wpf.Controls.Layouts;
 
-/// <summary>
+/// <content>
 /// Pane operations of a <see cref="DockPanelPro"/>: activate, close, restore, float, dock back and move.
-/// </summary>
+/// </content>
 public sealed partial class DockPanelPro
 {
     /// <summary>

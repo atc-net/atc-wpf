@@ -359,7 +359,7 @@ public sealed class WindowsSettingBehavior : Behavior<NiceWindow>
                         var monitor = PInvoke.MonitorFromWindow(
                             new HWND(windowHandle),
                             MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
-                        if (monitor != IntPtr.Zero)
+                        if (monitor != nint.Zero)
                         {
                             var monitorInfo = new MONITORINFO
                             {

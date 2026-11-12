@@ -156,6 +156,6 @@ internal static class DialogBoxWindowHelper
     /// deferred Unloaded broadcast after <see cref="Window.Close"/>.
     /// </summary>
     private static bool HasWindowHandle(Window window)
-        => new System.Windows.Interop.WindowInteropHelper(window).Handle != IntPtr.Zero &&
+        => new System.Windows.Interop.WindowInteropHelper(window).Handle != nint.Zero &&
            PresentationSource.FromVisual(window) is not null;
 }

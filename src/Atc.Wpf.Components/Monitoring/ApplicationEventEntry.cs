@@ -49,7 +49,6 @@ public class ApplicationEventEntry
     public LogCategoryType LogCategoryType
     {
         get => logCategoryType;
-
         private init
         {
             logCategoryType = value;

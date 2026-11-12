@@ -82,8 +82,8 @@ public static class ColorItemHelper
                     ColorBrush: showcaseBrush));
         }
 
-        return [.. list.OrderBy(
-            x => x.DisplayName,
-            StringComparer.Ordinal)];
+        return list
+            .OrderBy(x => x.DisplayName, StringComparer.Ordinal)
+            .ToArray();
     }
 }

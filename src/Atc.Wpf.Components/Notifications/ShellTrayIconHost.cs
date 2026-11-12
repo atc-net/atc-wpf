@@ -162,11 +162,11 @@ internal sealed class ShellTrayIconHost : ITrayIconHost
         }
     }
 
-    private IntPtr WndProc(
-        IntPtr hwnd,
+    private nint WndProc(
+        nint hwnd,
         int msg,
-        IntPtr wParam,
-        IntPtr lParam,
+        nint wParam,
+        nint lParam,
         ref bool handled)
     {
         if (msg == CallbackMessage)
@@ -185,6 +185,6 @@ internal sealed class ShellTrayIconHost : ITrayIconHost
             TaskbarCreated?.Invoke();
         }
 
-        return IntPtr.Zero;
+        return nint.Zero;
     }
 }

@@ -44,8 +44,8 @@ public class ZoomMiniMapClampMultiValueConverter : MarkupExtension, IMultiValueC
 
         return System.Math.Max(
             isWidth
-            ? System.Math.Min((zoomBox.ExtentWidth / zoom) - offset, size)
-            : System.Math.Min((zoomBox.ExtentHeight / zoom) - offset, size),
+                ? System.Math.Min((zoomBox.ExtentWidth / zoom) - offset, size)
+                : System.Math.Min((zoomBox.ExtentHeight / zoom) - offset, size),
             0);
     }
 

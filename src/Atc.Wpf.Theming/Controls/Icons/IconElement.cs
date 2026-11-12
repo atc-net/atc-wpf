@@ -78,9 +78,12 @@ public abstract class IconElement : Control
     public bool InheritsForegroundFromVisualParent
     {
         get => (bool)GetValue(InheritsForegroundFromVisualParentProperty);
-        protected set => SetValue(
+        protected set
+        {
+            SetValue(
             InheritsForegroundFromVisualParentPropertyKey,
             BooleanBoxes.Box(value));
+        }
     }
 
     /// <summary>

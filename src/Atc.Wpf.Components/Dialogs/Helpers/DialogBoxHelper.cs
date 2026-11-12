@@ -284,7 +284,7 @@ internal static class DialogBoxHelper
             e.NewValue is not double height ||
             double.IsNaN(height) ||
             dialog.SizeToContent != SizeToContent.Height ||
-            new WindowInteropHelper(dialog).Handle != IntPtr.Zero)
+            new WindowInteropHelper(dialog).Handle != nint.Zero)
         {
             return;
         }

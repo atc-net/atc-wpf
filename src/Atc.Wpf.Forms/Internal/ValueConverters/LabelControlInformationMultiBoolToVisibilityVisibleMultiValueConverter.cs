@@ -29,8 +29,8 @@ internal class LabelControlInformationMultiBoolToVisibilityVisibleMultiValueConv
 
         return hideAreasIsInformation &&
                (informationTextIsNotEmpty || informationContentIsNotNull)
-            ? Visibility.Visible
-            : Visibility.Collapsed;
+                   ? Visibility.Visible
+                   : Visibility.Collapsed;
     }
 
     /// <inheritdoc />

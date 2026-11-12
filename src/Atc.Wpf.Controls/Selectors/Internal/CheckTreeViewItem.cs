@@ -155,8 +155,8 @@ internal sealed class CheckTreeViewItem : TreeViewItem
 
         return ItemsControl.ItemsControlFromItemContainer(this) is { } parent &&
                UIElementAutomationPeer.FromElement(parent) is ItemsControlAutomationPeer parentPeer
-            ? parentPeer.GetChildren()?.OfType<CheckTreeNodeAutomationPeer>().FirstOrDefault(x => ReferenceEquals(x.Item, node))
-            : null;
+                   ? parentPeer.GetChildren()?.OfType<CheckTreeNodeAutomationPeer>().FirstOrDefault(x => ReferenceEquals(x.Item, node))
+                   : null;
     }
 
     private bool IsFromOwnRow(DependencyObject? source)

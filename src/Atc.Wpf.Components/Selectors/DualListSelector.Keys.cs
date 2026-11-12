@@ -1,9 +1,9 @@
 namespace Atc.Wpf.Components.Selectors;
 
-/// <summary>
+/// <content>
 /// The <see cref="SelectedKeys"/> and <see cref="MaxSelectionCount"/> of a <see cref="DualListSelector"/>, named like
 /// the other multi-select controls.
-/// </summary>
+/// </content>
 public sealed partial class DualListSelector
 {
     private ObservableCollection<string>? subscribedSelectedKeys;

@@ -1,8 +1,8 @@
 namespace Atc.Wpf.Controls.Layouts;
 
-/// <summary>
+/// <content>
 /// Floating tool windows of a <see cref="DockPanelPro"/>.
-/// </summary>
+/// </content>
 public sealed partial class DockPanelPro
 {
     private const double DefaultFloatingWidth = 320;

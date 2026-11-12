@@ -76,9 +76,9 @@ public sealed class DisplayService : IDisplayService
         var snapshots = new List<DisplaySnapshot>();
 
         NativeMonitorMethods.EnumDisplayMonitors(
-            hdc: IntPtr.Zero,
-            lprcClip: IntPtr.Zero,
-            lpfnEnum: (IntPtr hMonitor, IntPtr _, ref NativeMonitorMethods.NativeRect _, IntPtr _) =>
+            hdc: nint.Zero,
+            lprcClip: nint.Zero,
+            lpfnEnum: (nint hMonitor, nint _, ref NativeMonitorMethods.NativeRect _, nint _) =>
             {
                 var info = NativeMonitorMethods.MonitorInfoEx.Default();
                 if (NativeMonitorMethods.GetMonitorInfo(hMonitor, ref info))
@@ -93,7 +93,7 @@ public sealed class DisplayService : IDisplayService
 
                 return true;
             },
-            dwData: IntPtr.Zero);
+            dwData: nint.Zero);
 
         return snapshots;
     }

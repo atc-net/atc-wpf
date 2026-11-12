@@ -524,7 +524,7 @@ public partial class NiceWindow : WindowChromeWindow
     /// <summary>
     /// Gets the native window handle, read from the non-public <c>Window.CriticalHandle</c> property.
     /// </summary>
-    protected internal IntPtr CriticalHandle
+    protected internal nint CriticalHandle
     {
         get
         {
@@ -532,9 +532,9 @@ public partial class NiceWindow : WindowChromeWindow
 
             var value = typeof(Window).GetProperty(
                 "CriticalHandle",
-                BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this, []) ?? IntPtr.Zero;
+                BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this, []) ?? nint.Zero;
 
-            return (IntPtr)value;
+            return (nint)value;
         }
     }
 
@@ -800,7 +800,9 @@ public partial class NiceWindow : WindowChromeWindow
 
         var newVisibility = TitleBarHeight > 0 &&
                             ShowTitleBar &&
-                            !UseNoneWindowStyle ? Visibility.Visible : Visibility.Collapsed;
+                            !UseNoneWindowStyle
+                                ? Visibility.Visible
+                                : Visibility.Collapsed;
 
         titleBar?.SetCurrentValue(VisibilityProperty, newVisibility);
         titleBarBackground?.SetCurrentValue(VisibilityProperty, newVisibility);

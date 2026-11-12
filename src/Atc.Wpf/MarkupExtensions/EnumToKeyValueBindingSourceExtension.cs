@@ -103,7 +103,6 @@ public sealed class EnumToKeyValueBindingSourceExtension : MarkupExtension
     public Type? EnumType
     {
         get => enumType;
-
         set
         {
             if (value == enumType)

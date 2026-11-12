@@ -1,8 +1,8 @@
 namespace Atc.Wpf.Controls.DataGrids;
 
-/// <summary>
+/// <content>
 /// Saving and restoring the column layout and filters of a <see cref="DataGrid"/>.
-/// </summary>
+/// </content>
 public static partial class DataGridFilter
 {
     private static readonly object LayoutWorkKey = new();

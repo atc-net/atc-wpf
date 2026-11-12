@@ -356,7 +356,7 @@ public sealed class HotkeyService : IHotkeyService
     {
         var parameters = new HwndSourceParameters("HotkeyListener")
         {
-            ParentWindow = new IntPtr(-3), // HWND_MESSAGE
+            ParentWindow = new nint(-3), // HWND_MESSAGE
             Width = 0,
             Height = 0,
         };
@@ -525,16 +525,16 @@ public sealed class HotkeyService : IHotkeyService
         }
     }
 
-    private IntPtr WndProc(
-        IntPtr hwnd,
+    private nint WndProc(
+        nint hwnd,
         int msg,
-        IntPtr wParam,
-        IntPtr lParam,
+        nint wParam,
+        nint lParam,
         ref bool handled)
     {
         if (msg != WmHotkey)
         {
-            return IntPtr.Zero;
+            return nint.Zero;
         }
 
         handled = true;
@@ -552,7 +552,7 @@ public sealed class HotkeyService : IHotkeyService
             InvokeCallback(registration);
         }
 
-        return IntPtr.Zero;
+        return nint.Zero;
     }
 
     private void OnWindowPreviewKeyDown(

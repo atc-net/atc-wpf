@@ -102,8 +102,8 @@ public class StringValidationRule : ValidationRule
             isMissing ? null! : text,
             Constraints,
             out var errorMessage)
-            ? System.Windows.Controls.ValidationResult.ValidResult
-            : new System.Windows.Controls.ValidationResult(false, errorMessage);
+                ? System.Windows.Controls.ValidationResult.ValidResult
+                : new System.Windows.Controls.ValidationResult(false, errorMessage);
     }
 
     private static string[] SplitCsv(string? csv)

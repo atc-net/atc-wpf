@@ -86,8 +86,8 @@ internal sealed class PaintServerManager
         return paintServers.TryGetValue(
                 serverKey,
                 out var paintServer)
-            ? paintServer
-            : null;
+                    ? paintServer
+                    : null;
     }
 
     public Dictionary<string, PaintServer> GetServers()

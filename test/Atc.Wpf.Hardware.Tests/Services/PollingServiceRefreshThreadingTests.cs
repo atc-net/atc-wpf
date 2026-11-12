@@ -173,7 +173,7 @@ public sealed class PollingServiceRefreshThreadingTests
         => new(id, id, "Ethernet", NetworkInterfaceType.Ethernet, "001122334455", 1_000_000_000, OperationalStatus.Up);
 
     private static DisplaySnapshot Display(string deviceName)
-        => new(new IntPtr(deviceName.GetHashCode(StringComparison.Ordinal)), deviceName, new Rect(0, 0, 1920, 1080), new Rect(0, 0, 1920, 1040), IsPrimary: false);
+        => new(new nint(deviceName.GetHashCode(StringComparison.Ordinal)), deviceName, new Rect(0, 0, 1920, 1080), new Rect(0, 0, 1920, 1040), IsPrimary: false);
 
     private static PrinterSnapshot Printer(string name)
         => new(name, name, IsLocal: true, IsShared: false, IsDefault: false, QueueStatus: "None");
@@ -182,7 +182,7 @@ public sealed class PollingServiceRefreshThreadingTests
         => new(processId, "app", "Title", HasMainWindow: true);
 
     private static WindowSnapshot Window(int handle)
-        => new(new IntPtr(handle), "Title", "Class", 42);
+        => new(new nint(handle), "Title", "Class", 42);
 
     private sealed class SnapshotSource
     {

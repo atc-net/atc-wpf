@@ -21,7 +21,6 @@ public sealed class ObservableCollectionEx<T> : ObservableCollection<T>
     public bool SuppressOnChangedNotification
     {
         get => suppressNotification;
-
         set
         {
             if (suppressNotification == value)

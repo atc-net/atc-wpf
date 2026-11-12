@@ -1,8 +1,8 @@
 namespace Atc.Wpf.Controls.Layouts;
 
-/// <summary>
+/// <content>
 /// Pane persistence of a <see cref="DockPanelPro"/> layout.
-/// </summary>
+/// </content>
 public sealed partial class DockPanelPro
 {
     private static readonly JsonSerializerOptions LayoutWriteOptions = new()

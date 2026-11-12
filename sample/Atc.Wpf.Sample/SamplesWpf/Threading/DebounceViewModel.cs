@@ -26,7 +26,7 @@ public sealed partial class DebounceViewModel : ViewModelBase
             "Harrison Leilani",
             "Cruz Melodie",
             "Hakeem Rose",
-            "Rafael Wanda"
+            "Rafael Wanda",
         ];
         FoundItems = [];
         status = string.Empty;

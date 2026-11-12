@@ -43,7 +43,7 @@ internal static class WinApiHelper
             || PresentationSource.FromVisual(visual) is not HwndSource source
             || source.IsDisposed
             || source.RootVisual is null
-            || source.Handle == IntPtr.Zero)
+            || source.Handle == nint.Zero)
         {
             return default;
         }
@@ -52,7 +52,7 @@ internal static class WinApiHelper
         var monitor = PInvoke.MonitorFromWindow(
             new HWND(source.Handle),
             MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
-        if (monitor == IntPtr.Zero)
+        if (monitor == nint.Zero)
         {
             return default;
         }
@@ -172,7 +172,7 @@ internal static class WinApiHelper
             PresentationSource.FromVisual(window) is not HwndSource source ||
             source.IsDisposed ||
             source.RootVisual is null ||
-            source.Handle == IntPtr.Zero)
+            source.Handle == nint.Zero)
         {
             return null;
         }
@@ -186,8 +186,8 @@ internal static class WinApiHelper
                            new HWND(source.Handle),
                            windowNameChars,
                            bufferSize) > 0
-                    ? new string(windowNameChars)
-                    : null;
+                               ? new string(windowNameChars)
+                               : null;
             }
         }
     }
@@ -208,7 +208,7 @@ internal static class WinApiHelper
             || PresentationSource.FromVisual(window) is not HwndSource source
             || source.IsDisposed
             || source.RootVisual is null
-            || source.Handle == IntPtr.Zero)
+            || source.Handle == nint.Zero)
         {
             return bounds;
         }

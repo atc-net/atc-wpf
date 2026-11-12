@@ -646,10 +646,10 @@ public sealed class TokenBoxTests : IDisposable
                 return calls.Count == 1
                     ? first.Task
                     : Task.FromResult<IReadOnlyList<KeyValuePair<string, string>>>(
-                    [
-                        new("u1", text + " one"),
-                        new("u2", text + " two"),
-                    ]);
+                        [
+                            new("u1", text + " one"),
+                            new("u2", text + " two"),
+                        ]);
             },
         };
 

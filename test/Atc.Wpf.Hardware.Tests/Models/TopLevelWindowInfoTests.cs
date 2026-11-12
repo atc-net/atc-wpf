@@ -5,7 +5,7 @@ public sealed class TopLevelWindowInfoTests
     [Fact]
     public void Constructor_AssignsAllProperties()
     {
-        var hWnd = new IntPtr(0x12345);
+        var hWnd = new nint(0x12345);
 
         var info = new TopLevelWindowInfo(
             handle: hWnd,
@@ -32,7 +32,7 @@ public sealed class TopLevelWindowInfoTests
         string expected)
     {
         var info = new TopLevelWindowInfo(
-            handle: IntPtr.Zero,
+            handle: nint.Zero,
             title: title,
             className: className,
             processId: 1,
@@ -45,7 +45,7 @@ public sealed class TopLevelWindowInfoTests
     public void ToString_IncludesProcessName()
     {
         var info = new TopLevelWindowInfo(
-            handle: new IntPtr(1),
+            handle: new nint(1),
             title: "Title",
             className: "C",
             processId: 1,

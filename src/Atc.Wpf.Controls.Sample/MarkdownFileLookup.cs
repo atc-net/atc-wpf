@@ -45,7 +45,7 @@ internal static class MarkdownFileLookup
         const string suffix = "View";
         return classViewName.Length > suffix.Length &&
                classViewName.EndsWith(suffix, StringComparison.Ordinal)
-            ? classViewName[..^suffix.Length]
-            : classViewName;
+                   ? classViewName[..^suffix.Length]
+                   : classViewName;
     }
 }

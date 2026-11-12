@@ -82,9 +82,12 @@ public class TransitioningContentControl : ContentControl
     public TransitionType Transition
     {
         get => (TransitionType)GetValue(TransitionProperty);
-        set => SetValue(
+        set
+        {
+            SetValue(
             TransitionProperty,
             value);
+        }
     }
 
     /// <summary>Identifies the <see cref="RestartTransitionOnContentChange"/> dependency property.</summary>
@@ -102,9 +105,12 @@ public class TransitioningContentControl : ContentControl
     public bool RestartTransitionOnContentChange
     {
         get => (bool)GetValue(RestartTransitionOnContentChangeProperty);
-        set => SetValue(
+        set
+        {
+            SetValue(
             RestartTransitionOnContentChangeProperty,
             BooleanBoxes.Box(value));
+        }
     }
 
     /// <summary>Identifies the <see cref="CustomVisualStates"/> dependency property.</summary>
@@ -139,9 +145,12 @@ public class TransitioningContentControl : ContentControl
     public string CustomVisualStatesName
     {
         get => (string)GetValue(CustomVisualStatesNameProperty);
-        set => SetValue(
+        set
+        {
+            SetValue(
             CustomVisualStatesNameProperty,
             value);
+        }
     }
 
     internal Storyboard? CurrentTransition

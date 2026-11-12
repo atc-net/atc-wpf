@@ -1,8 +1,8 @@
 namespace Atc.Wpf.Controls.Layouts;
 
-/// <summary>
+/// <content>
 /// Tabbed pane groups of a <see cref="DockRegion"/>.
-/// </summary>
+/// </content>
 [TemplatePart(Name = PartPaneHost, Type = typeof(Decorator))]
 [TemplatePart(Name = PartHeaderBorder, Type = typeof(Border))]
 [TemplatePart(Name = PartFloatButton, Type = typeof(ButtonBase))]

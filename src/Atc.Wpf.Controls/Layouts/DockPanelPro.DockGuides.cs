@@ -1,9 +1,9 @@
 namespace Atc.Wpf.Controls.Layouts;
 
-/// <summary>
+/// <content>
 /// Drag-to-dock guides of a <see cref="DockPanelPro"/>: while a floating window is moved, a compass over the panel
 /// offers the regions that hold panes; releasing the window over a target docks its pane there.
-/// </summary>
+/// </content>
 public sealed partial class DockPanelPro
 {
     private const double DockGuideSize = 32;
@@ -279,14 +279,14 @@ public sealed partial class DockPanelPro
     private void HookFloatingWindow(DockFloatingWindow window)
     {
         var handle = new System.Windows.Interop.WindowInteropHelper(window).Handle;
-        if (handle == IntPtr.Zero ||
+        if (handle == nint.Zero ||
             System.Windows.Interop.HwndSource.FromHwnd(handle) is not { } source ||
             floatingWindowHooks.ContainsKey(window))
         {
             return;
         }
 
-        System.Windows.Interop.HwndSourceHook hook = (IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) =>
+        System.Windows.Interop.HwndSourceHook hook = (nint hwnd, int msg, nint wParam, nint lParam, ref bool handled) =>
         {
             switch (msg)
             {
@@ -302,7 +302,7 @@ public sealed partial class DockPanelPro
                     break;
             }
 
-            return IntPtr.Zero;
+            return nint.Zero;
         };
 
         source.AddHook(hook);
@@ -317,7 +317,7 @@ public sealed partial class DockPanelPro
         }
 
         var handle = new System.Windows.Interop.WindowInteropHelper(window).Handle;
-        if (handle != IntPtr.Zero &&
+        if (handle != nint.Zero &&
             System.Windows.Interop.HwndSource.FromHwnd(handle) is { } source)
         {
             source.RemoveHook(hook);

@@ -494,8 +494,8 @@ public sealed class SvgImage : Control
         var resourceUri = new Uri(uri, UriKind.RelativeOrAbsolute);
         var streamInfo = resourceUri.IsAbsoluteUri &&
                          uri.Contains("siteoforigin", StringComparison.OrdinalIgnoreCase)
-            ? Application.GetRemoteStream(resourceUri)
-            : Application.GetResourceStream(resourceUri);
+                             ? Application.GetRemoteStream(resourceUri)
+                             : Application.GetResourceStream(resourceUri);
         return streamInfo?.Stream ?? throw new IOException($"Could not find the resource '{uri}'.");
     }
 

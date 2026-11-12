@@ -16,9 +16,9 @@ internal static class ProcessMainWindowMap
     /// Enumerates the top-level windows and maps each process id to its main window.
     /// </summary>
     /// <returns>The main window handle per process id; processes without a main window are not included.</returns>
-    public static Dictionary<int, IntPtr> Capture()
+    public static Dictionary<int, nint> Capture()
     {
-        var windows = new List<IntPtr>();
+        var windows = new List<nint>();
 
         NativeWindowMethods.EnumWindows(
             (hWnd, _) =>
@@ -26,7 +26,7 @@ internal static class ProcessMainWindowMap
                 windows.Add(hWnd);
                 return true;
             },
-            lParam: IntPtr.Zero);
+            lParam: nint.Zero);
 
         return Build(windows, ReadProcessId, IsMainWindow);
     }
@@ -38,12 +38,12 @@ internal static class ProcessMainWindowMap
     /// <param name="getProcessId">Returns the id of the process that owns a window.</param>
     /// <param name="isMainWindow">Returns whether a window qualifies as a main window.</param>
     /// <returns>The main window handle per process id.</returns>
-    internal static Dictionary<int, IntPtr> Build(
-        IEnumerable<IntPtr> windowsInZOrder,
-        Func<IntPtr, int> getProcessId,
-        Func<IntPtr, bool> isMainWindow)
+    internal static Dictionary<int, nint> Build(
+        IEnumerable<nint> windowsInZOrder,
+        Func<nint, int> getProcessId,
+        Func<nint, bool> isMainWindow)
     {
-        var map = new Dictionary<int, IntPtr>();
+        var map = new Dictionary<int, nint>();
 
         foreach (var hWnd in windowsInZOrder)
         {
@@ -58,14 +58,14 @@ internal static class ProcessMainWindowMap
         return map;
     }
 
-    private static int ReadProcessId(IntPtr hWnd)
+    private static int ReadProcessId(nint hWnd)
     {
         // A window closed in the meantime reports process id 0, and is then not visible either.
         _ = NativeWindowMethods.GetWindowThreadProcessId(hWnd, out var processId);
         return (int)processId;
     }
 
-    private static bool IsMainWindow(IntPtr hWnd)
-        => NativeWindowMethods.GetWindow(hWnd, GW_OWNER) == IntPtr.Zero &&
+    private static bool IsMainWindow(nint hWnd)
+        => NativeWindowMethods.GetWindow(hWnd, GW_OWNER) == nint.Zero &&
            NativeWindowMethods.IsWindowVisible(hWnd);
 }

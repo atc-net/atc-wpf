@@ -37,7 +37,9 @@ public sealed class PollingServiceHostTests
         host.Start();
         host.Stop();
 
-        Assert.Same(polled.Task, await Task.WhenAny(polled.Task, Task.Delay(Timeout)));
+        await polled.Task.WaitAsync(Timeout);
+
+        Assert.True(polled.Task.IsCompletedSuccessfully);
     }
 
     [WpfFact]
@@ -120,10 +122,7 @@ public sealed class PollingServiceHostTests
 
         using (host)
         {
-            var completed = await Task.WhenAny(applied.Task, Task.Delay(Timeout));
-
-            Assert.Same(applied.Task, completed);
-            Assert.True(await applied.Task);
+            Assert.True(await applied.Task.WaitAsync(Timeout));
         }
     }
 

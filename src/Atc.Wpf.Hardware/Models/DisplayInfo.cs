@@ -18,7 +18,7 @@ public sealed partial class DisplayInfo : ObservableObject, IDeviceInfo
     /// <param name="workingArea">The working area of the monitor, excluding taskbars and docked windows.</param>
     /// <param name="isPrimary">Whether the monitor is the primary display.</param>
     public DisplayInfo(
-        IntPtr handle,
+        nint handle,
         string deviceName,
         Rect bounds,
         Rect workingArea,
@@ -34,7 +34,7 @@ public sealed partial class DisplayInfo : ObservableObject, IDeviceInfo
     /// <summary>
     /// Gets the native monitor handle (<c>HMONITOR</c>).
     /// </summary>
-    public IntPtr Handle { get; }
+    public nint Handle { get; }
 
     /// <summary>
     /// Gets the device name of the monitor, for example <c>\\.\DISPLAY1</c>.

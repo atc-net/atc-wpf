@@ -90,12 +90,12 @@ public sealed class WindowService : IWindowService
                     ReadProcessId(hWnd)));
                 return true;
             },
-            lParam: IntPtr.Zero);
+            lParam: nint.Zero);
 
         return snapshots;
     }
 
-    private static int ReadProcessId(IntPtr hWnd)
+    private static int ReadProcessId(nint hWnd)
     {
         _ = NativeWindowMethods.GetWindowThreadProcessId(hWnd, out var pid);
         return (int)pid;
@@ -174,7 +174,7 @@ public sealed class WindowService : IWindowService
         var newcomers = new List<(WindowSnapshot Snapshot, TopLevelWindowInfo? Stale)>();
 
         // One index per poll keeps the diff linear; the collection itself stays the only state.
-        var known = new Dictionary<IntPtr, TopLevelWindowInfo>(Windows.Count);
+        var known = new Dictionary<nint, TopLevelWindowInfo>(Windows.Count);
         foreach (var window in Windows)
         {
             known.TryAdd(window.Handle, window);
@@ -209,7 +209,7 @@ public sealed class WindowService : IWindowService
     /// already shown as disconnected by the previous poll. A window handle never comes back, so keeping them
     /// would only grow the list (and the poll) for as long as the application runs.
     /// </summary>
-    private void MarkMissingAsDisconnected(HashSet<IntPtr> found)
+    private void MarkMissingAsDisconnected(HashSet<nint> found)
     {
         for (var i = Windows.Count - 1; i >= 0; i--)
         {

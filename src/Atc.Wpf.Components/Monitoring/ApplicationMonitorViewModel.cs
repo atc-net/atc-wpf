@@ -168,7 +168,6 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     public ListSortDirection SortDirection
     {
         get => sortDirection;
-
         set
         {
             sortDirection = value;
@@ -205,7 +204,6 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
     public string MatchOnText
     {
         get => filter.MatchOnTextInData;
-
         set
         {
             filter.MatchOnTextInData = value;

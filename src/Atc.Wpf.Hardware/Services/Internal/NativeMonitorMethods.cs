@@ -8,10 +8,10 @@ internal static class NativeMonitorMethods
     public const uint MONITORINFOF_PRIMARY = 1;
 
     public delegate bool MonitorEnumProc(
-        IntPtr hMonitor,
-        IntPtr hdcMonitor,
+        nint hMonitor,
+        nint hdcMonitor,
         ref NativeRect lprcMonitor,
-        IntPtr dwData);
+        nint dwData);
 
     [StructLayout(LayoutKind.Sequential)]
     public struct NativeRect
@@ -45,15 +45,15 @@ internal static class NativeMonitorMethods
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool EnumDisplayMonitors(
-        IntPtr hdc,
-        IntPtr lprcClip,
+        nint hdc,
+        nint lprcClip,
         MonitorEnumProc lpfnEnum,
-        IntPtr dwData);
+        nint dwData);
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "GetMonitorInfoW")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool GetMonitorInfo(
-        IntPtr hMonitor,
+        nint hMonitor,
         ref MonitorInfoEx lpmi);
 }
