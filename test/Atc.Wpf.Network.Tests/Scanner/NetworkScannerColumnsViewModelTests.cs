@@ -24,6 +24,16 @@ public sealed class NetworkScannerColumnsViewModelTests
     }
 
     [Fact]
+    public void Constructor_ShouldShowTheDiscoveryColumnsExceptWorkgroup()
+    {
+        Assert.True(sut.ShowDeviceName);
+        Assert.True(sut.ShowModel);
+        Assert.True(sut.ShowServices);
+        Assert.True(sut.ShowOnvif);
+        Assert.False(sut.ShowWorkgroup);
+    }
+
+    [Fact]
     public void ShowIpAddress_WhenChanged_ShouldRaisePropertyChanged()
     {
         // Arrange

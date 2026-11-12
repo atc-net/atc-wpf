@@ -264,4 +264,334 @@
   <data name="PortsExample" xml:space="preserve">
     <value>z. B. 22, 80, 443</value>
   </data>
+  <data name="Options" xml:space="preserve">
+    <value>Optionen</value>
+  </data>
+  <data name="OptionIcmpPing" xml:space="preserve">
+    <value>Ping</value>
+  </data>
+  <data name="OptionResolveHostName" xml:space="preserve">
+    <value>Hostname (DNS)</value>
+  </data>
+  <data name="OptionResolveHostNameToolTip" xml:space="preserve">
+    <value>Reverse-DNS hat kein Timeout; in Netzwerken ohne es kann ein Scan Minuten dauern</value>
+  </data>
+  <data name="OptionResolveNetBiosName" xml:space="preserve">
+    <value>NetBIOS-Name</value>
+  </data>
+  <data name="OptionResolveMacAddress" xml:space="preserve">
+    <value>MAC-Adresse</value>
+  </data>
+  <data name="OptionResolveVendorFromMacAddress" xml:space="preserve">
+    <value>MAC-Hersteller</value>
+  </data>
+  <data name="OptionResolveVendorFromMacAddressToolTip" xml:space="preserve">
+    <value>Ohne Offline-Suche werden MAC-Adressen an macvendors.com gesendet</value>
+  </data>
+  <data name="OptionDiscoverServices" xml:space="preserve">
+    <value>Dienste (mDNS, SSDP)</value>
+  </data>
+  <data name="OptionDiscoverOnvif" xml:space="preserve">
+    <value>Kameras (ONVIF)</value>
+  </data>
+  <data name="ShowOnlyReachable" xml:space="preserve">
+    <value>Nur erreichbare anzeigen</value>
+  </data>
+  <data name="DeviceName" xml:space="preserve">
+    <value>Gerätename</value>
+  </data>
+  <data name="Workgroup" xml:space="preserve">
+    <value>Arbeitsgruppe</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>Dienste</value>
+  </data>
+  <data name="Onvif" xml:space="preserve">
+    <value>ONVIF</value>
+  </data>
+  <data name="OnvifDevice" xml:space="preserve">
+    <value>Gerät</value>
+  </data>
+  <data name="OnvifCamera" xml:space="preserve">
+    <value>Kamera</value>
+  </data>
+  <data name="CopyInfoDeviceNameFormat1" xml:space="preserve">
+    <value>Gerätename: {0}</value>
+  </data>
+  <data name="CopyInfoWorkgroupFormat1" xml:space="preserve">
+    <value>Arbeitsgruppe: {0}</value>
+  </data>
+  <data name="CopyInfoModelFormat1" xml:space="preserve">
+    <value>Modell: {0}</value>
+  </data>
+  <data name="CopyInfoServicesFormat1" xml:space="preserve">
+    <value>Dienste: {0}</value>
+  </data>
+  <data name="CopyInfoOnvifFormat1" xml:space="preserve">
+    <value>ONVIF: {0}</value>
+  </data>
+  <data name="PortPreset" xml:space="preserve">
+    <value>Port-Vorlage</value>
+  </data>
+  <data name="PortPresetWellKnown" xml:space="preserve">
+    <value>Bekannte</value>
+  </data>
+  <data name="PortPresetWellKnownAndCommon" xml:space="preserve">
+    <value>Bekannte und übliche</value>
+  </data>
+  <data name="PortPresetWeb" xml:space="preserve">
+    <value>Web (HTTP, HTTPS)</value>
+  </data>
+  <data name="PortPresetRemote" xml:space="preserve">
+    <value>Fernzugriff (SSH, Telnet, RDP, VNC)</value>
+  </data>
+  <data name="PortPresetFile" xml:space="preserve">
+    <value>Dateifreigabe (FTP, SMB)</value>
+  </data>
+  <data name="PortPresetIpCameras" xml:space="preserve">
+    <value>IP-Kameras</value>
+  </data>
+  <data name="LocalNetwork" xml:space="preserve">
+    <value>Lokales Netzwerk</value>
+  </data>
+  <data name="RangeCidr" xml:space="preserve">
+    <value>Bereich (CIDR)</value>
+  </data>
+  <data name="RangeCidrExample" xml:space="preserve">
+    <value>z. B. 192.168.1.0/24, 10.0.0.0/24</value>
+  </data>
+  <data name="StartIpToolTip" xml:space="preserve">
+    <value>Eine IPv4-Adresse oder eine einzelne IPv6-Adresse ohne Endadresse</value>
+  </data>
+  <data name="CopyAllEntries" xml:space="preserve">
+    <value>Alle Zeilen kopieren (CSV)</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportieren...</value>
+  </data>
+  <data name="OpenInBrowser" xml:space="preserve">
+    <value>Im Browser öffnen</value>
+  </data>
+  <data name="WakeOnLan" xml:space="preserve">
+    <value>Wake-on-LAN</value>
+  </data>
+  <data name="ConnectWithVnc" xml:space="preserve">
+    <value>Mit VNC verbinden</value>
+  </data>
+  <data name="RescanHost" xml:space="preserve">
+    <value>Erneut scannen</value>
+  </data>
+  <data name="OnvifNotAuthorized" xml:space="preserve">
+    <value>Falscher Benutzername oder falsches Passwort, oder das Konto hat keine ONVIF-Rechte</value>
+  </data>
+  <data name="OnvifTimeout" xml:space="preserve">
+    <value>Die Kamera hat nicht geantwortet</value>
+  </data>
+  <data name="OnvifErrorFormat1" xml:space="preserve">
+    <value>ONVIF-Fehler: {0}</value>
+  </data>
+  <data name="OnvifDeviceServiceUrl" xml:space="preserve">
+    <value>Gerätedienst-URL</value>
+  </data>
+  <data name="OnvifUserName" xml:space="preserve">
+    <value>Benutzername</value>
+  </data>
+  <data name="OnvifPassword" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="OnvifRead" xml:space="preserve">
+    <value>Kamera lesen</value>
+  </data>
+  <data name="OnvifManufacturer" xml:space="preserve">
+    <value>Hersteller</value>
+  </data>
+  <data name="OnvifFirmware" xml:space="preserve">
+    <value>Firmware</value>
+  </data>
+  <data name="OnvifSerialNumber" xml:space="preserve">
+    <value>Seriennummer</value>
+  </data>
+  <data name="OnvifProfile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="OnvifResolution" xml:space="preserve">
+    <value>Auflösung</value>
+  </data>
+  <data name="OnvifEncoding" xml:space="preserve">
+    <value>Kodierung</value>
+  </data>
+  <data name="OnvifStreamUri" xml:space="preserve">
+    <value>Stream-URL</value>
+  </data>
+  <data name="OnvifCopyStreamUri" xml:space="preserve">
+    <value>Stream-URL kopieren</value>
+  </data>
+  <data name="OnvifUseStream" xml:space="preserve">
+    <value>Stream verwenden</value>
+  </data>
+  <data name="DiscoveryErrorFormat2" xml:space="preserve">
+    <value>{0} fehlgeschlagen: {1}</value>
+  </data>
+  <data name="Discover" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="DiscoveryDuration" xml:space="preserve">
+    <value>Lauschen (ms)</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Geräte</value>
+  </data>
+  <data name="UnknownHostFormat1" xml:space="preserve">
+    <value>Unbekannter Host: {0}</value>
+  </data>
+  <data name="TracerouteErrorFormat1" xml:space="preserve">
+    <value>Traceroute fehlgeschlagen: {0}</value>
+  </data>
+  <data name="MagicPacketSentFormat1" xml:space="preserve">
+    <value>Magic Packet an {0} gesendet</value>
+  </data>
+  <data name="WakeOnLanErrorFormat1" xml:space="preserve">
+    <value>Wake-on-LAN fehlgeschlagen: {0}</value>
+  </data>
+  <data name="NtpErrorFormat1" xml:space="preserve">
+    <value>NTP-Abfrage fehlgeschlagen: {0}</value>
+  </data>
+  <data name="NtpTimeout" xml:space="preserve">
+    <value>Der NTP-Server hat nicht geantwortet</value>
+  </data>
+  <data name="TracerouteTarget" xml:space="preserve">
+    <value>Host oder IP-Adresse</value>
+  </data>
+  <data name="TracerouteMaxHops" xml:space="preserve">
+    <value>Max. Hops</value>
+  </data>
+  <data name="TracerouteTimeoutPerHop" xml:space="preserve">
+    <value>Timeout pro Hop (ms)</value>
+  </data>
+  <data name="TracerouteResolveHostNames" xml:space="preserve">
+    <value>Namen auflösen</value>
+  </data>
+  <data name="TracerouteStart" xml:space="preserve">
+    <value>Verfolgen</value>
+  </data>
+  <data name="WakeOnLanBroadcastAddress" xml:space="preserve">
+    <value>Broadcast-Adresse</value>
+  </data>
+  <data name="WakeOnLanSend" xml:space="preserve">
+    <value>Gerät aufwecken</value>
+  </data>
+  <data name="NtpServer" xml:space="preserve">
+    <value>NTP-Server</value>
+  </data>
+  <data name="NtpQuery" xml:space="preserve">
+    <value>Zeit abfragen</value>
+  </data>
+  <data name="NtpServerTime" xml:space="preserve">
+    <value>Serverzeit</value>
+  </data>
+  <data name="NtpOffset" xml:space="preserve">
+    <value>Uhrabweichung</value>
+  </data>
+  <data name="NtpRoundTrip" xml:space="preserve">
+    <value>Umlaufzeit</value>
+  </data>
+  <data name="NtpStratum" xml:space="preserve">
+    <value>Stratum</value>
+  </data>
+  <data name="NtpServerAddress" xml:space="preserve">
+    <value>Serveradresse</value>
+  </data>
+  <data name="TimeoutsInMs" xml:space="preserve">
+    <value>Timeouts (ms)</value>
+  </data>
+  <data name="TimeoutPing" xml:space="preserve">
+    <value>Ping</value>
+  </data>
+  <data name="TimeoutTcp" xml:space="preserve">
+    <value>TCP</value>
+  </data>
+  <data name="TimeoutHttp" xml:space="preserve">
+    <value>HTTP</value>
+  </data>
+  <data name="TimeoutDiscovery" xml:space="preserve">
+    <value>Erkennung</value>
+  </data>
+  <data name="TimeoutNetBios" xml:space="preserve">
+    <value>NetBIOS</value>
+  </data>
+  <data name="VirtualNetworkFormat1" xml:space="preserve">
+    <value>{0} (virtuell)</value>
+  </data>
+  <data name="ConnectWithRemoteDesktop" xml:space="preserve">
+    <value>Mit Remotedesktop verbinden</value>
+  </data>
+  <data name="TracerouteMenu" xml:space="preserve">
+    <value>Route verfolgen...</value>
+  </data>
+  <data name="OfflineHosts" xml:space="preserve">
+    <value>Offline-Hosts</value>
+  </data>
+  <data name="LastSeen" xml:space="preserve">
+    <value>Zuletzt gesehen</value>
+  </data>
+  <data name="VncScale" xml:space="preserve">
+    <value>Skalierung</value>
+  </data>
+  <data name="VncScaleFit" xml:space="preserve">
+    <value>Einpassen</value>
+  </data>
+  <data name="VncScaleFill" xml:space="preserve">
+    <value>Füllen</value>
+  </data>
+  <data name="VncScaleOriginal" xml:space="preserve">
+    <value>1:1</value>
+  </data>
+  <data name="VncViewOnly" xml:space="preserve">
+    <value>Nur anzeigen</value>
+  </data>
+  <data name="VncShareClipboard" xml:space="preserve">
+    <value>Zwischenablage teilen</value>
+  </data>
+  <data name="VncSendClipboard" xml:space="preserve">
+    <value>Zwischenablage senden</value>
+  </data>
+  <data name="VncRetry" xml:space="preserve">
+    <value>Erneut versuchen</value>
+  </data>
+  <data name="ClientConnectedFormat1" xml:space="preserve">
+    <value>Verbunden mit {0}</value>
+  </data>
+  <data name="ClientDisconnected" xml:space="preserve">
+    <value>Getrennt</value>
+  </data>
+  <data name="ClientConnectFailedFormat1" xml:space="preserve">
+    <value>Verbindung zu {0} fehlgeschlagen</value>
+  </data>
+  <data name="ClientInvalidHex" xml:space="preserve">
+    <value>Ungültiges Hex: Paare hexadezimaler Ziffern verwenden, z. B. 48 65 6C</value>
+  </data>
+  <data name="ClientHost" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="ClientSend" xml:space="preserve">
+    <value>Senden</value>
+  </data>
+  <data name="ClientLineEnding" xml:space="preserve">
+    <value>An gesendeten Text angehängtes Zeilenende</value>
+  </data>
+  <data name="ClientShowReceivedAsHex" xml:space="preserve">
+    <value>Empfangenes als Hex anzeigen</value>
+  </data>
+  <data name="ClientSendAsHex" xml:space="preserve">
+    <value>Hex senden</value>
+  </data>
+  <data name="ClientFraming" xml:space="preserve">
+    <value>Nachrichtenrahmung</value>
+  </data>
+  <data name="ClientFramingTermination" xml:space="preserve">
+    <value>Nachrichtenende</value>
+  </data>
 </root>

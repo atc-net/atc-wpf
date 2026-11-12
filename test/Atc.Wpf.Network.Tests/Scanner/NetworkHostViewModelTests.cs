@@ -128,4 +128,98 @@ public sealed class NetworkHostViewModelTests
         Assert.True(propertyChangedRaised);
         Assert.Equal("00:11:22:33:44:55", sut.MacAddress);
     }
+
+    [Fact]
+    public void OpenPortNumbers_WhenSet_ShouldRaisePropertyChangedForCommaList()
+    {
+        var sut = new NetworkHostViewModel(IPAddress.Parse("192.168.1.1"));
+        var raised = new List<string?>();
+        sut.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+
+        sut.OpenPortNumbers = [80];
+
+        Assert.Contains(raised, x => string.Equals(x, nameof(NetworkHostViewModel.OpenPortNumbersAsCommaList), StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Constructor_WithScanResult_ShouldKeepASnapshotOfTheOpenPorts()
+    {
+        var result = new IPScanResult(IPAddress.Parse("192.168.1.1"));
+        result.Ports.Add(OpenTcpPort(80));
+
+        var sut = new NetworkHostViewModel(result);
+        result.Ports.Add(OpenTcpPort(22));
+
+        Assert.Equal([80], sut.OpenPortNumbers);
+    }
+
+    [Fact]
+    public void Update_WithScanResult_ShouldCopyTheValues()
+    {
+        var ipAddress = IPAddress.Parse("192.168.1.1");
+        var sut = new NetworkHostViewModel(ipAddress);
+        var result = new IPScanResult(ipAddress)
+        {
+            PingStatus = new PingStatusResult(ipAddress, IPStatus.Success, pingInMs: 5),
+            Hostname = "nas.local",
+            MacAddress = "00-11-22-33-44-55",
+            MacVendor = "Vendor",
+        };
+        result.Ports.Add(OpenTcpPort(443));
+        result.Ports.Add(OpenTcpPort(22));
+
+        sut.Update(result);
+
+        Assert.Equal(IPStatus.Success, sut.PingStatus?.Status);
+        Assert.Equal("nas.local", sut.Hostname);
+        Assert.Equal("00-11-22-33-44-55", sut.MacAddress);
+        Assert.Equal("Vendor", sut.MacVendor);
+        Assert.Equal([22, 443], sut.OpenPortNumbers);
+        Assert.Equal("22,443", sut.OpenPortNumbersAsCommaList);
+        Assert.NotNull(sut.PingQualityCategoryToolTip);
+    }
+
+    [Fact]
+    public void Update_WithoutPingStatus_ShouldSetUnknownStatusAndNoToolTip()
+    {
+        var ipAddress = IPAddress.Parse("192.168.1.1");
+        var sut = new NetworkHostViewModel(ipAddress);
+
+        sut.Update(new IPScanResult(ipAddress));
+
+        Assert.Equal(IPStatus.Unknown, sut.PingStatus?.Status);
+        Assert.Null(sut.PingQualityCategoryToolTip);
+    }
+
+    [Fact]
+    public void Update_WithPingStatus_ShouldLocalizeTheToolTipInTheUiCulture()
+    {
+        var ipAddress = IPAddress.Parse("192.168.1.1");
+        var sut = new NetworkHostViewModel(ipAddress);
+        var result = new IPScanResult(ipAddress)
+        {
+            PingStatus = new PingStatusResult(ipAddress, IPStatus.Success, pingInMs: 20),
+        };
+
+        var previous = CultureInfo.CurrentUICulture;
+        try
+        {
+            CultureInfo.CurrentUICulture = new CultureInfo("da-DK");
+            sut.Update(result);
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = previous;
+        }
+
+        Assert.Equal("Fremragende - 20ms", sut.PingQualityCategoryToolTip);
+    }
+
+    private static IPScanPortResult OpenTcpPort(ushort port)
+        => new()
+        {
+            Port = port,
+            TransportProtocol = TransportProtocolType.Tcp,
+            CanConnect = true,
+        };
 }

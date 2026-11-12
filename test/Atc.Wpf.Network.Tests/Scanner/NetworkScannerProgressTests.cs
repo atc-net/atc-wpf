@@ -64,6 +64,21 @@ public sealed class NetworkScannerProgressTests
     }
 
     [StaFact]
+    public void Sorted_HostWhoseSortValueChanges_MovesToItsPlace()
+    {
+        using var sut = CreateSutShowingEverything();
+        var view = CollectionViewSource.GetDefaultView(sut.Entries);
+        sut.ApplyProgress(Named(HostA, "b-host"), 10, 1, 10);
+        sut.ApplyProgress(Named(HostB, "c-host"), 10, 2, 20);
+        sut.ApplySort(nameof(NetworkHostViewModel.Hostname), System.ComponentModel.ListSortDirection.Ascending);
+
+        sut.ApplyProgress(Named(HostB, "a-host"), 10, 3, 30);
+        DrainDispatcher(); // live sorting re-positions on the dispatcher, as in the running UI
+
+        Assert.Equal(HostB, view.Cast<NetworkHostViewModel>().First().IpAddress);
+    }
+
+    [StaFact]
     public void ProgressReports_FromAWorkerThread_AreAppliedInOneDispatcherCallback()
     {
         using var sut = CreateSutShowingEverything();
@@ -85,6 +100,30 @@ public sealed class NetworkScannerProgressTests
         Assert.Equal(1000, sut.Entries.Count);
         Assert.Equal(1000, sut.BusyIndicatorCurrentValue);
         Assert.Equal(1, sut.ProgressDispatchCount);
+    }
+
+    [StaFact]
+    public void ProgressReports_UpdateTheEntryCountOncePerBatch()
+    {
+        using var sut = CreateSutShowingEverything();
+        var countChanges = 0;
+        sut.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(NetworkScannerViewModel.EntryCountInfo))
+            {
+                countChanges++;
+            }
+        };
+
+        for (var i = 0; i < 200; i++)
+        {
+            sut.EnqueueProgress(Result(new IPAddress([10, 2, 0, (byte)i]), IPStatus.TimedOut), 200, i + 1, (i + 1) / 2.0);
+        }
+
+        DrainDispatcher();
+
+        Assert.Equal(1, countChanges);
+        Assert.StartsWith("200 /", sut.EntryCountInfo, StringComparison.Ordinal);
     }
 
     [StaFact]
@@ -112,9 +151,8 @@ public sealed class NetworkScannerProgressTests
         var scan = sut.ScanCommand.ExecuteAsync(null);
         sut.Dispose();
 
-        var finished = await Task.WhenAny(scan, Task.Delay(TimeSpan.FromSeconds(30)));
+        await scan.WaitAsync(TimeSpan.FromSeconds(30));
 
-        Assert.Same(scan, finished);
         Assert.False(sut.IsBusy);
     }
 
@@ -130,6 +168,15 @@ public sealed class NetworkScannerProgressTests
         sut.Filter.ShowOnlyWithOpenPorts = false;
         return sut;
     }
+
+    private static IPScanResult Named(
+        IPAddress ipAddress,
+        string hostname)
+        => new(ipAddress)
+        {
+            PingStatus = new PingStatusResult(ipAddress, IPStatus.Success, pingInMs: 5),
+            Hostname = hostname,
+        };
 
     private static IPScanResult Result(
         IPAddress ipAddress,

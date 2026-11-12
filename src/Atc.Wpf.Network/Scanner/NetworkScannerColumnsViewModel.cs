@@ -52,4 +52,34 @@ public partial class NetworkScannerColumnsViewModel : ViewModelBase
     /// </summary>
     [ObservableProperty]
     private bool showTotalInMs = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the device name column is visible.
+    /// </summary>
+    [ObservableProperty]
+    private bool showDeviceName = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the NetBIOS workgroup column is visible.
+    /// </summary>
+    [ObservableProperty]
+    private bool showWorkgroup;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the model column is visible.
+    /// </summary>
+    [ObservableProperty]
+    private bool showModel = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the services column is visible.
+    /// </summary>
+    [ObservableProperty]
+    private bool showServices = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the ONVIF column is visible.
+    /// </summary>
+    [ObservableProperty]
+    private bool showOnvif = true;
 }

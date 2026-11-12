@@ -500,5 +500,976 @@ namespace Atc.Wpf.Network.Resources {
                 return ResourceManager.GetString("VncPort", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        public static string Options {
+            get {
+                return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ping.
+        /// </summary>
+        public static string OptionIcmpPing {
+            get {
+                return ResourceManager.GetString("OptionIcmpPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Host name (DNS).
+        /// </summary>
+        public static string OptionResolveHostName {
+            get {
+                return ResourceManager.GetString("OptionResolveHostName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reverse DNS has no timeout; on networks without it a scan can take minutes.
+        /// </summary>
+        public static string OptionResolveHostNameToolTip {
+            get {
+                return ResourceManager.GetString("OptionResolveHostNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NetBIOS name.
+        /// </summary>
+        public static string OptionResolveNetBiosName {
+            get {
+                return ResourceManager.GetString("OptionResolveNetBiosName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAC address.
+        /// </summary>
+        public static string OptionResolveMacAddress {
+            get {
+                return ResourceManager.GetString("OptionResolveMacAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MAC vendor.
+        /// </summary>
+        public static string OptionResolveVendorFromMacAddress {
+            get {
+                return ResourceManager.GetString("OptionResolveVendorFromMacAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Without an offline lookup, MAC addresses are sent to macvendors.com.
+        /// </summary>
+        public static string OptionResolveVendorFromMacAddressToolTip {
+            get {
+                return ResourceManager.GetString("OptionResolveVendorFromMacAddressToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Services (mDNS, SSDP).
+        /// </summary>
+        public static string OptionDiscoverServices {
+            get {
+                return ResourceManager.GetString("OptionDiscoverServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cameras (ONVIF).
+        /// </summary>
+        public static string OptionDiscoverOnvif {
+            get {
+                return ResourceManager.GetString("OptionDiscoverOnvif", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Show only reachable.
+        /// </summary>
+        public static string ShowOnlyReachable {
+            get {
+                return ResourceManager.GetString("ShowOnlyReachable", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Device name.
+        /// </summary>
+        public static string DeviceName {
+            get {
+                return ResourceManager.GetString("DeviceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workgroup.
+        /// </summary>
+        public static string Workgroup {
+            get {
+                return ResourceManager.GetString("Workgroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string Model {
+            get {
+                return ResourceManager.GetString("Model", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Services.
+        /// </summary>
+        public static string Services {
+            get {
+                return ResourceManager.GetString("Services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ONVIF.
+        /// </summary>
+        public static string Onvif {
+            get {
+                return ResourceManager.GetString("Onvif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device.
+        /// </summary>
+        public static string OnvifDevice {
+            get {
+                return ResourceManager.GetString("OnvifDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Camera.
+        /// </summary>
+        public static string OnvifCamera {
+            get {
+                return ResourceManager.GetString("OnvifCamera", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Device name: {0}.
+        /// </summary>
+        public static string CopyInfoDeviceNameFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoDeviceNameFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workgroup: {0}.
+        /// </summary>
+        public static string CopyInfoWorkgroupFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoWorkgroupFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model: {0}.
+        /// </summary>
+        public static string CopyInfoModelFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoModelFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Services: {0}.
+        /// </summary>
+        public static string CopyInfoServicesFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoServicesFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ONVIF: {0}.
+        /// </summary>
+        public static string CopyInfoOnvifFormat1 {
+            get {
+                return ResourceManager.GetString("CopyInfoOnvifFormat1", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Port preset.
+        /// </summary>
+        public static string PortPreset {
+            get {
+                return ResourceManager.GetString("PortPreset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Well-known.
+        /// </summary>
+        public static string PortPresetWellKnown {
+            get {
+                return ResourceManager.GetString("PortPresetWellKnown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Well-known and common.
+        /// </summary>
+        public static string PortPresetWellKnownAndCommon {
+            get {
+                return ResourceManager.GetString("PortPresetWellKnownAndCommon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web (HTTP, HTTPS).
+        /// </summary>
+        public static string PortPresetWeb {
+            get {
+                return ResourceManager.GetString("PortPresetWeb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remote (SSH, Telnet, RDP, VNC).
+        /// </summary>
+        public static string PortPresetRemote {
+            get {
+                return ResourceManager.GetString("PortPresetRemote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File sharing (FTP, SMB).
+        /// </summary>
+        public static string PortPresetFile {
+            get {
+                return ResourceManager.GetString("PortPresetFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP cameras.
+        /// </summary>
+        public static string PortPresetIpCameras {
+            get {
+                return ResourceManager.GetString("PortPresetIpCameras", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Local network.
+        /// </summary>
+        public static string LocalNetwork {
+            get {
+                return ResourceManager.GetString("LocalNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range (CIDR).
+        /// </summary>
+        public static string RangeCidr {
+            get {
+                return ResourceManager.GetString("RangeCidr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g. 192.168.1.0/24, 10.0.0.0/24.
+        /// </summary>
+        public static string RangeCidrExample {
+            get {
+                return ResourceManager.GetString("RangeCidrExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An IPv4 address, or a single IPv6 address with no end address.
+        /// </summary>
+        public static string StartIpToolTip {
+            get {
+                return ResourceManager.GetString("StartIpToolTip", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Copy all rows (CSV).
+        /// </summary>
+        public static string CopyAllEntries {
+            get {
+                return ResourceManager.GetString("CopyAllEntries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export....
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Open in browser.
+        /// </summary>
+        public static string OpenInBrowser {
+            get {
+                return ResourceManager.GetString("OpenInBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wake-on-LAN.
+        /// </summary>
+        public static string WakeOnLan {
+            get {
+                return ResourceManager.GetString("WakeOnLan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect with VNC.
+        /// </summary>
+        public static string ConnectWithVnc {
+            get {
+                return ResourceManager.GetString("ConnectWithVnc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan again.
+        /// </summary>
+        public static string RescanHost {
+            get {
+                return ResourceManager.GetString("RescanHost", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong user name or password, or the account has no ONVIF rights.
+        /// </summary>
+        public static string OnvifNotAuthorized {
+            get {
+                return ResourceManager.GetString("OnvifNotAuthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The camera did not answer.
+        /// </summary>
+        public static string OnvifTimeout {
+            get {
+                return ResourceManager.GetString("OnvifTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ONVIF error: {0}.
+        /// </summary>
+        public static string OnvifErrorFormat1 {
+            get {
+                return ResourceManager.GetString("OnvifErrorFormat1", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Device service URL.
+        /// </summary>
+        public static string OnvifDeviceServiceUrl {
+            get {
+                return ResourceManager.GetString("OnvifDeviceServiceUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name.
+        /// </summary>
+        public static string OnvifUserName {
+            get {
+                return ResourceManager.GetString("OnvifUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string OnvifPassword {
+            get {
+                return ResourceManager.GetString("OnvifPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read camera.
+        /// </summary>
+        public static string OnvifRead {
+            get {
+                return ResourceManager.GetString("OnvifRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manufacturer.
+        /// </summary>
+        public static string OnvifManufacturer {
+            get {
+                return ResourceManager.GetString("OnvifManufacturer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firmware.
+        /// </summary>
+        public static string OnvifFirmware {
+            get {
+                return ResourceManager.GetString("OnvifFirmware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial number.
+        /// </summary>
+        public static string OnvifSerialNumber {
+            get {
+                return ResourceManager.GetString("OnvifSerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string OnvifProfile {
+            get {
+                return ResourceManager.GetString("OnvifProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resolution.
+        /// </summary>
+        public static string OnvifResolution {
+            get {
+                return ResourceManager.GetString("OnvifResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encoding.
+        /// </summary>
+        public static string OnvifEncoding {
+            get {
+                return ResourceManager.GetString("OnvifEncoding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stream URL.
+        /// </summary>
+        public static string OnvifStreamUri {
+            get {
+                return ResourceManager.GetString("OnvifStreamUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy stream URL.
+        /// </summary>
+        public static string OnvifCopyStreamUri {
+            get {
+                return ResourceManager.GetString("OnvifCopyStreamUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use stream.
+        /// </summary>
+        public static string OnvifUseStream {
+            get {
+                return ResourceManager.GetString("OnvifUseStream", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to {0} failed: {1}.
+        /// </summary>
+        public static string DiscoveryErrorFormat2 {
+            get {
+                return ResourceManager.GetString("DiscoveryErrorFormat2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discover.
+        /// </summary>
+        public static string Discover {
+            get {
+                return ResourceManager.GetString("Discover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Listen (ms).
+        /// </summary>
+        public static string DiscoveryDuration {
+            get {
+                return ResourceManager.GetString("DiscoveryDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Devices.
+        /// </summary>
+        public static string Devices {
+            get {
+                return ResourceManager.GetString("Devices", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown host: {0}.
+        /// </summary>
+        public static string UnknownHostFormat1 {
+            get {
+                return ResourceManager.GetString("UnknownHostFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traceroute failed: {0}.
+        /// </summary>
+        public static string TracerouteErrorFormat1 {
+            get {
+                return ResourceManager.GetString("TracerouteErrorFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Magic packet sent to {0}.
+        /// </summary>
+        public static string MagicPacketSentFormat1 {
+            get {
+                return ResourceManager.GetString("MagicPacketSentFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wake-on-LAN failed: {0}.
+        /// </summary>
+        public static string WakeOnLanErrorFormat1 {
+            get {
+                return ResourceManager.GetString("WakeOnLanErrorFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NTP query failed: {0}.
+        /// </summary>
+        public static string NtpErrorFormat1 {
+            get {
+                return ResourceManager.GetString("NtpErrorFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The NTP server did not answer.
+        /// </summary>
+        public static string NtpTimeout {
+            get {
+                return ResourceManager.GetString("NtpTimeout", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Host or IP address.
+        /// </summary>
+        public static string TracerouteTarget {
+            get {
+                return ResourceManager.GetString("TracerouteTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max hops.
+        /// </summary>
+        public static string TracerouteMaxHops {
+            get {
+                return ResourceManager.GetString("TracerouteMaxHops", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout per hop (ms).
+        /// </summary>
+        public static string TracerouteTimeoutPerHop {
+            get {
+                return ResourceManager.GetString("TracerouteTimeoutPerHop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Look up names.
+        /// </summary>
+        public static string TracerouteResolveHostNames {
+            get {
+                return ResourceManager.GetString("TracerouteResolveHostNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trace.
+        /// </summary>
+        public static string TracerouteStart {
+            get {
+                return ResourceManager.GetString("TracerouteStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broadcast address.
+        /// </summary>
+        public static string WakeOnLanBroadcastAddress {
+            get {
+                return ResourceManager.GetString("WakeOnLanBroadcastAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wake device.
+        /// </summary>
+        public static string WakeOnLanSend {
+            get {
+                return ResourceManager.GetString("WakeOnLanSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NTP server.
+        /// </summary>
+        public static string NtpServer {
+            get {
+                return ResourceManager.GetString("NtpServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get time.
+        /// </summary>
+        public static string NtpQuery {
+            get {
+                return ResourceManager.GetString("NtpQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server time.
+        /// </summary>
+        public static string NtpServerTime {
+            get {
+                return ResourceManager.GetString("NtpServerTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clock offset.
+        /// </summary>
+        public static string NtpOffset {
+            get {
+                return ResourceManager.GetString("NtpOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Round trip.
+        /// </summary>
+        public static string NtpRoundTrip {
+            get {
+                return ResourceManager.GetString("NtpRoundTrip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stratum.
+        /// </summary>
+        public static string NtpStratum {
+            get {
+                return ResourceManager.GetString("NtpStratum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server address.
+        /// </summary>
+        public static string NtpServerAddress {
+            get {
+                return ResourceManager.GetString("NtpServerAddress", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Timeouts (ms).
+        /// </summary>
+        public static string TimeoutsInMs {
+            get {
+                return ResourceManager.GetString("TimeoutsInMs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ping.
+        /// </summary>
+        public static string TimeoutPing {
+            get {
+                return ResourceManager.GetString("TimeoutPing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TCP.
+        /// </summary>
+        public static string TimeoutTcp {
+            get {
+                return ResourceManager.GetString("TimeoutTcp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTTP.
+        /// </summary>
+        public static string TimeoutHttp {
+            get {
+                return ResourceManager.GetString("TimeoutHttp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discovery.
+        /// </summary>
+        public static string TimeoutDiscovery {
+            get {
+                return ResourceManager.GetString("TimeoutDiscovery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NetBIOS.
+        /// </summary>
+        public static string TimeoutNetBios {
+            get {
+                return ResourceManager.GetString("TimeoutNetBios", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to {0} (virtual).
+        /// </summary>
+        public static string VirtualNetworkFormat1 {
+            get {
+                return ResourceManager.GetString("VirtualNetworkFormat1", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Connect with Remote Desktop.
+        /// </summary>
+        public static string ConnectWithRemoteDesktop {
+            get {
+                return ResourceManager.GetString("ConnectWithRemoteDesktop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trace route....
+        /// </summary>
+        public static string TracerouteMenu {
+            get {
+                return ResourceManager.GetString("TracerouteMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline hosts.
+        /// </summary>
+        public static string OfflineHosts {
+            get {
+                return ResourceManager.GetString("OfflineHosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last seen.
+        /// </summary>
+        public static string LastSeen {
+            get {
+                return ResourceManager.GetString("LastSeen", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Scale.
+        /// </summary>
+        public static string VncScale {
+            get {
+                return ResourceManager.GetString("VncScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fit.
+        /// </summary>
+        public static string VncScaleFit {
+            get {
+                return ResourceManager.GetString("VncScaleFit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill.
+        /// </summary>
+        public static string VncScaleFill {
+            get {
+                return ResourceManager.GetString("VncScaleFill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1:1.
+        /// </summary>
+        public static string VncScaleOriginal {
+            get {
+                return ResourceManager.GetString("VncScaleOriginal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View only.
+        /// </summary>
+        public static string VncViewOnly {
+            get {
+                return ResourceManager.GetString("VncViewOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share clipboard.
+        /// </summary>
+        public static string VncShareClipboard {
+            get {
+                return ResourceManager.GetString("VncShareClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send clipboard.
+        /// </summary>
+        public static string VncSendClipboard {
+            get {
+                return ResourceManager.GetString("VncSendClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        public static string VncRetry {
+            get {
+                return ResourceManager.GetString("VncRetry", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Connected to {0}.
+        /// </summary>
+        public static string ClientConnectedFormat1 {
+            get {
+                return ResourceManager.GetString("ClientConnectedFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnected.
+        /// </summary>
+        public static string ClientDisconnected {
+            get {
+                return ResourceManager.GetString("ClientDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not connect to {0}.
+        /// </summary>
+        public static string ClientConnectFailedFormat1 {
+            get {
+                return ResourceManager.GetString("ClientConnectFailedFormat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid hex: use pairs of hexadecimal digits, such as 48 65 6C.
+        /// </summary>
+        public static string ClientInvalidHex {
+            get {
+                return ResourceManager.GetString("ClientInvalidHex", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Host.
+        /// </summary>
+        public static string ClientHost {
+            get {
+                return ResourceManager.GetString("ClientHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string ClientSend {
+            get {
+                return ResourceManager.GetString("ClientSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line ending added to sent text.
+        /// </summary>
+        public static string ClientLineEnding {
+            get {
+                return ResourceManager.GetString("ClientLineEnding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show received as hex.
+        /// </summary>
+        public static string ClientShowReceivedAsHex {
+            get {
+                return ResourceManager.GetString("ClientShowReceivedAsHex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send hex.
+        /// </summary>
+        public static string ClientSendAsHex {
+            get {
+                return ResourceManager.GetString("ClientSendAsHex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message framing.
+        /// </summary>
+        public static string ClientFraming {
+            get {
+                return ResourceManager.GetString("ClientFraming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message end.
+        /// </summary>
+        public static string ClientFramingTermination {
+            get {
+                return ResourceManager.GetString("ClientFramingTermination", resourceCulture);
+            }
+        }
     }
 }

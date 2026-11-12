@@ -30,45 +30,91 @@
             <network:NetworkScannerView DataContext="{Binding Path=NetworkScanner}" />
         </GroupBox>
 
-        <GroupBox
+        <atc:GridEx
             Grid.Row="2"
             Margin="0,10,0,0"
-            Padding="10"
-            DataContext="{Binding Path=NetworkScanner.SelectedEntry}"
-            Header="Selected Entry">
-            <atc:GridEx Columns="*,*,*" Rows="Auto,Auto">
-                <atc:LabelTextInfo
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    HideAreas="All"
-                    LabelText="IP Address"
-                    Text="{Binding Path=IpAddress, FallbackValue='-', TargetNullValue='-'}" />
-                <atc:LabelTextInfo
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    HideAreas="All"
-                    LabelText="Hostname"
-                    Text="{Binding Path=Hostname, FallbackValue='-', TargetNullValue='-'}" />
-                <atc:LabelTextInfo
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    HideAreas="All"
-                    LabelText="MAC Address"
-                    Text="{Binding Path=MacAddress, FallbackValue='-', TargetNullValue='-'}" />
-                <atc:LabelTextInfo
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    HideAreas="All"
-                    LabelText="MAC Vendor"
-                    Text="{Binding Path=MacVendor, FallbackValue='-', TargetNullValue='-'}" />
-                <atc:LabelTextInfo
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    HideAreas="All"
-                    LabelText="Open Ports"
-                    Text="{Binding Path=OpenPortNumbersAsCommaList, FallbackValue='-', TargetNullValue='-'}" />
-            </atc:GridEx>
-        </GroupBox>
+            Columns="2*,10,*"
+            Rows="Auto">
+            <GroupBox
+                Grid.Column="0"
+                Padding="10"
+                DataContext="{Binding Path=NetworkScanner.SelectedEntry}"
+                Header="Selected Entry">
+                <atc:GridEx Columns="*,*,*" Rows="Auto,Auto,Auto,Auto">
+                    <atc:LabelTextInfo
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HideAreas="All"
+                        LabelText="IP Address"
+                        Text="{Binding Path=IpAddress, FallbackValue='-', TargetNullValue='-'}" />
+                    <atc:LabelTextInfo
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HideAreas="All"
+                        LabelText="Hostname"
+                        Text="{Binding Path=Hostname, FallbackValue='-', TargetNullValue='-'}" />
+                    <atc:LabelTextInfo
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HideAreas="All"
+                        LabelText="MAC Address"
+                        Text="{Binding Path=MacAddress, FallbackValue='-', TargetNullValue='-'}" />
+                    <atc:LabelTextInfo
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HideAreas="All"
+                        LabelText="MAC Vendor"
+                        Text="{Binding Path=MacVendor, FallbackValue='-', TargetNullValue='-'}" />
+                    <atc:LabelTextInfo
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HideAreas="All"
+                        LabelText="Open Ports"
+                        Text="{Binding Path=OpenPortNumbersAsCommaList, FallbackValue='-', TargetNullValue='-'}" />
+                    <atc:LabelTextInfo
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        HideAreas="All"
+                        LabelText="Device Name"
+                        Text="{Binding Path=DeviceName, FallbackValue='-', TargetNullValue='-'}" />
+                    <atc:LabelTextInfo
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        HideAreas="All"
+                        LabelText="Model"
+                        Text="{Binding Path=Model, FallbackValue='-', TargetNullValue='-'}" />
+                    <network:NetworkHostDetailsView
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        MaxHeight="140" />
+                </atc:GridEx>
+            </GroupBox>
+
+            <GroupBox
+                Grid.Column="2"
+                Padding="10"
+                Header="Events">
+                <DockPanel>
+                    <CheckBox
+                        Margin="0,0,0,6"
+                        Content="Only cameras (sample HostFilter: ONVIF, RTSP port or _rtsp service)"
+                        DockPanel.Dock="Top"
+                        IsChecked="{Binding Path=ShowOnlyCameras}" />
+                    <Button
+                        Margin="0,0,0,6"
+                        HorizontalAlignment="Left"
+                        Command="{Binding Path=LoadVendorFilesCommand}"
+                        Content="Offline MAC vendors: load IEEE oui.csv..."
+                        DockPanel.Dock="Top" />
+                    <ListBox
+                        Height="80"
+                        FontFamily="Consolas"
+                        ItemsSource="{Binding Path=EventLog}" />
+                </DockPanel>
+            </GroupBox>
+        </atc:GridEx>
 
     </atc:GridEx>
 
