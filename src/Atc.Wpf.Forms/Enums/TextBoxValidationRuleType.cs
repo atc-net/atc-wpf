@@ -128,7 +128,7 @@ public enum TextBoxValidationRuleType
     MacAddress,
 
     /// <summary>
-    /// Validates an IPv4 range in CIDR notation, such as <c>192.168.1.0/24</c>.
+    /// Validates one or more IPv4 ranges in CIDR notation, separated by <c>,</c> or <c>;</c>, such as <c>192.168.1.0/24</c> or <c>192.168.1.0/24, 10.0.0.0/24</c>.
     /// </summary>
     IPv4Cidr,
 }

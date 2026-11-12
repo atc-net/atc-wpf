@@ -181,18 +181,25 @@ internal static class TextBoxValidationHelper
         ref bool isValid,
         ref string errorMessage)
     {
-        var parts = (value ?? string.Empty).Split('/', StringSplitOptions.TrimEntries);
-        if (parts.Length == 2 &&
-            System.Net.IPAddress.TryParse(parts[0], out var address) &&
-            address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork &&
-            int.TryParse(parts[1], System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var prefixLength) &&
-            prefixLength <= 32)
+        var ranges = (value ?? string.Empty).Split([',', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (ranges.Length > 0 &&
+            ranges.All(IsIPv4Cidr))
         {
             return;
         }
 
         isValid = false;
         errorMessage = Validations.InvalidIPv4Cidr;
+    }
+
+    private static bool IsIPv4Cidr(string value)
+    {
+        var parts = value.Split('/', StringSplitOptions.TrimEntries);
+        return parts.Length == 2 &&
+               System.Net.IPAddress.TryParse(parts[0], out var address) &&
+               address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork &&
+               int.TryParse(parts[1], System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var prefixLength) &&
+               prefixLength <= 32;
     }
 
     private static void ValidateHexRgb(
