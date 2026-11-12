@@ -31,9 +31,11 @@ public sealed class SampleSmokeTests : IClassFixture<SampleAppSession>
         return data;
     }
 
+    // DisableDiscoveryEnumeration runs the samples in catalog order (tab by tab, top to bottom),
+    // instead of the default order of xUnit theory rows, which is stable but unpredictable.
     [Trait("Category", "UI")]
     [Theory]
-    [MemberData(nameof(Samples))]
+    [MemberData(nameof(Samples), DisableDiscoveryEnumeration = true)]
     [SuppressMessage("Major Bug", "S2925:Do not use Thread.Sleep", Justification = "FlaUI E2E tests must yield real wall time for the sample to load.")]
     public void Sample_opens_without_binding_errors(
         string samplePath,
