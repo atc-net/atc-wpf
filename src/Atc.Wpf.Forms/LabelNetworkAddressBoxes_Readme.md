@@ -9,7 +9,7 @@ All three are `LabelTextBox`es (label, mandatory asterisk, information popup, va
 | Control | `ValidationFormat` | Accepts | Message when invalid |
 |---------|--------------------|---------|----------------------|
 | `LabelIPAddressBox` | `IPAddress` | IPv4 or IPv6 address | "Invalid IP address" |
-| `LabelIPRangeBox` | `IPv4Cidr` | IPv4 range in CIDR notation, such as `192.168.1.0/24` | "Invalid IPv4 range (CIDR), such as 192.168.1.0/24" |
+| `LabelIPRangeBox` | `IPv4Cidr` | One or more IPv4 ranges in CIDR notation, separated by `,` or `;`, such as `192.168.1.0/24` or `192.168.1.0/24, 10.0.0.0/24` | "Invalid IPv4 range (CIDR), such as 192.168.1.0/24" |
 | `LabelMacAddressBox` | `MacAddress` | 12 hexadecimal digits, separated by `-`, `:`, `.` or nothing | "Invalid MAC address" |
 
 The messages are in English, Danish and German. Setting `ValidationFormat` yourself still wins (for example `IPv4Address` on a `LabelIPAddressBox`).
