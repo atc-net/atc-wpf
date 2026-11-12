@@ -11,4 +11,17 @@ public partial class NetworkScannerView
     /// </summary>
     public NetworkScannerView()
         => InitializeComponent();
+
+    // One handler for every column header: a binding per header would be resolved before the
+    // headers join the view's tree, and log a data binding error for each of them.
+    private void OnColumnHeaderClick(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (DataContext is NetworkScannerViewModel viewModel &&
+            viewModel.SortCommand.CanExecute(e))
+        {
+            viewModel.SortCommand.Execute(e);
+        }
+    }
 }
