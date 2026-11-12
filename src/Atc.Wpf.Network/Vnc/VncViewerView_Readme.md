@@ -53,6 +53,14 @@ The view is driven by `VncViewerViewModel`:
 | `FramebufferHeight` | `int` | `0` | Read-only. Framebuffer height in pixels |
 | `ConnectCommand` | `RelayCommandAsync` | - | Shows the connect dialog and connects; enabled when not busy and not connected |
 | `DisconnectCommand` | `RelayCommandAsync` | - | Disconnects; enabled when not busy and connected |
+| `ErrorMessage` / `HasError` | `string?` / `bool` | `null` / `false` | Why connecting failed, or that the connection was lost (not set by a disconnect you asked for) |
+| `RetryCommand` | `RelayCommandAsync` | - | Connects again to the last server with the same port and password |
+| `ScaleMode` | `VncScaleMode` | `Fit` | `Fit` (whole screen, letterboxed), `Fill` (fills the view, edges cut off) or `Original` (1:1 with scroll bars); the mouse is mapped for each |
+| `Stretch` / `IsScrollable` | `Stretch` / `bool` | `Uniform` / `false` | Read-only, from `ScaleMode` (used by the view) |
+| `ViewOnly` | `bool` | `false` | Shows the screen without sending mouse or keyboard input |
+| `ShareClipboard` | `bool` | `false` | Opt-in: server clipboard text is copied to the local clipboard, and `SendClipboardCommand` sends the local clipboard text |
+| `SendClipboardCommand` | `RelayCommandAsync` | - | Sends the local clipboard text; enabled when connected and `ShareClipboard` is on |
+| `ClipboardSetter` / `ClipboardGetter` | delegates | `Clipboard.SetText` / `Clipboard.GetText` | Replace them in tests or to filter what is shared |
 
 ### Methods
 
@@ -68,6 +76,10 @@ The view is driven by `VncViewerViewModel`:
 | Event | Args | Description |
 |-------|------|-------------|
 | `FramebufferUpdated` | `EventArgs` | Raised by the view model when the remote framebuffer changes; the view refreshes the image on the dispatcher |
+
+The view's toolbar has the scale mode, **View only**, **Share clipboard**, **Send clipboard** and **Retry**; errors show under it.
+
+`VncPointerMapping.MapToFramebuffer(position, imageSize, width, height, scaleMode)` maps a mouse position to the remote screen for each scale mode.
 
 ## 📝 Notes
 
