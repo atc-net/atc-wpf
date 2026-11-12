@@ -19,21 +19,30 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="20">
+        <atc:UniformSpacingPanel
+            ItemVerticalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="20">
             <atcForms:LabelMacAddressBox
                 MinWidth="200"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=MacAddress}"
+                Orientation="Vertical"
                 Text="{Binding Path=MacAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 WatermarkText="00-11-22-33-44-55" />
             <atcForms:LabelIPAddressBox
                 MinWidth="160"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=WakeOnLanBroadcastAddress}"
+                Orientation="Vertical"
                 Text="{Binding Path=BroadcastAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <atcForms:LabelIntegerBox
-                Width="120"
+                Width="220"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=VncPort}"
                 Maximum="65535"
                 Minimum="1"
+                Orientation="Vertical"
                 Value="{Binding Path=Port, Mode=TwoWay}" />
             <Button
                 Width="140"

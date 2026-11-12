@@ -40,18 +40,24 @@
         <atc:UniformSpacingPanel
             Margin="0,0,0,8"
             DockPanel.Dock="Top"
+            ItemVerticalAlignment="Center"
             Orientation="Horizontal"
             Spacing="14">
-            <atcForms:LabelTextBox
+            <atcForms:LabelIPAddressBox
                 MinWidth="220"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=ClientHost}"
+                Orientation="Vertical"
                 Text="{Binding Path=Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ValidationFormat="IPAddressOrHostname"
                 WatermarkText="192.168.1.10" />
             <atcForms:LabelIntegerBox
-                Width="140"
+                Width="220"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=VncPort}"
                 Maximum="65535"
                 Minimum="1"
+                Orientation="Vertical"
                 Value="{Binding Path=Port, Mode=TwoWay}" />
             <Button
                 Width="100"

@@ -26,51 +26,51 @@
                 <x:Type TypeName="atcNetwork:TerminationType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        <ObjectDataProvider
-            x:Key="MessageFramings"
-            MethodName="GetValues"
-            ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="atcNetwork:TcpMessageFraming" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
     </UserControl.Resources>
 
     <DockPanel>
         <atc:UniformSpacingPanel
             Margin="0,0,0,8"
             DockPanel.Dock="Top"
+            ItemVerticalAlignment="Center"
             Orientation="Horizontal"
             Spacing="14">
-            <atcForms:LabelTextBox
+            <atcForms:LabelIPAddressBox
                 MinWidth="220"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=ClientHost}"
+                Orientation="Vertical"
                 Text="{Binding Path=Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ValidationFormat="IPAddressOrHostname"
                 WatermarkText="192.168.1.10" />
             <atcForms:LabelIntegerBox
-                Width="140"
+                Width="220"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=VncPort}"
                 Maximum="65535"
                 Minimum="1"
+                Orientation="Vertical"
                 Value="{Binding Path=Port, Mode=TwoWay}" />
-            <CheckBox
-                VerticalAlignment="Bottom"
-                Content="TLS"
-                IsChecked="{Binding Path=UseTls}" />
-            <StackPanel VerticalAlignment="Bottom">
-                <TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=ClientFraming}" />
-                <ComboBox
-                    Width="150"
-                    ItemsSource="{Binding Source={StaticResource MessageFramings}}"
-                    SelectedItem="{Binding Path=MessageFraming}" />
-            </StackPanel>
-            <StackPanel VerticalAlignment="Bottom">
-                <TextBlock Text="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=ClientFramingTermination}" />
-                <ComboBox
-                    Width="190"
-                    ItemsSource="{Binding Source={StaticResource TerminationTypes}}"
-                    SelectedItem="{Binding Path=FramingTermination}" />
-            </StackPanel>
+            <atcForms:LabelCheckBox
+                Width="50"
+                HideAreas="AsteriskAndInformation"
+                IsChecked="{Binding Path=UseTls, Mode=TwoWay}"
+                LabelText="TLS"
+                Orientation="Vertical" />
+            <atcForms:LabelComboBox
+                Width="200"
+                HideAreas="AsteriskAndInformation"
+                Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcNetwork:TcpMessageFraming}, KeyAsString=True, IncludeDefault=True}}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=ClientFraming}"
+                Orientation="Vertical"
+                SelectedKey="{Binding Path=MessageFraming, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <atcForms:LabelComboBox
+                Width="230"
+                HideAreas="AsteriskAndInformation"
+                Items="{Binding Source={atc:EnumToKeyValueBindingSource {x:Type atcNetwork:TerminationType}, KeyAsString=True, IncludeDefault=True}}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=ClientFramingTermination}"
+                Orientation="Vertical"
+                SelectedKey="{Binding Path=FramingTermination, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Button
                 Width="100"
                 VerticalAlignment="Bottom"

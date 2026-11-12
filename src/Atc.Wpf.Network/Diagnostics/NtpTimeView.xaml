@@ -19,11 +19,17 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="20">
-            <atcForms:LabelTextBox
+        <atc:UniformSpacingPanel
+            ItemVerticalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="20">
+            <atcForms:LabelIPAddressBox
                 MinWidth="240"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpServer}"
-                Text="{Binding Path=Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                Orientation="Vertical"
+                Text="{Binding Path=Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ValidationFormat="IPAddressOrHostname" />
             <Button
                 Width="120"
                 VerticalAlignment="Bottom"
@@ -43,22 +49,27 @@
             <atcForms:LabelTextInfo
                 HideAreas="All"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpServerTime}"
+                Orientation="Vertical"
                 Text="{Binding Path=ServerTimeUtc, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss.fff} UTC', TargetNullValue='-'}" />
             <atcForms:LabelTextInfo
                 HideAreas="All"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpOffset}"
+                Orientation="Vertical"
                 Text="{Binding Path=Offset, TargetNullValue='-'}" />
             <atcForms:LabelTextInfo
                 HideAreas="All"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpRoundTrip}"
+                Orientation="Vertical"
                 Text="{Binding Path=RoundTripDelay, TargetNullValue='-'}" />
             <atcForms:LabelTextInfo
                 HideAreas="All"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpStratum}"
+                Orientation="Vertical"
                 Text="{Binding Path=Stratum, TargetNullValue='-'}" />
             <atcForms:LabelTextInfo
                 HideAreas="All"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpServerAddress}"
+                Orientation="Vertical"
                 Text="{Binding Path=ServerAddress, TargetNullValue='-'}" />
         </atc:UniformSpacingPanel>
     </StackPanel>

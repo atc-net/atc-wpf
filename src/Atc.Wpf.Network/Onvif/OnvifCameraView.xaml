@@ -22,20 +22,27 @@
         <atc:GridEx Rows="Auto,Auto,Auto,*,Auto">
             <atc:UniformSpacingPanel
                 Grid.Row="0"
+                ItemVerticalAlignment="Center"
                 Orientation="Horizontal"
                 Spacing="20">
                 <atcForms:LabelTextBox
                     MinWidth="380"
+                    HideAreas="AsteriskAndInformation"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifDeviceServiceUrl}"
+                    Orientation="Vertical"
                     Text="{Binding Path=DeviceServiceUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     WatermarkText="http://192.168.1.10/onvif/device_service" />
                 <atcForms:LabelTextBox
                     MinWidth="180"
+                    HideAreas="AsteriskAndInformation"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifUserName}"
+                    Orientation="Vertical"
                     Text="{Binding Path=UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <atcForms:LabelPasswordBox
                     MinWidth="180"
+                    HideAreas="AsteriskAndInformation"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifPassword}"
+                    Orientation="Vertical"
                     Text="{Binding Path=Password, Mode=TwoWay}" />
                 <Button
                     Width="100"
@@ -61,18 +68,22 @@
                 <atcForms:LabelTextInfo
                     HideAreas="All"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifManufacturer}"
+                    Orientation="Vertical"
                     Text="{Binding Path=Manufacturer, TargetNullValue='-'}" />
                 <atcForms:LabelTextInfo
                     HideAreas="All"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Model}"
+                    Orientation="Vertical"
                     Text="{Binding Path=Model, TargetNullValue='-'}" />
                 <atcForms:LabelTextInfo
                     HideAreas="All"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifFirmware}"
+                    Orientation="Vertical"
                     Text="{Binding Path=FirmwareVersion, TargetNullValue='-'}" />
                 <atcForms:LabelTextInfo
                     HideAreas="All"
                     LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifSerialNumber}"
+                    Orientation="Vertical"
                     Text="{Binding Path=SerialNumber, TargetNullValue='-'}" />
             </atc:UniformSpacingPanel>
 
