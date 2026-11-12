@@ -1,0 +1,66 @@
+<UserControl
+    x:Class="Atc.Wpf.Network.Diagnostics.NtpTimeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcForms="clr-namespace:Atc.Wpf.Forms;assembly=Atc.Wpf.Forms"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:diagnostics="clr-namespace:Atc.Wpf.Network.Diagnostics"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=diagnostics:NtpTimeViewModel}"
+    d:DesignHeight="180"
+    d:DesignWidth="700"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
+    </UserControl.Resources>
+
+    <StackPanel>
+        <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="20">
+            <atcForms:LabelTextBox
+                MinWidth="240"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpServer}"
+                Text="{Binding Path=Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button
+                Width="120"
+                VerticalAlignment="Bottom"
+                Command="{Binding Path=QueryCommand}"
+                Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpQuery}" />
+        </atc:UniformSpacingPanel>
+            <TextBlock
+                Margin="0,6,0,0"
+                Foreground="{DynamicResource AtcApps.Brushes.Control.Validation}"
+                Text="{Binding Path=ErrorMessage}"
+                TextWrapping="Wrap"
+                Visibility="{Binding Path=HasError, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+        <atc:UniformSpacingPanel
+            Margin="0,10,0,0"
+            Orientation="Horizontal"
+            Spacing="30">
+            <atcForms:LabelTextInfo
+                HideAreas="All"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpServerTime}"
+                Text="{Binding Path=ServerTimeUtc, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss.fff} UTC', TargetNullValue='-'}" />
+            <atcForms:LabelTextInfo
+                HideAreas="All"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpOffset}"
+                Text="{Binding Path=Offset, TargetNullValue='-'}" />
+            <atcForms:LabelTextInfo
+                HideAreas="All"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpRoundTrip}"
+                Text="{Binding Path=RoundTripDelay, TargetNullValue='-'}" />
+            <atcForms:LabelTextInfo
+                HideAreas="All"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpStratum}"
+                Text="{Binding Path=Stratum, TargetNullValue='-'}" />
+            <atcForms:LabelTextInfo
+                HideAreas="All"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=NtpServerAddress}"
+                Text="{Binding Path=ServerAddress, TargetNullValue='-'}" />
+        </atc:UniformSpacingPanel>
+    </StackPanel>
+
+</UserControl>

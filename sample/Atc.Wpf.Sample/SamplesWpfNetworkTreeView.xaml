@@ -14,7 +14,20 @@
             Header="NetworkScanner"
             IsExpanded="True"
             SamplePath="Scanner.NetworkScannerSampleView" />
+        <sample:SampleTreeViewItem Header="OnvifCamera" SamplePath="Onvif.OnvifCameraSampleView" />
+        <sample:SampleTreeViewItem Header="ServiceDiscovery" SamplePath="Discovery.ServiceDiscoverySampleView" />
         <sample:SampleTreeViewItem Header="VncViewer" SamplePath="Vnc.VncViewerSampleView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Clients">
+        <sample:SampleTreeViewItem Header="TcpClient" SamplePath="Clients.TcpClientSampleView" />
+        <sample:SampleTreeViewItem Header="UdpClient" SamplePath="Clients.UdpClientSampleView" />
+    </TreeViewItem>
+
+    <TreeViewItem Header="Diagnostics">
+        <sample:SampleTreeViewItem Header="NtpTime" SamplePath="Diagnostics.NtpTimeSampleView" />
+        <sample:SampleTreeViewItem Header="Traceroute" SamplePath="Diagnostics.TracerouteSampleView" />
+        <sample:SampleTreeViewItem Header="WakeOnLan" SamplePath="Diagnostics.WakeOnLanSampleView" />
     </TreeViewItem>
 
     <TreeViewItem Header="ValueConverters">

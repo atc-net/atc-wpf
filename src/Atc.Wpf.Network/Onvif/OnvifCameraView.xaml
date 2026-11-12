@@ -1,0 +1,134 @@
+<UserControl
+    x:Class="Atc.Wpf.Network.Onvif.OnvifCameraView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
+    xmlns:atcForms="clr-namespace:Atc.Wpf.Forms;assembly=Atc.Wpf.Forms"
+    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:onvif="clr-namespace:Atc.Wpf.Network.Onvif"
+    d:DataContext="{d:DesignInstance Type=onvif:OnvifCameraViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <atcValueConverters:BoolToVisibilityCollapsedValueConverter x:Key="BoolToVisibilityCollapsedValueConverter" />
+    </UserControl.Resources>
+
+    <atc:BusyOverlay IsBusy="{Binding Path=IsBusy}">
+        <atc:GridEx Rows="Auto,Auto,Auto,*,Auto">
+            <atc:UniformSpacingPanel
+                Grid.Row="0"
+                Orientation="Horizontal"
+                Spacing="20">
+                <atcForms:LabelTextBox
+                    MinWidth="380"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifDeviceServiceUrl}"
+                    Text="{Binding Path=DeviceServiceUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    WatermarkText="http://192.168.1.10/onvif/device_service" />
+                <atcForms:LabelTextBox
+                    MinWidth="180"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifUserName}"
+                    Text="{Binding Path=UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <atcForms:LabelPasswordBox
+                    MinWidth="180"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifPassword}"
+                    Text="{Binding Path=Password, Mode=TwoWay}" />
+                <Button
+                    Width="100"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding Path=ReadCommand}"
+                    Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifRead}"
+                    IsDefault="True" />
+            </atc:UniformSpacingPanel>
+
+            <TextBlock
+                Grid.Row="1"
+                Margin="0,6,0,0"
+                Foreground="{DynamicResource AtcApps.Brushes.Control.Validation}"
+                Text="{Binding Path=ErrorMessage}"
+                TextWrapping="Wrap"
+                Visibility="{Binding Path=HasError, Converter={StaticResource BoolToVisibilityCollapsedValueConverter}}" />
+
+            <atc:UniformSpacingPanel
+                Grid.Row="2"
+                Margin="0,10,0,10"
+                Orientation="Horizontal"
+                Spacing="30">
+                <atcForms:LabelTextInfo
+                    HideAreas="All"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifManufacturer}"
+                    Text="{Binding Path=Manufacturer, TargetNullValue='-'}" />
+                <atcForms:LabelTextInfo
+                    HideAreas="All"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Model}"
+                    Text="{Binding Path=Model, TargetNullValue='-'}" />
+                <atcForms:LabelTextInfo
+                    HideAreas="All"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifFirmware}"
+                    Text="{Binding Path=FirmwareVersion, TargetNullValue='-'}" />
+                <atcForms:LabelTextInfo
+                    HideAreas="All"
+                    LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifSerialNumber}"
+                    Text="{Binding Path=SerialNumber, TargetNullValue='-'}" />
+            </atc:UniformSpacingPanel>
+
+            <ListView
+                Grid.Row="3"
+                AutomationProperties.AutomationId="OnvifStreamsList"
+                ItemsSource="{Binding Path=Streams}"
+                SelectedItem="{Binding Path=SelectedStream, Mode=TwoWay}"
+                SelectionMode="Single">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn
+                            Width="150"
+                            DisplayMemberBinding="{Binding Path=Profile.Name}"
+                            Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifProfile}" />
+                        <GridViewColumn Width="110" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifResolution}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <Run Text="{Binding Path=Profile.Width, Mode=OneWay}" /><Run Text="x" /><Run Text="{Binding Path=Profile.Height, Mode=OneWay}" />
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn
+                            Width="80"
+                            DisplayMemberBinding="{Binding Path=Profile.Encoding}"
+                            Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifEncoding}" />
+                        <GridViewColumn
+                            Width="60"
+                            DisplayMemberBinding="{Binding Path=Profile.FrameRate}"
+                            Header="FPS" />
+                        <GridViewColumn
+                            Width="320"
+                            DisplayMemberBinding="{Binding Path=StreamUri}"
+                            Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifStreamUri}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <atc:UniformSpacingPanel
+                Grid.Row="4"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="10">
+                <Button
+                    Width="140"
+                    Command="{Binding Path=CopyStreamUriCommand}"
+                    Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifCopyStreamUri}" />
+                <Button
+                    Width="140"
+                    Command="{Binding Path=UseStreamCommand}"
+                    Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifUseStream}" />
+            </atc:UniformSpacingPanel>
+        </atc:GridEx>
+    </atc:BusyOverlay>
+
+</UserControl>
