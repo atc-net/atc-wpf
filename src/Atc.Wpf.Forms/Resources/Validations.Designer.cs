@@ -320,5 +320,22 @@ namespace Atc.Wpf.Forms.Resources {
                 return ResourceManager.GetString("ValueShouldBeAInteger", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid MAC address.
+        /// </summary>
+        public static string InvalidMacAddress {
+            get {
+                return ResourceManager.GetString("InvalidMacAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid IPv4 range (CIDR), such as 192.168.1.0/24.
+        /// </summary>
+        public static string InvalidIPv4Cidr {
+            get {
+                return ResourceManager.GetString("InvalidIPv4Cidr", resourceCulture);
+            }
+        }
     }
 }

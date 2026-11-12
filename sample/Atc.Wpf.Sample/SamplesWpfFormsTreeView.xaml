@@ -131,6 +131,10 @@
             IsExpanded="True"
             SamplePath="LabelControls.LabelMultiSelectComboBoxView" />
         <sample:SampleTreeViewItem
+            Header="LabelNetworkAddressBoxes"
+            IsExpanded="True"
+            SamplePath="LabelControls.LabelNetworkAddressBoxesView" />
+        <sample:SampleTreeViewItem
             Header="LabelPasswordBox"
             IsExpanded="True"
             SamplePath="LabelControls.LabelPasswordBoxView" />

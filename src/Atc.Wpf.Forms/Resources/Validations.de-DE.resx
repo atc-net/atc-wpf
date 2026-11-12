@@ -204,4 +204,10 @@
   <data name="PasswordNeedsSpecialChar" xml:space="preserve">
     <value>Passwort muss mindestens ein Sonderzeichen enthalten</value>
   </data>
+  <data name="InvalidMacAddress" xml:space="preserve">
+    <value>Ungültige MAC-Adresse</value>
+  </data>
+  <data name="InvalidIPv4Cidr" xml:space="preserve">
+    <value>Ungültiger IPv4-Bereich (CIDR), z. B. 192.168.1.0/24</value>
+  </data>
 </root>

@@ -121,4 +121,14 @@ public enum TextBoxValidationRuleType
     /// Validates strong password strength (minimum 12 characters, mixed case, numbers, special characters).
     /// </summary>
     PasswordStrong,
+
+    /// <summary>
+    /// Validates a MAC address: 12 hexadecimal digits, optionally separated by <c>-</c>, <c>:</c> or <c>.</c>.
+    /// </summary>
+    MacAddress,
+
+    /// <summary>
+    /// Validates an IPv4 range in CIDR notation, such as <c>192.168.1.0/24</c>.
+    /// </summary>
+    IPv4Cidr,
 }
