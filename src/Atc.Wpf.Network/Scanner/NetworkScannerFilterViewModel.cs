@@ -16,4 +16,11 @@ public partial class NetworkScannerFilterViewModel : ViewModelBase
     /// </summary>
     [ObservableProperty]
     private bool showOnlyWithOpenPorts = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to show only hosts that answered in any way:
+    /// ping, host name, MAC address, an open port, NetBIOS or service discovery.
+    /// </summary>
+    [ObservableProperty]
+    private bool showOnlyReachable;
 }

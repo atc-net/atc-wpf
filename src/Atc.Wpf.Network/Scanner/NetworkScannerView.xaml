@@ -61,8 +61,50 @@
                 <Setter Property="Visibility" Value="Collapsed" />
             </Style>
         </atc:BusyOverlay.ProgressBarStyle>
-        <atc:GridEx Columns="*" Rows="Auto,*">
+        <atc:GridEx Columns="*" Rows="Auto,*,Auto">
             <DockPanel Grid.Row="0" />
+            <Expander
+                Grid.Row="2"
+                Margin="0,6,0,0"
+                AutomationProperties.AutomationId="NetworkScannerOfflineHosts">
+                <Expander.Header>
+                    <TextBlock>
+                        <Run Text="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OfflineHosts}" /><Run Text=" (" /><Run Text="{Binding Path=OfflineHosts.Count, Mode=OneWay}" /><Run Text=")" />
+                    </TextBlock>
+                </Expander.Header>
+                <ListView MaxHeight="160" ItemsSource="{Binding Path=OfflineHosts}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn
+                                Width="130"
+                                DisplayMemberBinding="{Binding Path=IpAddress}"
+                                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=IpAddress}" />
+                            <GridViewColumn
+                                Width="180"
+                                DisplayMemberBinding="{Binding Path=Name}"
+                                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=DeviceName}" />
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding Path=MacAddress}"
+                                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=MacAddress}" />
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding Path=LastSeen}"
+                                Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=LastSeen}" />
+                            <GridViewColumn Width="110">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Command="{Binding ElementName=UcNetworkScanner, Path=DataContext.WakeOfflineHostCommand}"
+                                            CommandParameter="{Binding}"
+                                            Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=WakeOnLan}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Expander>
             <DockPanel Grid.Row="1">
                 <ListView
                     x:Name="NetworkHostsListView"
@@ -74,11 +116,21 @@
                     SelectionMode="Single">
                     <ListView.ContextMenu>
                         <ContextMenu>
+                            <MenuItem Command="{Binding Path=OpenInBrowserCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OpenInBrowser}" />
+                            <MenuItem Command="{Binding Path=ConnectWithVncCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=ConnectWithVnc}" />
+                            <MenuItem Command="{Binding Path=ConnectWithRemoteDesktopCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=ConnectWithRemoteDesktop}" />
+                            <MenuItem Command="{Binding Path=WakeOnLanCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=WakeOnLan}" />
+                            <MenuItem Command="{Binding Path=TracerouteCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=TracerouteMenu}" />
+                            <MenuItem Command="{Binding Path=RescanHostCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=RescanHost}" />
+                            <Separator />
                             <MenuItem Command="{Binding Path=CopyIpAddressCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyIpAddress}" />
                             <MenuItem Command="{Binding Path=CopyHostnameCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyHostname}" />
                             <MenuItem Command="{Binding Path=CopyMacAddressCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyMacAddress}" />
                             <Separator />
                             <MenuItem Command="{Binding Path=CopyAllInfoCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyAllInfo}" />
+                            <Separator />
+                            <MenuItem Command="{Binding Path=CopyAllEntriesCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=CopyAllEntries}" />
+                            <MenuItem Command="{Binding Path=ExportCommand}" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Export}" />
                         </ContextMenu>
                     </ListView.ContextMenu>
                     <ListView.View>
@@ -134,6 +186,24 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
+                            <GridViewColumn x:Name="GvcDeviceName" Width="{Binding Path=(networkControls:NetworkScannerViewModel.Columns).ShowDeviceName, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter='170px'}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=DeviceName}" Tag="DeviceName">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:EventToCommandBehavior
+                                                Command="{Binding ElementName=UcNetworkScanner, Path=DataContext.SortCommand}"
+                                                EventName="Click"
+                                                PassEventArgsToCommand="True" />
+                                        </i:Interaction.Behaviors>
+                                    </GridViewColumnHeader>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type networkControls:NetworkHostViewModel}">
+                                        <TextBlock Text="{Binding Path=DeviceName}" ToolTip="{Binding Path=DeviceName}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
                             <GridViewColumn x:Name="GvcHostname" Width="{Binding Path=(networkControls:NetworkScannerViewModel.Columns).ShowHostname, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter='150px'}">
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Hostname}" Tag="Hostname">
@@ -148,6 +218,24 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type networkControls:NetworkHostViewModel}">
                                         <TextBlock Text="{Binding Path=Hostname}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn x:Name="GvcWorkgroup" Width="{Binding Path=(networkControls:NetworkScannerViewModel.Columns).ShowWorkgroup, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter='120px'}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Workgroup}" Tag="Workgroup">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:EventToCommandBehavior
+                                                Command="{Binding ElementName=UcNetworkScanner, Path=DataContext.SortCommand}"
+                                                EventName="Click"
+                                                PassEventArgsToCommand="True" />
+                                        </i:Interaction.Behaviors>
+                                    </GridViewColumnHeader>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type networkControls:NetworkHostViewModel}">
+                                        <TextBlock Text="{Binding Path=Workgroup}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -202,6 +290,74 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate DataType="{x:Type networkControls:NetworkHostViewModel}">
                                         <TextBlock Text="{Binding Path=OpenPortNumbersAsCommaList}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn x:Name="GvcModel" Width="{Binding Path=(networkControls:NetworkScannerViewModel.Columns).ShowModel, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter='200px'}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Model}" Tag="Model">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:EventToCommandBehavior
+                                                Command="{Binding ElementName=UcNetworkScanner, Path=DataContext.SortCommand}"
+                                                EventName="Click"
+                                                PassEventArgsToCommand="True" />
+                                        </i:Interaction.Behaviors>
+                                    </GridViewColumnHeader>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type networkControls:NetworkHostViewModel}">
+                                        <TextBlock Text="{Binding Path=Model}" ToolTip="{Binding Path=Model}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn x:Name="GvcServices" Width="{Binding Path=(networkControls:NetworkScannerViewModel.Columns).ShowServices, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter='170px'}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Services}" Tag="ServicesAsCommaList">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:EventToCommandBehavior
+                                                Command="{Binding ElementName=UcNetworkScanner, Path=DataContext.SortCommand}"
+                                                EventName="Click"
+                                                PassEventArgsToCommand="True" />
+                                        </i:Interaction.Behaviors>
+                                    </GridViewColumnHeader>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type networkControls:NetworkHostViewModel}">
+                                        <TextBlock Text="{Binding Path=ServicesAsCommaList}" ToolTip="{Binding Path=ServicesAsCommaList}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn x:Name="GvcOnvif" Width="{Binding Path=(networkControls:NetworkScannerViewModel.Columns).ShowOnvif, Converter={StaticResource BoolToWidthValueConverter}, ConverterParameter='90px'}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Onvif}" Tag="IsOnvifDevice">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:EventToCommandBehavior
+                                                Command="{Binding ElementName=UcNetworkScanner, Path=DataContext.SortCommand}"
+                                                EventName="Click"
+                                                PassEventArgsToCommand="True" />
+                                        </i:Interaction.Behaviors>
+                                    </GridViewColumnHeader>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type networkControls:NetworkHostViewModel}">
+                                        <TextBlock ToolTip="{Binding Path=OnvifDeviceServiceUrl}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=IsOnvifDevice}" Value="True">
+                                                            <Setter Property="Text" Value="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifDevice}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Path=IsOnvifCamera}" Value="True">
+                                                            <Setter Property="Text" Value="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=OnvifCamera}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

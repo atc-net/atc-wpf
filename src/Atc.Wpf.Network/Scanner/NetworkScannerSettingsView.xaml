@@ -16,15 +16,30 @@
 
     <atc:UniformSpacingPanel Orientation="Horizontal" Spacing="20">
         <StackPanel Orientation="Vertical">
+            <atcForms:LabelComboBox
+                Items="{Binding Path=LocalNetworkItems}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=LocalNetwork}"
+                LabelWidthNumber="40"
+                LabelWidthSizeDefinition="Percentage"
+                SelectedKey="{Binding Path=SelectedLocalNetworkKey, Mode=TwoWay}" />
             <atcForms:LabelTextBox
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=RangeCidr}"
+                LabelWidthNumber="40"
+                LabelWidthSizeDefinition="Percentage"
+                Text="{Binding Path=RangeCidr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                WatermarkText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=RangeCidrExample}" />
+            <atcForms:LabelIPAddressBox
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
                                                 Key=StartIp}"
                 LabelWidthNumber="40"
                 LabelWidthSizeDefinition="Percentage"
                 Text="{Binding Path=StartIpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ValidationFormat="IPv4Address"
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                              Key=StartIpToolTip}"
                 WatermarkText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=StartIpExample}" />
-            <atcForms:LabelTextBox
+            <atcForms:LabelIPAddressBox
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
                                                 Key=EndIp}"
                 LabelWidthNumber="40"
@@ -34,6 +49,13 @@
                 WatermarkText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=EndIpExample}" />
         </StackPanel>
         <StackPanel Orientation="Vertical">
+            <atcForms:LabelComboBox
+                Items="{Binding Path=PortPresetItems}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=PortPreset}"
+                LabelWidthNumber="40"
+                LabelWidthSizeDefinition="Percentage"
+                SelectedKey="{Binding Path=SelectedPortPresetKey, Mode=TwoWay}" />
             <atcForms:LabelTextBox
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
                                                 Key=Ports}"
@@ -41,6 +63,112 @@
                 LabelWidthSizeDefinition="Percentage"
                 Text="{Binding Path=PortsNumbersText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 WatermarkText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=PortsExample}" />
+        </StackPanel>
+        <StackPanel Orientation="Vertical">
+            <atcForms:LabelCheckBox
+                HideAreas="All"
+                IsChecked="{Binding Path=Options.IcmpPing, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=OptionIcmpPing}"
+                LabelWidthNumber="150"
+                LabelWidthSizeDefinition="Pixel" />
+            <atcForms:LabelCheckBox
+                HideAreas="All"
+                IsChecked="{Binding Path=Options.ResolveHostName, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=OptionResolveHostName}"
+                LabelWidthNumber="150"
+                LabelWidthSizeDefinition="Pixel"
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                              Key=OptionResolveHostNameToolTip}" />
+            <atcForms:LabelCheckBox
+                HideAreas="All"
+                IsChecked="{Binding Path=Options.ResolveNetBiosName, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=OptionResolveNetBiosName}"
+                LabelWidthNumber="150"
+                LabelWidthSizeDefinition="Pixel" />
+            <atcForms:LabelCheckBox
+                HideAreas="All"
+                IsChecked="{Binding Path=Options.ResolveMacAddress, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=OptionResolveMacAddress}"
+                LabelWidthNumber="150"
+                LabelWidthSizeDefinition="Pixel" />
+        </StackPanel>
+        <StackPanel Orientation="Vertical">
+            <atcForms:LabelCheckBox
+                HideAreas="All"
+                IsChecked="{Binding Path=Options.ResolveVendorFromMacAddress, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=OptionResolveVendorFromMacAddress}"
+                LabelWidthNumber="170"
+                LabelWidthSizeDefinition="Pixel"
+                ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                              Key=OptionResolveVendorFromMacAddressToolTip}" />
+            <atcForms:LabelCheckBox
+                HideAreas="All"
+                IsChecked="{Binding Path=Options.DiscoverServices, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=OptionDiscoverServices}"
+                LabelWidthNumber="170"
+                LabelWidthSizeDefinition="Pixel" />
+            <atcForms:LabelCheckBox
+                HideAreas="All"
+                IsChecked="{Binding Path=Options.DiscoverOnvif, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=OptionDiscoverOnvif}"
+                LabelWidthNumber="170"
+                LabelWidthSizeDefinition="Pixel" />
+            <Expander Margin="0,4,0,0" Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=TimeoutsInMs}">
+                <StackPanel Orientation="Vertical">
+                    <atcForms:LabelIntegerBox
+                        HideAreas="All"
+                        LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                        Key=TimeoutPing}"
+                        LabelWidthNumber="110"
+                        LabelWidthSizeDefinition="Pixel"
+                        Maximum="60000"
+                        Minimum="50"
+                        Value="{Binding Path=Options.TimeoutPingInMs, Mode=TwoWay}" />
+                    <atcForms:LabelIntegerBox
+                        HideAreas="All"
+                        LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                        Key=TimeoutTcp}"
+                        LabelWidthNumber="110"
+                        LabelWidthSizeDefinition="Pixel"
+                        Maximum="60000"
+                        Minimum="50"
+                        Value="{Binding Path=Options.TimeoutTcpInMs, Mode=TwoWay}" />
+                    <atcForms:LabelIntegerBox
+                        HideAreas="All"
+                        LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                        Key=TimeoutHttp}"
+                        LabelWidthNumber="110"
+                        LabelWidthSizeDefinition="Pixel"
+                        Maximum="60000"
+                        Minimum="50"
+                        Value="{Binding Path=Options.TimeoutHttpInMs, Mode=TwoWay}" />
+                    <atcForms:LabelIntegerBox
+                        HideAreas="All"
+                        LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                        Key=TimeoutDiscovery}"
+                        LabelWidthNumber="110"
+                        LabelWidthSizeDefinition="Pixel"
+                        Maximum="60000"
+                        Minimum="50"
+                        Value="{Binding Path=Options.TimeoutDiscoveryInMs, Mode=TwoWay}" />
+                    <atcForms:LabelIntegerBox
+                        HideAreas="All"
+                        LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                        Key=TimeoutNetBios}"
+                        LabelWidthNumber="110"
+                        LabelWidthSizeDefinition="Pixel"
+                        Maximum="60000"
+                        Minimum="50"
+                        Value="{Binding Path=Options.TimeoutNetBiosInMs, Mode=TwoWay}" />
+                </StackPanel>
+            </Expander>
         </StackPanel>
         <StackPanel Orientation="Vertical">
             <atcForms:LabelCheckBox
@@ -55,6 +183,13 @@
                 IsChecked="{Binding Path=Filter.ShowOnlyWithOpenPorts, Mode=TwoWay}"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
                                                 Key=ShowOnlyWithOpenPorts}"
+                LabelWidthNumber="150"
+                LabelWidthSizeDefinition="Pixel" />
+            <atcForms:LabelCheckBox
+                HideAreas="All"
+                IsChecked="{Binding Path=Filter.ShowOnlyReachable, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=ShowOnlyReachable}"
                 LabelWidthNumber="150"
                 LabelWidthSizeDefinition="Pixel" />
         </StackPanel>
