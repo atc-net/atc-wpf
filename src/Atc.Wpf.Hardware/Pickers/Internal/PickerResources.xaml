@@ -1,0 +1,86 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Atc.Wpf.Hardware.ValueConverters"
+    xmlns:models="clr-namespace:Atc.Wpf.Hardware.Models"
+    xmlns:resources="clr-namespace:Atc.Wpf.Hardware.Resources">
+
+    <!--  Refresh button next to the picker drop-down.  -->
+    <Style
+        x:Key="AtcApps.Hardware.PickerRefreshButton"
+        BasedOn="{StaticResource {x:Type Button}}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="ToolTip" Value="{x:Static resources:Miscellaneous.Refresh}" />
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock
+                        Margin="0,-3,0,0"
+                        FontSize="14"
+                        Text="&#x27F3;" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Device state dot in a picker item; its DataContext is a device info with a State. It pulses while the device is just connected.  -->
+    <Style x:Key="AtcApps.Hardware.PickerStatusDot" TargetType="{x:Type Control}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Control}">
+                    <Ellipse
+                        x:Name="StatusDot"
+                        Width="10"
+                        Height="10"
+                        VerticalAlignment="Center"
+                        Fill="{Binding State, Converter={x:Static converters:DeviceStateToBrushConverter.Instance}}"
+                        RenderTransformOrigin="0.5,0.5">
+                        <Ellipse.RenderTransform>
+                            <ScaleTransform x:Name="StatusDotScale" ScaleX="1" ScaleY="1" />
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding State}" Value="{x:Static models:DeviceState.JustConnected}">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard Name="JustConnectedPulse">
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation
+                                            AutoReverse="True"
+                                            Storyboard.TargetName="StatusDot"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="1.0"
+                                            To="0.3"
+                                            Duration="0:0:0.5" />
+                                        <DoubleAnimation
+                                            AutoReverse="True"
+                                            Storyboard.TargetName="StatusDotScale"
+                                            Storyboard.TargetProperty="ScaleX"
+                                            From="1.0"
+                                            To="1.4"
+                                            Duration="0:0:0.5" />
+                                        <DoubleAnimation
+                                            AutoReverse="True"
+                                            Storyboard.TargetName="StatusDotScale"
+                                            Storyboard.TargetProperty="ScaleY"
+                                            From="1.0"
+                                            To="1.4"
+                                            Duration="0:0:0.5" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="JustConnectedPulse" />
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
