@@ -49,7 +49,7 @@ public sealed class SampleAppSession : IDisposable
         }
 
         foreach (var window in windows
-                     .Where(x => titles.Contains(x.Title, StringComparer.Ordinal))
+                     .Where(x => titles.Contains(x.Properties.Name.ValueOrDefault ?? string.Empty, StringComparer.Ordinal))
                      .GroupBy(x => x.Properties.NativeWindowHandle.ValueOrDefault)
                      .Select(x => x.First()))
         {
