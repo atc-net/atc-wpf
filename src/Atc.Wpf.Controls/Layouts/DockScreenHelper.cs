@@ -128,9 +128,9 @@ internal static class DockScreenHelper
         try
         {
             NativeMethods.EnumDisplayMonitors(
-                IntPtr.Zero,
-                IntPtr.Zero,
-                (IntPtr monitor, IntPtr hdc, ref NativeMethods.NativeRect rect, IntPtr data) =>
+                nint.Zero,
+                nint.Zero,
+                (nint monitor, nint hdc, ref NativeMethods.NativeRect rect, nint data) =>
                 {
                     var info = NativeMethods.MonitorInfo.Create();
                     if (NativeMethods.GetMonitorInfo(monitor, ref info))
@@ -142,7 +142,7 @@ internal static class DockScreenHelper
 
                     return true;
                 },
-                IntPtr.Zero);
+                nint.Zero);
         }
         catch (DllNotFoundException)
         {
@@ -209,7 +209,7 @@ internal static class DockScreenHelper
     /// <summary>
     /// The effective DPI of a monitor (the system DPI in a system-aware process); zero when it cannot be read.
     /// </summary>
-    private static (double DpiX, double DpiY) GetMonitorDpi(IntPtr monitor)
+    private static (double DpiX, double DpiY) GetMonitorDpi(nint monitor)
     {
         try
         {
@@ -254,10 +254,10 @@ internal static class DockScreenHelper
     private static class NativeMethods
     {
         public delegate bool MonitorEnumProc(
-            IntPtr hMonitor,
-            IntPtr hdcMonitor,
+            nint hMonitor,
+            nint hdcMonitor,
             ref NativeRect lprcMonitor,
-            IntPtr dwData);
+            nint dwData);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct NativeRect
@@ -284,17 +284,17 @@ internal static class DockScreenHelper
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool EnumDisplayMonitors(
-            IntPtr hdc,
-            IntPtr lprcClip,
+            nint hdc,
+            nint lprcClip,
             MonitorEnumProc lpfnEnum,
-            IntPtr dwData);
+            nint dwData);
 
         public const int MonitorDpiTypeEffective = 0;
 
         [DllImport("shcore.dll")]
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         public static extern int GetDpiForMonitor(
-            IntPtr hmonitor,
+            nint hmonitor,
             int dpiType,
             out uint dpiX,
             out uint dpiY);
@@ -303,7 +303,7 @@ internal static class DockScreenHelper
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetMonitorInfo(
-            IntPtr hMonitor,
+            nint hMonitor,
             ref MonitorInfo lpmi);
     }
 }

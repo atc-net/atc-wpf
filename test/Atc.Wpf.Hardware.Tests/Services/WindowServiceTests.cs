@@ -2,7 +2,7 @@ namespace Atc.Wpf.Hardware.Tests.Services;
 
 public sealed class WindowServiceTests
 {
-    private static readonly IntPtr Handle = new(0x1234);
+    private static readonly nint Handle = new(0x1234);
 
     private readonly Dictionary<int, string> processNames = new()
     {
@@ -32,16 +32,16 @@ public sealed class WindowServiceTests
         using var service = CreateService();
         snapshots =
         [
-            new WindowSnapshot(new IntPtr(1), "A", "Notepad", ProcessId: 10),
-            new WindowSnapshot(new IntPtr(2), "B", "Notepad", ProcessId: 10),
-            new WindowSnapshot(new IntPtr(3), "C", "Notepad", ProcessId: 10),
+            new WindowSnapshot(new nint(1), "A", "Notepad", ProcessId: 10),
+            new WindowSnapshot(new nint(2), "B", "Notepad", ProcessId: 10),
+            new WindowSnapshot(new nint(3), "C", "Notepad", ProcessId: 10),
         ];
         await service.RefreshAsync();
 
         snapshots =
         [
-            new WindowSnapshot(new IntPtr(4), "D", "Chrome", ProcessId: 20),
-            new WindowSnapshot(new IntPtr(5), "E", "Chrome", ProcessId: 20),
+            new WindowSnapshot(new nint(4), "D", "Chrome", ProcessId: 20),
+            new WindowSnapshot(new nint(5), "E", "Chrome", ProcessId: 20),
         ];
         await service.RefreshAsync();
 

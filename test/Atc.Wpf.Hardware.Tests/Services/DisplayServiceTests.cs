@@ -2,7 +2,7 @@ namespace Atc.Wpf.Hardware.Tests.Services;
 
 public sealed class DisplayServiceTests
 {
-    private static readonly IntPtr Monitor = new(0x10001);
+    private static readonly nint Monitor = new(0x10001);
     private static readonly Rect FullHd = new(0, 0, 1920, 1080);
     private static readonly Rect FullHdWork = new(0, 0, 1920, 1040);
     private static readonly Rect Qhd = new(0, 0, 2560, 1440);

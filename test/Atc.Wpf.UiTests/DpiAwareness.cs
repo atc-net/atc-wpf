@@ -8,7 +8,7 @@ namespace Atc.Wpf.UiTests;
 /// </summary>
 internal static class DpiAwareness
 {
-    private static readonly IntPtr PerMonitorAwareV2 = new(-4);
+    private static readonly nint PerMonitorAwareV2 = new(-4);
 
     [ModuleInitializer]
     [SuppressMessage("Usage", "CA2255:The 'ModuleInitializer' attribute should not be used in libraries", Justification = "The test assembly is the process; DPI awareness must be set before the first window or automation call.")]
@@ -24,22 +24,22 @@ internal static class DpiAwareness
     /// <returns>The scale; 1 when the DPI cannot be read.</returns>
     public static double GetScale(AutomationElement element)
     {
-        var handle = IntPtr.Zero;
-        for (var current = element; current is not null && handle == IntPtr.Zero; current = current.Parent)
+        var handle = nint.Zero;
+        for (var current = element; current is not null && handle == nint.Zero; current = current.Parent)
         {
             handle = current.Properties.NativeWindowHandle.ValueOrDefault;
         }
 
-        var dpi = handle == IntPtr.Zero ? 0 : GetDpiForWindow(handle);
+        var dpi = handle == nint.Zero ? 0 : GetDpiForWindow(handle);
         return dpi == 0 ? 1 : dpi / 96d;
     }
 
     [DllImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-    private static extern uint GetDpiForWindow(IntPtr hwnd);
+    private static extern uint GetDpiForWindow(nint hwnd);
 
     [DllImport("user32.dll", SetLastError = true)]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool SetProcessDpiAwarenessContext(IntPtr value);
+    private static extern bool SetProcessDpiAwarenessContext(nint value);
 }

@@ -1,8 +1,8 @@
 namespace Atc.Wpf.Controls.Zoom;
 
-/// <summary>
+/// <content>
 /// IScrollInfo implementation for ZoomBox, allowing integration with ScrollViewer.
-/// </summary>
+/// </content>
 [SuppressMessage("Design", "MA0048:File name must match type name", Justification = "OK - partial class")]
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1601:Partial elements should be documented", Justification = "OK - partial class")]
 public partial class ZoomBox

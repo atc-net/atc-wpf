@@ -104,7 +104,6 @@ public sealed class EnumToArrayBindingSourceExtension : MarkupExtension
     public Type? EnumType
     {
         get => enumType;
-
         set
         {
             if (value == enumType)

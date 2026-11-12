@@ -30,6 +30,7 @@ internal sealed class WindowApplicationSettings : ApplicationSettingsBase, IWind
                 throw new AtcAppsException($"The settings file '{filename ?? "<unknown>"}' seems to be corrupted", ex);
             }
         }
+
         set => this[nameof(Placement)] = value;
     }
 
@@ -56,6 +57,7 @@ internal sealed class WindowApplicationSettings : ApplicationSettingsBase, IWind
                 throw new AtcAppsException($"The settings file '{filename ?? "<unknown>"}' seems to be corrupted", ex);
             }
         }
+
         set => this[nameof(UpgradeSettings)] = value;
     }
 }

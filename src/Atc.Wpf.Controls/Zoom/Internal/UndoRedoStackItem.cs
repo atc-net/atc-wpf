@@ -18,15 +18,15 @@ internal sealed class UndoRedoStackItem(
         => obj is UndoRedoStackItem item &&
            Equals(item);
 
-    public bool Equals(UndoRedoStackItem? obj)
+    public bool Equals(UndoRedoStackItem? other)
     {
-        if (obj is null)
+        if (other is null)
         {
             return false;
         }
 
-        return Zoom.IsWithinOnePercent(obj.Zoom) &&
-               Rect.Equals(obj.Rect);
+        return Zoom.IsWithinOnePercent(other.Zoom) &&
+               Rect.Equals(other.Rect);
     }
 
     public override int GetHashCode()

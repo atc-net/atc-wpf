@@ -336,7 +336,7 @@ public sealed class ClipboardService : IClipboardService
     {
         var parameters = new HwndSourceParameters("ClipboardListener")
         {
-            ParentWindow = new IntPtr(-3), // HWND_MESSAGE
+            ParentWindow = new nint(-3), // HWND_MESSAGE
             Width = 0,
             Height = 0,
         };
@@ -361,16 +361,16 @@ public sealed class ClipboardService : IClipboardService
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Clipboard snapshot requires checking multiple data types.")]
-    private IntPtr WndProc(
-        IntPtr hwnd,
+    private nint WndProc(
+        nint hwnd,
         int msg,
-        IntPtr wParam,
-        IntPtr lParam,
+        nint wParam,
+        nint lParam,
         ref bool handled)
     {
         if (msg != WmClipboardUpdate)
         {
-            return IntPtr.Zero;
+            return nint.Zero;
         }
 
         handled = true;
@@ -381,7 +381,7 @@ public sealed class ClipboardService : IClipboardService
             ClipboardChanged?.Invoke(this, new ClipboardChangedEventArgs(entry));
         }
 
-        return IntPtr.Zero;
+        return nint.Zero;
     }
 
     private static ClipboardEntry? CreateSnapshotEntry()

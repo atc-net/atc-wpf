@@ -16,7 +16,7 @@ public sealed partial class TopLevelWindowInfo : ObservableObject, IDeviceInfo
     /// <param name="processId">The ID of the process that owns the window.</param>
     /// <param name="processName">The name of the process that owns the window.</param>
     public TopLevelWindowInfo(
-        IntPtr handle,
+        nint handle,
         string title,
         string className,
         int processId,
@@ -32,7 +32,7 @@ public sealed partial class TopLevelWindowInfo : ObservableObject, IDeviceInfo
     /// <summary>
     /// Gets the native window handle (<c>HWND</c>).
     /// </summary>
-    public IntPtr Handle { get; }
+    public nint Handle { get; }
 
     /// <summary>
     /// Gets the window title.

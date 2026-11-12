@@ -85,9 +85,12 @@ public partial class NumericBox : Control
     public TextAlignment TextAlignment
     {
         get => (TextAlignment)GetValue(TextAlignmentProperty);
-        set => SetValue(
+        set
+        {
+            SetValue(
             TextAlignmentProperty,
             value);
+        }
     }
 
     [DependencyProperty(
@@ -107,9 +110,12 @@ public partial class NumericBox : Control
     public bool IsReadOnly
     {
         get => (bool)GetValue(IsReadOnlyProperty);
-        set => SetValue(
+        set
+        {
+            SetValue(
             IsReadOnlyProperty,
             BooleanBoxes.Box(value));
+        }
     }
 
     [DependencyProperty(

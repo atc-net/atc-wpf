@@ -4,7 +4,7 @@ namespace Atc.Wpf.Hardware.Services.Internal;
 /// One polled observation of a display monitor.
 /// </summary>
 internal sealed record DisplaySnapshot(
-    IntPtr Handle,
+    nint Handle,
     string DeviceName,
     Rect Bounds,
     Rect WorkingArea,

@@ -129,8 +129,8 @@ public abstract class SvgIconBase : MarkupExtension
                 var svgStreamInfo = svgSourceString.Contains(
                         "siteoforigin",
                         StringComparison.OrdinalIgnoreCase)
-                    ? Application.GetRemoteStream(svgSource)
-                    : Application.GetResourceStream(svgSource);
+                            ? Application.GetRemoteStream(svgSource)
+                            : Application.GetResourceStream(svgSource);
 
                 var svgStream = svgStreamInfo?.Stream;
                 if (svgStream is not null)

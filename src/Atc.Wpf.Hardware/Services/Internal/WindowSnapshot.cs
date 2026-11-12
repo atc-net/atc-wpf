@@ -4,7 +4,7 @@ namespace Atc.Wpf.Hardware.Services.Internal;
 /// One polled observation of a top-level window.
 /// </summary>
 internal sealed record WindowSnapshot(
-    IntPtr Handle,
+    nint Handle,
     string Title,
     string ClassName,
     int ProcessId);

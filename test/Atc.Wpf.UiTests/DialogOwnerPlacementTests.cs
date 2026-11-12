@@ -126,7 +126,7 @@ public sealed class DialogOwnerPlacementTests : IDisposable
     /// window in the automation tree, so focus left in the dialog does not count as focus in the main window.
     /// </summary>
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "The focused element can go away while the tree is walked; the caller retries.")]
-    private IntPtr FocusedWindowHandle()
+    private nint FocusedWindowHandle()
     {
         try
         {
@@ -138,11 +138,11 @@ public sealed class DialogOwnerPlacementTests : IDisposable
                 element = walker.GetParent(element);
             }
 
-            return element?.Properties.NativeWindowHandle.ValueOrDefault ?? IntPtr.Zero;
+            return element?.Properties.NativeWindowHandle.ValueOrDefault ?? nint.Zero;
         }
         catch (Exception)
         {
-            return IntPtr.Zero;
+            return nint.Zero;
         }
     }
 

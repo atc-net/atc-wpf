@@ -264,7 +264,7 @@ public sealed class ToastNotificationManager : IToastNotificationManager
     }
 
     private static bool HasWindowHandle(Window candidate)
-        => new WindowInteropHelper(candidate).Handle != IntPtr.Zero &&
+        => new WindowInteropHelper(candidate).Handle != nint.Zero &&
            PresentationSource.FromVisual(candidate) is not null;
 
     private static void OnOverlayWindowClosed(

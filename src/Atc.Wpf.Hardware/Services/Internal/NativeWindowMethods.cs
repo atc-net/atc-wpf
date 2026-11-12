@@ -5,52 +5,52 @@ namespace Atc.Wpf.Hardware.Services.Internal;
 internal static class NativeWindowMethods
 {
     public delegate bool EnumWindowsProc(
-        IntPtr hWnd,
-        IntPtr lParam);
+        nint hWnd,
+        nint lParam);
 
     [DllImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool EnumWindows(
         EnumWindowsProc lpEnumFunc,
-        IntPtr lParam);
+        nint lParam);
 
     [DllImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool IsWindowVisible(IntPtr hWnd);
+    public static extern bool IsWindowVisible(nint hWnd);
 
     [DllImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-    public static extern IntPtr GetWindow(
-        IntPtr hWnd,
+    public static extern nint GetWindow(
+        nint hWnd,
         uint uCmd);
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "GetWindowTextW")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern int GetWindowText(
-        IntPtr hWnd,
+        nint hWnd,
         [Out] char[] lpString,
         int nMaxCount);
 
     [DllImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-    public static extern int GetWindowTextLength(IntPtr hWnd);
+    public static extern int GetWindowTextLength(nint hWnd);
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "GetClassNameW")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern int GetClassName(
-        IntPtr hWnd,
+        nint hWnd,
         [Out] char[] lpClassName,
         int nMaxCount);
 
     [DllImport("user32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern uint GetWindowThreadProcessId(
-        IntPtr hWnd,
+        nint hWnd,
         out uint lpdwProcessId);
 
-    public static string ReadWindowTitle(IntPtr hWnd)
+    public static string ReadWindowTitle(nint hWnd)
     {
         var len = GetWindowTextLength(hWnd);
         if (len <= 0)
@@ -63,7 +63,7 @@ internal static class NativeWindowMethods
         return new string(buffer, 0, actual);
     }
 
-    public static string ReadClassName(IntPtr hWnd)
+    public static string ReadClassName(nint hWnd)
     {
         var buffer = new char[256];
         var actual = GetClassName(hWnd, buffer, buffer.Length);

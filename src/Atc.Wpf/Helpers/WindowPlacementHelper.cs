@@ -10,7 +10,7 @@ public static class WindowPlacementHelper
 
     /// <summary>Restores the placement of the window from XML produced by <see cref="GetPlacement"/>; a minimized placement is restored as normal, and invalid XML is ignored.</summary>
     public static void SetPlacement(
-        IntPtr windowHandle,
+        nint windowHandle,
         string placementXml)
     {
         if (string.IsNullOrEmpty(placementXml))
@@ -50,7 +50,7 @@ public static class WindowPlacementHelper
     }
 
     /// <summary>Gets the current placement of the window serialized as XML.</summary>
-    public static string GetPlacement(IntPtr windowHandle)
+    public static string GetPlacement(nint windowHandle)
     {
         NativeMethods.GetWindowPlacement(
             windowHandle,

@@ -86,7 +86,7 @@ internal sealed class ColLayoutConverter : TypeConverter
             typeof(int),
             typeof(int),
             typeof(int),
-            typeof(int)
+            typeof(int),
         ]);
 
         return new InstanceDescriptor(

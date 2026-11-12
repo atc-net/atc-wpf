@@ -51,4 +51,4 @@ internal static class DispatcherPump
         stopTimer.Start();
         Dispatcher.PushFrame(frame);
     }
-}
+}

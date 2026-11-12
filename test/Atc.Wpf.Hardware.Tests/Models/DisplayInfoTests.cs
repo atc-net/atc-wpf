@@ -6,13 +6,13 @@ public sealed class DisplayInfoTests
     public void Constructor_AssignsAllProperties()
     {
         var info = new DisplayInfo(
-            handle: new IntPtr(0x1234),
+            handle: new nint(0x1234),
             deviceName: @"\\.\DISPLAY1",
             bounds: new System.Windows.Rect(0, 0, 1920, 1080),
             workingArea: new System.Windows.Rect(0, 0, 1920, 1040),
             isPrimary: true);
 
-        Assert.Equal(new IntPtr(0x1234), info.Handle);
+        Assert.Equal(new nint(0x1234), info.Handle);
         Assert.Equal(@"\\.\DISPLAY1", info.DeviceName);
         Assert.Equal(@"\\.\DISPLAY1", info.DeviceId);
         Assert.Equal(@"\\.\DISPLAY1", info.FriendlyName);
@@ -27,7 +27,7 @@ public sealed class DisplayInfoTests
     public void ToString_PrimaryIncludesStarAndResolution()
     {
         var info = new DisplayInfo(
-            handle: IntPtr.Zero,
+            handle: nint.Zero,
             deviceName: @"\\.\DISPLAY1",
             bounds: new System.Windows.Rect(0, 0, 2560, 1440),
             workingArea: new System.Windows.Rect(0, 0, 2560, 1400),
@@ -43,7 +43,7 @@ public sealed class DisplayInfoTests
     public void ToString_NonPrimaryHasNoStar()
     {
         var info = new DisplayInfo(
-            handle: IntPtr.Zero,
+            handle: nint.Zero,
             deviceName: @"\\.\DISPLAY2",
             bounds: new System.Windows.Rect(1920, 0, 1920, 1080),
             workingArea: new System.Windows.Rect(1920, 0, 1920, 1040),
@@ -59,7 +59,7 @@ public sealed class DisplayInfoTests
     public void State_RaisesPropertyChanged()
     {
         var info = new DisplayInfo(
-            handle: IntPtr.Zero,
+            handle: nint.Zero,
             deviceName: @"\\.\DISPLAY1",
             bounds: System.Windows.Rect.Empty,
             workingArea: System.Windows.Rect.Empty,

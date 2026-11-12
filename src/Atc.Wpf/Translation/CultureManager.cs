@@ -105,7 +105,6 @@ public static class CultureManager
     public static CultureInfo UiCulture
     {
         get => uiCulture;
-
         set
         {
             if (value is null)
@@ -143,7 +142,6 @@ public static class CultureManager
     public static bool SynchronizeThreadCulture
     {
         get => synchronizeThreadCulture;
-
         set
         {
             synchronizeThreadCulture = value;

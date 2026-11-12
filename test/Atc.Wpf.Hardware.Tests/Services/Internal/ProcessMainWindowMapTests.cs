@@ -41,7 +41,7 @@ public sealed class ProcessMainWindowMapTests
     [Fact]
     public void Build_ProcessAlreadyMapped_DoesNotCheckItsLaterWindows()
     {
-        var checkedWindows = new List<IntPtr>();
+        var checkedWindows = new List<nint>();
 
         ProcessMainWindowMap.Build(
             [1, 2, 3],
@@ -52,7 +52,7 @@ public sealed class ProcessMainWindowMapTests
                 return true;
             });
 
-        Assert.Equal([(IntPtr)1], checkedWindows);
+        Assert.Equal([(nint)1], checkedWindows);
     }
 
     [WpfFact]
@@ -76,7 +76,7 @@ public sealed class ProcessMainWindowMapTests
 
             using var process = System.Diagnostics.Process.GetCurrentProcess();
             var expectedHandle = process.MainWindowHandle;
-            Assert.NotEqual(IntPtr.Zero, expectedHandle);
+            Assert.NotEqual(nint.Zero, expectedHandle);
             Assert.True(map.TryGetValue(process.Id, out var handle));
             Assert.Equal(expectedHandle, handle);
             Assert.Equal(process.MainWindowTitle, NativeWindowMethods.ReadWindowTitle(handle));

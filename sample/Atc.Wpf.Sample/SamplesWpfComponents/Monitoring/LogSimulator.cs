@@ -69,7 +69,7 @@ public static class LogSimulator
         "Notification",
         "Database",
         "UI",
-        "API"
+        "API",
     ];
 
     private static readonly Random Random = new();

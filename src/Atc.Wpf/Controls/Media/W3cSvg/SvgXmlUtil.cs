@@ -71,8 +71,8 @@ internal static class SvgXmlUtil
             value,
             out var result,
             percentageMaximum)
-            ? result
-            : 0;
+                ? result
+                : 0;
     }
 
     public static double AttrValue(KeyValueItem attr)
@@ -83,8 +83,8 @@ internal static class SvgXmlUtil
             attr.Value,
             out var result,
             1)
-            ? result
-            : 0;
+                ? result
+                : 0;
     }
 
     public static double AttrValue(
@@ -105,8 +105,8 @@ internal static class SvgXmlUtil
             attr.Value,
             out var result,
             percentageMaximum)
-            ? result
-            : defaultValue;
+                ? result
+                : defaultValue;
     }
 
     public static string? AttrValue(
@@ -143,8 +143,8 @@ internal static class SvgXmlUtil
             value,
             out var result,
             1)
-            ? result
-            : 0.1;
+                ? result
+                : 0.1;
     }
 
     public static IEnumerable<KeyValueItem> SplitStyle(string fullStyle)
