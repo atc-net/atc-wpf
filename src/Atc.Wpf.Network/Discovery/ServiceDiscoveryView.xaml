@@ -24,26 +24,34 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="3"
+            ItemVerticalAlignment="Center"
             Orientation="Horizontal"
             Spacing="20">
-            <CheckBox
-                VerticalAlignment="Center"
-                Content="mDNS"
-                IsChecked="{Binding Path=UseMdns}" />
-            <CheckBox
-                VerticalAlignment="Center"
-                Content="SSDP (UPnP)"
-                IsChecked="{Binding Path=UseSsdp}" />
-            <CheckBox
-                VerticalAlignment="Center"
-                Content="ONVIF"
-                IsChecked="{Binding Path=UseOnvif}" />
+            <atcForms:LabelCheckBox
+                Width="60"
+                HideAreas="AsteriskAndInformation"
+                IsChecked="{Binding Path=UseMdns, Mode=TwoWay}"
+                LabelText="mDNS"
+                Orientation="Vertical" />
+            <atcForms:LabelCheckBox
+                Width="90"
+                HideAreas="AsteriskAndInformation"
+                IsChecked="{Binding Path=UseSsdp, Mode=TwoWay}"
+                LabelText="SSDP (UPnP)"
+                Orientation="Vertical" />
+            <atcForms:LabelCheckBox
+                Width="60"
+                HideAreas="AsteriskAndInformation"
+                IsChecked="{Binding Path=UseOnvif, Mode=TwoWay}"
+                LabelText="ONVIF"
+                Orientation="Vertical" />
             <atcForms:LabelIntegerBox
                 Width="220"
-                HideAreas="All"
+                HideAreas="AsteriskAndInformation"
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=DiscoveryDuration}"
                 Maximum="30000"
                 Minimum="500"
+                Orientation="Vertical"
                 Value="{Binding Path=DurationInMs, Mode=TwoWay}" />
             <Button
                 Width="100"

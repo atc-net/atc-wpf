@@ -23,7 +23,7 @@
                 LabelWidthNumber="40"
                 LabelWidthSizeDefinition="Percentage"
                 SelectedKey="{Binding Path=SelectedLocalNetworkKey, Mode=TwoWay}" />
-            <atcForms:LabelTextBox
+            <atcForms:LabelIPRangeBox
                 LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
                                                 Key=RangeCidr}"
                 LabelWidthNumber="40"

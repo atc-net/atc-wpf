@@ -21,39 +21,54 @@
     <atc:GridEx Rows="Auto,Auto,*">
         <atc:UniformSpacingPanel
             Grid.Row="0"
+            ItemVerticalAlignment="Center"
             Orientation="Horizontal"
             Spacing="20">
-            <atcForms:LabelTextBox
+            <atcForms:LabelIPAddressBox
                 MinWidth="260"
-                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=TracerouteTarget}"
+                HideAreas="AsteriskAndInformation"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=TracerouteTarget}"
+                Orientation="Vertical"
                 Text="{Binding Path=Target, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ValidationFormat="IPAddressOrHostname"
                 WatermarkText="1.1.1.1" />
             <atcForms:LabelIntegerBox
-                Width="160"
-                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=TracerouteMaxHops}"
+                Width="220"
+                HideAreas="AsteriskAndInformation"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=TracerouteMaxHops}"
                 Maximum="255"
                 Minimum="1"
+                Orientation="Vertical"
                 Value="{Binding Path=MaxHops, Mode=TwoWay}" />
             <atcForms:LabelIntegerBox
-                Width="180"
-                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=TracerouteTimeoutPerHop}"
+                Width="220"
+                HideAreas="AsteriskAndInformation"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                Key=TracerouteTimeoutPerHop}"
                 Maximum="10000"
                 Minimum="100"
+                Orientation="Vertical"
                 Value="{Binding Path=TimeoutPerHopInMs, Mode=TwoWay}" />
-            <CheckBox
-                VerticalAlignment="Bottom"
-                Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=TracerouteResolveHostNames}"
-                IsChecked="{Binding Path=ResolveHostNames}" />
+            <atcForms:LabelCheckBox
+                Width="120"
+                HideAreas="AsteriskAndInformation"
+                IsChecked="{Binding Path=ResolveHostNames, Mode=TwoWay}"
+                LabelText="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=TracerouteResolveHostNames}"
+                Orientation="Vertical" />
             <Button
                 Width="100"
                 VerticalAlignment="Bottom"
                 Command="{Binding Path=TraceCommand}"
-                Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=TracerouteStart}" />
+                Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                              Key=TracerouteStart}" />
             <Button
                 Width="100"
                 VerticalAlignment="Bottom"
                 Command="{Binding Path=TraceCancelCommand}"
-                Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Cancel}" />
+                Content="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                              Key=Cancel}" />
         </atc:UniformSpacingPanel>
 
         <TextBlock
@@ -78,19 +93,23 @@
                     <GridViewColumn
                         Width="150"
                         DisplayMemberBinding="{Binding Path=IpAddress, TargetNullValue='*'}"
-                        Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=IpAddress}" />
+                        Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                     Key=IpAddress}" />
                     <GridViewColumn
                         Width="90"
                         DisplayMemberBinding="{Binding Path=RoundtripTimeText}"
-                        Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Time}" />
+                        Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                     Key=Time}" />
                     <GridViewColumn
                         Width="260"
                         DisplayMemberBinding="{Binding Path=HostName}"
-                        Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=Hostname}" />
+                        Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                     Key=Hostname}" />
                     <GridViewColumn
                         Width="120"
                         DisplayMemberBinding="{Binding Path=Status}"
-                        Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources, Key=IpStatus}" />
+                        Header="{atcTranslation:Resx ResxName=Atc.Wpf.Network.Resources.Resources,
+                                                     Key=IpStatus}" />
                 </GridView>
             </ListView.View>
         </ListView>
