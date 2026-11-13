@@ -88,7 +88,7 @@ Inherits the common label properties from `LabelControlBase` (`LabelText`, `Labe
 
 - The `Selected*` properties do not bind two-way by default; use `Mode=TwoWay` to write the picked values back to the source
 - On load, `SelectedForegroundBrush` and `SelectedBackgroundBrush` take the theme foreground and background brushes, but only while they are still at their default value; a set or bound value always wins
-- `IsValid()` is not overridden and always returns `true`; `IsMandatory` only shows the asterisk
+- With `IsMandatory`, `IsValid()` returns `false` and `ValidationText` shows "Field is required" while `SelectedFontFamily` is `null`; the text updates as the value changes
 - `FontColorEditorMode` lives in `Atc.Wpf.Forms.FontEditing`
 - The editor itself is described in `FontPicker_Readme.md`
 

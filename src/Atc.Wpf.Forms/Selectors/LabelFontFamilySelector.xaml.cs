@@ -26,6 +26,11 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
     /// <summary>
+    /// Occurs when the selection loses focus and passes validation; the counterpart of <see cref="SelectorLostFocusInvalid"/>.
+    /// </summary>
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusValid;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="LabelFontFamilySelector"/> class.
     /// </summary>
     public LabelFontFamilySelector()
@@ -116,6 +121,13 @@ public partial class LabelFontFamilySelector : ILabelFontFamilySelector
         }
 
         control.SelectorChanged?.Invoke(
+            control,
+            new ValueChangedEventArgs<string?>(
+                control.Identifier,
+                e.OldValue?.ToString(),
+                selectedKey));
+
+        control.SelectorLostFocusValid?.Invoke(
             control,
             new ValueChangedEventArgs<string?>(
                 control.Identifier,

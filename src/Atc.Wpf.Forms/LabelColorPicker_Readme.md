@@ -62,7 +62,7 @@ Inherits the common label properties from `LabelControlBase` (`LabelText`, `Labe
 
 - `ColorValue` and `BrushValue` do not bind two-way by default; use `Mode=TwoWay` to write the picked color back to the source
 - `ColorChanged` is raised by picking in the inner `ColorPicker`, not when `ColorValue` or `BrushValue` is set in code
-- `IsValid()` is not overridden and always returns `true`; `IsMandatory` only shows the asterisk
+- With `IsMandatory`, `IsValid()` returns `false` and `ValidationText` shows "Field is required" while `ColorValue` is `null`; the text updates as the value changes
 - The picker itself (popup, editing modes) is described in `ColorPicker_Readme.md`
 
 ## 🔗 Related Controls
