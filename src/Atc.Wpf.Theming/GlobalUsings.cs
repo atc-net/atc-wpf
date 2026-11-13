@@ -31,6 +31,7 @@ global using System.Windows.Threading;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Data.Models;
 global using Atc.Wpf.Helpers;
+global using Atc.Wpf.Internal;
 global using Atc.Wpf.Resources;
 global using Atc.Wpf.Theming.Automation.Peers;
 global using Atc.Wpf.Theming.Behaviors;

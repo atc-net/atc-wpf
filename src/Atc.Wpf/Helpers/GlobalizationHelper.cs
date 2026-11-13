@@ -6,9 +6,9 @@ namespace Atc.Wpf.Helpers;
 public static class GlobalizationHelper
 {
     /// <summary>
-    /// Cached resource managers.
+    /// Cached resource managers; culture changes may come from any thread, so the cache is concurrent.
     /// </summary>
-    private static readonly Dictionary<string, WeakReference> ResourceManagers = new(StringComparer.Ordinal);
+    private static readonly ConcurrentDictionary<string, WeakReference> ResourceManagers = new(StringComparer.Ordinal);
 
     /// <summary>
     /// Get the resource manager for this type.
@@ -30,7 +30,7 @@ public static class GlobalizationHelper
             // entry (it will be re-added)
             if (resourceManager is null)
             {
-                ResourceManagers.Remove(resxName);
+                ResourceManagers.TryRemove(resxName, out _);
             }
         }
 
@@ -42,9 +42,9 @@ public static class GlobalizationHelper
                 resourceManager = new ResourceManager(
                     resxName,
                     assembly);
-                ResourceManagers.Add(
-                    resxName,
-                    new WeakReference(resourceManager));
+
+                // Two threads may both create one; either is fine, the last one is kept.
+                ResourceManagers[resxName] = new WeakReference(resourceManager);
             }
         }
 
