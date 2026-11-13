@@ -124,7 +124,8 @@ The zoom shortcuts accept both the main keyboard row and the numeric keypad (`Ct
 - Received lines wait in a bounded queue (the newest `MaxLines`) drained by one background loop and committed in batches at Background priority; a clear also discards a batch already on its way
 - Term matching is word-boundary-aware: a term matches as a whole word, delimited by anything that is not a letter, digit or underscore, so `error` matches `error:` and `[error]` but not `errors`
 - With `EnableAnsiParsing` on (the default), ANSI escape sequences are rendered as colours and removed from `TerminalLineItem.Text`, so copy, export, search and term matching work on the plain text
-- The control implements `IDisposable` — dispose when no longer needed
+- The background loop runs only while the viewer is loaded. Lines that arrive while it is unloaded (for example in a tab that is not selected) wait in the queue and show when it is loaded again
+- The control implements `IDisposable` — dispose when no longer needed; a viewer that is unloaded without being disposed leaves no loop running
 - Priority order for color matching: Error > Success > Terms1 > Terms2 > Terms3 > Default
 
 ## 🔗 Related Controls
