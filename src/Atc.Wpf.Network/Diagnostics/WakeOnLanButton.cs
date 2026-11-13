@@ -24,6 +24,8 @@ public partial class WakeOnLanButton : Button
     [DependencyProperty(DefaultValue = 9)]
     private int port;
 
+    private bool isSending;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="WakeOnLanButton"/> class.
     /// </summary>
@@ -49,10 +51,14 @@ public partial class WakeOnLanButton : Button
     public async Task SendAsync()
     {
         var mac = MacAddress;
-        if (!WakeOnLanViewModel.IsValidMacAddress(mac))
+        if (isSending || !WakeOnLanViewModel.IsValidMacAddress(mac))
         {
             return;
         }
+
+        // One packet per click: a second click (or call) while sending is ignored, and the button shows it.
+        isSending = true;
+        SetCurrentValue(IsEnabledProperty, false);
 
         Exception? error = null;
         try
@@ -63,6 +69,11 @@ public partial class WakeOnLanButton : Button
         catch (Exception ex)
         {
             error = ex;
+        }
+        finally
+        {
+            isSending = false;
+            SetCurrentValue(IsEnabledProperty, WakeOnLanViewModel.IsValidMacAddress(MacAddress));
         }
 
         PacketSent?.Invoke(this, new WakeOnLanSentEventArgs(mac!.Trim(), error));
@@ -78,5 +89,8 @@ public partial class WakeOnLanButton : Button
     private static void OnMacAddressChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
-        => ((WakeOnLanButton)d).SetCurrentValue(IsEnabledProperty, WakeOnLanViewModel.IsValidMacAddress(e.NewValue as string));
+    {
+        var button = (WakeOnLanButton)d;
+        button.SetCurrentValue(IsEnabledProperty, !button.isSending && WakeOnLanViewModel.IsValidMacAddress(e.NewValue as string));
+    }
 }
