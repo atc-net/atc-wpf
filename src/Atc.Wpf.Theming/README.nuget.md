@@ -26,6 +26,10 @@ Merge the styles into `App.xaml`:
 </Application.Resources>
 ```
 
+Apps that use the Atc controls also merge `pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml` after it (see Atc.Wpf.Controls).
+
+`ThemeManagerHelper.GetColorByResourceKey` / `GetBrushByResourceKey` return `DeepPink` for a key the current theme does not have (and write one warning to `System.Diagnostics.Trace`); use `TryGetColorByResourceKey` / `TryGetBrushByResourceKey` to tell a missing key from a real value.
+
 Switch theme and accent at runtime:
 
 ```csharp
