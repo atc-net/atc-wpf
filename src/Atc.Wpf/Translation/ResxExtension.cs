@@ -126,6 +126,7 @@ public sealed class ResxExtension : ManagedMarkupExtension
         }
 
         object? result = null;
+        string? failure = null;
         try
         {
             var resourceEventArgs = new ResourceEventArgs(ResxName, Key, CultureManager.UiCulture);
@@ -151,9 +152,17 @@ public sealed class ResxExtension : ManagedMarkupExtension
                 }
             }
         }
-        catch
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
-            // Dummy
+            failure = ex.Message;
+        }
+
+        if (result is null)
+        {
+            // Shown as the fallback text ("#Key") in the UI; traced once so a Release build tells which key is missing.
+            TraceOnce.Warn(
+                $"resx:{ResxName}:{Key}",
+                $"ResxExtension: no value for key '{Key}' in '{ResxName}' ({CultureManager.UiCulture.Name}){(failure is null ? string.Empty : ": " + failure)}.");
         }
 
         return result ?? GetDefaultValue(Key);

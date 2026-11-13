@@ -151,6 +151,9 @@ public static class CultureManager
         }
         catch
         {
+            TraceOnce.Warn(
+                $"culture:{cultureName}",
+                $"CultureManager: '{cultureName}' is not a valid culture name; using English instead.");
             uiCultureInfo = GlobalizationConstants.EnglishCultureInfo;
         }
 
