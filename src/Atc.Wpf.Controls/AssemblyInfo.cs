@@ -1,4 +1,5 @@
 [assembly: Atc.XamlToolkit.Mvvm.GenerateDocumentationDefault]
+[assembly: InternalsVisibleTo("Atc.Wpf.Benchmarks")]
 [assembly: InternalsVisibleTo("Atc.Wpf.Components")]
 [assembly: InternalsVisibleTo("Atc.Wpf.Controls.Tests")]
 [assembly: InternalsVisibleTo("Atc.Wpf.Forms")]
