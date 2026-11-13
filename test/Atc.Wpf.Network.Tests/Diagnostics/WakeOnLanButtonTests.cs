@@ -56,6 +56,35 @@ public sealed class WakeOnLanButtonTests
         Assert.Equal(expected, sut.IsEnabled);
     }
 
+    // A double click must send one packet, not two.
+    [StaFact]
+    public async Task A_second_send_while_sending_is_ignored()
+    {
+        var sending = new TaskCompletionSource();
+        var sent = 0;
+        var reported = 0;
+        var sut = new WakeOnLanButton
+        {
+            MacAddress = "00-11-22-33-44-55",
+            Sender = (_, _, _) =>
+            {
+                sent++;
+                return sending.Task;
+            },
+        };
+        sut.PacketSent += (_, _) => reported++;
+
+        var first = sut.SendAsync();
+        var second = sut.SendAsync();
+        Assert.False(sut.IsEnabled);
+        sending.SetResult();
+        await Task.WhenAll(first, second);
+
+        Assert.Equal(1, sent);
+        Assert.Equal(1, reported);
+        Assert.True(sut.IsEnabled);
+    }
+
     [StaFact]
     public void Invoke_FromAutomation_Sends()
     {
