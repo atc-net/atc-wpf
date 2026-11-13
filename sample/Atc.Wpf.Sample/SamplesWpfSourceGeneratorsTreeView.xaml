@@ -13,6 +13,9 @@
         <sample:SampleTreeViewItem Header="ViewModel" SamplePath="ViewModelView" />
         <sample:SampleTreeViewItem Header="DependencyProperty" SamplePath="DependencyPropertyView" />
         <sample:SampleTreeViewItem Header="AttachedProperty" SamplePath="AttachedPropertyView" />
+        <sample:SampleTreeViewItem Header="DependencyProperty types" SamplePath="TestClassDependencyPropertiesView" />
+        <sample:SampleTreeViewItem Header="DependencyProperty fields" SamplePath="TestFieldsDependencyPropertiesView" />
+        <sample:SampleTreeViewItem Header="UserControl" SamplePath="MyUserControl" />
     </TreeViewItem>
 
 </TreeView>

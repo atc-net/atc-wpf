@@ -188,7 +188,7 @@
         <sample:SampleTreeViewItem
             Header="TimeZonePicker"
             IsExpanded="True"
-            SamplePath="SamplesWpfForms.Pickers.TimeZonePickerView" />
+            SamplePath="Pickers.TimeZonePickerView" />
     </TreeViewItem>
 
     <TreeViewItem Header="PropertyEditing">

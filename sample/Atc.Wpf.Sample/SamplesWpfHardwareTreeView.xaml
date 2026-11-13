@@ -13,83 +13,83 @@
         <TreeViewItem Header="Demos" IsExpanded="True">
             <sample:SampleTreeViewItem
                 Header="Hot-plug &amp; In-Use"
-                SamplePath="SamplesWpfHardware.Demos.HotPlugInUseDemoView" />
+                SamplePath="Demos.HotPlugInUseDemoView" />
         </TreeViewItem>
         <TreeViewItem Header="Pickers" IsExpanded="True">
             <sample:SampleTreeViewItem
                 Header="SerialPortPicker"
-                SamplePath="SamplesWpfHardware.Pickers.SerialPortPickerView" />
+                SamplePath="Pickers.SerialPortPickerView" />
             <sample:SampleTreeViewItem
                 Header="UsbPortPicker"
-                SamplePath="SamplesWpfHardware.Pickers.UsbPortPickerView" />
+                SamplePath="Pickers.UsbPortPickerView" />
             <sample:SampleTreeViewItem
                 Header="UsbCameraPicker"
-                SamplePath="SamplesWpfHardware.Pickers.UsbCameraPickerView" />
+                SamplePath="Pickers.UsbCameraPickerView" />
             <sample:SampleTreeViewItem
                 Header="AudioInputPicker"
-                SamplePath="SamplesWpfHardware.Pickers.AudioInputPickerView" />
+                SamplePath="Pickers.AudioInputPickerView" />
             <sample:SampleTreeViewItem
                 Header="AudioOutputPicker"
-                SamplePath="SamplesWpfHardware.Pickers.AudioOutputPickerView" />
+                SamplePath="Pickers.AudioOutputPickerView" />
             <sample:SampleTreeViewItem
                 Header="DrivePicker"
-                SamplePath="SamplesWpfHardware.Pickers.DrivePickerView" />
+                SamplePath="Pickers.DrivePickerView" />
             <sample:SampleTreeViewItem
                 Header="BluetoothDevicePicker"
-                SamplePath="SamplesWpfHardware.Pickers.BluetoothDevicePickerView" />
+                SamplePath="Pickers.BluetoothDevicePickerView" />
             <sample:SampleTreeViewItem
                 Header="ProcessPicker"
-                SamplePath="SamplesWpfHardware.Pickers.ProcessPickerView" />
+                SamplePath="Pickers.ProcessPickerView" />
             <sample:SampleTreeViewItem
                 Header="WindowPicker"
-                SamplePath="SamplesWpfHardware.Pickers.WindowPickerView" />
+                SamplePath="Pickers.WindowPickerView" />
             <sample:SampleTreeViewItem
                 Header="NetworkAdapterPicker"
-                SamplePath="SamplesWpfHardware.Pickers.NetworkAdapterPickerView" />
+                SamplePath="Pickers.NetworkAdapterPickerView" />
             <sample:SampleTreeViewItem
                 Header="PrinterPicker"
-                SamplePath="SamplesWpfHardware.Pickers.PrinterPickerView" />
+                SamplePath="Pickers.PrinterPickerView" />
             <sample:SampleTreeViewItem
                 Header="DisplayPicker"
-                SamplePath="SamplesWpfHardware.Pickers.DisplayPickerView" />
+                SamplePath="Pickers.DisplayPickerView" />
         </TreeViewItem>
         <TreeViewItem Header="LabelControls">
             <sample:SampleTreeViewItem
                 Header="LabelSerialPortPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelSerialPortPickerView" />
+                SamplePath="LabelControls.LabelSerialPortPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelUsbPortPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelUsbPortPickerView" />
+                SamplePath="LabelControls.LabelUsbPortPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelUsbCameraPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelUsbCameraPickerView" />
+                SamplePath="LabelControls.LabelUsbCameraPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelAudioInputPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelAudioInputPickerView" />
+                SamplePath="LabelControls.LabelAudioInputPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelAudioOutputPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelAudioOutputPickerView" />
+                SamplePath="LabelControls.LabelAudioOutputPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelDrivePicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelDrivePickerView" />
+                SamplePath="LabelControls.LabelDrivePickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelBluetoothDevicePicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelBluetoothDevicePickerView" />
+                SamplePath="LabelControls.LabelBluetoothDevicePickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelProcessPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelProcessPickerView" />
+                SamplePath="LabelControls.LabelProcessPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelWindowPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelWindowPickerView" />
+                SamplePath="LabelControls.LabelWindowPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelNetworkAdapterPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelNetworkAdapterPickerView" />
+                SamplePath="LabelControls.LabelNetworkAdapterPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelPrinterPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelPrinterPickerView" />
+                SamplePath="LabelControls.LabelPrinterPickerView" />
             <sample:SampleTreeViewItem
                 Header="LabelDisplayPicker"
-                SamplePath="SamplesWpfHardware.LabelControls.LabelDisplayPickerView" />
+                SamplePath="LabelControls.LabelDisplayPickerView" />
         </TreeViewItem>
     </TreeViewItem>
 
