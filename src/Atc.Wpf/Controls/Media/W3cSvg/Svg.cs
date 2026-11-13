@@ -194,6 +194,13 @@ internal sealed class Svg
             return;
         }
 
+        // XmlReader would download any other URI itself, on the calling (UI) thread, with no limits.
+        if (!fileUri.IsFile)
+        {
+            throw new NotSupportedException(
+                $"SVG source '{fileUri}' is not supported: only file URIs load here; download a remote SVG yourself and load it from a stream.");
+        }
+
         var filePath = fileUri.IsFile
             ? fileUri.LocalPath
             : fileUri.AbsoluteUri;

@@ -109,6 +109,16 @@ private void OnSvgImageFailed(object? sender, SvgImageFailedEventArgs e)
 - A broken element (e.g. invalid path data or animation values) is skipped and the rest of the image still renders
 - Hostile or runaway SVGs are bounded: elements nested deeper than 256 levels are dropped, at most 100,000 elements are rendered (counting what `<use>` expands to), DTDs are ignored (no entity expansion), and documents and decompressed `.svgz` files are capped at 64 MB
 - `CustomBrushes` exposes the SVG's paint servers after loading; brushes set before loading replace the matching paint servers. After changing an entry in place, call `ReRenderSvg()`
+- SVGs load from files and application resources (`file` and `pack` URIs) only. The controls never download: an `http`/`https` source in `SvgIcon`/`SvgIconConverter` renders nothing and writes a trace warning. To show a remote SVG, download it yourself (with a timeout) and pass the stream:
+
+  ```csharp
+  using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+  await using var stream = await http.GetStreamAsync(url);
+  using var buffer = new MemoryStream();
+  await stream.CopyToAsync(buffer);
+  buffer.Position = 0;
+  svgImage.SetImage(buffer);
+  ```
 
 ## 🔗 Related Controls
 

@@ -114,9 +114,15 @@ public abstract class SvgIconBase : MarkupExtension
 
         switch (scheme)
         {
-            case "file":
             case "https":
             case "http":
+                // A markup extension must not download on the UI thread; remote SVG is loaded by the app.
+                Trace.TraceWarning(
+                    "SVG source '{0}' was not loaded: http(s) sources are not supported; download the file and load it from a stream.",
+                    svgSource);
+                return null;
+
+            case "file":
                 using (var reader = new SvgFileReader(
                     OverrideColor,
                     OverrideStrokeColor))
