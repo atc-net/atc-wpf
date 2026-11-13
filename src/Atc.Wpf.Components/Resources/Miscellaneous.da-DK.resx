@@ -101,4 +101,11 @@
   <data name="Unpin" xml:space="preserve">
     <value>Frigør</value>
   </data>
+  <data name="SaveSettingsFailed" xml:space="preserve">
+    <value>Gem mislykkedes</value>
+  </data>
+  <data name="CouldNotSaveSettingsFormat1" xml:space="preserve">
+    <value>Indstillingerne kunne ikke gemmes:
+{0}</value>
+  </data>
 </root>

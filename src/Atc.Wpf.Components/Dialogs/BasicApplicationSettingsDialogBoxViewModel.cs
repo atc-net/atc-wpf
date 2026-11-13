@@ -1,3 +1,4 @@
+using ComponentsMisc = Atc.Wpf.Components.Resources.Miscellaneous;
 using SharedMisc = Atc.Wpf.Resources.Miscellaneous;
 
 namespace Atc.Wpf.Components.Dialogs;
@@ -127,26 +128,67 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase, IDispos
         return dynamicJson.ToJson();
     }
 
-    private void SaveUpdatesToCustomFile()
+    // Returns the error instead of throwing: an app installed under Program Files cannot write next
+    // to its exe, and that must not take the host app down from the OK button.
+    private Exception? SaveUpdatesToCustomFile()
     {
         var file = new FileInfo(
             System.IO.Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 AtcFileNameConstants.AppSettingsCustom));
 
-        File.WriteAllText(file.FullName, ToJson());
-
-        if (dataDirectory is null)
+        var error = TryWriteCustomSettings(file.FullName, ToJson());
+        if (error is not null || dataDirectory is null)
         {
-            return;
+            return error;
         }
 
-        File.Copy(
-            file.FullName,
-            System.IO.Path.Combine(
-                dataDirectory.FullName,
-                AtcFileNameConstants.AppSettingsCustom),
-            overwrite: true);
+        try
+        {
+            File.Copy(
+                file.FullName,
+                System.IO.Path.Combine(
+                    dataDirectory.FullName,
+                    AtcFileNameConstants.AppSettingsCustom),
+                overwrite: true);
+            return null;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Security.SecurityException)
+        {
+            return ex;
+        }
+    }
+
+    internal static Exception? TryWriteCustomSettings(
+        string path,
+        string json)
+    {
+        try
+        {
+            File.WriteAllText(path, json);
+            return null;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Security.SecurityException)
+        {
+            return ex;
+        }
+    }
+
+    private static void ShowSaveFailureDialog(
+        Window owner,
+        Exception ex)
+    {
+        var settings = new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Error)
+        {
+            TitleBarText = ComponentsMisc.SaveSettingsFailed,
+        };
+
+        var message = string.Format(
+            CultureInfo.CurrentCulture,
+            ComponentsMisc.CouldNotSaveSettingsFormat1,
+            ex.Message);
+
+        new InfoDialogBox(owner, settings, message).ShowDialog();
     }
 
     private void OnThemeChanged(
@@ -190,19 +232,24 @@ public class BasicApplicationSettingsDialogBoxViewModel : ViewModelBase, IDispos
 
     private void OkCommandHandler(NiceDialogBox dialogBox)
     {
-        Dispose();
-
         if (ApplicationSettings.IsDirty)
         {
             if (dataDirectory is not null)
             {
-                SaveUpdatesToCustomFile();
+                var error = SaveUpdatesToCustomFile();
+                if (error is not null)
+                {
+                    // The dialog stays open with the edits, so the user can retry or cancel.
+                    ShowSaveFailureDialog(dialogBox, error);
+                    return;
+                }
             }
 
             dialogBox.DialogResult = true;
             ApplicationSettings.IsDirty = false;
         }
 
+        Dispose();
         dialogBox.Close();
     }
 

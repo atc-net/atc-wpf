@@ -177,19 +177,8 @@ internal static class DialogBoxHelper
     /// Puts text on the clipboard; another process may hold the clipboard, so it is best effort.
     /// </summary>
     /// <returns><see langword="true"/> when the text was copied.</returns>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "The clipboard can be locked by another process; copying is best effort.")]
     public static bool TryCopy(string text)
-    {
-        try
-        {
-            System.Windows.Clipboard.SetText(text);
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-    }
+        => ClipboardHelper.TrySetText(text);
 
     /// <summary>
     /// Gets the text of the header created by <see cref="CreateHeaderControl"/>, if any.

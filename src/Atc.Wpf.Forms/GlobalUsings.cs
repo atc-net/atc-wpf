@@ -27,6 +27,7 @@ global using System.Windows.Media;
 global using Atc.Helpers;
 global using Atc.Serialization;
 global using Atc.Serialization.JsonConverters;
+global using Atc.Wpf.Clipboard;
 global using Atc.Wpf.Controls;
 global using Atc.Wpf.Controls.ColorEditing;
 global using Atc.Wpf.Controls.DataDisplay;

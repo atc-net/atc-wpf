@@ -150,7 +150,7 @@ public partial class RichTextBoxEx : RichTextBox
     private void OnCopyToClipboardClick(
         object sender,
         RoutedEventArgs e)
-        => System.Windows.Clipboard.SetText(Text);
+        => ClipboardHelper.TrySetText(Text);
 
     private void OnLoadedSubscribeToThemeChanges(
         object sender,
