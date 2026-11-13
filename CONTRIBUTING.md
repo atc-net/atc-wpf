@@ -35,12 +35,12 @@ dotnet run --project sample/Atc.Wpf.Sample
    ```
    See [`CLAUDE.md`](CLAUDE.md#testing) for the full list of test projects and per-project filter syntax.
 3. **Add or update tests** for the change. Functional coverage is uneven across the libraries — new tests are always welcome.
-4. **Update relevant readmes.** Each control may have a `[Control]_Readme.md` next to its source — update it if behaviour or properties change. See the **Control Readme Conventions** section in [`CLAUDE.md`](CLAUDE.md) for the discovery rules.
+4. **Update relevant readmes.** Each control may have a `[Control]_Readme.md` next to its source — update it if behaviour or properties change. See the **Control Readme Conventions** section in [`CLAUDE.md`](CLAUDE.md) for the discovery rules. After adding or moving a readme, run `pwsh tool/Update-ControlsToc.ps1` so it appears on the documentation site; the docs build fails while `docs/Controls/toc.yml` is out of date.
 5. **Use Conventional Commits** for commit messages (e.g. `fix(controls): …`, `feat(theming): …`, `perf(layouts): …`, `docs(forms): …`). Don't edit `CHANGELOG.md` by hand: [release-please](https://github.com/googleapis/release-please) writes it from the commit messages when a release is cut.
 
 ## 🛡️ Public API compatibility
 
-`dotnet pack` runs package validation against the last published release (`PackageValidationBaselineVersion` in `src/Directory.Build.props`), and CI packs on every pull request, so a removed or changed public member fails the build. If a break is intentional, run `dotnet pack -c Release -p:GenerateCompatibilitySuppressionFile=true`, review the generated `CompatibilitySuppressions.xml` next to the project, and commit it. After a release, bump `PackageValidationBaselineVersion` to the version just published and delete the suppression files, since they only apply to the old baseline.
+`dotnet pack` runs package validation against the last published release (`PackageValidationBaselineVersion` in `src/Directory.Build.props`), and CI packs on every pull request, so a removed or changed public member fails the build. If a break is intentional, run `dotnet pack -c Release -p:GenerateCompatibilitySuppressionFile=true`, review the generated `CompatibilitySuppressions.xml` next to the project, and commit it. After a release, bump `PackageValidationBaselineVersion` to the version just published and delete the suppression files, since they only apply to the old baseline. CI runs `tool/Check-PackageValidationBaseline.ps1`, which fails until the baseline matches the latest release tag.
 
 ## 🧱 Project structure
 

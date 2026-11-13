@@ -38,6 +38,10 @@ jobs:
       - name: 🧰 Install docfx
         run: dotnet tool install --global docfx --version 2.81.0
 
+      # A readme missing from the table of contents gets no page on the site, so fail instead.
+      - name: 🗂️ Check the controls table of contents
+        run: pwsh tool/Update-ControlsToc.ps1 -Check
+
       # Build the libraries first: docfx loads each project on its own, and without the referenced
       # assemblies in bin/ the XAML compile step fails and the API pages lose generated members.
       - name: 🛠️ Build libraries

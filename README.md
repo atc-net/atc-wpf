@@ -255,7 +255,7 @@ A quick reference of all controls organized by category:
 | **Selectors** | DualListSelector (check boxes, one-way mode, locked items, limit, grouping, virtualization) | Atc.Wpf.Components |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
 | **Labeled Multi-Select** | LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox, LabelCascaderComboBox, LabelMultiColumnComboBox | Atc.Wpf.Forms |
-| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox, ExceptionDialog (unhandled exceptions, copyable report), ExceptionReport | Atc.Wpf / Atc.Wpf.Forms / Components |
+| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox, FontPickerDialogBox, ExceptionDialog (unhandled exceptions, copyable report), ExceptionReport | Atc.Wpf / Atc.Wpf.Forms / Components |
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
 | **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
 | **Printing** | IPrintService, PrintService, PrintPreviewWindow | Atc.Wpf / Atc.Wpf.Components |
@@ -268,7 +268,7 @@ A quick reference of all controls organized by category:
 | **Busy Indicator** | IBusyIndicatorService, BusyIndicatorService | Atc.Wpf.Components |
 | **Theming** | NiceWindow, ThemeSelector, AccentColorSelector, TransitioningContentControl | Atc.Wpf.Theming |
 | **Font Icons** | FontAwesome 5 (3 variants), FontAwesome 7 (3 variants), Bootstrap, MaterialDesign, Weather, IcoFont | Atc.Wpf.FontIcons |
-| **Network** | NetworkScannerView | Atc.Wpf.Network |
+| **Network** | NetworkScannerView, ServiceDiscoveryView, OnvifCameraView, TracerouteView, WakeOnLanView / WakeOnLanButton, NtpTimeView, TcpClientView / UdpClientView, VncViewerView | Atc.Wpf.Network |
 | **Hardware** | SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, BluetoothDevicePicker, DrivePicker, DisplayPicker, PrinterPicker, NetworkAdapterPicker, ProcessPicker, WindowPicker (+ Label* wrappers) | Atc.Wpf.Hardware |
 
 ## 💝 MVVM Made Easy
