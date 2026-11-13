@@ -45,6 +45,7 @@ public partial class NavigationViewItem : ButtonBase
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(NavigationViewItem),
             new FrameworkPropertyMetadata(typeof(NavigationViewItem)));
+        StyleCheck.Register(typeof(NavigationViewItem));
     }
 
     /// <inheritdoc />

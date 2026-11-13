@@ -121,6 +121,7 @@ public sealed partial class Chip : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Chip),
             new FrameworkPropertyMetadata(typeof(Chip)));
+        StyleCheck.Register(typeof(Chip));
     }
 
     /// <inheritdoc />

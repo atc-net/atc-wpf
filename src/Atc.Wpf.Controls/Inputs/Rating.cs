@@ -127,6 +127,7 @@ public partial class Rating : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Rating),
             new FrameworkPropertyMetadata(typeof(Rating)));
+        StyleCheck.Register(typeof(Rating));
 
         FocusableProperty.OverrideMetadata(
             typeof(Rating),

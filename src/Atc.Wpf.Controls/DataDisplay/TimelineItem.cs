@@ -90,5 +90,6 @@ public sealed partial class TimelineItem : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(TimelineItem),
             new FrameworkPropertyMetadata(typeof(TimelineItem)));
+        StyleCheck.Register(typeof(TimelineItem));
     }
 }

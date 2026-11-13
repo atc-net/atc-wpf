@@ -140,6 +140,7 @@ public sealed partial class Popover : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Popover),
             new FrameworkPropertyMetadata(typeof(Popover)));
+        StyleCheck.Register(typeof(Popover));
     }
 
     /// <summary>Initializes a new instance of the <see cref="Popover"/> class.</summary>

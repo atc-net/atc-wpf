@@ -57,6 +57,7 @@ public sealed partial class AvatarGroup : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(AvatarGroup),
             new FrameworkPropertyMetadata(typeof(AvatarGroup)));
+        StyleCheck.Register(typeof(AvatarGroup));
     }
 
     /// <summary>

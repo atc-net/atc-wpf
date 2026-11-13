@@ -20,5 +20,6 @@ public sealed partial class SkeletonElement : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(SkeletonElement),
             new FrameworkPropertyMetadata(typeof(SkeletonElement)));
+        StyleCheck.Register(typeof(SkeletonElement));
     }
 }

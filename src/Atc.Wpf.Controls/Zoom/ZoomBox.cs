@@ -325,6 +325,7 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(ZoomBox),
             new FrameworkPropertyMetadata(typeof(ZoomBox)));
+        StyleCheck.Register(typeof(ZoomBox));
     }
 
     /// <summary>Initializes a new instance of the <see cref="ZoomBox"/> class.</summary>

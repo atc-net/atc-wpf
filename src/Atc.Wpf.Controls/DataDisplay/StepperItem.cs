@@ -106,5 +106,6 @@ public sealed partial class StepperItem : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(StepperItem),
             new FrameworkPropertyMetadata(typeof(StepperItem)));
+        StyleCheck.Register(typeof(StepperItem));
     }
 }

@@ -47,6 +47,7 @@ public sealed partial class BreadcrumbItem : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(BreadcrumbItem),
             new FrameworkPropertyMetadata(typeof(BreadcrumbItem)));
+        StyleCheck.Register(typeof(BreadcrumbItem));
     }
 
     /// <inheritdoc />

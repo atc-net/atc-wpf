@@ -33,6 +33,7 @@ global using Atc.Wpf.Controls.DataGrids.Internal;
 global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Inputs.Internal;
+global using Atc.Wpf.Controls.Internal;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Controls.Layouts.Grid;
 global using Atc.Wpf.Controls.Navigation;

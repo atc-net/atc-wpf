@@ -54,6 +54,7 @@ public partial class BusyOverlay : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(BusyOverlay),
             new FrameworkPropertyMetadata(typeof(BusyOverlay)));
+        StyleCheck.Register(typeof(BusyOverlay));
     }
 
     /// <summary>Initializes a new instance of the <see cref="BusyOverlay"/> class.</summary>

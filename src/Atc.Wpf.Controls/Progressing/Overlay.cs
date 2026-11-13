@@ -109,6 +109,7 @@ public partial class Overlay : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Overlay),
             new FrameworkPropertyMetadata(typeof(Overlay)));
+        StyleCheck.Register(typeof(Overlay));
     }
 
     /// <inheritdoc />

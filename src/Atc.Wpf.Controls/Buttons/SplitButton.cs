@@ -40,6 +40,7 @@ public partial class SplitButton : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(SplitButton),
             new FrameworkPropertyMetadata(typeof(SplitButton)));
+        StyleCheck.Register(typeof(SplitButton));
     }
 
     /// <summary>Occurs when the primary action part of the button is clicked.</summary>

@@ -46,6 +46,7 @@ public partial class ImageButton : Button
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(ImageButton),
             new FrameworkPropertyMetadata(typeof(ImageButton)));
+        StyleCheck.Register(typeof(ImageButton));
     }
 
     /// <summary>Initializes a new instance of the <see cref="ImageButton"/> class.</summary>

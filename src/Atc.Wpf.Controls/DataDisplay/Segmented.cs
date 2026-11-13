@@ -170,6 +170,7 @@ public sealed partial class Segmented : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Segmented),
             new FrameworkPropertyMetadata(typeof(Segmented)));
+        StyleCheck.Register(typeof(Segmented));
     }
 
     /// <summary>Initializes a new instance of the <see cref="Segmented"/> class.</summary>
