@@ -71,6 +71,7 @@ Inherits the common label properties from `LabelControlBase` (`LabelText`, `Labe
 |-------|------|-------------|
 | `SelectorChanged` | `EventHandler<ValueChangedEventArgs<string?>>` | Raised when `SelectedKey` changes and the field is valid |
 | `SelectorLostFocusInvalid` | `EventHandler<ValueChangedEventArgs<string?>>` | Raised when `SelectedKey` changes and the field is invalid |
+| `SelectorLostFocusValid` | `EventHandler<ValueChangedEventArgs<string?>>` | Raised when `SelectedKey` changes and the field is valid (the counterpart of `SelectorLostFocusInvalid`) |
 
 ## 📝 Notes
 

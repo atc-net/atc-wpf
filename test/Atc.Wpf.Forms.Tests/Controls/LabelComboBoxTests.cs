@@ -37,6 +37,30 @@ public sealed class LabelComboBoxTests : IDisposable
         Assert.True(sut.IsValid());
     }
 
+    // The valid counterpart of SelectorLostFocusInvalid, like the Valid/Invalid pair of the text fields.
+    [StaFact]
+    public void SelectedKey_SetToAValidKey_RaisesSelectorLostFocusValid()
+    {
+        UseEnglishUi();
+        var sut = new LabelComboBox
+        {
+            IsMandatory = true,
+            Items = new Dictionary<string, string>(StringComparer.Ordinal) { ["DK"] = "Denmark", ["SE"] = "Sweden" },
+            SelectedKey = "DK",
+        };
+        ValueChangedEventArgs<string?>? valid = null;
+        var invalidRaised = false;
+        sut.SelectorLostFocusValid += (_, e) => valid = e;
+        sut.SelectorLostFocusInvalid += (_, _) => invalidRaised = true;
+
+        sut.SelectedKey = "SE";
+
+        Assert.NotNull(valid);
+        Assert.Equal("DK", valid.OldValue);
+        Assert.Equal("SE", valid.NewValue);
+        Assert.False(invalidRaised);
+    }
+
     [StaFact]
     public void SelectedKey_ClearedWhileMandatory_RaisesSelectorLostFocusInvalid()
     {

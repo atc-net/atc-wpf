@@ -41,11 +41,25 @@ public partial class LabelColorPicker : ILabelColorPicker
 
     internal ColorPicker InnerColorPicker { get; }
 
+    /// <inheritdoc />
+    public override bool IsValid()
+    {
+        Validate();
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
+    // The color can be cleared (null), so a mandatory picker needs a value.
+    private void Validate()
+        => ValidationText = IsMandatory && ColorValue is null
+            ? Validations.FieldIsRequired
+            : string.Empty;
+
     private static void OnColorValueChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
         var control = (LabelColorPicker)d;
+        control.Validate();
 
         if (e.NewValue is not Color color)
         {

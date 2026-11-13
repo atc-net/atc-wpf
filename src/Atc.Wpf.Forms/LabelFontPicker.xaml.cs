@@ -2,7 +2,7 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelFontPicker : ILabelFontPicker
 {
-    [DependencyProperty(DefaultValue = "Segoe UI")]
+    [DependencyProperty(DefaultValue = "Segoe UI", PropertyChangedCallback = nameof(OnSelectedFontFamilyChanged))]
     private FontFamily? selectedFontFamily;
 
     [DependencyProperty(DefaultValue = FontDescription.DefaultSize)]
@@ -123,6 +123,24 @@ public partial class LabelFontPicker : ILabelFontPicker
             this,
             SelectedForegroundBrushProperty,
             SelectedBackgroundBrushProperty);
+
+    /// <inheritdoc />
+    public override bool IsValid()
+    {
+        Validate();
+        return string.IsNullOrEmpty(ValidationText);
+    }
+
+    // The font family can be cleared (null), so a mandatory picker needs a value.
+    private void Validate()
+        => ValidationText = IsMandatory && SelectedFontFamily is null
+            ? Validations.FieldIsRequired
+            : string.Empty;
+
+    private static void OnSelectedFontFamilyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((LabelFontPicker)d).Validate();
 
     private void OnFontChanged(
         object? sender,

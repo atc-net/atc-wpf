@@ -38,6 +38,11 @@ public partial class LabelCountrySelector : ILabelCountrySelector
     public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusInvalid;
 
     /// <summary>
+    /// Occurs when the selection loses focus and passes validation; the counterpart of <see cref="SelectorLostFocusInvalid"/>.
+    /// </summary>
+    public event EventHandler<ValueChangedEventArgs<string?>>? SelectorLostFocusValid;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="LabelCountrySelector"/> class.
     /// </summary>
     public LabelCountrySelector()
@@ -128,6 +133,13 @@ public partial class LabelCountrySelector : ILabelCountrySelector
         }
 
         control.SelectorChanged?.Invoke(
+            control,
+            new ValueChangedEventArgs<string?>(
+                control.Identifier,
+                e.OldValue?.ToString(),
+                selectedKey));
+
+        control.SelectorLostFocusValid?.Invoke(
             control,
             new ValueChangedEventArgs<string?>(
                 control.Identifier,
