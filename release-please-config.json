@@ -31,6 +31,14 @@
       "section": "Performance improvements"
     },
     {
+      "type": "refactor",
+      "section": "Code refactoring"
+    },
+    {
+      "type": "docs",
+      "section": "Documentation"
+    },
+    {
       "type": "revert",
       "section": "Reverts"
     }
