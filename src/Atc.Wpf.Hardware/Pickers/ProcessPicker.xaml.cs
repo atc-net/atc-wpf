@@ -211,9 +211,14 @@ public partial class ProcessPicker : IDevicePickerHost<RunningProcessInfo>
             service.Processes,
             service.StartWatching,
             service.StopWatching,
-            service.RefreshAsync);
+            service.RefreshAsync,
+            watchOnlyWhileOpen: true);
 
         InitializeComponent();
+
+        // Listing every process/window is expensive, so the list is polled only while it is open.
+        PartComboBox.DropDownOpened += OnDropDownOpened;
+        PartComboBox.DropDownClosed += OnDropDownClosed;
 
         Processes = service.Processes;
         ApplyResolvedItemTemplate();
@@ -283,6 +288,16 @@ public partial class ProcessPicker : IDevicePickerHost<RunningProcessInfo>
         object sender,
         RoutedEventArgs e)
         => controller.Unloaded();
+
+    private async void OnDropDownOpened(
+        object? sender,
+        EventArgs e)
+        => await controller.DropDownOpenedAsync();
+
+    private void OnDropDownClosed(
+        object? sender,
+        EventArgs e)
+        => controller.DropDownClosed();
 
     private async void OnRefreshClick(
         object sender,

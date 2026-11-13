@@ -43,8 +43,8 @@ The six WinRT-backed pickers share infrastructure (`DeviceWatcherHost`) using `W
 | `AudioOutputPicker` | `AudioDeviceInfo?` | `DeviceInformation.FindAllAsync(DeviceClass.AudioRender)` |
 | `BluetoothDevicePicker` | `BluetoothDeviceInfo?` | `BluetoothDevice.GetDeviceSelectorFromPairingState(true)` (paired classic) |
 | `DrivePicker` | `DiskDriveInfo?` | `System.IO.DriveInfo.GetDrives()` + 2 s polling |
-| `ProcessPicker` | `RunningProcessInfo?` | `Process.GetProcesses()` + 2 s polling |
-| `WindowPicker` | `TopLevelWindowInfo?` | `EnumWindows` P/Invoke + 2 s polling |
+| `ProcessPicker` | `RunningProcessInfo?` | `Process.GetProcesses()` + 2 s polling while the drop-down is open |
+| `WindowPicker` | `TopLevelWindowInfo?` | `EnumWindows` P/Invoke + 2 s polling while the drop-down is open |
 | `NetworkAdapterPicker` | `NetworkAdapterInfo?` | `NetworkInterface.GetAllNetworkInterfaces()` + 2 s polling |
 | `PrinterPicker` | `PrinterInfo?` | `LocalPrintServer.GetPrintQueues()` + 2 s polling |
 | `DisplayPicker` | `DisplayInfo?` | `EnumDisplayMonitors` + `GetMonitorInfo` P/Invoke + 2 s polling |

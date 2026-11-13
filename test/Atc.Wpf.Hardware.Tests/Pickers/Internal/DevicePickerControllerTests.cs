@@ -447,7 +447,97 @@ public sealed class DevicePickerControllerTests
         sut.ValueChanged(old, value);
     }
 
-    private DevicePickerController<RunningProcessInfo> CreateSut()
+    // The process and window lists sweep the whole system, so those pickers poll only while the drop-down is open.
+    [Fact]
+    public async Task WatchOnlyWhileOpen_LoadedAsync_RefreshesWithoutWatching()
+    {
+        var sut = CreateSut(watchOnlyWhileOpen: true);
+
+        await sut.LoadedAsync();
+
+        Assert.Equal(["refresh"], serviceCalls);
+    }
+
+    [Fact]
+    public async Task WatchOnlyWhileOpen_DropDownOpened_StartsWatchingAndRefreshes()
+    {
+        var sut = CreateSut(watchOnlyWhileOpen: true);
+        await sut.LoadedAsync();
+        serviceCalls.Clear();
+
+        await sut.DropDownOpenedAsync();
+
+        Assert.Equal(["start", "refresh"], serviceCalls);
+    }
+
+    [Fact]
+    public async Task WatchOnlyWhileOpen_DropDownClosed_StopsWatching()
+    {
+        var sut = CreateSut(watchOnlyWhileOpen: true);
+        await sut.LoadedAsync();
+        await sut.DropDownOpenedAsync();
+        serviceCalls.Clear();
+
+        sut.DropDownClosed();
+
+        Assert.Equal(["stop"], serviceCalls);
+    }
+
+    [Fact]
+    public async Task WatchOnlyWhileOpen_UnloadedWhileOpen_StopsWatching()
+    {
+        var sut = CreateSut(watchOnlyWhileOpen: true);
+        await sut.LoadedAsync();
+        await sut.DropDownOpenedAsync();
+        serviceCalls.Clear();
+
+        sut.Unloaded();
+
+        Assert.Equal(["stop"], serviceCalls);
+    }
+
+    [Fact]
+    public async Task WatchOnlyWhileOpen_WithoutAutoRefresh_OpeningOnlyRefreshes()
+    {
+        host.AutoRefreshOnDeviceChange = false;
+        var sut = CreateSut(watchOnlyWhileOpen: true);
+        await sut.LoadedAsync();
+        serviceCalls.Clear();
+
+        await sut.DropDownOpenedAsync();
+
+        Assert.Equal(["refresh"], serviceCalls);
+    }
+
+    [Fact]
+    public async Task WatchOnlyWhileOpen_TurningAutoRefreshOnWhileClosed_DoesNotWatch()
+    {
+        host.AutoRefreshOnDeviceChange = false;
+        var sut = CreateSut(watchOnlyWhileOpen: true);
+        await sut.LoadedAsync();
+        serviceCalls.Clear();
+
+        host.AutoRefreshOnDeviceChange = true;
+        sut.AutoRefreshOnDeviceChangeChanged();
+
+        Assert.Empty(serviceCalls);
+    }
+
+    [Fact]
+    public async Task Default_DropDownOpened_ChangesNothing()
+    {
+        var sut = CreateSut();
+        await sut.LoadedAsync();
+        serviceCalls.Clear();
+
+        await sut.DropDownOpenedAsync();
+        sut.DropDownClosed();
+
+        Assert.Empty(serviceCalls);
+    }
+
+    private DevicePickerController<RunningProcessInfo> CreateSut(
+        bool watchOnlyWhileOpen = false)
     {
         var controller = new DevicePickerController<RunningProcessInfo>(
             host,
@@ -458,7 +548,8 @@ public sealed class DevicePickerControllerTests
             {
                 serviceCalls.Add("refresh");
                 return refresh();
-            });
+            },
+            watchOnlyWhileOpen);
 
         keepAlive.Add(controller);
         return controller;

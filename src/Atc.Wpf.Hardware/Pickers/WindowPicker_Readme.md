@@ -4,7 +4,7 @@ An inspection-style picker for selecting a top-level OS window.
 
 ## Overview
 
-Enumerates top-level windows via the Win32 `EnumWindows` callback (P/Invoked from `user32.dll`) and polls every two seconds (configurable via `IWindowService.PollingInterval`). By default only visible windows with a non-empty title are surfaced — flip `IWindowService.OnlyVisibleWithTitle=false` to include hidden / titleless windows. Useful for screen-capture targets, focus / activate flows, accessibility tooling, or "send to window" automation.
+Enumerates top-level windows via the Win32 `EnumWindows` callback (P/Invoked from `user32.dll`) and polls every two seconds (configurable via `IWindowService.PollingInterval`) while the drop-down is open. By default only visible windows with a non-empty title are surfaced — flip `IWindowService.OnlyVisibleWithTitle=false` to include hidden / titleless windows. Useful for screen-capture targets, focus / activate flows, accessibility tooling, or "send to window" automation.
 
 ## Namespace
 
@@ -27,7 +27,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `Value` | `TopLevelWindowInfo?` | `null` | Selected window (TwoWay) |
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Show inline ↻ button |
-| `AutoRefreshOnDeviceChange` | `bool` | `true` | Start the polling loop |
+| `AutoRefreshOnDeviceChange` | `bool` | `true` | Poll while the drop-down is open |
 | `PollingInterval` | `TimeSpan?` | `null` | How often the window list is polled; `null` keeps the service setting (2 s) |
 | `OnlyVisibleWithTitle` | `bool?` | `null` | List only visible windows with a title; `null` keeps the service setting (`true`) |
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when the window is destroyed |
@@ -47,6 +47,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 ## Notes
 
 - Inspection-style picker — polls via `EnumWindows`, no hot-plug events from the OS.
+- Listing every window is expensive, so the list is read once when the picker loads and polled only while the drop-down is open (it refreshes as it opens). A selected window that closes while the drop-down is closed is reported on the next open or *Refresh*.
 - HWNDs are not stable across window-destroy / window-create cycles; treat them as session-local handles. Persisting `Value.Handle` across app restarts is meaningless.
 - `Value.ProcessName` is captured at first-sight; it does not refresh if the process exits and a new process inherits the HWND (which itself is rare).
 - `Value.DeviceId` is the handle as an invariant string for automation-peer lookup; for actual interop, use `Value.Handle`.
