@@ -41,10 +41,12 @@
     package with the last published release and fails on a breaking change.
     After a release, bump PackageValidationBaselineVersion to the version just published and delete
     any CompatibilitySuppressions.xml entries that only applied to the old baseline.
+    tool/Check-PackageValidationBaseline.ps1 runs in CI and fails while the baseline lags behind the
+    latest release tag.
   -->
   <PropertyGroup Label="Package validation">
     <EnablePackageValidation>true</EnablePackageValidation>
-    <PackageValidationBaselineVersion>4.2.1</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>4.4.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <!--
