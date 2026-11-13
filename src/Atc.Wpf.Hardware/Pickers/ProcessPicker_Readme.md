@@ -4,7 +4,7 @@ An inspection-style picker for selecting a running OS process.
 
 ## Overview
 
-Enumerates `System.Diagnostics.Process.GetProcesses()` and polls every two seconds (configurable via `IProcessService.PollingInterval`) so the list reflects the current OS state. By default the list shows only processes with a main window — flip `IProcessService.OnlyWithMainWindow=false` to surface every running process. Useful for hooking debuggers, automation, capture targets, or "attach to existing" flows.
+Enumerates `System.Diagnostics.Process.GetProcesses()` and polls every two seconds (configurable via `IProcessService.PollingInterval`) while the drop-down is open, so the list reflects the current OS state when you look at it. By default the list shows only processes with a main window — flip `IProcessService.OnlyWithMainWindow=false` to surface every running process. Useful for hooking debuggers, automation, capture targets, or "attach to existing" flows.
 
 ## Namespace
 
@@ -27,7 +27,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 | `Value` | `RunningProcessInfo?` | `null` | Selected process (TwoWay) |
 | `WatermarkText` | `string` | `""` | Empty-state placeholder |
 | `ShowRefreshButton` | `bool` | `true` | Show inline ↻ button |
-| `AutoRefreshOnDeviceChange` | `bool` | `true` | Start the polling loop |
+| `AutoRefreshOnDeviceChange` | `bool` | `true` | Poll while the drop-down is open |
 | `PollingInterval` | `TimeSpan?` | `null` | How often the process list is polled; `null` keeps the service setting (2 s) |
 | `OnlyWithMainWindow` | `bool?` | `null` | List only processes with a main window; `null` keeps the service setting (`true`) |
 | `ClearValueOnDisconnect` | `bool` | `false` | Drop `Value` when the process exits |
@@ -47,6 +47,7 @@ xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
 ## Notes
 
 - This is an inspection-style picker, not a hardware picker. It polls; there is no DeviceWatcher.
+- Listing every process is expensive, so the list is read once when the picker loads and polled only while the drop-down is open (it refreshes as it opens). A selected process that exits while the drop-down is closed is reported on the next open or *Refresh*.
 - Some processes (system, protected, anti-malware, etc.) deny metadata access — those rows quietly skip module-path lookup.
 - `Value.MainModulePath` may be `null` even for surfaced processes; do not assume it's always set.
 - `Value.DeviceId` is the PID as an invariant string; consumers should look up the live `Process` via `Process.GetProcessById` rather than holding the cached snapshot.

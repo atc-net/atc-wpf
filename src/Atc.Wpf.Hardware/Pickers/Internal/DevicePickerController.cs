@@ -21,8 +21,10 @@ internal sealed class DevicePickerController<TInfo>
     private readonly Func<Task> refreshAsync;
     private readonly Dictionary<string, DeviceState> lastKnownStates = new(StringComparer.OrdinalIgnoreCase);
     private readonly List<TInfo> hookedItems = new();
+    private readonly bool watchOnlyWhileOpen;
     private string? lostDeviceId;
     private bool isLoaded;
+    private bool isDropDownOpen;
 
     // The services count watchers, so a service shared by several pickers keeps watching until the last one
     // stops. Each controller holds at most one of those counts and only ever releases its own.
@@ -33,9 +35,14 @@ internal sealed class DevicePickerController<TInfo>
         ObservableCollection<TInfo> items,
         Action startWatching,
         Action stopWatching,
-        Func<Task> refreshAsync)
+        Func<Task> refreshAsync,
+        bool watchOnlyWhileOpen = false)
     {
         ArgumentNullException.ThrowIfNull(items);
+
+        // For services that sweep the whole system on every poll (processes, windows): watch only while the
+        // user is looking at the list, and refresh once when it opens.
+        this.watchOnlyWhileOpen = watchOnlyWhileOpen;
 
         this.host = host;
         this.items = items;
@@ -59,7 +66,7 @@ internal sealed class DevicePickerController<TInfo>
     {
         isLoaded = true;
 
-        if (host.AutoRefreshOnDeviceChange)
+        if (ShouldWatch())
         {
             try
             {
@@ -89,6 +96,49 @@ internal sealed class DevicePickerController<TInfo>
     public void Unloaded()
     {
         isLoaded = false;
+        isDropDownOpen = false;
+        StopWatchingIfHeld();
+    }
+
+    /// <summary>
+    /// Call from the picker's drop-down Opened handler. Only acts when the controller watches only while open.
+    /// </summary>
+    /// <returns>A task that completes when the list has been refreshed.</returns>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Opening the list must not crash on a probe failure.")]
+    public async Task DropDownOpenedAsync()
+    {
+        if (!watchOnlyWhileOpen || !isLoaded)
+        {
+            return;
+        }
+
+        isDropDownOpen = true;
+        if (ShouldWatch())
+        {
+            try
+            {
+                StartWatchingOnce();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"{typeof(TInfo).Name} picker could not start watching: {ex.Message}");
+            }
+        }
+
+        await RefreshAsync().ConfigureAwait(true);
+    }
+
+    /// <summary>
+    /// Call from the picker's drop-down Closed handler. Only acts when the controller watches only while open.
+    /// </summary>
+    public void DropDownClosed()
+    {
+        if (!watchOnlyWhileOpen)
+        {
+            return;
+        }
+
+        isDropDownOpen = false;
         StopWatchingIfHeld();
     }
 
@@ -103,7 +153,7 @@ internal sealed class DevicePickerController<TInfo>
             return;
         }
 
-        if (host.AutoRefreshOnDeviceChange)
+        if (ShouldWatch())
         {
             StartWatchingOnce();
         }
@@ -112,6 +162,9 @@ internal sealed class DevicePickerController<TInfo>
             StopWatchingIfHeld();
         }
     }
+
+    private bool ShouldWatch()
+        => host.AutoRefreshOnDeviceChange && (!watchOnlyWhileOpen || isDropDownOpen);
 
     private void StartWatchingOnce()
     {

@@ -122,15 +122,28 @@ public sealed class PickerTuningTests
     [StaFact]
     public void AutoRefreshOnDeviceChange_TurnedOffWhileLoaded_StopsWatching()
     {
-        var service = Substitute.For<IProcessService>();
-        service.Processes.Returns([]);
-        var picker = new ProcessPicker(service);
+        var service = Substitute.For<IDriveService>();
+        service.Drives.Returns([]);
+        var picker = new DrivePicker(service);
         picker.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
         service.ClearReceivedCalls();
 
         picker.AutoRefreshOnDeviceChange = false;
 
         service.Received(1).StopWatching();
+        service.DidNotReceive().StartWatching();
+    }
+
+    // Listing every process is expensive: a loaded ProcessPicker polls only while its drop-down is open.
+    [StaFact]
+    public void ProcessPicker_Loaded_DoesNotWatchUntilTheDropDownOpens()
+    {
+        var service = Substitute.For<IProcessService>();
+        service.Processes.Returns([]);
+        var picker = new ProcessPicker(service);
+
+        picker.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+
         service.DidNotReceive().StartWatching();
     }
 
