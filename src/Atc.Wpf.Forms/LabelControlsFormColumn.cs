@@ -177,6 +177,9 @@ public sealed class LabelControlsFormColumn : ILabelControlsFormColumn
                 case LabelTextBox labelTextBox:
                     result.Add(control.GetFullIdentifier(), labelTextBox.Text);
                     break;
+                case LabelPasswordBox labelPasswordBox:
+                    result.Add(control.GetFullIdentifier(), labelPasswordBox.Text);
+                    break;
                 case LabelDateTimePicker labelDateTimePicker:
                     AddDateValue(result, control, labelDateTimePicker.SelectedDate);
                     break;
