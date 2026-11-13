@@ -70,5 +70,23 @@ Concatenate a prefix and suffix to the translated value for dynamic text manipul
 var value = $"foo {Wpf.Sample.Resource.Word.About} bar";
 ```
 
+### 🔔 Subscribing to Culture Changes
+
+`CultureManager.UiCultureChanged` never keeps a subscriber alive, so a control does not need `-=` in its `Unloaded` handler:
+
+- An instance-method handler, or a lambda that uses `this`, lives as long as that object and ends when it is collected.
+- A lambda that captures only locals has no owner to follow, so it lives until you remove it with `-=`. Keep the delegate in a field if you need to remove it.
+- A subscriber that belongs to another UI thread is called on that thread.
+
+```csharp
+public MyView()
+{
+    InitializeComponent();
+
+    // Ends when this view is collected; no -= needed.
+    CultureManager.UiCultureChanged += (_, e) => Title = Resources.Word.About;
+}
+```
+
 By understanding and utilizing CurrentUICulture, satellite assemblies, and .resx files, 
 developers can create highly adaptable .NET applications that cater to a global audience. 🌐🌍🌎

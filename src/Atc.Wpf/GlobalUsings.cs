@@ -56,6 +56,7 @@ global using Atc.Wpf.Extensions;
 global using Atc.Wpf.Extensions.Internal;
 global using Atc.Wpf.Factories;
 global using Atc.Wpf.Helpers;
+global using Atc.Wpf.Internal;
 global using Atc.Wpf.Resolvers;
 global using Atc.Wpf.Resources;
 global using Atc.Wpf.ValueConverters;
