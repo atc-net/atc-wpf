@@ -28,7 +28,14 @@
             FontSize="28"
             FontWeight="Bold"
             Foreground="{Binding ElementName=UcSampleViewerView, Path=HeaderForeground}"
-            Text="{Binding Path=Header, FallbackValue='Select sample name'}" />
+            Text="{Binding Path=Header, FallbackValue='Select sample name'}"
+            ToolTip="Right-click to copy a reference to this sample">
+            <TextBlock.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{Binding Path=CopySampleReferenceCommand}" Header="Copy sample reference" />
+                </ContextMenu>
+            </TextBlock.ContextMenu>
+        </TextBlock>
         <TabControl
             atc:TabControlHelper.UnderlineMargin="0,0,0,10"
             atc:TabControlHelper.UnderlinePlacement="Bottom"
