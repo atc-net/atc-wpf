@@ -109,7 +109,13 @@ hotkeyService.SaveBindings("hotkeys.json");
 hotkeyService.LoadBindings("hotkeys.json");
 ```
 
-Loaded bindings fire only the `HotkeyPressed` event (callbacks cannot be serialized). Subscribe to the event and dispatch by `Registration.Description`:
+Loading merges the saved bindings with the hotkeys the app has already registered in code, matched by description:
+
+- A saved binding whose description matches a registration with other keys moves that registration to the saved keys and keeps its callback (the user's rebinding). The registration returned by `Register` is replaced; find the new one in `Registrations`.
+- A saved binding whose keys are already registered is skipped (no duplicate, no `ConflictDetected`).
+- Any other saved binding is added. Its callback cannot be serialized, so it fires only the `HotkeyPressed` event.
+
+Register the app's hotkeys first, then load. For bindings the app does not register in code, subscribe to `HotkeyPressed` and dispatch by `Registration.Description`:
 
 ```csharp
 hotkeyService.HotkeyPressed += (sender, args) =>

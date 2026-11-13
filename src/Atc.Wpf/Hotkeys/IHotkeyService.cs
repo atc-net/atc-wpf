@@ -83,10 +83,14 @@ public interface IHotkeyService : IDisposable
     void SaveBindings(string filePath);
 
     /// <summary>
-    /// Loads hotkey bindings from a JSON file and registers them.
-    /// Loaded bindings fire only the <see cref="HotkeyPressed"/> event;
-    /// consumers should subscribe and dispatch by <see cref="IHotkeyRegistration.Description"/>.
+    /// Loads hotkey bindings from a JSON file and merges them with the registered hotkeys.
     /// </summary>
+    /// <remarks>
+    /// A saved binding whose description matches a registration with other keys moves that registration to the
+    /// saved keys and keeps its callback; a saved binding whose keys are already registered is skipped; any other
+    /// saved binding is added and fires only the <see cref="HotkeyPressed"/> event, so consumers dispatch it by
+    /// <see cref="IHotkeyRegistration.Description"/>.
+    /// </remarks>
     /// <param name="filePath">The file path to read the JSON from.</param>
     void LoadBindings(string filePath);
 }
