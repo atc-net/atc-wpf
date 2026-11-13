@@ -1,0 +1,39 @@
+name: "Benchmarks"
+
+# Benchmarks run on demand and weekly, not on pull requests: shared runners vary too much
+# for a stable threshold. Compare the uploaded results between runs by hand.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 1'
+
+jobs:
+  benchmarks:
+    # The libraries are WPF, so the benchmarks need a Windows runner.
+    runs-on: windows-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - name: 🛒 Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: ⚙️ Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 🔁 Restore packages
+        run: dotnet restore benchmark/Atc.Wpf.Benchmarks/Atc.Wpf.Benchmarks.csproj
+
+      - name: ⏱️ Run benchmarks
+        run: dotnet run -c Release --no-restore --project benchmark/Atc.Wpf.Benchmarks -- --filter '*' --exporters github
+
+      - name: 📤 Upload results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: benchmark-results
+          path: '**/BenchmarkDotNet.Artifacts/results/*'
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,4 +1,5 @@
 [assembly: Atc.XamlToolkit.Mvvm.GenerateDocumentationDefault]
+[assembly: InternalsVisibleTo("Atc.Wpf.Benchmarks")]
 [assembly: InternalsVisibleTo("Atc.Wpf.Components.Tests")]
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
