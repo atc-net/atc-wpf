@@ -4,8 +4,9 @@ namespace Atc.Wpf.Controls.Resources;
 
 internal static class ResourceHelper
 {
-    private static readonly Dictionary<string, BitmapImage> CacheFlags = new(StringComparer.Ordinal);
-    private static readonly Dictionary<RenderFlagIndicatorType, Dictionary<string, BitmapImage>> CachedResults = [];
+    // Selectors on different UI threads can load flags at the same time.
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, BitmapImage> CacheFlags = new(StringComparer.Ordinal);
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<RenderFlagIndicatorType, Dictionary<string, BitmapImage>> CachedResults = new();
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
     public static Dictionary<string, BitmapImage> GetFlags(
@@ -65,13 +66,10 @@ internal static class ResourceHelper
                 bitmap.EndInit();
                 bitmap.Freeze();
 
-                flagBitmaps.Add(flagLocation, bitmap);
-
-                CacheFlags.Add(flagLocation, bitmap);
+                flagBitmaps.Add(flagLocation, CacheFlags.GetOrAdd(flagLocation, bitmap));
             }
         }
 
-        CachedResults[renderFlagIndicatorType] = flagBitmaps;
-        return flagBitmaps;
+        return CachedResults.GetOrAdd(renderFlagIndicatorType, flagBitmaps);
     }
 }

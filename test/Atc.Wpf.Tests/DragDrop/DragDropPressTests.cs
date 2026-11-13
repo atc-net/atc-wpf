@@ -15,6 +15,26 @@ public sealed class DragDropPressTests
     private static readonly FieldInfo PressedItemField = typeof(DragDropManager)
         .GetField("pressedItem", BindingFlags.NonPublic | BindingFlags.Static)!;
 
+    // Each UI thread has its own mouse and windows, so a press on one must not change the drag of another.
+    [StaFact]
+    public void PressedItem_is_kept_per_ui_thread()
+    {
+        PressedItemField.SetValue(obj: null, "pressed here");
+        try
+        {
+            var other = new Thread(() => PressedItemField.SetValue(obj: null, "pressed on another thread"));
+            other.SetApartmentState(ApartmentState.STA);
+            other.Start();
+            other.Join();
+
+            Assert.Equal("pressed here", PressedItemField.GetValue(obj: null));
+        }
+        finally
+        {
+            PressedItemField.SetValue(obj: null, value: null);
+        }
+    }
+
     [StaFact]
     public void ResolvePressedItem_OnTextBlockInItem_ReturnsThatItem()
     {

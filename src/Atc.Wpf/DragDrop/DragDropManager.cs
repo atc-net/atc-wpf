@@ -8,14 +8,25 @@ internal static class DragDropManager
 {
     private static readonly DefaultDropHandler FallbackDropHandler = new();
 
+    // The press and drag state is per UI thread: each thread has its own windows and mouse capture, and a
+    // second UI thread must not overwrite the drag in progress on the first.
+    [ThreadStatic]
     private static Point? dragStartPoint;
+    [ThreadStatic]
     private static ItemsControl? pressedItemsControl;
+    [ThreadStatic]
     private static object? pressedItem;
+    [ThreadStatic]
     private static IReadOnlyList<object>? pressedSelection;
+    [ThreadStatic]
     private static bool isSingleSelectionDeferred;
+    [ThreadStatic]
     private static DragInfo? currentDragInfo;
+    [ThreadStatic]
     private static DragDropAdorner? dragAdorner;
+    [ThreadStatic]
     private static DropTargetInsertionAdorner? insertionAdorner;
+    [ThreadStatic]
     private static DropTargetHighlightAdorner? highlightAdorner;
 
     internal static void RegisterDragSource(UIElement element)

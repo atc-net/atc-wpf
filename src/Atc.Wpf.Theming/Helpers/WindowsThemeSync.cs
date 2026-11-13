@@ -9,10 +9,20 @@ namespace Atc.Wpf.Theming.Helpers;
 /// </remarks>
 public static class WindowsThemeSync
 {
+    private static readonly WeakEventList ModeChangedHandlers = new();
+
     /// <summary>
     /// Occurs when <see cref="Mode"/> changes.
     /// </summary>
-    public static event EventHandler? ModeChanged;
+    /// <remarks>
+    /// The event never keeps a subscriber alive: an instance-method handler, or a lambda that uses <c>this</c>,
+    /// lives as long as that object. A lambda that captures only locals lives until it is removed with <c>-=</c>.
+    /// </remarks>
+    public static event EventHandler? ModeChanged
+    {
+        add => ModeChangedHandlers.Add(value);
+        remove => ModeChangedHandlers.Remove(value);
+    }
 
     /// <summary>
     /// Gets or sets which Windows settings the theme follows.
@@ -41,7 +51,7 @@ public static class WindowsThemeSync
                 ThemeManager.Current.SyncTheme();
             }
 
-            ModeChanged?.Invoke(null, EventArgs.Empty);
+            ModeChangedHandlers.Raise(sender: null, EventArgs.Empty);
         }
     }
 
