@@ -7,6 +7,10 @@ namespace Atc.Wpf.Controls.Zoom;
 /// </summary>
 public sealed class ZoomQuickOverlay : Adorner
 {
+    // Drawn on every render while a selection is dragged; frozen and shared, never re-created.
+    private static readonly Pen SelectionPen = CreateSelectionPen();
+    private static readonly Brush SelectionFill = CreateSelectionFill();
+
     private readonly ZoomBox zoomBox;
     private readonly Brush overlayBrush;
     private readonly Brush viewportBrush;
@@ -93,11 +97,9 @@ public sealed class ZoomQuickOverlay : Adorner
         // Draw selection rectangle if dragging
         if (selectionRect is { Width: > 0, Height: > 0 } sel)
         {
-            var selPen = new Pen(Brushes.White, 1) { DashStyle = DashStyles.Dash };
-            selPen.Freeze();
             drawingContext.DrawRectangle(
-                new SolidColorBrush(Color.FromArgb(40, 255, 255, 255)),
-                selPen,
+                SelectionFill,
+                SelectionPen,
                 sel);
         }
     }
@@ -190,5 +192,19 @@ public sealed class ZoomQuickOverlay : Adorner
         var scaleX = ActualWidth / content.ActualWidth;
         var scaleY = ActualHeight / content.ActualHeight;
         return System.Math.Min(scaleX, scaleY);
+    }
+
+    private static Pen CreateSelectionPen()
+    {
+        var pen = new Pen(Brushes.White, 1) { DashStyle = DashStyles.Dash };
+        pen.Freeze();
+        return pen;
+    }
+
+    private static Brush CreateSelectionFill()
+    {
+        var brush = new SolidColorBrush(Color.FromArgb(40, 255, 255, 255));
+        brush.Freeze();
+        return brush;
     }
 }

@@ -6,6 +6,8 @@ namespace Atc.Wpf.Controls.Zoom;
 /// </summary>
 public sealed partial class ZoomRuler : FrameworkElement
 {
+    private const int MaxCachedLabels = 256;
+
     private static readonly Typeface LabelTypeface = new("Segoe UI");
 
     /// <summary>Identifies the <see cref="ZoomRuler.ZoomBox"/> dependency property.</summary>
@@ -45,11 +47,18 @@ public sealed partial class ZoomRuler : FrameworkElement
             Brushes.Gray,
             FrameworkPropertyMetadataOptions.AffectsRender));
 
+    // Label layouts by text; valid while the font size, label brush and DPI they were made with stay the same.
+    private readonly Dictionary<string, FormattedText> cachedLabels = new(StringComparer.Ordinal);
+
     [DependencyProperty(DefaultValue = 10.0, Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
     private double fontSize;
 
     // Rendered on every pan/zoom frame: the pen is rebuilt only when TickBrush changes.
     private Pen? cachedTickPen;
+
+    private double cachedLabelFontSize;
+    private Brush? cachedLabelBrush;
+    private double cachedLabelPixelsPerDip;
 
     /// <summary>
     /// Gets or sets the <see cref="ZoomBox"/> this ruler tracks.
@@ -239,7 +248,7 @@ public sealed partial class ZoomRuler : FrameworkElement
         return cachedTickPen;
     }
 
-    private FormattedText FormatLabel(
+    internal FormattedText FormatLabel(
         double value,
         double pixelsPerDip)
     {
@@ -247,14 +256,33 @@ public sealed partial class ZoomRuler : FrameworkElement
             ? "0"
             : value.ToString("F0", CultureInfo.InvariantCulture);
 
-        return new FormattedText(
-            label,
-            CultureInfo.InvariantCulture,
-            FlowDirection.LeftToRight,
-            LabelTypeface,
-            FontSize,
-            LabelBrush,
-            pixelsPerDip);
+        var labelFontSize = FontSize;
+        var labelBrush = LabelBrush;
+        if (System.Math.Abs(labelFontSize - cachedLabelFontSize) > 0.001 ||
+            !ReferenceEquals(labelBrush, cachedLabelBrush) ||
+            System.Math.Abs(pixelsPerDip - cachedLabelPixelsPerDip) > 0.001 ||
+            cachedLabels.Count >= MaxCachedLabels)
+        {
+            cachedLabels.Clear();
+            cachedLabelFontSize = labelFontSize;
+            cachedLabelBrush = labelBrush;
+            cachedLabelPixelsPerDip = pixelsPerDip;
+        }
+
+        if (!cachedLabels.TryGetValue(label, out var formatted))
+        {
+            formatted = new FormattedText(
+                label,
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
+                LabelTypeface,
+                labelFontSize,
+                labelBrush,
+                pixelsPerDip);
+            cachedLabels[label] = formatted;
+        }
+
+        return formatted;
     }
 
     private static double CalculateTickSpacing(double zoom)
