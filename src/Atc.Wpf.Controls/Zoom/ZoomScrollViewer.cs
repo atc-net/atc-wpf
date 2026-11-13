@@ -79,6 +79,7 @@ public partial class ZoomScrollViewer : ScrollViewer
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(ZoomScrollViewer),
             new FrameworkPropertyMetadata(typeof(ZoomScrollViewer)));
+        StyleCheck.Register(typeof(ZoomScrollViewer));
     }
 
     /// <summary>Occurs when a property value changes.</summary>

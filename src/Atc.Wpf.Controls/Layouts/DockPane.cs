@@ -41,6 +41,7 @@ public sealed partial class DockPane : HeaderedContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(DockPane),
             new FrameworkPropertyMetadata(typeof(DockPane)));
+        StyleCheck.Register(typeof(DockPane));
         FocusableProperty.OverrideMetadata(
             typeof(DockPane),
             new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));

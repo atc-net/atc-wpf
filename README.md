@@ -133,6 +133,17 @@ Add the required resource dictionaries to enable theming and control styles:
 </Application>
 ```
 
+Both the Theming `Default.xaml` and the Controls `Controls.xaml` dictionaries are required: the Atc controls get their templates from `Controls.xaml`, and those templates use the theme brushes from `Default.xaml`. Without `Controls.xaml` the Atc controls render nothing; each such control writes one warning to `System.Diagnostics.Trace` (visible in the debugger output) naming the dictionary to merge. Add the Components dictionary when you use dialogs, notifications or viewers.
+
+#### XAML namespaces
+
+| Prefix | Namespace | Contains |
+|--------|-----------|----------|
+| `atc` | `https://github.com/atc-net/atc-wpf/tree/main/schemas` | Controls, form fields, components, layouts and theming (one URI for all packages) |
+| `atcValueConverters` | `https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters` | Value converters |
+| `atcTranslation` | `https://github.com/atc-net/atc-wpf/tree/main/schemas/translations` | `Resx` markup extension and translation helpers |
+| any | `clr-namespace:Atc.Wpf.Network.Scanner;assembly=Atc.Wpf.Network` (and the other `Atc.Wpf.Network.*` namespaces) | Network controls, which have no XAML namespace mapping |
+
 ### 2. Use Controls in XAML
 
 Now you can use all controls with full theming support:

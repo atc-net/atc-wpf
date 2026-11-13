@@ -85,6 +85,7 @@ public sealed partial class SegmentedItem : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(SegmentedItem),
             new FrameworkPropertyMetadata(typeof(SegmentedItem)));
+        StyleCheck.Register(typeof(SegmentedItem));
     }
 
     /// <summary>

@@ -105,6 +105,7 @@ public partial class NavigationView : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(NavigationView),
             new FrameworkPropertyMetadata(typeof(NavigationView)));
+        StyleCheck.Register(typeof(NavigationView));
     }
 
     /// <summary>Initializes a new instance of the <see cref="NavigationView"/> class.</summary>

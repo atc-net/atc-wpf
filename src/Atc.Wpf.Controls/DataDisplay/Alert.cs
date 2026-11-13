@@ -123,6 +123,7 @@ public sealed partial class Alert : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Alert),
             new FrameworkPropertyMetadata(typeof(Alert)));
+        StyleCheck.Register(typeof(Alert));
     }
 
     /// <inheritdoc />

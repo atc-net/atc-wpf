@@ -54,6 +54,7 @@ public sealed partial class Breadcrumb : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Breadcrumb),
             new FrameworkPropertyMetadata(typeof(Breadcrumb)));
+        StyleCheck.Register(typeof(Breadcrumb));
     }
 
     /// <summary>Initializes a new instance of the <see cref="Breadcrumb"/> class.</summary>

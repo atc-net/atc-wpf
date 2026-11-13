@@ -91,6 +91,7 @@ public sealed partial class Timeline : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Timeline),
             new FrameworkPropertyMetadata(typeof(Timeline)));
+        StyleCheck.Register(typeof(Timeline));
     }
 
     /// <summary>Initializes a new instance of the <see cref="Timeline"/> class.</summary>

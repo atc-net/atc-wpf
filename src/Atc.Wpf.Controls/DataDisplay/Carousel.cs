@@ -155,6 +155,7 @@ public sealed partial class Carousel : Selector
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Carousel),
             new FrameworkPropertyMetadata(typeof(Carousel)));
+        StyleCheck.Register(typeof(Carousel));
     }
 
     /// <summary>

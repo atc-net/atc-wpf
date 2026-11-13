@@ -36,6 +36,7 @@ public sealed partial class GroupBoxExpander : HeaderedContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(GroupBoxExpander),
             new FrameworkPropertyMetadata(typeof(GroupBoxExpander)));
+        StyleCheck.Register(typeof(GroupBoxExpander));
     }
 
     private void OnExpanded()

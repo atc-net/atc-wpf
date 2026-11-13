@@ -110,6 +110,7 @@ public sealed partial class Avatar : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Avatar),
             new FrameworkPropertyMetadata(typeof(Avatar)));
+        StyleCheck.Register(typeof(Avatar));
     }
 
     /// <summary>

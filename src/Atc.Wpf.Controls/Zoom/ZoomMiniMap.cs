@@ -38,6 +38,7 @@ public partial class ZoomMiniMap : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(ZoomMiniMap),
             new FrameworkPropertyMetadata(typeof(ZoomMiniMap)));
+        StyleCheck.Register(typeof(ZoomMiniMap));
 
         DataContextProperty.OverrideMetadata(
             typeof(ZoomMiniMap),

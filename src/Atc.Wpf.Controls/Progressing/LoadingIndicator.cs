@@ -34,6 +34,7 @@ public sealed partial class LoadingIndicator : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(LoadingIndicator),
             new FrameworkPropertyMetadata(typeof(LoadingIndicator)));
+        StyleCheck.Register(typeof(LoadingIndicator));
     }
 
     /// <inheritdoc />

@@ -114,6 +114,7 @@ public sealed partial class RangeSlider : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(RangeSlider),
             new FrameworkPropertyMetadata(typeof(RangeSlider)));
+        StyleCheck.Register(typeof(RangeSlider));
     }
 
     /// <inheritdoc />

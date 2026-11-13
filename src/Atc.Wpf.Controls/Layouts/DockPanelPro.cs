@@ -83,6 +83,7 @@ public sealed partial class DockPanelPro : Panel
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(DockPanelPro),
             new FrameworkPropertyMetadata(typeof(DockPanelPro)));
+        StyleCheck.Register(typeof(DockPanelPro));
         RegisterCommandBindings();
     }
 

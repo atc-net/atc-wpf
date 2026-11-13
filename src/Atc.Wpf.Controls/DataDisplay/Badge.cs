@@ -145,6 +145,7 @@ public sealed partial class Badge : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Badge),
             new FrameworkPropertyMetadata(typeof(Badge)));
+        StyleCheck.Register(typeof(Badge));
     }
 
     /// <summary>

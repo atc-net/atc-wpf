@@ -94,6 +94,7 @@ public sealed partial class CardSelector : ListBox
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(CardSelector),
             new FrameworkPropertyMetadata(typeof(CardSelector)));
+        StyleCheck.Register(typeof(CardSelector));
 
         // The control enforces its own modes; the ListBox underneath always allows several items.
         ListBox.SelectionModeProperty.OverrideMetadata(

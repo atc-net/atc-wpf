@@ -27,6 +27,8 @@ Merge the styles into `App.xaml`:
 </Application.Resources>
 ```
 
+Both dictionaries are required: the controls get their templates from `Controls.xaml`, and those templates use the theme brushes from `Default.xaml`. Without `Controls.xaml` the controls render nothing, and each control type writes one warning to `System.Diagnostics.Trace` naming the dictionary to merge.
+
 ```xml
 <Window xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas">
     <atc:IntegerBox Value="{Binding Port, Mode=TwoWay}" Minimum="1" Maximum="65535" />

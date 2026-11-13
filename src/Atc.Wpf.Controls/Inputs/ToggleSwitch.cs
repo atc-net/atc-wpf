@@ -127,6 +127,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(ToggleSwitch),
             new FrameworkPropertyMetadata(typeof(ToggleSwitch)));
+        StyleCheck.Register(typeof(ToggleSwitch));
 
         EventManager.RegisterClassHandler(
             typeof(ToggleSwitch),

@@ -247,6 +247,7 @@ public partial class NumericBox : Control
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(NumericBox),
             new FrameworkPropertyMetadata(typeof(NumericBox)));
+        StyleCheck.Register(typeof(NumericBox));
 
         VerticalContentAlignmentProperty.OverrideMetadata(
             typeof(NumericBox),

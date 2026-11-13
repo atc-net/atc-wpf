@@ -115,6 +115,7 @@ public sealed partial class Card : HeaderedContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Card),
             new FrameworkPropertyMetadata(typeof(Card)));
+        StyleCheck.Register(typeof(Card));
     }
 
     private void OnExpanded()
