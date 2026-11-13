@@ -151,7 +151,7 @@ The sample app (`sample/Atc.Wpf.Sample/`) serves as a control explorer with 8 ma
 | Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Colors, Layouts, Selectors (incl. CardSelector, CascaderComboBox, CheckListBox, CheckTreeView, MultiColumnComboBox, MultiSelectComboBox, TokenBox, TreeSelectComboBox), DataDisplay (incl. Chip, ChipGroup), DataGrids (DataGridFilter) |
 | Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Label controls (incl. LabelCascaderComboBox, LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox), Selectors, Pickers (incl. TimeZonePicker / LabelTimeZonePicker) |
 | Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers, Monitoring, Notifications (incl. TrayIcon), Capture, Printing, Progressing, Selectors, Flyouts, Zoom |
-| Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | NetworkScanner |
+| Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | NetworkScanner, OnvifCamera, ServiceDiscovery, VncViewer, Clients (TcpClient, UdpClient), Diagnostics (NtpTime, Traceroute, WakeOnLan), value converters |
 | Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | SerialPortPicker, UsbPortPicker, UsbCameraPicker, AudioInputPicker, AudioOutputPicker, DrivePicker, BluetoothDevicePicker, ProcessPicker, WindowPicker, NetworkAdapterPicker, PrinterPicker, DisplayPicker |
 | Wpf.Theming | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |
 | Wpf.SourceGenerators | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demos |

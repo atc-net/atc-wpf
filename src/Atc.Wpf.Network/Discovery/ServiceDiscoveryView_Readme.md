@@ -74,6 +74,7 @@ ServiceDiscovery.DeviceFound += (_, e) =>
 - **NetworkScannerView** - Scans an address range (`DiscoverServices` / `DiscoverOnvif` attach the same data to the scanned addresses)
 - **NetworkHostDetailsView** - The details pane used here
 - **OnvifCameraView** - Reads a camera's model and stream URLs
+- Atc.Network docs: [discovery](https://github.com/atc-net/atc-network/blob/main/docs/discovery.md) and [ONVIF](https://github.com/atc-net/atc-network/blob/main/docs/onvif.md)
 
 ## 🎮 Sample Application
 
