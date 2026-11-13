@@ -52,6 +52,24 @@ internal sealed class DeviceSessionCoordinator
         return sync;
     }
 
+    /// <summary>
+    /// Starts a <see cref="SyncAsync"/> for an event handler that does not await it. A failure is traced
+    /// instead of being left as an unobserved task exception; the returned task never faults.
+    /// </summary>
+    /// <returns>A task that completes when the sync has finished, whether it succeeded or not.</returns>
+    public Task Resync()
+        => SyncAsync().ContinueWith(
+            static t =>
+            {
+                if (t.Exception is { } exception)
+                {
+                    Trace.TraceWarning($"Device session sync failed: {exception.GetBaseException().Message}");
+                }
+            },
+            CancellationToken.None,
+            TaskContinuationOptions.ExecuteSynchronously,
+            TaskScheduler.Default);
+
     private async Task RunAsync()
     {
         try

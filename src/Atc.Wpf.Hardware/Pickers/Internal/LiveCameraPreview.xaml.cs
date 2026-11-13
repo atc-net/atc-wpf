@@ -134,8 +134,9 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsy
     /// Re-evaluates whether the camera should run. Routed through <see cref="DeviceSessionCoordinator"/> so an
     /// unload or device change that happens while the camera is still initializing is not lost.
     /// </summary>
+    // Called from event and property-changed handlers that cannot await; failures are traced, not unobserved.
     private Task RestartAsync()
-        => session.SyncAsync();
+        => session.Resync();
 
     private string? GetDesiredDeviceId()
         => IsActive && !string.IsNullOrEmpty(DeviceId) && isInVisualTree && !disposed
@@ -410,18 +411,32 @@ internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsy
     }
 
     private void ClearError()
-        => Dispatcher.Invoke(() =>
+        => OnUiThread(() =>
         {
             PartError.Visibility = Visibility.Collapsed;
             PartError.Text = string.Empty;
         });
 
     private void ShowError(string text)
-        => Dispatcher.Invoke(() =>
+        => OnUiThread(() =>
         {
             PartError.Text = text;
             PartError.Visibility = Visibility.Visible;
         });
+
+    // Called from the start path, which may continue on another thread. Posting (instead of a blocking
+    // Invoke) never waits for the UI thread, and does nothing once the application is shutting down.
+    private void OnUiThread(Action update)
+    {
+        if (Dispatcher.CheckAccess())
+        {
+            update();
+        }
+        else if (!Dispatcher.HasShutdownStarted)
+        {
+            _ = Dispatcher.BeginInvoke(update);
+        }
+    }
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Format enumeration must not crash the preview on transient errors.")]
     private static IReadOnlyList<UsbCameraFormat> ToCameraFormats(

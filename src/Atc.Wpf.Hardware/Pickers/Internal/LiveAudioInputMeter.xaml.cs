@@ -126,8 +126,9 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable, IA
     /// Re-evaluates whether the microphone should run. Routed through <see cref="DeviceSessionCoordinator"/> so an
     /// unload or device change that happens while the audio graph is still being created is not lost.
     /// </summary>
+    // Called from event and property-changed handlers that cannot await; failures are traced, not unobserved.
     private Task RestartAsync()
-        => session.SyncAsync();
+        => session.Resync();
 
     private string? GetDesiredDeviceId()
         => IsActive && !string.IsNullOrEmpty(DeviceId) && isInVisualTree && !disposed

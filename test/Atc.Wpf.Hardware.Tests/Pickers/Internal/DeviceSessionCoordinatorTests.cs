@@ -113,6 +113,49 @@ public sealed class DeviceSessionCoordinatorTests
         Assert.Null(runningDeviceId);
     }
 
+    // Controls start a sync from event handlers without awaiting it; a failure must not surface later as an
+    // unobserved task exception (which ends the process when unobserved exceptions are configured to throw).
+    [Fact]
+    [SuppressMessage("Major Code Smell", "S1215:\"GC.Collect\" should not be called", Justification = "Finalizes the faulted task so an unobserved exception would be raised.")]
+    public async Task Resync_with_a_failing_start_leaves_no_unobserved_exception()
+    {
+        var failure = new InvalidOperationException("camera gone");
+        var unobserved = new List<Exception>();
+        void OnUnobserved(
+            object? sender,
+            UnobservedTaskExceptionEventArgs e)
+        {
+            if (e.Exception.InnerExceptions.Contains(failure))
+            {
+                lock (unobserved)
+                {
+                    unobserved.Add(e.Exception);
+                }
+            }
+        }
+
+        TaskScheduler.UnobservedTaskException += OnUnobserved;
+        try
+        {
+            var sut = new DeviceSessionCoordinator(
+                startAsync: _ => Task.FromException(failure),
+                stopAsync: () => Task.CompletedTask,
+                getDesiredDeviceId: () => "cam-1");
+
+            await sut.Resync();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+
+            Assert.Empty(unobserved);
+        }
+        finally
+        {
+            TaskScheduler.UnobservedTaskException -= OnUnobserved;
+        }
+    }
+
     private DeviceSessionCoordinator CreateSut()
         => new(
             startAsync: async deviceId =>
