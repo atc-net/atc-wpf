@@ -1,6 +1,6 @@
 # Atc.Wpf.Sample
 
-The `Atc.Wpf.Sample` application is the **control explorer** for the ATC.Net WPF stack. It hosts every demo page across the eight library categories, with a searchable tree, per-control readme tab, and a live preview tab.
+The `Atc.Wpf.Sample` application is the **control explorer** for the ATC.Net WPF stack. It hosts every demo page across the ten library categories, with a searchable tree, per-control readme tab, and a live preview tab.
 
 ## ▶️ Run
 
@@ -10,7 +10,7 @@ From the repo root:
 dotnet run --project sample/Atc.Wpf.Sample
 ```
 
-Or open `Atc.Wpf.sln` in Visual Studio / Rider and start `Atc.Wpf.Sample` (it is set as the default startup project).
+Or open `Atc.Wpf.slnx` in Visual Studio / Rider and start `Atc.Wpf.Sample` (it is set as the default startup project).
 
 > Requires **.NET 10 Desktop Runtime** on Windows 10 or later.
 
