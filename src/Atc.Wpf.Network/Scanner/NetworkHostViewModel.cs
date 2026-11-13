@@ -7,7 +7,7 @@ public partial class NetworkHostViewModel : ViewModelBase
 {
     private const ushort RemoteDesktopPort = 3389;
 
-    private string? connectTargetsKey;
+    private int[] connectTargetsKey = [];
 
     /// <summary>
     /// Gets or sets the IP address of the network host.
@@ -143,10 +143,14 @@ public partial class NetworkHostViewModel : ViewModelBase
     {
         ArgumentNullException.ThrowIfNull(ipScanResult);
 
+        // The scanner reports the same ping result again; only format the tooltip when it is a new one.
         if (ipScanResult.PingStatus is not null)
         {
-            PingStatus = ipScanResult.PingStatus;
-            PingQualityCategoryToolTip = GetPingQualityCategoryToolTip(ipScanResult.PingStatus);
+            if (!ReferenceEquals(PingStatus, ipScanResult.PingStatus))
+            {
+                PingStatus = ipScanResult.PingStatus;
+                PingQualityCategoryToolTip = GetPingQualityCategoryToolTip(ipScanResult.PingStatus);
+            }
         }
         else
         {
@@ -298,6 +302,23 @@ public partial class NetworkHostViewModel : ViewModelBase
         var onvifDevices = ipScanResult.OnvifDevices;
         var mdnsServices = ipScanResult.MdnsServices;
 
+        // Most hosts have no discovery data, and the scanner reports each host several times.
+        if (onvifDevices.Count == 0 && mdnsServices.Count == 0 && ipScanResult.SsdpDevices.Count == 0)
+        {
+            DeviceName = FirstNonEmpty(ipScanResult.Hostname, ipScanResult.MdnsHostName, ipScanResult.NetBiosStatus?.ComputerName);
+            Workgroup = ipScanResult.NetBiosStatus?.Workgroup;
+            Model = null;
+            if (Services.Count > 0)
+            {
+                Services = [];
+            }
+
+            IsOnvifDevice = false;
+            IsOnvifCamera = false;
+            OnvifDeviceServiceUrl = null;
+            return;
+        }
+
         DeviceName = FirstNonEmpty(
             ipScanResult.Hostname,
             ipScanResult.MdnsHostName,
@@ -339,8 +360,13 @@ public partial class NetworkHostViewModel : ViewModelBase
             .ToList();
 
         // The scanner reports the same host many times; only rebuild when its open ports changed.
-        var openPortsKey = string.Join(',', openPorts.Select(x => $"{x.Port}:{x.ServiceProtocol}"));
-        if (string.Equals(openPortsKey, connectTargetsKey, StringComparison.Ordinal))
+        var openPortsKey = new int[openPorts.Count];
+        for (var i = 0; i < openPorts.Count; i++)
+        {
+            openPortsKey[i] = (openPorts[i].Port << 8) | (int)openPorts[i].ServiceProtocol;
+        }
+
+        if (openPortsKey.AsSpan().SequenceEqual(connectTargetsKey))
         {
             return;
         }
