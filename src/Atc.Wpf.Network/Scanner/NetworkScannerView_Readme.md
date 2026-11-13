@@ -132,6 +132,7 @@ The view is driven by `NetworkScannerViewModel`:
 - **NetworkHostDetailsView** - mDNS, SSDP, ONVIF and NetBIOS details of one host (`SelectedEntry`)
 - **VncViewerView** - VNC remote viewer from the same library
 - **NetworkAdapterPicker** - Pick a local network adapter (Atc.Wpf.Hardware)
+- Atc.Network docs: [IP scanning](https://github.com/atc-net/atc-network/blob/main/docs/ip-scanning.md) and [discovery](https://github.com/atc-net/atc-network/blob/main/docs/discovery.md)
 
 ## 🎮 Sample Application
 
