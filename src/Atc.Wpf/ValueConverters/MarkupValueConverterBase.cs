@@ -53,7 +53,7 @@ public abstract class MarkupValueConverterBase : MarkupExtension, IValueConverte
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[{GetType().Name}] Convert failed: {ex.Message}");
+            ReportFailure(nameof(Convert), ex);
             return DependencyProperty.UnsetValue;
         }
     }
@@ -71,8 +71,16 @@ public abstract class MarkupValueConverterBase : MarkupExtension, IValueConverte
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[{GetType().Name}] ConvertBack failed: {ex.Message}");
+            ReportFailure(nameof(ConvertBack), ex);
             return DependencyProperty.UnsetValue;
         }
     }
+
+    // Traced (not Debug.WriteLine, which is compiled out of Release) once per converter, direction and exception type.
+    private void ReportFailure(
+        string direction,
+        Exception exception)
+        => TraceOnce.Warn(
+            $"converter:{GetType().FullName}:{direction}:{exception.GetType().FullName}",
+            $"[{GetType().Name}] {direction} failed: {exception.Message}");
 }
