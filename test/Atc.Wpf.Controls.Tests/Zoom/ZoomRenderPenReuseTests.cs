@@ -22,6 +22,34 @@ public sealed class ZoomRenderPenReuseTests
         Assert.Same(first[0], second[0]);
     }
 
+    // The labels are the same numbers on most frames; their text layout is reused while nothing that shapes it changes.
+    [StaFact]
+    public void ZoomRuler_SameLabel_ReusesItsTextLayout()
+    {
+        var ruler = CreateRuler();
+
+        var first = ruler.FormatLabel(100, pixelsPerDip: 1.0);
+        var second = ruler.FormatLabel(100, pixelsPerDip: 1.0);
+
+        Assert.Same(first, second);
+    }
+
+    [StaFact]
+    public void ZoomRuler_FontSizeOrDpiChanged_LaysTheLabelOutAgain()
+    {
+        var ruler = CreateRuler();
+        var before = ruler.FormatLabel(100, pixelsPerDip: 1.0);
+
+        ruler.FontSize = 14;
+        var afterFont = ruler.FormatLabel(100, pixelsPerDip: 1.0);
+        var afterDpi = ruler.FormatLabel(100, pixelsPerDip: 1.5);
+
+        Assert.NotSame(before, afterFont);
+        Assert.True(afterFont.Height > before.Height);
+        Assert.NotSame(afterFont, afterDpi);
+        Assert.Equal(1.5, afterDpi.PixelsPerDip);
+    }
+
     [StaFact]
     public void ZoomRuler_TickBrushChanged_UsesANewPenWithThatBrush()
     {
