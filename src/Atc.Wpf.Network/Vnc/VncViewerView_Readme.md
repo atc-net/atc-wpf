@@ -88,6 +88,7 @@ The view's toolbar has the scale mode, **View only**, **Share clipboard**, **Sen
 - Input is only sent while `IsConnected` is `true`
 - `ConnectCommand` uses `Application.Current.MainWindow` as dialog owner and does nothing if it is `null`
 - The view model implements `IDisposable`; dispose it when the hosting view is discarded
+- The connect dialog masks the password; it is kept in memory only for **Retry** and cleared on `Dispose`
 - The library has no XAML namespace mapping, so use a `clr-namespace:Atc.Wpf.Network.Vnc;assembly=Atc.Wpf.Network` prefix
 
 ## 🔗 Related Controls

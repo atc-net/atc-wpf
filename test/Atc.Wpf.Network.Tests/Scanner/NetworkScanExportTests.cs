@@ -55,6 +55,65 @@ public sealed class NetworkScanExportTests
         Assert.Equal(IPAddress.Parse("10.0.0.1"), Assert.Single(visible).IpAddress);
     }
 
+    // A device on the LAN picks its own mDNS/NetBIOS/ONVIF names, so a name that starts like a
+    // spreadsheet formula must be exported as text.
+    [Theory]
+    [InlineData("=cmd|'/c calc'!A1")]
+    [InlineData("+1+1")]
+    [InlineData("-1")]
+    [InlineData("@SUM(A1)")]
+    [InlineData("\tx")]
+    [InlineData("\rx")]
+    public void ToCsv_PrefixesFormulaLeadingValuesWithAnApostrophe(
+        string hostname)
+    {
+        var host = Host("10.0.0.1", hostname, 80);
+
+        var csv = NetworkScanExport.ToCsv([host]);
+
+        Assert.Contains($"\"'{hostname}\"", csv, StringComparison.Ordinal);
+        Assert.DoesNotContain($",{hostname},", csv, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ToCsv_LeavesOrdinaryValuesUnchanged()
+    {
+        var host = Host("10.0.0.1", "nas-01", 80);
+
+        var csv = NetworkScanExport.ToCsv([host]);
+
+        Assert.Contains(",nas-01,", csv, StringComparison.Ordinal);
+        Assert.DoesNotContain("'", csv, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ToCsv_NeutralisesEveryTextColumn()
+    {
+        var host = Host("10.0.0.1", "=host", 80);
+        host.DeviceName = "=device";
+        host.Workgroup = "=group";
+        host.MacVendor = "=vendor";
+        host.Model = "=model";
+        host.Services = ["=svc"];
+
+        var csv = NetworkScanExport.ToCsv([host]);
+
+        var line = csv.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)[1];
+        Assert.Equal(6, line.Split("\"'=").Length - 1);
+    }
+
+    // A read-only or missing target must not throw out of the Export command.
+    [Fact]
+    public void TryWriteExport_WithAMissingDirectory_ReturnsTheError()
+    {
+        var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), Guid.NewGuid().ToString("N"), "scan.csv");
+
+        var error = NetworkScannerViewModel.TryWriteExport(path, "a,b");
+
+        Assert.IsAssignableFrom<System.IO.IOException>(error);
+        Assert.False(System.IO.File.Exists(path));
+    }
+
     private static NetworkHostViewModel Host(
         string ipAddress,
         string hostname,

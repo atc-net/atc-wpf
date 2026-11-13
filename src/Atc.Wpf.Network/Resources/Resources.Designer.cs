@@ -1471,5 +1471,23 @@ namespace Atc.Wpf.Network.Resources {
                 return ResourceManager.GetString("ClientFramingTermination", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export failed.
+        /// </summary>
+        public static string ExportFailed {
+            get {
+                return ResourceManager.GetString("ExportFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not write the file:.
+        /// </summary>
+        public static string CouldNotExportFormat1 {
+            get {
+                return ResourceManager.GetString("CouldNotExportFormat1", resourceCulture);
+            }
+        }
     }
 }

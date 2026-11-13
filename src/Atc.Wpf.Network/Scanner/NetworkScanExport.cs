@@ -5,6 +5,8 @@ namespace Atc.Wpf.Network.Scanner;
 /// </summary>
 /// <remarks>
 /// The column names are English and fixed, so exported files read the same in every UI language.
+/// Cells that start with <c>=</c>, <c>+</c>, <c>-</c>, <c>@</c>, tab or CR get an apostrophe prefix,
+/// so spreadsheets read them as text and not as a formula.
 /// </remarks>
 public static class NetworkScanExport
 {
@@ -97,7 +99,15 @@ public static class NetworkScanExport
             return string.Empty;
         }
 
-        return value.AsSpan().IndexOfAny(",\"\r\n") >= 0
+        // Device names come from the devices themselves; a leading formula character would run
+        // in a spreadsheet, so the cell is marked as text with an apostrophe.
+        var isFormulaLike = value[0] is '=' or '+' or '-' or '@' or '\t' or '\r';
+        if (isFormulaLike)
+        {
+            value = "'" + value;
+        }
+
+        return isFormulaLike || value.AsSpan().IndexOfAny(",\"\r\n") >= 0
             ? $"\"{value.Replace("\"", "\"\"", StringComparison.Ordinal)}\""
             : value;
     }
