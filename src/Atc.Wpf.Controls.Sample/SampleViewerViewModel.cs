@@ -634,32 +634,9 @@ public sealed class SampleViewerViewModel : ViewModelBase
         FileSystemInfo baseLocation,
         string classViewName,
         Type sampleType)
-    {
-        var files = Directory.GetFiles(
-            baseLocation.FullName,
-            $"{classViewName}.xaml",
-            SearchOption.AllDirectories);
-        switch (files.Length)
-        {
-            case 0:
-                return null;
-            case 1:
-                return new DirectoryInfo(files[0]).Parent;
-        }
-
-        foreach (var file in files)
-        {
-            var s = file.Replace('\\', '.');
-            if (s.Contains(
-                    sampleType.FullName!,
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                return new DirectoryInfo(file).Parent;
-            }
-        }
-
-        return null;
-    }
+        => SampleFileIndex
+            .For(baseLocation.FullName)
+            .FindFolder(classViewName, sampleType.FullName!);
 
     private static string? ReadFileText(string filePath)
         => File.Exists(filePath)
