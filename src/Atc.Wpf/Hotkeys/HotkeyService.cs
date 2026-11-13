@@ -285,27 +285,73 @@ public sealed class HotkeyService : IHotkeyService
 
         foreach (var def in definitions)
         {
-            if (def.SecondModifiers.HasValue && def.SecondKey.HasValue)
-            {
-                RegisterChord(
-                    def.Modifiers,
-                    def.Key,
-                    def.SecondModifiers.Value,
-                    def.SecondKey.Value,
-                    static _ => { },
-                    def.Description);
-            }
-            else
-            {
-                Register(
-                    def.Modifiers,
-                    def.Key,
-                    static _ => { },
-                    def.Description,
-                    def.Scope);
-            }
+            LoadBinding(def);
         }
     }
+
+    // A saved binding is the user's choice of keys for something the app registers in code (matched by description),
+    // or a binding the app does not know (added; it fires only HotkeyPressed). Keys that are already taken are skipped.
+    private void LoadBinding(HotkeyBindingDefinition definition)
+    {
+        var chord = definition is { SecondModifiers: { } secondModifiers, SecondKey: { } secondKey }
+            ? new HotkeyChord(definition.Modifiers, definition.Key, secondModifiers, secondKey)
+            : null;
+
+        HotkeyRegistration? sameDescription;
+        bool keysTaken;
+        lock (registrationLock)
+        {
+            sameDescription = string.IsNullOrEmpty(definition.Description)
+                ? null
+                : registrations.Find(r =>
+                    string.Equals(r.Description, definition.Description, StringComparison.Ordinal) &&
+                    (r.Chord is null) == (chord is null));
+            keysTaken = registrations.Exists(r => HasKeys(r, definition, chord));
+        }
+
+        if (sameDescription is not null)
+        {
+            if (HasKeys(sameDescription, definition, chord) || keysTaken)
+            {
+                return;
+            }
+
+            Unregister(sameDescription);
+            RegisterLoaded(definition, chord, sameDescription.Callback);
+            return;
+        }
+
+        if (!keysTaken)
+        {
+            RegisterLoaded(definition, chord, static _ => { });
+        }
+    }
+
+    private void RegisterLoaded(
+        HotkeyBindingDefinition definition,
+        HotkeyChord? chord,
+        Action<HotkeyPressedEventArgs> callback)
+    {
+        if (chord is null)
+        {
+            Register(definition.Modifiers, definition.Key, callback, definition.Description, definition.Scope);
+        }
+        else
+        {
+            RegisterChord(chord.FirstModifiers, chord.FirstKey, chord.SecondModifiers, chord.SecondKey, callback, definition.Description);
+        }
+    }
+
+    private static bool HasKeys(
+        HotkeyRegistration registration,
+        HotkeyBindingDefinition definition,
+        HotkeyChord? chord)
+        => chord is null
+            ? registration.Chord is null &&
+              registration.Modifiers == definition.Modifiers &&
+              registration.Key == definition.Key &&
+              registration.Scope == definition.Scope
+            : chord.Equals(registration.Chord);
 
     /// <inheritdoc />
     public void Dispose()
