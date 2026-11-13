@@ -12,6 +12,7 @@ global using System.Windows.Markup;
 global using System.Windows.Media;
 
 global using Atc.Helpers;
+global using Atc.Wpf.Clipboard;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Helpers;

@@ -186,5 +186,23 @@ namespace Atc.Wpf.Components.Resources {
                 return ResourceManager.GetString("Unpin", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed.
+        /// </summary>
+        public static string SaveSettingsFailed {
+            get {
+                return ResourceManager.GetString("SaveSettingsFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save the settings:.
+        /// </summary>
+        public static string CouldNotSaveSettingsFormat1 {
+            get {
+                return ResourceManager.GetString("CouldNotSaveSettingsFormat1", resourceCulture);
+            }
+        }
     }
 }

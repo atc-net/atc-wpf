@@ -101,4 +101,11 @@
   <data name="Unpin" xml:space="preserve">
     <value>Unpin</value>
   </data>
+  <data name="SaveSettingsFailed" xml:space="preserve">
+    <value>Save failed</value>
+  </data>
+  <data name="CouldNotSaveSettingsFormat1" xml:space="preserve">
+    <value>Could not save the settings:
+{0}</value>
+  </data>
 </root>

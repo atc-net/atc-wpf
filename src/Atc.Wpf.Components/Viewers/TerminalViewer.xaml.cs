@@ -534,7 +534,7 @@ public sealed partial class TerminalViewer : IDisposable
 
         if (sb.Length > 0)
         {
-            System.Windows.Clipboard.SetText(sb.ToString());
+            ClipboardHelper.TrySetText(sb.ToString());
         }
     }
 
@@ -555,7 +555,7 @@ public sealed partial class TerminalViewer : IDisposable
 
         if (sb.Length > 0)
         {
-            System.Windows.Clipboard.SetText(sb.ToString());
+            ClipboardHelper.TrySetText(sb.ToString());
         }
     }
 

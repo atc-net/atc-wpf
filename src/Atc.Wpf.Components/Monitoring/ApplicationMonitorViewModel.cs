@@ -605,7 +605,7 @@ public sealed partial class ApplicationMonitorViewModel : ViewModelBase, IDispos
 
         if (sb.Length > 0)
         {
-            System.Windows.Clipboard.SetText(sb.ToString());
+            ClipboardHelper.TrySetText(sb.ToString());
         }
     }
 

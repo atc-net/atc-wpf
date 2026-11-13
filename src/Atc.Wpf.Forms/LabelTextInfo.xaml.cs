@@ -66,5 +66,5 @@ public partial class LabelTextInfo : ILabelTextInfo
     private void OnCopyToClipboardClick(
         object sender,
         RoutedEventArgs e)
-        => System.Windows.Clipboard.SetText(Text);
+        => ClipboardHelper.TrySetText(Text);
 }

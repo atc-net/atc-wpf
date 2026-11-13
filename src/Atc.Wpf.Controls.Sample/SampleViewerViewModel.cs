@@ -553,21 +553,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
     }
 
     private void CopySampleReference()
-    {
-        if (SampleReference is null)
-        {
-            return;
-        }
-
-        try
-        {
-            System.Windows.Clipboard.SetText(SampleReference);
-        }
-        catch (System.Runtime.InteropServices.COMException)
-        {
-            // Another application holds the clipboard open; the user can try again.
-        }
-    }
+        => ClipboardHelper.TrySetText(SampleReference);
 
     /// <summary>
     /// Scans the solution folder for markdown files and caches them for readme lookup.
