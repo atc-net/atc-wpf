@@ -594,4 +594,11 @@
   <data name="ClientFramingTermination" xml:space="preserve">
     <value>Nachrichtenende</value>
   </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>Export fehlgeschlagen</value>
+  </data>
+  <data name="CouldNotExportFormat1" xml:space="preserve">
+    <value>Die Datei konnte nicht geschrieben werden:
+{0}</value>
+  </data>
 </root>

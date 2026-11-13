@@ -781,7 +781,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     {
         if (SelectedEntry is not null)
         {
-            System.Windows.Clipboard.SetText(SelectedEntry.IpAddress.ToString());
+            ClipboardHelper.TrySetText(SelectedEntry.IpAddress.ToString());
         }
     }
 
@@ -790,7 +790,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     {
         if (SelectedEntry?.Hostname is not null)
         {
-            System.Windows.Clipboard.SetText(SelectedEntry.Hostname);
+            ClipboardHelper.TrySetText(SelectedEntry.Hostname);
         }
     }
 
@@ -799,7 +799,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     {
         if (SelectedEntry?.MacAddress is not null)
         {
-            System.Windows.Clipboard.SetText(SelectedEntry.MacAddress);
+            ClipboardHelper.TrySetText(SelectedEntry.MacAddress);
         }
     }
 
@@ -808,7 +808,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
     {
         if (SelectedEntry is not null)
         {
-            System.Windows.Clipboard.SetText(SelectedEntry.ToAllInfoText());
+            ClipboardHelper.TrySetText(SelectedEntry.ToAllInfoText());
         }
     }
 
@@ -959,7 +959,7 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
 
     [RelayCommand(CanExecute = nameof(CanExport))]
     private void CopyAllEntries()
-        => System.Windows.Clipboard.SetText(NetworkScanExport.ToCsv(GetVisibleEntries()));
+        => ClipboardHelper.TrySetText(NetworkScanExport.ToCsv(GetVisibleEntries()));
 
     [RelayCommand(CanExecute = nameof(CanExport))]
     private void Export()
@@ -979,7 +979,48 @@ public partial class NetworkScannerViewModel : ViewModelBase, IDisposable
         var content = dialog.FilterIndex == 2
             ? NetworkScanExport.ToJson(GetVisibleEntries())
             : NetworkScanExport.ToCsv(GetVisibleEntries());
-        File.WriteAllText(dialog.FileName, content, Encoding.UTF8);
+        var error = TryWriteExport(dialog.FileName, content);
+        if (error is not null)
+        {
+            ShowExportFailureDialog(error);
+        }
+    }
+
+    // A read-only, locked or vanished target is a user-facing message, not a crash of the host app.
+    internal static Exception? TryWriteExport(
+        string path,
+        string content)
+    {
+        try
+        {
+            File.WriteAllText(path, content, Encoding.UTF8);
+            return null;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Security.SecurityException)
+        {
+            return ex;
+        }
+    }
+
+    private static void ShowExportFailureDialog(Exception ex)
+    {
+        var owner = Application.Current?.MainWindow;
+        if (owner is null)
+        {
+            return;
+        }
+
+        var settings = new DialogBoxSettings(DialogBoxType.Ok, LogCategoryType.Error)
+        {
+            TitleBarText = Resources.Resources.ExportFailed,
+        };
+
+        var message = string.Format(
+            CultureInfo.CurrentCulture,
+            Resources.Resources.CouldNotExportFormat1,
+            ex.Message);
+
+        new InfoDialogBox(owner, settings, message).ShowDialog();
     }
 
     private bool CanScan()

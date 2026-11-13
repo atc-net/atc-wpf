@@ -24,6 +24,7 @@ global using Atc.Network.Onvif;
 global using Atc.Network.Tcp;
 global using Atc.Network.Udp;
 global using Atc.Network.Vnc;
+global using Atc.Wpf.Forms;
 global using Atc.Wpf.Network.Clients;
 global using Atc.Wpf.Network.Diagnostics;
 global using Atc.Wpf.Network.Discovery;

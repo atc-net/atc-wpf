@@ -124,6 +124,7 @@ The view is driven by `NetworkScannerViewModel`:
 - A single IPv6 address can be scanned (start address, no end); ranges and CIDR are IPv4 only
 - Reverse DNS (`Options.ResolveHostName`) has no timeout in Atc.Network 2.0.0; on networks without it a /24 takes minutes. Turn it off and turn on `ResolveNetBiosName` or `DiscoverServices` for fast device names
 - Without `MacAddressVendorLookup`, MAC addresses are sent to macvendors.com for the vendor column
+- The CSV export and "Copy all" prefix cells that start with `=`, `+`, `-`, `@`, tab or CR with `'`, so a device name cannot run as a spreadsheet formula
 - The library has no XAML namespace mapping, so use a `clr-namespace:Atc.Wpf.Network.Scanner;assembly=Atc.Wpf.Network` prefix
 
 ## 🔗 Related Controls

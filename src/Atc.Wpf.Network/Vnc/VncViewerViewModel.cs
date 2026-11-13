@@ -6,6 +6,10 @@ namespace Atc.Wpf.Network.Vnc;
 /// </summary>
 public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
 {
+    private const string HostKey = "VncHost";
+    private const string PortKey = "VncPort";
+    private const string PasswordKey = "VncPassword";
+
     private readonly VncConnectionService connectionService;
     private readonly Dispatcher dispatcher;
     private string? lastHost;
@@ -213,6 +217,7 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         connectionService.FramebufferUpdated -= OnServiceFramebufferUpdated;
         connectionService.ClipboardTextReceived -= OnServiceClipboardTextReceived;
         connectionService.Dispose();
+        lastPassword = null;
     }
 
     private bool CanConnect()
@@ -258,18 +263,8 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         _ = dispatcher.BeginInvoke(() => ClipboardSetter(e.Text));
     }
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Another program can hold the clipboard; the text is then dropped.")]
     private static void SetClipboardText(string text)
-    {
-        try
-        {
-            System.Windows.Clipboard.SetText(text);
-        }
-        catch (Exception)
-        {
-            // The clipboard is locked by another program.
-        }
-    }
+        => ClipboardHelper.TrySetText(text);
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Another program can hold the clipboard; nothing is sent then.")]
     private static string? GetClipboardText()
@@ -294,30 +289,8 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
             return;
         }
 
-        var labelControls = new List<ILabelControlBase>
-        {
-            new LabelTextBox
-            {
-                LabelText = Resources.Resources.VncHost,
-                IsMandatory = true,
-                MinLength = 1,
-            },
-            new LabelIntegerBox
-            {
-                LabelText = Resources.Resources.VncPort,
-                IsMandatory = true,
-                Value = 5900,
-                Minimum = 1,
-                Maximum = 65535,
-            },
-            new LabelTextBox
-            {
-                LabelText = Resources.Resources.VncPassword,
-            },
-        };
-
         var labelControlsForm = new LabelControlsForm();
-        labelControlsForm.AddColumn(labelControls);
+        labelControlsForm.AddColumn(CreateConnectDialogControls());
 
         var dialogBox = new InputFormDialogBox(
             ownerWindow,
@@ -330,22 +303,71 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
             return;
         }
 
-        var data = dialogBox.Data.GetKeyValues();
-        var host = data[Resources.Resources.VncHost]?.ToString() ?? string.Empty;
-        var port = System.Convert.ToInt32(data[Resources.Resources.VncPort], CultureInfo.InvariantCulture);
-        var password = data[Resources.Resources.VncPassword]?.ToString();
-
+        var (host, port, password) = ReadConnectDialogResult(dialogBox.Data.GetKeyValues());
         await ConnectAsync(host, port, password).ConfigureAwait(true);
+    }
+
+    // The Name gives each field a stable identifier, so the result is read the same in every UI language.
+    internal static List<ILabelControlBase> CreateConnectDialogControls()
+        =>
+        [
+            new LabelTextBox
+            {
+                Name = HostKey,
+                LabelText = Resources.Resources.VncHost,
+                IsMandatory = true,
+                MinLength = 1,
+            },
+            new LabelIntegerBox
+            {
+                Name = PortKey,
+                LabelText = Resources.Resources.VncPort,
+                IsMandatory = true,
+                Value = 5900,
+                Minimum = 1,
+                Maximum = 65535,
+            },
+            new LabelPasswordBox
+            {
+                Name = PasswordKey,
+                LabelText = Resources.Resources.VncPassword,
+            },
+        ];
+
+    internal static (string Host, int Port, string? Password) ReadConnectDialogResult(
+        Dictionary<string, object> data)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+
+        var host = data[HostKey]?.ToString() ?? string.Empty;
+        var port = System.Convert.ToInt32(data[PortKey], CultureInfo.InvariantCulture);
+        var password = data.TryGetValue(PasswordKey, out var value) ? value?.ToString() : null;
+        return (host, port, password);
     }
 
     private Task ExecuteDisconnectAsync()
         => DisconnectAsync();
 
+    // The service raises its events from the receive thread after ConfigureAwait(false), so the
+    // state is posted to the UI thread without waiting for it. A synchronous failure (the client
+    // answered at once) arrives on the UI thread already and is applied before ConnectAsync returns.
+    private void OnUiThread(Action update)
+    {
+        if (dispatcher.CheckAccess())
+        {
+            update();
+        }
+        else
+        {
+            _ = dispatcher.BeginInvoke(update);
+        }
+    }
+
     private void OnServiceConnected(
         object? sender,
         EventArgs e)
     {
-        dispatcher.Invoke(() =>
+        OnUiThread(() =>
         {
             IsConnected = true;
             IsBusy = false;
@@ -359,7 +381,7 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         object? sender,
         EventArgs e)
     {
-        dispatcher.Invoke(() =>
+        OnUiThread(() =>
         {
             IsConnected = false;
             IsBusy = false;
@@ -377,7 +399,7 @@ public sealed partial class VncViewerViewModel : ViewModelBase, IDisposable
         object? sender,
         VncConnectionFailedEventArgs e)
     {
-        dispatcher.Invoke(() =>
+        OnUiThread(() =>
         {
             IsConnected = false;
             IsBusy = false;

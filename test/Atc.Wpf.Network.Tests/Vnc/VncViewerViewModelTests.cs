@@ -131,6 +131,58 @@ public sealed class VncViewerViewModelTests
         Assert.False(sut.SendClipboardCommand.CanExecute(null));
     }
 
+    [StaFact]
+    public void ConnectDialog_UsesAPasswordBoxAndStableIdentifiers()
+    {
+        var controls = VncViewerViewModel.CreateConnectDialogControls();
+
+        Assert.IsType<LabelPasswordBox>(controls[2]);
+        Assert.Equal(["VncHost", "VncPort", "VncPassword"], controls.Select(x => x.Identifier), StringComparer.Ordinal);
+    }
+
+    // The identifiers must not depend on the UI language, so the result is read under another culture.
+    [Fact]
+    public void ReadConnectDialogResult_ReadsByIdentifier()
+    {
+        var previous = CultureInfo.CurrentUICulture;
+        CultureInfo.CurrentUICulture = new CultureInfo("da-DK");
+        try
+        {
+            var data = new Dictionary<string, object>(StringComparer.Ordinal)
+            {
+                ["VncHost"] = "10.0.0.5",
+                ["VncPort"] = 5901,
+                ["VncPassword"] = "s3cret",
+            };
+
+            var (host, port, password) = VncViewerViewModel.ReadConnectDialogResult(data);
+
+            Assert.Equal("10.0.0.5", host);
+            Assert.Equal(5901, port);
+            Assert.Equal("s3cret", password);
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = previous;
+        }
+    }
+
+    // The service raises its events from the receive thread; a busy UI thread must not hold that thread up.
+    [StaFact]
+    public void ConnectionFailed_DoesNotBlockTheServiceThread()
+    {
+        var failing = Substitute.For<IVncClient>();
+        failing.Connect(Arg.Any<CancellationToken>()).Returns(false);
+        using var sut = new VncViewerViewModel(new VncConnectionService((_, _) => failing));
+
+        // This thread owns the dispatcher and does not pump while it waits, like a busy UI thread.
+        var connect = Task.Run(() => sut.ConnectAsync("vnc-host", 5900, password: null));
+
+        Assert.True(connect.Wait(TimeSpan.FromSeconds(2)), "The service thread waited for the UI thread.");
+        Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+        Assert.True(sut.HasError);
+    }
+
     private static IVncClient CreateConnectableClient()
     {
         var client = Substitute.For<IVncClient>();

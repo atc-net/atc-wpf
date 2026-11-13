@@ -184,7 +184,7 @@ public partial class OnvifCameraViewModel : ViewModelBase
 
     [RelayCommand(CanExecute = nameof(CanCopyStreamUri))]
     private void CopyStreamUri()
-        => System.Windows.Clipboard.SetText(SelectedStream!.StreamUri.ToString());
+        => ClipboardHelper.TrySetText(SelectedStream!.StreamUri.ToString());
 
     private void ClearResult()
     {
