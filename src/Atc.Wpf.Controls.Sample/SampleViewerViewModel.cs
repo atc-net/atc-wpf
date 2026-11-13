@@ -17,7 +17,13 @@ public sealed class SampleViewerViewModel : ViewModelBase
         Messenger.Default.Register<SampleItemMessage>(
             this,
             SampleItemMessageHandler);
+
+        copySampleReferenceCommand = new RelayCommand(
+            CopySampleReference,
+            () => SampleReference is not null);
     }
+
+    private readonly RelayCommand copySampleReferenceCommand;
 
     private FileInfo[]? markdownDocumentsFiles;
     private int tabSelectedIndex;
@@ -28,6 +34,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
     private string? viewModelCode;
     private string? markdownDocument;
     private bool startOnMarkdownDocument;
+    private string? sampleReference;
 
     /// <summary>
     /// Gets or sets the index of the selected tab in the sample viewer.
@@ -89,6 +96,46 @@ public sealed class SampleViewerViewModel : ViewModelBase
             RaisePropertyChanged();
         }
     }
+
+    /// <summary>
+    /// Gets a text that points to the selected sample (its type, header and XAML file),
+    /// ready to paste into a chat with an AI agent; <see langword="null"/> when no sample is selected.
+    /// </summary>
+    public string? SampleReference
+    {
+        get => sampleReference;
+        private set
+        {
+            if (sampleReference == value)
+            {
+                return;
+            }
+
+            sampleReference = value;
+            RaisePropertyChanged();
+            copySampleReferenceCommand.RaiseCanExecuteChanged();
+        }
+    }
+
+    /// <summary>
+    /// Gets the command that copies <see cref="SampleReference"/> to the clipboard.
+    /// </summary>
+    public ICommand CopySampleReferenceCommand => copySampleReferenceCommand;
+
+    /// <summary>
+    /// Creates the text that points to a sample: its type, its header in the sample app and its XAML file.
+    /// </summary>
+    /// <param name="sampleHeader">The header of the sample in the sample app.</param>
+    /// <param name="sampleTypeFullName">The full name of the sample view type.</param>
+    /// <param name="sampleXamlPath">The path of the sample XAML file, or <see langword="null"/> to leave it out.</param>
+    /// <returns>The sample reference.</returns>
+    public static string CreateSampleReference(
+        string sampleHeader,
+        string sampleTypeFullName,
+        string? sampleXamlPath)
+        => string.IsNullOrEmpty(sampleXamlPath)
+            ? $"For the sample {sampleTypeFullName} (\"{sampleHeader}\" in the sample app)"
+            : $"For the sample {sampleTypeFullName} (\"{sampleHeader}\" in the sample app, {sampleXamlPath})";
 
     /// <summary>
     /// Gets or sets the instance of the selected sample view.
@@ -260,6 +307,7 @@ public sealed class SampleViewerViewModel : ViewModelBase
         TryDisposeAndClearSampleContent();
 
         Header = null;
+        SampleReference = null;
         XamlCode = null;
         CodeBehindCode = null;
         ViewModelCode = null;
@@ -341,7 +389,12 @@ public sealed class SampleViewerViewModel : ViewModelBase
 
         Header = sampleHeader;
         SampleContent = instance;
-        XamlCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewName + ".xaml"));
+        var xamlFilePath = Path.Combine(sampleLocation.FullName, classViewName + ".xaml");
+        SampleReference = CreateSampleReference(
+            sampleHeader,
+            sampleType.FullName!,
+            File.Exists(xamlFilePath) ? GetSolutionRelativePath(xamlFilePath) : null);
+        XamlCode = ReadFileText(xamlFilePath);
         CodeBehindCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewName + ".xaml.cs"));
 
         if (instance.DataContext is null ||
@@ -489,6 +542,31 @@ public sealed class SampleViewerViewModel : ViewModelBase
             : assemblyLocation[..indexOf];
 
         return baseLocation;
+    }
+
+    private static string GetSolutionRelativePath(string filePath)
+    {
+        var basePath = GetBasePath();
+        return Directory.Exists(basePath)
+            ? Path.GetRelativePath(basePath, filePath).Replace('\\', '/')
+            : filePath;
+    }
+
+    private void CopySampleReference()
+    {
+        if (SampleReference is null)
+        {
+            return;
+        }
+
+        try
+        {
+            System.Windows.Clipboard.SetText(SampleReference);
+        }
+        catch (System.Runtime.InteropServices.COMException)
+        {
+            // Another application holds the clipboard open; the user can try again.
+        }
     }
 
     /// <summary>
