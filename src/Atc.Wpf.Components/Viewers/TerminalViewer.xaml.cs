@@ -19,10 +19,10 @@ public sealed partial class TerminalViewer : IDisposable
     // clear advances its generation so a batch already on its way to the UI thread is discarded.
     private readonly BoundedBatchQueue<string> pendingLines = new(DefaultMaxLines);
 
-    private readonly CancellationTokenSource cts = new();
-    private readonly Task? queueProcessingTask;
-
     private readonly TerminalLineBuffer lineBuffer = new();
+
+    // Moves received lines to the list; it runs only while the viewer is loaded.
+    private readonly RestartableLoop queueLoop;
 
     private int nextLineNumber = 1;
     private AnsiSgrState ansiState = AnsiSgrState.Default;
@@ -62,6 +62,7 @@ public sealed partial class TerminalViewer : IDisposable
         InitializeComponent();
 
         ListViewTerminal.ItemsSource = lineBuffer.Lines;
+        queueLoop = new RestartableLoop(ProcessQueueContinuously);
 
         // Intentionally NOT setting DataContext = this. Doing so would
         // override the inherited DataContext on the <atc:TerminalViewer>
@@ -77,9 +78,10 @@ public sealed partial class TerminalViewer : IDisposable
             this,
             TerminalClearEventArgsHandle);
 
-        queueProcessingTask = Task.Run(
-            () => ProcessQueueContinuously(cts.Token),
-            cts.Token);
+        // Lines that arrive while unloaded (e.g. in a tab that is not selected) wait in the bounded
+        // queue and show when the viewer is loaded again; only the drain loop stops.
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
     }
 
     /// <summary>
@@ -332,23 +334,25 @@ public sealed partial class TerminalViewer : IDisposable
         Messenger.Default.UnRegister<TerminalClearEventArgs>(this, TerminalClearEventArgsHandle);
 
         pendingLines.Complete();
-        cts.Cancel();
+        queueLoop.Stop();
+    }
 
-        // Dispose the CTS only after the background loop has actually exited,
-        // to avoid blocking the UI thread while the loop is mid-Dispatcher.InvokeAsync.
-        if (queueProcessingTask is null)
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (isDisposed || DesignerProperties.GetIsInDesignMode(this))
         {
-            cts.Dispose();
             return;
         }
 
-        _ = queueProcessingTask.ContinueWith(
-            static (_, state) => ((CancellationTokenSource)state!).Dispose(),
-            cts,
-            CancellationToken.None,
-            TaskContinuationOptions.ExecuteSynchronously,
-            TaskScheduler.Default);
+        queueLoop.Start();
     }
+
+    private void OnUnloaded(
+        object sender,
+        RoutedEventArgs e)
+        => queueLoop.Stop();
 
     /// <summary>
     /// Programmatically scrolls to the tail of the list and resets the
