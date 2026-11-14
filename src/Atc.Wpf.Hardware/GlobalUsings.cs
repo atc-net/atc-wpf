@@ -24,6 +24,7 @@ global using Atc.Wpf.Controls.Inputs.Internal;
 global using Atc.Wpf.Forms.Abstractions;
 global using Atc.Wpf.Hardware.Abstractions;
 global using Atc.Wpf.Hardware.Models;
+global using Atc.Wpf.Hardware.Pickers;
 global using Atc.Wpf.Hardware.Pickers.Internal;
 global using Atc.Wpf.Hardware.Resources;
 global using Atc.Wpf.Hardware.Services;

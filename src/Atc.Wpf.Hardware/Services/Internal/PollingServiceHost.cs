@@ -182,7 +182,7 @@ internal sealed class PollingServiceHost : IDisposable
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"{serviceName} poll failed: {ex.Message}");
+            Trace.TraceWarning($"{serviceName} poll failed: {ex.Message}");
         }
         finally
         {

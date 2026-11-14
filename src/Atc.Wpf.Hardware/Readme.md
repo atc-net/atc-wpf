@@ -4,7 +4,7 @@ WPF pickers for hardware devices and system resources, with live device-state de
 
 ## 🔍 Overview
 
-Each picker lists the current devices or resources, keeps the list up to date while it is loaded, and shows the state of every entry: **Available**, **JustConnected**, **InUse** or **Disconnected**. When the selected device disappears, the picker raises `DeviceLost` and can clear or keep the selection; when it comes back, it can re-select it automatically (`DeviceReconnected`).
+Each picker lists the current devices or resources, keeps the list up to date while it is loaded, and shows the state of every entry: **Available**, **JustConnected**, **InUse** or **Disconnected**. When the selected device disappears, the picker raises `DeviceLost` and can clear or keep the selection; when it comes back, it can re-select it automatically (`DeviceReconnected`). When the device list cannot be read or watched, the picker raises `DeviceError` instead of failing silently.
 
 | Picker | Selects | Change detection |
 |--------|---------|------------------|

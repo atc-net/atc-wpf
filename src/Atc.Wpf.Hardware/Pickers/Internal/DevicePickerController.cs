@@ -68,14 +68,7 @@ internal sealed class DevicePickerController<TInfo>
 
         if (ShouldWatch())
         {
-            try
-            {
-                StartWatchingOnce();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"{typeof(TInfo).Name} picker could not start watching: {ex.Message}");
-            }
+            TryStartWatchingOnce();
         }
 
         try
@@ -84,7 +77,7 @@ internal sealed class DevicePickerController<TInfo>
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"{typeof(TInfo).Name} picker initial refresh failed: {ex.Message}");
+            ReportError(ex, DevicePickerOperation.Refresh);
         }
 
         UpdateSelectedStateMessage();
@@ -104,7 +97,6 @@ internal sealed class DevicePickerController<TInfo>
     /// Call from the picker's drop-down Opened handler. Only acts when the controller watches only while open.
     /// </summary>
     /// <returns>A task that completes when the list has been refreshed.</returns>
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Opening the list must not crash on a probe failure.")]
     public async Task DropDownOpenedAsync()
     {
         if (!watchOnlyWhileOpen || !isLoaded)
@@ -115,14 +107,7 @@ internal sealed class DevicePickerController<TInfo>
         isDropDownOpen = true;
         if (ShouldWatch())
         {
-            try
-            {
-                StartWatchingOnce();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"{typeof(TInfo).Name} picker could not start watching: {ex.Message}");
-            }
+            TryStartWatchingOnce();
         }
 
         await RefreshAsync().ConfigureAwait(true);
@@ -155,7 +140,7 @@ internal sealed class DevicePickerController<TInfo>
 
         if (ShouldWatch())
         {
-            StartWatchingOnce();
+            TryStartWatchingOnce();
         }
         else
         {
@@ -165,6 +150,27 @@ internal sealed class DevicePickerController<TInfo>
 
     private bool ShouldWatch()
         => host.AutoRefreshOnDeviceChange && (!watchOnlyWhileOpen || isDropDownOpen);
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A watcher that cannot start is reported through DeviceError; the picker keeps working without live updates.")]
+    private void TryStartWatchingOnce()
+    {
+        try
+        {
+            StartWatchingOnce();
+        }
+        catch (Exception ex)
+        {
+            ReportError(ex, DevicePickerOperation.StartWatching);
+        }
+    }
+
+    private void ReportError(
+        Exception exception,
+        DevicePickerOperation operation)
+    {
+        Trace.TraceWarning($"{typeof(TInfo).Name} picker {operation} failed: {exception.Message}");
+        host.RaiseDeviceError(exception, operation);
+    }
 
     private void StartWatchingOnce()
     {
@@ -200,7 +206,7 @@ internal sealed class DevicePickerController<TInfo>
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"{typeof(TInfo).Name} picker refresh failed: {ex.Message}");
+            ReportError(ex, DevicePickerOperation.Refresh);
         }
     }
 

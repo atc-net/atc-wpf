@@ -67,6 +67,21 @@ When a *bound* `Value` device disconnects:
 - The `Value` is **kept** by default (preserves user intent through USB jiggle); set `ClearValueOnDisconnect="True"` to opt out.
 - When the same device reappears, the picker auto-rebinds and raises `DeviceReconnected` (turn off via `AutoRebindOnReconnect="False"`).
 
+### When the picker cannot read devices
+
+If the picker cannot start watching for device changes, or cannot read its device list, it keeps working (the list is just empty or no longer updates live) and raises `DeviceError`. `e.Operation` says what failed (`StartWatching` or `Refresh`) and `e.Exception` why; the failure is also written to `System.Diagnostics.Trace`. The `Label*` wrappers raise the same event, and it bubbles, so one handler on a window covers every picker in it:
+
+```csharp
+AddHandler(DevicePickerEvents.DeviceErrorEvent, new EventHandler<DeviceErrorRoutedEventArgs>(OnDeviceError));
+
+private void OnDeviceError(object? sender, DeviceErrorRoutedEventArgs e)
+    => logger.LogWarning(e.Exception, "Device picker {Operation} failed", e.Operation);
+```
+
+On a single picker, `DeviceError="OnDeviceError"` works in XAML too.
+
+A failed background poll (polling pickers) is written to `Trace` and retried on the next poll.
+
 ## Common Properties
 
 These properties exist on every hardware picker (and their `Label*` wrappers):

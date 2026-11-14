@@ -4,6 +4,20 @@ namespace Atc.Wpf.Hardware;
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 public partial class LabelAudioOutputPicker : ILabelAudioOutputPicker
 {
+    /// <summary>
+    /// Identifies the <see cref="DeviceError"/> routed event.
+    /// </summary>
+    public static readonly RoutedEvent DeviceErrorEvent = DevicePickerEvents.DeviceErrorEvent.AddOwner(typeof(LabelAudioOutputPicker));
+
+    /// <summary>
+    /// Occurs when the picker inside this control could not start watching for device changes or could not read its device list.
+    /// </summary>
+    public event EventHandler<DeviceErrorRoutedEventArgs> DeviceError
+    {
+        add => AddHandler(DeviceErrorEvent, value);
+        remove => RemoveHandler(DeviceErrorEvent, value);
+    }
+
     [DependencyProperty]
     private AudioDeviceInfo? value;
 
