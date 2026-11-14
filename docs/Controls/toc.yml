@@ -113,6 +113,10 @@
     items:
     - name: DataGridFilter
       href: ../../src/Atc.Wpf.Controls/DataGrids/DataGridFilter_Readme.md
+  - name: Displays
+    items:
+    - name: CharacterDisplay
+      href: ../../src/Atc.Wpf.Controls/Displays/CharacterDisplay_Readme.md
   - name: Inputs
     items:
     - name: Overview

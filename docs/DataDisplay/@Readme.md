@@ -12,6 +12,7 @@ This document provides a comprehensive overview of all data display controls ava
 | [AvatarGroup](#-avatargroup) | Overlapping user avatars | ❌ No | ✅ Yes |
 | [Badge](#-badge) | Status indicator overlay | ❌ No | ✅ Yes |
 | [Card](#-card) | Content grouping with elevation | ✅ Expandable | ✅ Yes |
+| [CharacterDisplay](../../src/Atc.Wpf.Controls/Displays/CharacterDisplay_Readme.md) | Dot-by-dot HD44780 character LCD/VFD (1-40 x 1-4) that mirrors an ESP32 or Raspberry Pi display, with an HD44780 emulator and a PCF8574 I2C decoder | ❌ No | ❌ Own presets |
 | [Chip](#-chip) | Tags, filters, selections | ✅ Selectable | ✅ Yes |
 | [ChipGroup](../../src/Atc.Wpf.Controls/DataDisplay/ChipGroup_Readme.md) | A set of toggle chips bound to `Items` / `SelectedKeys` (quick filters, facets) | ✅ Single / multiple | ✅ Yes |
 | [Divider](#-divider) | Visual separator | ❌ No | ✅ Yes |

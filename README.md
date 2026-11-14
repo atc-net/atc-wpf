@@ -253,7 +253,7 @@ A quick reference of all controls organized by category:
 | Category | Controls | Package |
 |----------|----------|---------|
 | **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
-| **Data Display** | Alert, Card, Badge, Chip, ChipGroup, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented (single or multiple), Timeline, Popover | Atc.Wpf.Controls |
+| **Data Display** | Alert, Card, Badge, Chip, ChipGroup, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented (single or multiple), Timeline, Popover, CharacterDisplay (HD44780 character LCD/VFD with emulator) | Atc.Wpf.Controls |
 | **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Components |
 | **Input Controls** | NumericBox, IntegerBox, DecimalBox, CurrencyBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
@@ -377,6 +377,7 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **Stepper** | Step-by-step progress | Cancelable transitions | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
 | **Segmented** | Segment selector | Single, single-or-none or multiple selection (weekdays, B/I/U), vertical or separate pills | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
 | **Timeline** | Timeline display | Vertical/horizontal, alternate mode | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
+| **CharacterDisplay** | Character LCD/VFD module | 1-40 x 1-4 HD44780 dot matrix, A00/A02 ROMs, custom glyphs, cursor, HD44780 emulator and PCF8574 I2C decoder for mirroring ESP32/Raspberry Pi displays | [Readme](src/Atc.Wpf.Controls/Displays/CharacterDisplay_Readme.md) |
 
 ### Media Controls
 
