@@ -12,6 +12,8 @@ dotnet add package Atc.Wpf.FontIcons
 
 ## Usage
 
+The icon controls need no resource dictionaries. Use the `clr-namespace` mapping below; the value converters are in `https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters`.
+
 ```xml
 <Window xmlns:fontIcons="clr-namespace:Atc.Wpf.FontIcons;assembly=Atc.Wpf.FontIcons">
     <StackPanel Orientation="Horizontal">

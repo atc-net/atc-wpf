@@ -2,6 +2,8 @@
 
 Building blocks for a WPF control-explorer application: the tabbed `SampleViewerView` (Sample / XAML / CodeBehind / ViewModel / Readme), `SampleTreeViewItem`, `SampleSidePanel`, `SamplePropertyController` and `SampleDataController`. The `Atc.Wpf.Sample` demo application is built from them.
 
+> For building sample / control-explorer applications only; it is not meant for production UI.
+
 Part of [ATC.Net WPF](https://github.com/atc-net/atc-wpf), a set of WPF libraries for building MVVM desktop applications on .NET 10 (Windows).
 
 ## Installation
@@ -13,6 +15,8 @@ dotnet add package Atc.Wpf.Controls.Sample
 For the MVVM base classes and the `[ObservableProperty]` / `[RelayCommand]` / `[DependencyProperty]` source generators, also reference [Atc.XamlToolkit](https://www.nuget.org/packages/Atc.XamlToolkit) and [Atc.XamlToolkit.Wpf](https://www.nuget.org/packages/Atc.XamlToolkit.Wpf) directly; the generators do not flow through package dependencies.
 
 ## Usage
+
+The viewer uses the Atc controls and theme brushes, so merge the Theming `Default.xaml` and Controls `Controls.xaml` dictionaries into `App.xaml` (see Atc.Wpf.Controls).
 
 ```xml
 <Window xmlns:sampleControls="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample">

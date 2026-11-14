@@ -14,6 +14,14 @@ For the MVVM base classes and the `[ObservableProperty]` / `[RelayCommand]` / `[
 
 ## Usage
 
+`UndoRedoHistoryView` uses the theme brushes, so merge the Theming dictionary into `App.xaml`:
+
+```xml
+<ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Default.xaml" />
+```
+
+Atc.Wpf.UndoRedo has no XAML namespace mapping: use `clr-namespace` mappings as below.
+
 ```xml
 <UserControl
     xmlns:atcBehaviors="clr-namespace:Atc.Wpf.UndoRedo.Behaviors;assembly=Atc.Wpf.UndoRedo"

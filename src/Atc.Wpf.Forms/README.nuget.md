@@ -27,6 +27,8 @@ Merge the styles into `App.xaml`:
 </Application.Resources>
 ```
 
+Both dictionaries are required: the form controls get their templates from `Controls.xaml`, and those templates use the theme brushes from `Default.xaml`. The controls are in the `https://github.com/atc-net/atc-wpf/tree/main/schemas` namespace (`atc` prefix).
+
 ```xml
 <Window xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas">
     <StackPanel>

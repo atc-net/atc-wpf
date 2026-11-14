@@ -21,6 +21,21 @@ For the MVVM base classes and the `[ObservableProperty]` / `[RelayCommand]` / `[
 
 ## Usage
 
+Merge the styles into `App.xaml`. The views are built from the Atc form controls, so both dictionaries are required:
+
+```xml
+<Application.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Default.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+</Application.Resources>
+```
+
+Atc.Wpf.Network has no XAML namespace mapping: use a `clr-namespace` for each folder (`Atc.Wpf.Network.Scanner`, `.Discovery`, `.Onvif`, `.Diagnostics`, `.Clients`, `.Vnc`):
+
 ```xml
 <UserControl xmlns:scanner="clr-namespace:Atc.Wpf.Network.Scanner;assembly=Atc.Wpf.Network">
     <scanner:NetworkScannerView DataContext="{Binding NetworkScanner}" />

@@ -16,6 +16,21 @@ For the MVVM base classes and the `[ObservableProperty]` / `[RelayCommand]` / `[
 
 ## Usage
 
+Merge the styles into `App.xaml`. The pickers and their `Label*` wrappers use the Atc form controls, so both dictionaries are required:
+
+```xml
+<Application.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Theming;component/Styles/Default.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Atc.Wpf.Controls;component/Styles/Controls.xaml" />
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+</Application.Resources>
+```
+
+The pickers are in the `https://github.com/atc-net/atc-wpf/tree/main/schemas` namespace (`atc` prefix):
+
 ```xml
 <Window xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas">
     <atc:SerialPortPicker
