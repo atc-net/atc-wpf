@@ -21,10 +21,13 @@ public sealed class RestartableLoopTests
         sut.Start();
         Assert.True(sut.IsRunning);
 
+        // On a busy thread pool a stop can come before the loop has started at all (then it never runs);
+        // this test is about stopping a loop that is running.
+        await WaitUntilAsync(() => tokens.Count == 1);
         sut.Stop();
 
         Assert.False(sut.IsRunning);
-        await WaitUntilAsync(() => tokens.Count == 1 && tokens[0].IsCancellationRequested);
+        await WaitUntilAsync(() => tokens[0].IsCancellationRequested);
         Assert.True(tokens[0].IsCancellationRequested);
     }
 
