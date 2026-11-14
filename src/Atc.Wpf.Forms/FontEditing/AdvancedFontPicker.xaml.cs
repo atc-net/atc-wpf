@@ -133,6 +133,9 @@ public partial class AdvancedFontPicker
         familyView = CollectionViewSource.GetDefaultView(AvailableFontFamilies);
         familyView.Filter = FilterFamily;
 
+        // The family's typeface lists are filled when it changes; the default family never changes.
+        RefreshTypefaceLists();
+
         Loaded += OnLoaded;
     }
 
