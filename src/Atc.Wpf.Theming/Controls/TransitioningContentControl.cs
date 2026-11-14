@@ -332,7 +332,10 @@ public class TransitioningContentControl : ContentControl
             currentContentPresentationSite.SetCurrentValue(
                 ContentPresenter.ContentProperty,
                 newContent);
-            previousContentPresentationSite.SetCurrentValue(
+
+            // A local value: a ContentPresenter in a ContentControl template is implicitly bound to the control's
+            // Content by the template, and that template value would replace a current value with the new content.
+            previousContentPresentationSite.SetValue(
                 ContentPresenter.ContentProperty,
                 oldContent);
 
@@ -418,7 +421,7 @@ public class TransitioningContentControl : ContentControl
             HiddenState,
             false);
         IsTransitioning = false;
-        previousContentPresentationSite?.SetCurrentValue(
+        previousContentPresentationSite?.SetValue(
             ContentPresenter.ContentProperty,
             null);
     }
