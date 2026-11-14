@@ -8,6 +8,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 [TemplatePart(Name = "PART_ItemsHost", Type = typeof(StackPanel))]
 public sealed partial class Breadcrumb : Control
 {
+    private readonly List<BreadcrumbItem> hookedItems = [];
     private StackPanel? itemsHost;
 
     /// <summary>
@@ -84,20 +85,21 @@ public sealed partial class Breadcrumb : Control
         object? sender,
         NotifyCollectionChangedEventArgs e)
     {
-        if (e.OldItems is not null)
+        // Re-hooked from the current items: a Reset (Clear) carries no old items.
+        foreach (var item in hookedItems)
         {
-            foreach (BreadcrumbItem item in e.OldItems)
+            item.Click -= OnItemClick;
+            if (!Items.Contains(item))
             {
-                item.Click -= OnItemClick;
+                item.IsLast = false;
             }
         }
 
-        if (e.NewItems is not null)
+        hookedItems.Clear();
+        foreach (var item in Items)
         {
-            foreach (BreadcrumbItem item in e.NewItems)
-            {
-                item.Click += OnItemClick;
-            }
+            item.Click += OnItemClick;
+            hookedItems.Add(item);
         }
 
         UpdateIsLastFlags();

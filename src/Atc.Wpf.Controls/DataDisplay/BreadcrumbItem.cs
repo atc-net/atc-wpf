@@ -54,7 +54,28 @@ public sealed partial class BreadcrumbItem : ContentControl
     protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonUp(e);
+        Activate();
+    }
 
+    /// <inheritdoc />
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+
+        base.OnKeyDown(e);
+
+        // The item is a tab stop, so the keyboard activates it like a click.
+        if (e.Handled || e.Key is not (Key.Enter or Key.Space) || IsLast)
+        {
+            return;
+        }
+
+        Activate();
+        e.Handled = true;
+    }
+
+    private void Activate()
+    {
         if (IsLast)
         {
             return;
