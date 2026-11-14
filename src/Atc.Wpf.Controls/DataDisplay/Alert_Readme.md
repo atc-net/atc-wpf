@@ -124,6 +124,7 @@ using Atc.Wpf.Controls.DataDisplay;
 
 ## Notes
 
+- A pulsing alert (`IsPulsing`) animates only while it is shown: the animation stops when the alert is unloaded and resumes when it is loaded again
 - The default variant uses light severity-colored backgrounds (Bootstrap 100-level) with dark text (Bootstrap 900-level)
 - The `Filled` variant uses the Bootstrap 500-level color as background with white text
 - `AlertBackground`, `AlertForeground`, and `AlertBorderBrush` override any severity/variant colors when set
