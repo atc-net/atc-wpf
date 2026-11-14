@@ -27,6 +27,9 @@
         <sample:SampleTreeViewItem
             Header="Exception dialog"
             SamplePath="DialogBoxes.ExceptionDialogView" />
+        <sample:SampleTreeViewItem
+            Header="In-window dialogs"
+            SamplePath="DialogBoxes.InWindowDialogsView" />
     </TreeViewItem>
 
     <TreeViewItem Header="Monitoring">
