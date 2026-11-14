@@ -31,6 +31,7 @@ global using Atc.Wpf.Controls.Clocks;
 global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.DataGrids;
 global using Atc.Wpf.Controls.DataGrids.Internal;
+global using Atc.Wpf.Controls.Displays;
 global using Atc.Wpf.Controls.Helpers;
 global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Inputs.Internal;
