@@ -28,6 +28,8 @@ Merge the styles into `App.xaml`:
 </Application.Resources>
 ```
 
+The Theming and Controls dictionaries are required, as for Atc.Wpf.Controls. The Components dictionary holds the styles of the flyouts, toast notifications and `DualListSelector`.
+
 ```csharp
 var dialog = new InfoDialogBox(ownerWindow, "Save Complete", "Your document has been saved.");
 dialog.ShowDialog();

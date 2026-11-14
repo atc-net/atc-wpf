@@ -14,6 +14,14 @@ For the MVVM base classes and the `[ObservableProperty]` / `[RelayCommand]` / `[
 
 ## Usage
 
+The layouts, helpers and value converters need no resource dictionaries. XAML namespaces:
+
+| Prefix | Namespace | Contains |
+|--------|-----------|----------|
+| `atc` | `https://github.com/atc-net/atc-wpf/tree/main/schemas` | Layout panels, media, animation, helpers, markup extensions, drag and drop |
+| `atcValueConverters` | `https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters` | Value converters |
+| `atcTranslation` | `https://github.com/atc-net/atc-wpf/tree/main/schemas/translations` | Translation markup extensions |
+
 ```xml
 <Window xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas">
     <atc:GridEx Rows="Auto,Auto,*" Columns="Auto,*">
