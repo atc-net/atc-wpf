@@ -162,6 +162,10 @@
             IsExpanded="True"
             SamplePath="DataDisplay.CarouselView" />
         <sample:SampleTreeViewItem
+            Header="CharacterDisplay"
+            IsExpanded="True"
+            SamplePath="DataDisplay.CharacterDisplayView" />
+        <sample:SampleTreeViewItem
             Header="Chip"
             IsExpanded="True"
             SamplePath="DataDisplay.ChipView" />
