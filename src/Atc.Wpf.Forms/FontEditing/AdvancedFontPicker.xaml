@@ -32,15 +32,6 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style>
 
-        <Style
-            x:Key="QuickToggleStyle"
-            BasedOn="{StaticResource AtcApps.Styles.ToggleButton}"
-            TargetType="{x:Type ToggleButton}">
-            <Setter Property="Width" Value="32" />
-            <Setter Property="Height" Value="28" />
-            <Setter Property="MinWidth" Value="32" />
-        </Style>
-
     </UserControl.Resources>
 
     <atc:GridEx Columns="*" Rows="Auto,8,*,8,Auto,8,Auto">
@@ -55,11 +46,14 @@
 
             <ToggleButton
                 x:Name="BoldToggle"
+                Width="32"
+                Height="28"
+                MinWidth="32"
                 AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                 Key=Bold}"
                 Click="OnBoldToggleClick"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontWeightEnabled}"
-                Style="{StaticResource QuickToggleStyle}"
+                Style="{DynamicResource AtcApps.Styles.ToggleButton}"
                 ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                               Key=Bold}">
                 <TextBlock
@@ -70,11 +64,14 @@
 
             <ToggleButton
                 x:Name="ItalicToggle"
+                Width="32"
+                Height="28"
+                MinWidth="32"
                 AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                 Key=Italic}"
                 Click="OnItalicToggleClick"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsFontStyleEnabled}"
-                Style="{StaticResource QuickToggleStyle}"
+                Style="{DynamicResource AtcApps.Styles.ToggleButton}"
                 ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                               Key=Italic}">
                 <TextBlock
@@ -85,11 +82,14 @@
 
             <ToggleButton
                 x:Name="UnderlineToggle"
+                Width="32"
+                Height="28"
+                MinWidth="32"
                 AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                 Key=Underline}"
                 Click="OnUnderlineToggleClick"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsTextDecorationsEnabled}"
-                Style="{StaticResource QuickToggleStyle}"
+                Style="{DynamicResource AtcApps.Styles.ToggleButton}"
                 ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                               Key=Underline}">
                 <TextBlock
@@ -100,11 +100,14 @@
 
             <ToggleButton
                 x:Name="StrikethroughToggle"
+                Width="32"
+                Height="28"
+                MinWidth="32"
                 AutomationProperties.Name="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                                                 Key=Strikethrough}"
                 Click="OnStrikethroughToggleClick"
                 IsEnabled="{Binding ElementName=UcAdvancedFontPicker, Path=IsTextDecorationsEnabled}"
-                Style="{StaticResource QuickToggleStyle}"
+                Style="{DynamicResource AtcApps.Styles.ToggleButton}"
                 ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Word,
                                               Key=Strikethrough}">
                 <TextBlock
