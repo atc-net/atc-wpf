@@ -102,8 +102,9 @@ using Atc.Wpf.Controls.Inputs;
 
 ## 📝 Notes
 
-- `RangeStart` is always coerced to be less than or equal to `RangeEnd`
-- Both range values are clamped within `Minimum` and `Maximum`
+- `RangeEnd` is always coerced to be greater than or equal to `RangeStart`
+- Both range values are clamped within `Minimum` and `Maximum`, and `Maximum` is never below `Minimum`
+- The clamping is WPF value coercion: each property keeps the value it was given, so the order in which `Minimum`, `Maximum`, `RangeStart` and `RangeEnd` are set (XAML attribute order, bindings) does not matter. A two-way bound range that stays out of bounds once data binding has settled is written back to the source clamped
 - Values snap to the nearest `Step` increment during drag
 - Click a thumb to give it keyboard focus, then use arrow keys
 - Both `RangeStart` and `RangeEnd` support two-way binding by default

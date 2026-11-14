@@ -13,17 +13,21 @@ public sealed partial class RangeSlider : Control
     private FrameworkElement? rangeHighlight;
     private Thumb? lowerThumb;
     private Thumb? upperThumb;
+    private bool isSourceUpdateQueued;
 
     /// <summary>
     /// The minimum value of the range.
     /// </summary>
-    [DependencyProperty(DefaultValue = 0.0, PropertyChangedCallback = nameof(OnRangePropertyChanged))]
+    [DependencyProperty(DefaultValue = 0.0, PropertyChangedCallback = nameof(OnMinimumChanged))]
     private double minimum;
 
     /// <summary>
     /// The maximum value of the range.
     /// </summary>
-    [DependencyProperty(DefaultValue = 100.0, PropertyChangedCallback = nameof(OnRangePropertyChanged))]
+    [DependencyProperty(
+        DefaultValue = 100.0,
+        PropertyChangedCallback = nameof(OnMaximumChanged),
+        CoerceValueCallback = nameof(CoerceMaximum))]
     private double maximum;
 
     /// <summary>
@@ -32,6 +36,7 @@ public sealed partial class RangeSlider : Control
     [DependencyProperty(
         DefaultValue = 0.0,
         PropertyChangedCallback = nameof(OnRangeStartChanged),
+        CoerceValueCallback = nameof(CoerceRangeStart),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
     private double rangeStart;
 
@@ -41,6 +46,7 @@ public sealed partial class RangeSlider : Control
     [DependencyProperty(
         DefaultValue = 100.0,
         PropertyChangedCallback = nameof(OnRangeEndChanged),
+        CoerceValueCallback = nameof(CoerceRangeEnd),
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
     private double rangeEnd;
 
@@ -406,15 +412,93 @@ public sealed partial class RangeSlider : Control
     private void OnRangeChanged()
         => RangeChanged?.Invoke(this, new RoutedEventArgs());
 
-    private static void OnRangePropertyChanged(
+    // The bounds and the range are kept consistent with WPF value coercion: each property keeps the value it
+    // was given and shows it clamped, so the order the four values are set in (XAML attribute order, bindings)
+    // does not matter, and a range set before its bounds is restored once the bounds allow it.
+    private static object CoerceMaximum(
+        DependencyObject d,
+        object value)
+        => System.Math.Max((double)value, ((RangeSlider)d).Minimum);
+
+    private static object CoerceRangeStart(
+        DependencyObject d,
+        object value)
+    {
+        var slider = (RangeSlider)d;
+        return slider.Clamped((double)value, slider.Minimum, slider.Maximum);
+    }
+
+    private static object CoerceRangeEnd(
+        DependencyObject d,
+        object value)
+    {
+        var slider = (RangeSlider)d;
+        return slider.Clamped((double)value, System.Math.Max(slider.Minimum, slider.RangeStart), slider.Maximum);
+    }
+
+    private double Clamped(
+        double value,
+        double lowest,
+        double highest)
+    {
+        if (value < lowest || value > highest)
+        {
+            QueueSourceUpdate();
+        }
+
+        return System.Math.Clamp(value, lowest, highest);
+    }
+
+    // WPF does not write a coerced value back to a two-way binding, so a bound range that ends up clamped is
+    // written back once data binding has settled; by then bounds bound in the same pass have their values,
+    // so a range that only looked out of bounds while they were missing is left as it is.
+    private void QueueSourceUpdate()
+    {
+        if (isSourceUpdateQueued)
+        {
+            return;
+        }
+
+        isSourceUpdateQueued = true;
+        _ = Dispatcher.BeginInvoke(
+            DispatcherPriority.DataBind,
+            () =>
+            {
+                isSourceUpdateQueued = false;
+                UpdateBindingSource(RangeStartProperty);
+                UpdateBindingSource(RangeEndProperty);
+            });
+    }
+
+    private void UpdateBindingSource(DependencyProperty property)
+    {
+        // UpdateSource() skips a binding that is not dirty; setting the shown value through the binding writes
+        // it to the source and keeps the binding.
+        if (BindingOperations.GetBindingExpression(this, property) is { ParentBinding.Mode: BindingMode.TwoWay or BindingMode.Default })
+        {
+            SetValue(property, GetValue(property));
+        }
+    }
+
+    private static void OnMinimumChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is RangeSlider slider)
-        {
-            slider.CoerceRangeValues();
-            slider.UpdateThumbPositions();
-        }
+        var slider = (RangeSlider)d;
+        slider.CoerceValue(MaximumProperty);
+        slider.CoerceValue(RangeStartProperty);
+        slider.CoerceValue(RangeEndProperty);
+        slider.UpdateThumbPositions();
+    }
+
+    private static void OnMaximumChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+    {
+        var slider = (RangeSlider)d;
+        slider.CoerceValue(RangeStartProperty);
+        slider.CoerceValue(RangeEndProperty);
+        slider.UpdateThumbPositions();
     }
 
     private static void OnRangeStartChanged(
@@ -423,7 +507,7 @@ public sealed partial class RangeSlider : Control
     {
         if (d is RangeSlider slider)
         {
-            slider.CoerceRangeValues();
+            slider.CoerceValue(RangeEndProperty);
             slider.UpdateThumbPositions();
             slider.OnRangeChanged();
 
@@ -440,7 +524,6 @@ public sealed partial class RangeSlider : Control
     {
         if (d is RangeSlider slider)
         {
-            slider.CoerceRangeValues();
             slider.UpdateThumbPositions();
             slider.OnRangeChanged();
 
@@ -448,29 +531,6 @@ public sealed partial class RangeSlider : Control
             {
                 peer.RaiseRangeEndPropertyChangedEvent((double)e.OldValue, (double)e.NewValue);
             }
-        }
-    }
-
-    private void CoerceRangeValues()
-    {
-        if (RangeStart < Minimum)
-        {
-            RangeStart = Minimum;
-        }
-
-        if (RangeStart > Maximum)
-        {
-            RangeStart = Maximum;
-        }
-
-        if (RangeEnd < RangeStart)
-        {
-            RangeEnd = RangeStart;
-        }
-
-        if (RangeEnd > Maximum)
-        {
-            RangeEnd = Maximum;
         }
     }
 }
