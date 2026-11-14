@@ -27,6 +27,7 @@ global using System.Windows.Media;
 global using System.Windows.Media.Imaging;
 global using System.Windows.Threading;
 
+global using Atc.Wpf.Controls.Clocks;
 global using Atc.Wpf.Controls.DataDisplay;
 global using Atc.Wpf.Controls.DataGrids;
 global using Atc.Wpf.Controls.DataGrids.Internal;

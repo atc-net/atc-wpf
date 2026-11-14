@@ -259,6 +259,7 @@ A quick reference of all controls organized by category:
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
 | **Buttons** | ImageButton, SplitButton, AuthenticationButton, ConnectivityButton | Atc.Wpf.Controls |
 | **Progress** | BusyOverlay, LoadingIndicator, Overlay, Skeleton | Atc.Wpf.Controls |
+| **Clocks** | AnalogClock, DigitalClock, SevenSegment | Atc.Wpf.Controls |
 | **Drag & Drop** | DragDropAttach | Atc.Wpf |
 | **Selectors** | CountrySelector, LanguageSelector, FontFamilySelector | Atc.Wpf.Controls |
 | **DataGrid** | DataGridFilter (Excel-style column filters, search, column chooser and layout persistence for the stock DataGrid) | Atc.Wpf.Controls |
@@ -444,6 +445,14 @@ Unlabeled input controls that provide core functionality:
 | **SplitButton** | Primary action + dropdown menu | [Readme](src/Atc.Wpf.Controls/Buttons/SplitButton_Readme.md) |
 | **AuthenticationButton** | Login/logout toggle | [Readme](src/Atc.Wpf.Controls/Buttons/AuthenticationButton_Readme.md) |
 | **ConnectivityButton** | Connect/disconnect toggle | [Readme](src/Atc.Wpf.Controls/Buttons/ConnectivityButton_Readme.md) |
+
+### Clock Controls
+
+| Control | Description | Documentation |
+|---------|-------------|---------------|
+| **AnalogClock** | Themed analog clock face that follows the current time (or a bound time) | [Readme](src/Atc.Wpf.Controls/Clocks/AnalogClock_Readme.md) |
+| **DigitalClock** | Seven-segment `HH:MM:SS` clock with blinking colons and glow | [Readme](src/Atc.Wpf.Controls/Clocks/DigitalClock_Readme.md) |
+| **SevenSegment** | Single seven-segment digit with colon, dot and animated change | [Readme](src/Atc.Wpf.Controls/Clocks/SevenSegment_Readme.md) |
 
 ### Color Controls
 
