@@ -98,6 +98,7 @@ using Atc.Wpf.Controls.DataDisplay;
 ## 📝 Notes
 
 - The last item is not clickable (represents the current location)
+- Items are tab stops: Enter or Space activates the focused item like a click
 - In `Collapsed` mode, the first item and last N items remain visible
 - Overflow dropdown shows the hidden middle items
 
