@@ -36,6 +36,22 @@ var result = printService.Print(myPanel, settings);
 var result = printService.PrintWithPreview(myPanel, settings);
 ```
 
+`PrintWithPreview` and `PrintDocumentWithPreview` paginate the content into a `FixedDocument` and show it in a `PrintPreviewWindow`: a themed `NiceWindow` with a `DocumentViewer` and **Print** / **Close** buttons, owned by the service's owner window (the main window by default) and following its `FlowDirection`. The print dialog opens only when the user clicks **Print**, and the document is then laid out again for the printer and paper chosen there. To show a preview of your own document, use the window directly:
+
+```csharp
+var preview = new PrintPreviewWindow { Owner = ownerWindow };
+preview.SetDocument(fixedDocument);
+if (preview.ShowDialog() == true && preview.UserWantsToPrint)
+{
+    // print fixedDocument
+}
+```
+
+| Member | Description |
+|--------|-------------|
+| `SetDocument(FixedDocument document)` | Sets the document shown in the preview |
+| `UserWantsToPrint` | `true` when the user closed the preview with **Print** |
+
 ### Headers and footers
 
 ```csharp

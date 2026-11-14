@@ -89,6 +89,8 @@ public class MyViewModel
 notificationService.ShowInformation("Alert", "Background task completed.", useDesktop: true);
 ```
 
+Desktop notifications are shown in a `ToastNotificationsOverlayWindow`: a transparent, topmost window without a taskbar entry that covers the work area and holds one `ToastNotificationArea` (bottom right). The notification manager creates it on the first desktop notification and reuses it; you do not create it yourself. It is owned by the main window when that window has been shown, so it closes with the app, and it follows the main window's `FlowDirection`.
+
 ## ⚙️ Properties
 
 ### ToastNotificationArea Properties
@@ -152,7 +154,7 @@ All methods accept optional parameters: `areaName`, `expirationTime` (default 5s
 - The `ToastNotificationArea` registers itself with the manager while it is loaded
 - All components handle dispatcher marshalling for cross-thread safety
 - `ToastNotification.CloseAsync()` plays a closing animation before removal
-- Desktop notifications use a `ToastNotificationsOverlayWindow` that floats above all windows
+- Desktop notifications use a `ToastNotificationsOverlayWindow` that floats above all windows (see [Desktop Overlay Notifications](#desktop-overlay-notifications))
 
 ## 🔗 Related Controls
 
