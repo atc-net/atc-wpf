@@ -30,6 +30,24 @@ public sealed class FlyoutServiceHostTrackingTests
         Assert.Null(host.TopFlyout);
     }
 
+    // A view passed as content (which C# binds to the generic overload) is shown as it is, not replaced by a
+    // new instance of its type found through the ViewModel-to-View naming convention.
+    [StaFact]
+    public void ShowAsync_WithAViewAsContent_ShowsThatInstance()
+    {
+        // Arrange
+        var host = new FlyoutHost();
+        var service = new FlyoutService(host);
+        var view = new TextBlock { Text = "Configured" };
+
+        // Act
+        _ = service.ShowAsync("Header", view);
+
+        // Assert
+        Assert.Same(view, Assert.IsType<Flyout>(host.Items[0]).Content);
+        service.CloseAllFlyouts();
+    }
+
     [StaFact]
     public void ShowAsync_WithFlyoutHost_HostEnforcesMaxNestingDepth()
     {

@@ -183,6 +183,12 @@ public class FlyoutService : IFlyoutService
     private FrameworkElement ResolveView<TViewModel>(TViewModel viewModel)
         where TViewModel : class
     {
+        // A view passed as content (C# binds an element to the generic overload) is shown as it is.
+        if (viewModel is FrameworkElement view)
+        {
+            return view;
+        }
+
         var viewModelType = viewModel.GetType();
 
         if (viewFactories.TryGetValue(viewModelType, out var factory))
@@ -195,7 +201,8 @@ public class FlyoutService : IFlyoutService
             "ViewModel",
             "View",
             StringComparison.Ordinal);
-        if (viewTypeName is not null)
+        if (viewTypeName is not null &&
+            !string.Equals(viewTypeName, viewModelType.FullName, StringComparison.Ordinal))
         {
             var viewType = viewModelType.Assembly.GetType(viewTypeName);
             if (viewType is not null && typeof(FrameworkElement).IsAssignableFrom(viewType))
