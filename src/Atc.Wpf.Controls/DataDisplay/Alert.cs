@@ -9,7 +9,6 @@ namespace Atc.Wpf.Controls.DataDisplay;
 public sealed partial class Alert : ContentControl
 {
     private Border? partBorder;
-    private Storyboard? pulseStoryboard;
 
     /// <summary>
     /// The severity level of the alert, which determines colors and default icon.
@@ -126,11 +125,22 @@ public sealed partial class Alert : ContentControl
         StyleCheck.Register(typeof(Alert));
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Alert"/> class.
+    /// </summary>
+    public Alert()
+    {
+        // The pulse repeats forever, so it runs only while the alert is shown.
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
+    }
+
     /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
 
+        StopPulseAnimation();
         partBorder = GetTemplateChild("PART_Border") as Border;
 
         if (GetTemplateChild("PART_CloseButton") is Button closeButton)
@@ -172,6 +182,21 @@ public sealed partial class Alert : ContentControl
         }
     }
 
+    private void OnLoaded(
+        object sender,
+        RoutedEventArgs e)
+    {
+        if (IsPulsing)
+        {
+            StartPulseAnimation();
+        }
+    }
+
+    private void OnUnloaded(
+        object sender,
+        RoutedEventArgs e)
+        => StopPulseAnimation();
+
     private void StartPulseAnimation()
     {
         if (partBorder is null)
@@ -189,28 +214,20 @@ public sealed partial class Alert : ContentControl
             EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
         };
 
-        var storyboard = new Storyboard();
-        storyboard.Children.Add(animation);
-
-        Storyboard.SetTarget(animation, partBorder);
-        Storyboard.SetTargetProperty(animation, new PropertyPath(UIElement.OpacityProperty));
-
-        storyboard.Begin();
-        pulseStoryboard = storyboard;
+        // Animated on the border itself so it can be removed again: a storyboard started with Begin() and no
+        // containing element cannot be stopped.
+        partBorder.BeginAnimation(OpacityProperty, animation);
     }
 
     private void StopPulseAnimation()
     {
-        if (pulseStoryboard is not null)
+        if (partBorder is null)
         {
-            pulseStoryboard.Stop();
-            pulseStoryboard = null;
+            return;
         }
 
-        if (partBorder is not null)
-        {
-            partBorder.Opacity = 1.0;
-        }
+        partBorder.BeginAnimation(OpacityProperty, animation: null);
+        partBorder.Opacity = 1.0;
     }
 
     private void OnCloseButtonClick(
