@@ -48,19 +48,19 @@ The repo is organised as a four-tier control library:
 
 ```
 src/
-├── Atc.Wpf/                # Core: MVVM glue, layouts, value converters
-├── Atc.Wpf.Controls/       # Atomic controls (buttons, color, inputs)
-├── Atc.Wpf.Forms/          # Labelled form fields with validation
-├── Atc.Wpf.Components/     # Composite components (dialogs, viewers, …)
-├── Atc.Wpf.FontIcons/      # Font-icon rendering
-├── Atc.Wpf.Theming/        # Light/dark theme infra + themed standard controls
-├── Atc.Wpf.Network/        # Network scanner controls
-└── Atc.Wpf.UndoRedo/       # Undo/redo UI
-sample/Atc.Wpf.Sample/      # Control explorer
-test/                       # xUnit 3 / Microsoft Testing Platform tests
+├── Atc.Wpf/                  # Core: MVVM glue, layouts, value converters
+├── Atc.Wpf.Controls/         # Atomic controls (buttons, color, inputs, selectors, data display)
+├── Atc.Wpf.Forms/            # Labelled form fields with validation
+├── Atc.Wpf.Components/       # Composite components (dialogs, viewers, notifications, zoom, …)
+├── Atc.Wpf.Controls.Sample/  # Building blocks for the sample app (control explorer)
+├── Atc.Wpf.FontIcons/        # Font-icon rendering
+├── Atc.Wpf.Theming/          # Light/dark theme infra + themed standard controls
+├── Atc.Wpf.Network/          # Network scanner, discovery, diagnostics, TCP/UDP clients, VNC viewer
+├── Atc.Wpf.Hardware/         # Hardware / system pickers with live device-state detection
+└── Atc.Wpf.UndoRedo/         # Undo/redo UI
+sample/Atc.Wpf.Sample/        # Control explorer
+test/                         # xUnit 3 / Microsoft Testing Platform tests
 ```
-
-Roadmap and ongoing improvement notes live in `plans/roadmap.md`.
 
 ## 🆘 Need help?
 
