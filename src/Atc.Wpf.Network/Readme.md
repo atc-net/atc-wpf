@@ -73,7 +73,7 @@ More controls in the package (each has its own readme next to it):
 Add the NuGet package to your project:
 
 ```xml
-<PackageReference Include="Atc.Wpf.Network" Version="2.*" />
+<PackageReference Include="Atc.Wpf.Network" Version="4.*" />
 ```
 
 ## Quick Start

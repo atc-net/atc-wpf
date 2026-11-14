@@ -28,6 +28,10 @@
   href: docs/DataDisplay/@Readme.md
 - name: Hardware
   href: docs/Hardware/@Readme.md
+- name: Network
+  href: docs/Network/@Readme.md
+- name: Undo/redo
+  href: docs/UndoRedo/@Readme.md
 - name: Hotkeys
   href: docs/Hotkeys/@Readme.md
 - name: Navigation
