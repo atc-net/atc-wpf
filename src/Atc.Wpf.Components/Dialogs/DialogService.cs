@@ -34,14 +34,7 @@ public class DialogService : IDialogService
         CancellationToken cancellationToken = default)
         => ShowDialogAsync(
             Application.Current?.Dispatcher,
-            () =>
-            {
-                var settings = DialogBoxSettings.Create(DialogBoxType.Ok);
-                settings.TitleBarText = title;
-                settings.ContentSvgImageColor = Colors.DodgerBlue;
-
-                return new InfoDialogBox(GetOwnerWindow(), settings, message);
-            },
+            () => new InfoDialogBox(GetOwnerWindow(), CreateInformationSettings(title), message),
             (_, dialogResult) => dialogResult == true,
             fallback: false,
             cancellationToken);
@@ -53,17 +46,7 @@ public class DialogService : IDialogService
         CancellationToken cancellationToken = default)
         => ShowDialogAsync(
             Application.Current?.Dispatcher,
-            () =>
-            {
-                var settings = new DialogBoxSettings(
-                    DialogBoxType.Ok,
-                    LogCategoryType.Warning)
-                {
-                    TitleBarText = title,
-                };
-
-                return new InfoDialogBox(GetOwnerWindow(), settings, message);
-            },
+            () => new InfoDialogBox(GetOwnerWindow(), CreateWarningSettings(title), message),
             (_, dialogResult) => dialogResult == true,
             fallback: false,
             cancellationToken);
@@ -75,17 +58,7 @@ public class DialogService : IDialogService
         CancellationToken cancellationToken = default)
         => ShowDialogAsync(
             Application.Current?.Dispatcher,
-            () =>
-            {
-                var settings = new DialogBoxSettings(
-                    DialogBoxType.Ok,
-                    LogCategoryType.Error)
-                {
-                    TitleBarText = title,
-                };
-
-                return new InfoDialogBox(GetOwnerWindow(), settings, message);
-            },
+            () => new InfoDialogBox(GetOwnerWindow(), CreateErrorSettings(title), message),
             (_, dialogResult) => dialogResult == true,
             fallback: false,
             cancellationToken);
@@ -109,13 +82,7 @@ public class DialogService : IDialogService
         CancellationToken cancellationToken = default)
         => ShowDialogAsync(
             Application.Current?.Dispatcher,
-            () =>
-            {
-                var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
-                settings.TitleBarText = title;
-
-                return new QuestionDialogBox(GetOwnerWindow(), settings, message);
-            },
+            () => new QuestionDialogBox(GetOwnerWindow(), CreateOkCancelSettings(title), message),
             (_, dialogResult) => dialogResult == true,
             fallback: false,
             cancellationToken);
@@ -155,15 +122,7 @@ public class DialogService : IDialogService
         CancellationToken cancellationToken = default)
         => ShowDialogAsync<Color?>(
             Application.Current?.Dispatcher,
-            () =>
-            {
-                var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
-                settings.TitleBarText = title;
-                settings.Width = 770;
-                settings.Height = 700;
-
-                return new ColorPickerDialogBox(GetOwnerWindow(), settings, initialColor ?? Colors.Black);
-            },
+            () => new ColorPickerDialogBox(GetOwnerWindow(), CreateColorPickerSettings(title), initialColor ?? Colors.Black),
             (dialog, dialogResult) => dialogResult == true
                 ? ((ColorPickerDialogBox)dialog).Color
                 : null,
@@ -187,20 +146,79 @@ public class DialogService : IDialogService
         CancellationToken cancellationToken = default)
         => ShowDialogAsync<FontDescription?>(
             Application.Current?.Dispatcher,
-            () =>
-            {
-                var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
-                settings.TitleBarText = title;
-                settings.Width = 925;
-                settings.Height = 720;
-
-                return new FontPickerDialogBox(GetOwnerWindow(), settings, initialFont ?? new FontDescription());
-            },
+            () => new FontPickerDialogBox(GetOwnerWindow(), CreateFontPickerSettings(title), initialFont ?? new FontDescription()),
             (dialog, dialogResult) => dialogResult == true
                 ? ((FontPickerDialogBox)dialog).SelectedFontDescription
                 : null,
             fallback: null,
             cancellationToken);
+
+    /// <summary>
+    /// Shows an input form in a dialog; OK closes it only when the form is valid.
+    /// </summary>
+    /// <param name="title">The dialog title.</param>
+    /// <param name="form">The form to show; its controls hold the entered values afterwards.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
+    /// <returns>True if the user confirmed a valid form, false otherwise.</returns>
+    public Task<bool> ShowInputForm(
+        string title,
+        ILabelControlsForm form,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(form);
+
+        return ShowDialogAsync(
+            Application.Current?.Dispatcher,
+            () => new InputFormDialogBox(GetOwnerWindow(), title, form),
+            (_, dialogResult) => dialogResult == true,
+            fallback: false,
+            cancellationToken);
+    }
+
+    // The settings of each dialog, shared with InWindowDialogService so both show the same buttons and icons.
+    internal static DialogBoxSettings CreateInformationSettings(string title)
+    {
+        var settings = DialogBoxSettings.Create(DialogBoxType.Ok);
+        settings.TitleBarText = title;
+        settings.ContentSvgImageColor = Colors.DodgerBlue;
+        return settings;
+    }
+
+    internal static DialogBoxSettings CreateWarningSettings(string title)
+        => new(DialogBoxType.Ok, LogCategoryType.Warning) { TitleBarText = title };
+
+    internal static DialogBoxSettings CreateErrorSettings(string title)
+        => new(DialogBoxType.Ok, LogCategoryType.Error) { TitleBarText = title };
+
+    internal static DialogBoxSettings CreateConfirmationSettings(string title)
+    {
+        var settings = DialogBoxSettings.Create(DialogBoxType.YesNo);
+        settings.TitleBarText = title;
+        return settings;
+    }
+
+    internal static DialogBoxSettings CreateOkCancelSettings(string title)
+    {
+        var settings = DialogBoxSettings.Create(DialogBoxType.OkCancel);
+        settings.TitleBarText = title;
+        return settings;
+    }
+
+    internal static DialogBoxSettings CreateColorPickerSettings(string title)
+    {
+        var settings = CreateOkCancelSettings(title);
+        settings.Width = 770;
+        settings.Height = 700;
+        return settings;
+    }
+
+    internal static DialogBoxSettings CreateFontPickerSettings(string title)
+    {
+        var settings = CreateOkCancelSettings(title);
+        settings.Width = 925;
+        settings.Height = 720;
+        return settings;
+    }
 
     /// <summary>
     /// Shows a modal dialog on <paramref name="dispatcher"/> and maps its outcome.

@@ -12,7 +12,7 @@ using Atc.Wpf.Components;
 
 | Category | Highlights | Path |
 |---|---|---|
-| **Dialogs** | `InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`, `BasicApplicationSettingsDialogBox`, `ExceptionDialog` | [`Dialogs/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Dialogs) |
+| **Dialogs** | `InfoDialogBox`, `QuestionDialogBox`, `InputDialogBox`, `InputFormDialogBox`, `BasicApplicationSettingsDialogBox`, `ExceptionDialog`, `DialogService`, `InWindowDialogService` (the same dialogs inside the window) | [`Dialogs/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Dialogs) |
 | **Viewers** | `JsonViewer`, `TerminalViewer`, `MarkdownViewer` | [`Viewers/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Viewers) |
 | **Monitoring** | `ApplicationMonitorView` (memory, CPU, GC counters with copy-to-clipboard context menu) | [`Monitoring/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Monitoring) |
 | **Notifications** | `ToastNotification` system + manager | [`Notifications/`](https://github.com/atc-net/atc-wpf/tree/main/src/Atc.Wpf.Components/Notifications) |
@@ -34,6 +34,22 @@ var dialog = new InfoDialogBox(
 
 dialog.Show();
 ```
+
+### Dialogs inside the window
+
+`InWindowDialogService` implements `IDialogService` with centred modal flyouts in the window's `FlyoutHost`, so a view model awaits the dialogs without opening new windows:
+
+```csharp
+var flyoutService = new FlyoutService(mainWindow.DialogHost);
+IDialogService dialogs = new InWindowDialogService(flyoutService);
+
+if (await dialogs.ShowConfirmation("Delete file", "Delete 'report.pdf'?"))
+{
+    // ...
+}
+```
+
+See [`InWindowDialogService_Readme.md`](https://github.com/atc-net/atc-wpf/blob/main/src/Atc.Wpf.Components/Dialogs/InWindowDialogService_Readme.md).
 
 ### Unhandled exceptions
 

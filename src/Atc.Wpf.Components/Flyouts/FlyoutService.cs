@@ -38,6 +38,12 @@ public class FlyoutService : IFlyoutService
     /// <inheritdoc />
     public int OpenFlyoutCount => openFlyouts.Count;
 
+    /// <summary>
+    /// Gets a value indicating whether a host panel or <see cref="FlyoutHost"/> has been set, so flyouts can be shown.
+    /// </summary>
+    public bool IsHostConfigured
+        => hostPanel is not null || flyoutHost is not null;
+
     /// <inheritdoc />
     public bool IsAnyFlyoutOpen => openFlyouts.Count > 0;
 

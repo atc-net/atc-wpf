@@ -31,6 +31,7 @@ global using Atc.Wpf.Capture;
 global using Atc.Wpf.Clipboard;
 global using Atc.Wpf.Collections;
 global using Atc.Wpf.Components.Dialogs;
+global using Atc.Wpf.Components.Flyouts;
 global using Atc.Wpf.Components.Internal;
 global using Atc.Wpf.Components.Monitoring;
 global using Atc.Wpf.Components.Notifications;
