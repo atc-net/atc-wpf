@@ -149,7 +149,7 @@
                                 Source="/Atc.Wpf.Controls;component/Resources/Icons/info_help.svg">
                                 <atc:SvgImage.ToolTip>
                                     <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
-                                    <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" Style="{StaticResource AtcApps.Styles.ToolTip}">
+                                    <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" Style="{DynamicResource AtcApps.Styles.ToolTip}">
                                         <StackPanel Orientation="Vertical">
                                             <!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
                                             <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=InformationText}" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=InformationText, Converter={x:Static atcValueConverters:StringNullOrEmptyToVisibilityCollapsedValueConverter.Instance}}" />
