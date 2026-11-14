@@ -1,0 +1,73 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Clocks.DigitalClock"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:clocks="clr-namespace:Atc.Wpf.Controls.Clocks"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    d:DesignHeight="100"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type clocks:SevenSegment}">
+            <Setter Property="Width" Value="600" />
+            <Setter Property="Height" Value="1000" />
+            <Setter Property="BlurRadius" Value="{Binding ElementName=Root, Path=NumberBlurRadius}" />
+            <Setter Property="PlayAnimation" Value="{Binding ElementName=Root, Path=PlayAnimation}" />
+            <Setter Property="AnimateColon" Value="{Binding ElementName=Root, Path=AnimateColon}" />
+        </Style>
+    </UserControl.Resources>
+
+    <!--  NumberColor and ColonColor are bound on each segment (not in the style): a segment sets its theme brushes locally.  -->
+
+    <Viewbox>
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <clocks:SevenSegment
+                x:Name="HourA"
+                Margin="0,0,50,0"
+                ColonColor="{Binding ElementName=Root, Path=ColonColor}"
+                NumberColor="{Binding ElementName=Root, Path=NumberColor}" />
+            <clocks:SevenSegment
+                x:Name="HourB"
+                Margin="0,0,110,0"
+                ColonColor="{Binding ElementName=Root, Path=ColonColor}"
+                NumberColor="{Binding ElementName=Root, Path=NumberColor}"
+                ShowColon="{Binding ElementName=Root, Path=ShowColon}" />
+            <clocks:SevenSegment
+                x:Name="MinuteA"
+                Margin="0,0,50,0"
+                ColonColor="{Binding ElementName=Root, Path=ColonColor}"
+                NumberColor="{Binding ElementName=Root, Path=NumberColor}" />
+            <clocks:SevenSegment
+                x:Name="MinuteB"
+                Margin="0,0,110,0"
+                ColonColor="{Binding ElementName=Root, Path=ColonColor}"
+                NumberColor="{Binding ElementName=Root, Path=NumberColor}">
+                <clocks:SevenSegment.ShowColon>
+                    <MultiBinding Converter="{x:Static atcValueConverters:MultiBoolToBoolValueConverter.Instance}">
+                        <Binding ElementName="Root" Path="ShowColon" />
+                        <Binding ElementName="Root" Path="ShowSeconds" />
+                    </MultiBinding>
+                </clocks:SevenSegment.ShowColon>
+            </clocks:SevenSegment>
+            <clocks:SevenSegment
+                x:Name="SecondA"
+                Margin="0,0,50,0"
+                ColonColor="{Binding ElementName=Root, Path=ColonColor}"
+                NumberColor="{Binding ElementName=Root, Path=NumberColor}"
+                Visibility="{Binding ElementName=Root, Path=ShowSeconds, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+            <clocks:SevenSegment
+                x:Name="SecondB"
+                ColonColor="{Binding ElementName=Root, Path=ColonColor}"
+                NumberColor="{Binding ElementName=Root, Path=NumberColor}"
+                Visibility="{Binding ElementName=Root, Path=ShowSeconds, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+        </StackPanel>
+    </Viewbox>
+
+</UserControl>

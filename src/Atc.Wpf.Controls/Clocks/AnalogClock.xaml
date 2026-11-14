@@ -1,0 +1,83 @@
+<UserControl
+    x:Class="Atc.Wpf.Controls.Clocks.AnalogClock"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcValueConverters="https://github.com/atc-net/atc-wpf/tree/main/schemas/value-converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
+
+    <Viewbox>
+        <Grid Width="1000" Height="1000">
+            <Ellipse Fill="{Binding ElementName=Root, Path=ClockBackgroundColor}" StrokeThickness="0" />
+
+            <Ellipse Stroke="{Binding ElementName=Root, Path=ClockBorderColor}" StrokeThickness="20" />
+
+            <!--  The hour and minute indicators and the numbers are added in code (see AnalogClock.xaml.cs).  -->
+            <Grid x:Name="MinuteIndicators" />
+
+            <Grid x:Name="HourIndicators" />
+
+            <Grid x:Name="Numbers" Visibility="{Binding ElementName=Root, Path=ShowNumbers, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+
+            <TextBlock
+                x:Name="AmPmText"
+                Margin="0,0,0,250"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                FontSize="48"
+                Foreground="{Binding ElementName=Root, Path=AmPmColor}"
+                Visibility="{Binding ElementName=Root, Path=ShowAmPm, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}" />
+
+            <Path
+                x:Name="HourHand"
+                Height="410"
+                Margin="485,184.5,485,405.5"
+                Data="M485,540 C515,540 515,540 515,540 515,140 515,140 515,140 500,125 500,125 500,125 485,140 485,140 485,140"
+                Fill="{Binding ElementName=Root, Path=HourHandColor}"
+                RenderTransformOrigin="0.5,0.771"
+                Stretch="Fill">
+                <Path.RenderTransform>
+                    <RotateTransform x:Name="HourHandRotation" />
+                </Path.RenderTransform>
+            </Path>
+
+            <Path
+                x:Name="MinuteHand"
+                Margin="485,75,485,425"
+                Data="M485,540 C515,540 515,540 515,540 515,140 515,140 515,140 500,125 500,125 500,125 485,140 485,140 485,140"
+                Fill="{Binding ElementName=Root, Path=MinuteHandColor}"
+                RenderTransformOrigin="0.5,0.85"
+                Stretch="Fill">
+                <Path.RenderTransform>
+                    <RotateTransform x:Name="MinuteHandRotation" />
+                </Path.RenderTransform>
+            </Path>
+
+            <Path
+                x:Name="SecondHand"
+                Width="10"
+                Margin="495,50,0,415"
+                HorizontalAlignment="Left"
+                Data="M485,540 C515,540 515,540 515,540 515,140 515,140 515,140 500,125 500,125 500,125 485,140 485,140 485,140"
+                Fill="{Binding ElementName=Root, Path=SecondHandColor}"
+                RenderTransformOrigin="0.5,0.841"
+                Stretch="Fill"
+                Visibility="{Binding ElementName=Root, Path=ShowSeconds, Converter={x:Static atcValueConverters:BoolToVisibilityVisibleValueConverter.Instance}}">
+                <Path.RenderTransform>
+                    <RotateTransform x:Name="SecondHandRotation" />
+                </Path.RenderTransform>
+            </Path>
+
+            <Ellipse
+                Width="50"
+                Height="50"
+                Fill="{Binding ElementName=Root, Path=ClockCenterDotColor}"
+                StrokeThickness="0" />
+        </Grid>
+    </Viewbox>
+
+</UserControl>

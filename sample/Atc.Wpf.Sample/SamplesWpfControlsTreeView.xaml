@@ -95,6 +95,21 @@
             SamplePath="Buttons.SplitButtonView" />
     </TreeViewItem>
 
+    <TreeViewItem Header="Clocks">
+        <sample:SampleTreeViewItem
+            Header="AnalogClock"
+            IsExpanded="True"
+            SamplePath="Clocks.AnalogClockView" />
+        <sample:SampleTreeViewItem
+            Header="DigitalClock"
+            IsExpanded="True"
+            SamplePath="Clocks.DigitalClockView" />
+        <sample:SampleTreeViewItem
+            Header="SevenSegment"
+            IsExpanded="True"
+            SamplePath="Clocks.SevenSegmentView" />
+    </TreeViewItem>
+
     <TreeViewItem Header="Color Editing">
         <sample:SampleTreeViewItem
             Header="AdvancedColorPicker"

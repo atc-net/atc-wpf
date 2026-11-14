@@ -61,6 +61,14 @@
       href: ../../src/Atc.Wpf.Controls/Buttons/ImageToggledButton_Readme.md
     - name: SplitButton
       href: ../../src/Atc.Wpf.Controls/Buttons/SplitButton_Readme.md
+  - name: Clocks
+    items:
+    - name: AnalogClock
+      href: ../../src/Atc.Wpf.Controls/Clocks/AnalogClock_Readme.md
+    - name: DigitalClock
+      href: ../../src/Atc.Wpf.Controls/Clocks/DigitalClock_Readme.md
+    - name: SevenSegment
+      href: ../../src/Atc.Wpf.Controls/Clocks/SevenSegment_Readme.md
   - name: ColorEditing
     items:
     - name: HueSlider
