@@ -38,6 +38,20 @@ public partial class UsbPortPicker : IDevicePickerHost<UsbDeviceInfo>
     private static readonly RoutedEvent deviceStateChanged;
 
     /// <summary>
+    /// Identifies the <see cref="DeviceError"/> routed event.
+    /// </summary>
+    public static readonly RoutedEvent DeviceErrorEvent = DevicePickerEvents.DeviceErrorEvent.AddOwner(typeof(UsbPortPicker));
+
+    /// <summary>
+    /// Occurs when the picker could not start watching for device changes or could not read its device list.
+    /// </summary>
+    public event EventHandler<DeviceErrorRoutedEventArgs> DeviceError
+    {
+        add => AddHandler(DeviceErrorEvent, value);
+        remove => RemoveHandler(DeviceErrorEvent, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="Value"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
@@ -323,4 +337,9 @@ public partial class UsbPortPicker : IDevicePickerHost<UsbDeviceInfo>
         DeviceState oldState,
         DeviceState newState)
         => RaiseEvent(new DeviceStateChangedRoutedEventArgs(DeviceStateChangedEvent, deviceId, oldState, newState));
+
+    void IDevicePickerHost<UsbDeviceInfo>.RaiseDeviceError(
+        Exception exception,
+        DevicePickerOperation operation)
+        => RaiseEvent(new DeviceErrorRoutedEventArgs(DeviceErrorEvent, exception, operation));
 }

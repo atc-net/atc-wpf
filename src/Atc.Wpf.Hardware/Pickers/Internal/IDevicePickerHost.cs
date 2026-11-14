@@ -31,4 +31,8 @@ internal interface IDevicePickerHost<TInfo>
         string deviceId,
         DeviceState oldState,
         DeviceState newState);
+
+    void RaiseDeviceError(
+        Exception exception,
+        DevicePickerOperation operation);
 }

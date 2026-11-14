@@ -370,6 +370,74 @@ public sealed class DevicePickerControllerTests
     }
 
     [Fact]
+    public async Task LoadedAsync_RefreshFails_RaisesDeviceErrorForRefresh()
+    {
+        var failure = new InvalidOperationException("probe failed");
+        refresh = () => Task.FromException(failure);
+        var sut = CreateSut();
+
+        await sut.LoadedAsync();
+
+        var error = Assert.Single(host.Errors);
+        Assert.Same(failure, error.Exception);
+        Assert.Equal(DevicePickerOperation.Refresh, error.Operation);
+    }
+
+    [Fact]
+    public async Task LoadedAsync_StartWatchingFails_RaisesDeviceErrorForStartWatching()
+    {
+        var failure = new InvalidOperationException("watcher is stopping");
+        var sut = CreateFailingStartSut(failure);
+
+        await sut.LoadedAsync();
+
+        var error = Assert.Single(host.Errors);
+        Assert.Same(failure, error.Exception);
+        Assert.Equal(DevicePickerOperation.StartWatching, error.Operation);
+    }
+
+    [Fact]
+    public async Task RefreshAsync_Fails_RaisesDeviceErrorForRefreshAndDoesNotThrow()
+    {
+        var sut = CreateSut();
+        await sut.LoadedAsync();
+        refresh = () => Task.FromException(new InvalidOperationException("probe failed"));
+
+        var exception = await Record.ExceptionAsync(sut.RefreshAsync);
+
+        Assert.Null(exception);
+        Assert.Equal([DevicePickerOperation.Refresh], host.Errors.Select(x => x.Operation));
+    }
+
+    [Fact]
+    public async Task DropDownOpenedAsync_StartWatchingFails_RaisesDeviceErrorAndStillRefreshes()
+    {
+        var sut = CreateFailingStartSut(new InvalidOperationException("watcher is stopping"), watchOnlyWhileOpen: true);
+        await sut.LoadedAsync();
+        serviceCalls.Clear();
+
+        var exception = await Record.ExceptionAsync(sut.DropDownOpenedAsync);
+
+        Assert.Null(exception);
+        Assert.Equal(["refresh"], serviceCalls);
+        Assert.Equal([DevicePickerOperation.StartWatching], host.Errors.Select(x => x.Operation));
+    }
+
+    [Fact]
+    public async Task AutoRefreshTurnedOnWhileLoaded_StartWatchingFails_RaisesDeviceErrorAndDoesNotThrow()
+    {
+        host.AutoRefreshOnDeviceChange = false;
+        var sut = CreateFailingStartSut(new InvalidOperationException("watcher is stopping"));
+        await sut.LoadedAsync();
+
+        host.AutoRefreshOnDeviceChange = true;
+        var exception = Record.Exception(sut.AutoRefreshOnDeviceChangeChanged);
+
+        Assert.Null(exception);
+        Assert.Equal([DevicePickerOperation.StartWatching], host.Errors.Select(x => x.Operation));
+    }
+
+    [Fact]
     public async Task AutoRefreshTurnedOffWhileLoaded_StopsWatching()
     {
         var sut = CreateSut();
@@ -555,6 +623,26 @@ public sealed class DevicePickerControllerTests
         return controller;
     }
 
+    private DevicePickerController<RunningProcessInfo> CreateFailingStartSut(
+        Exception failure,
+        bool watchOnlyWhileOpen = false)
+    {
+        var controller = new DevicePickerController<RunningProcessInfo>(
+            host,
+            items,
+            startWatching: () => throw failure,
+            stopWatching: () => serviceCalls.Add("stop"),
+            refreshAsync: () =>
+            {
+                serviceCalls.Add("refresh");
+                return refresh();
+            },
+            watchOnlyWhileOpen);
+
+        keepAlive.Add(controller);
+        return controller;
+    }
+
     private sealed class FakeHost : IDevicePickerHost<RunningProcessInfo>
     {
         public RunningProcessInfo? Value { get; set; }
@@ -577,6 +665,8 @@ public sealed class DevicePickerControllerTests
 
         public List<string> ValueChanges { get; } = [];
 
+        public List<(Exception Exception, DevicePickerOperation Operation)> Errors { get; } = [];
+
         public void SetSelectedStateMessage(string message)
             => SelectedStateMessage = message;
 
@@ -596,5 +686,10 @@ public sealed class DevicePickerControllerTests
             DeviceState oldState,
             DeviceState newState)
             => StateChanges.Add($"{deviceId}:{oldState}->{newState}");
+
+        public void RaiseDeviceError(
+            Exception exception,
+            DevicePickerOperation operation)
+            => Errors.Add((exception, operation));
     }
 }

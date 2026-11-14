@@ -38,6 +38,20 @@ public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
     private static readonly RoutedEvent deviceStateChanged;
 
     /// <summary>
+    /// Identifies the <see cref="DeviceError"/> routed event.
+    /// </summary>
+    public static readonly RoutedEvent DeviceErrorEvent = DevicePickerEvents.DeviceErrorEvent.AddOwner(typeof(UsbCameraPicker));
+
+    /// <summary>
+    /// Occurs when the picker could not start watching for device changes or could not read its device list.
+    /// </summary>
+    public event EventHandler<DeviceErrorRoutedEventArgs> DeviceError
+    {
+        add => AddHandler(DeviceErrorEvent, value);
+        remove => RemoveHandler(DeviceErrorEvent, value);
+    }
+
+    /// <summary>
     /// Identifies the <see cref="Value"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
@@ -341,4 +355,9 @@ public partial class UsbCameraPicker : IDevicePickerHost<UsbCameraInfo>
         DeviceState oldState,
         DeviceState newState)
         => RaiseEvent(new DeviceStateChangedRoutedEventArgs(DeviceStateChangedEvent, deviceId, oldState, newState));
+
+    void IDevicePickerHost<UsbCameraInfo>.RaiseDeviceError(
+        Exception exception,
+        DevicePickerOperation operation)
+        => RaiseEvent(new DeviceErrorRoutedEventArgs(DeviceErrorEvent, exception, operation));
 }
