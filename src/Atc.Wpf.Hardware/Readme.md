@@ -21,7 +21,7 @@ Each picker lists the current devices or resources, keeps the list up to date wh
 | `ProcessPicker` | Running processes | Polling |
 | `WindowPicker` | Top-level windows | Polling |
 
-Every picker has a `Label*` wrapper (for example `LabelSerialPortPicker`) with label, mandatory marker and validation text for forms.
+Every picker has a `Label*` wrapper (for example `LabelSerialPortPicker`) with label, mandatory marker and validation text for forms. A wrapper is invalid when it is mandatory and empty, or when the selected device is disconnected; a device in use shows "In use" in the validation slot but keeps the field valid.
 
 ## 📦 Installation
 

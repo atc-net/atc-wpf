@@ -65,7 +65,8 @@ public partial class LabelWindowPicker : ILabelWindowPicker
             new RoutedPropertyChangedEventArgs<TopLevelWindowInfo?>(oldValue: null, newValue: Value),
             raiseEvents: false);
 
-        return string.IsNullOrEmpty(ValidationText);
+        // A device in use only shows a note in the validation slot; it does not make the field invalid.
+        return string.IsNullOrEmpty(ValidationText) || Value is { State: DeviceState.InUse };
     }
 
     private void OnValueChanged(
