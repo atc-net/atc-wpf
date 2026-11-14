@@ -266,7 +266,7 @@ A quick reference of all controls organized by category:
 | **Selectors** | DualListSelector (check boxes, one-way mode, locked items, limit, grouping, virtualization) | Atc.Wpf.Components |
 | **Labeled Form Controls** | LabelTextBox, LabelIntegerBox, LabelComboBox, LabelDatePicker, LabelColorPicker, + 20 more | Atc.Wpf.Forms |
 | **Labeled Multi-Select** | LabelCheckListBox, LabelMultiSelectComboBox, LabelChipGroup, LabelTokenBox, LabelTreeSelectComboBox, LabelCascaderComboBox, LabelMultiColumnComboBox | Atc.Wpf.Forms |
-| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox, FontPickerDialogBox, ExceptionDialog (unhandled exceptions, copyable report), ExceptionReport | Atc.Wpf / Atc.Wpf.Forms / Components |
+| **Dialogs** | InfoDialogBox, QuestionDialogBox, InputDialogBox, InputFormDialogBox, ColorPickerDialogBox, FontPickerDialogBox, ExceptionDialog (unhandled exceptions, copyable report), ExceptionReport, DialogService, InWindowDialogService (the same dialogs as modal flyouts inside the window) | Atc.Wpf / Atc.Wpf.Forms / Components |
 | **Viewers** | JsonViewer, TerminalViewer | Atc.Wpf.Components |
 | **Notifications** | ToastNotification, ToastNotificationManager, IToastNotificationService | Atc.Wpf.Components |
 | **Printing** | IPrintService, PrintService, PrintPreviewWindow | Atc.Wpf / Atc.Wpf.Components |

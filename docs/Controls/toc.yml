@@ -345,6 +345,8 @@
       href: ../../src/Atc.Wpf.Components/Dialogs/InputDialogBox_Readme.md
     - name: InputFormDialogBox
       href: ../../src/Atc.Wpf.Components/Dialogs/InputFormDialogBox_Readme.md
+    - name: InWindowDialogService
+      href: ../../src/Atc.Wpf.Components/Dialogs/InWindowDialogService_Readme.md
     - name: QuestionDialogBox
       href: ../../src/Atc.Wpf.Components/Dialogs/QuestionDialogBox_Readme.md
   - name: Flyouts
