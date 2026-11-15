@@ -12,6 +12,7 @@ namespace Atc.Wpf.Controls.Displays;
 /// </remarks>
 public abstract partial class DotMatrixDisplayBase : FrameworkElement
 {
+    private const int MaxColorZones = 4;
     private const double MinBrightness = 0.25;
     private const double MaxBrightness = 1.0;
     private const double MaxDotCornerRadius = 0.5;
@@ -83,8 +84,8 @@ public abstract partial class DotMatrixDisplayBase : FrameworkElement
     private LayoutKey cachedKey;
     private DotMatrixLayout? layout;
     private StreamGeometry? unlitDots;
-    private StreamGeometry? litDots;
-    private StreamGeometry? glowDots;
+    private StreamGeometry[]? litDots;
+    private StreamGeometry?[]? glowDots;
 
     /// <summary>
     /// Gets the dot grid to draw.
@@ -105,6 +106,35 @@ public abstract partial class DotMatrixDisplayBase : FrameworkElement
     protected abstract bool IsDotLit(
         int x,
         int y);
+
+    /// <summary>
+    /// Gets the number of colour zones the lit dots are split into, 1 to 4 (a value outside the range is coerced).
+    /// Call <see cref="InvalidateDots"/> when it changes.
+    /// </summary>
+    /// <remarks>
+    /// A two-colour panel (for example a yellow-blue OLED) uses two zones. With one zone every lit dot uses <see cref="LitDotBrush"/>.
+    /// </remarks>
+    protected virtual int ColorZoneCount
+        => 1;
+
+    /// <summary>
+    /// Gets the colour zone of a lit dot. Called on the UI thread while the dots are redrawn, for lit dots only.
+    /// </summary>
+    /// <param name="x">The dot column.</param>
+    /// <param name="y">The dot row.</param>
+    /// <returns>The zone, 0 to <see cref="ColorZoneCount"/> - 1; a result outside the range counts as zone 0.</returns>
+    protected virtual int GetDotColorZone(
+        int x,
+        int y)
+        => 0;
+
+    /// <summary>
+    /// Gets the brush of the lit dots of a colour zone.
+    /// </summary>
+    /// <param name="zone">The zone, 0 to <see cref="ColorZoneCount"/> - 1.</param>
+    /// <returns>The brush; <see langword="null"/> draws no dots for the zone. Zone 0 is <see cref="LitDotBrush"/> unless overridden.</returns>
+    protected virtual Brush? GetZoneLitDotBrush(int zone)
+        => LitDotBrush;
 
     /// <summary>
     /// Tells the control that the lit dots have changed, so it asks <see cref="IsDotLit"/> again and redraws.
@@ -261,19 +291,57 @@ public abstract partial class DotMatrixDisplayBase : FrameworkElement
 
     private void BuildDots(DotMatrixLayout dotLayout)
     {
+        var zoneCount = GetZoneCount();
         var unlit = CreateGeometry();
-        var lit = CreateGeometry();
-        var glow = cachedKey.GlowRadius > 0 ? CreateGeometry() : null;
+        var lit = new StreamGeometry[zoneCount];
+        var glow = new StreamGeometry?[zoneCount];
+        for (var zone = 0; zone < zoneCount; zone++)
+        {
+            lit[zone] = CreateGeometry();
+            glow[zone] = cachedKey.GlowRadius > 0 ? CreateGeometry() : null;
+        }
 
+        FillDots(dotLayout, unlit, lit, glow);
+
+        unlit.Freeze();
+        foreach (var geometry in lit)
+        {
+            geometry.Freeze();
+        }
+
+        foreach (var geometry in glow)
+        {
+            geometry?.Freeze();
+        }
+
+        unlitDots = unlit;
+        litDots = lit;
+        glowDots = glow;
+    }
+
+    private void FillDots(
+        DotMatrixLayout dotLayout,
+        StreamGeometry unlit,
+        StreamGeometry[] lit,
+        StreamGeometry?[] glow)
+    {
+        var zoneCount = lit.Length;
         var radiusX = cachedKey.CornerRadius * dotLayout.ScaleX;
         var radiusY = cachedKey.CornerRadius * dotLayout.ScaleY;
         var glowX = cachedKey.GlowRadius * dotLayout.ScaleX;
         var glowY = cachedKey.GlowRadius * dotLayout.ScaleY;
 
-        using (var unlitContext = unlit.Open())
-        using (var litContext = lit.Open())
-        using (var glowContext = glow?.Open())
+        var litContexts = new StreamGeometryContext[zoneCount];
+        var glowContexts = new StreamGeometryContext?[zoneCount];
+        using var unlitContext = unlit.Open();
+        try
         {
+            for (var zone = 0; zone < zoneCount; zone++)
+            {
+                litContexts[zone] = lit[zone].Open();
+                glowContexts[zone] = glow[zone]?.Open();
+            }
+
             for (var y = 0; y < dotLayout.DotRows; y++)
             {
                 for (var x = 0; x < dotLayout.DotColumns; x++)
@@ -285,8 +353,14 @@ public abstract partial class DotMatrixDisplayBase : FrameworkElement
                         continue;
                     }
 
-                    AddDot(litContext, rect, radiusX, radiusY);
-                    if (glowContext is not null)
+                    var zone = zoneCount == 1 ? 0 : GetDotColorZone(x, y);
+                    if (zone < 0 || zone >= zoneCount)
+                    {
+                        zone = 0;
+                    }
+
+                    AddDot(litContexts[zone], rect, radiusX, radiusY);
+                    if (glowContexts[zone] is { } glowContext)
                     {
                         rect.Inflate(glowX, glowY);
                         AddDot(glowContext, rect, rect.Width / 2, rect.Height / 2);
@@ -294,15 +368,18 @@ public abstract partial class DotMatrixDisplayBase : FrameworkElement
                 }
             }
         }
-
-        unlit.Freeze();
-        lit.Freeze();
-        glow?.Freeze();
-
-        unlitDots = unlit;
-        litDots = lit;
-        glowDots = glow;
+        finally
+        {
+            for (var zone = 0; zone < zoneCount; zone++)
+            {
+                litContexts[zone]?.Close();
+                glowContexts[zone]?.Close();
+            }
+        }
     }
+
+    private int GetZoneCount()
+        => System.Math.Clamp(ColorZoneCount, 1, MaxColorZones);
 
     private void DrawPanel(
         DrawingContext drawingContext,
@@ -333,8 +410,7 @@ public abstract partial class DotMatrixDisplayBase : FrameworkElement
 
     private void DrawDots(DrawingContext drawingContext)
     {
-        var litBrush = LitDotBrush;
-        var ghostBrush = UnlitDotBrush ?? litBrush;
+        var ghostBrush = UnlitDotBrush ?? LitDotBrush;
         var ghostOpacityValue = ClampFraction(GhostOpacity, 1);
 
         if (ghostBrush is not null && ghostOpacityValue > 0 && unlitDots is not null)
@@ -344,22 +420,37 @@ public abstract partial class DotMatrixDisplayBase : FrameworkElement
             drawingContext.Pop();
         }
 
-        if (litBrush is null || litDots is null)
+        if (litDots is null || glowDots is null)
         {
             return;
         }
 
         var brightnessValue = Brightness;
-        if (glowDots is not null)
+        var brushes = new Brush?[litDots.Length];
+        for (var zone = 0; zone < brushes.Length; zone++)
         {
-            drawingContext.PushOpacity(GlowOpacity * brightnessValue);
-            drawingContext.DrawGeometry(litBrush, pen: null, glowDots);
-            drawingContext.Pop();
+            brushes[zone] = GetZoneLitDotBrush(zone);
         }
 
-        drawingContext.PushOpacity(brightnessValue);
-        drawingContext.DrawGeometry(litBrush, pen: null, litDots);
-        drawingContext.Pop();
+        for (var zone = 0; zone < brushes.Length; zone++)
+        {
+            if (brushes[zone] is { } brush && glowDots[zone] is { } glow)
+            {
+                drawingContext.PushOpacity(GlowOpacity * brightnessValue);
+                drawingContext.DrawGeometry(brush, pen: null, glow);
+                drawingContext.Pop();
+            }
+        }
+
+        for (var zone = 0; zone < brushes.Length; zone++)
+        {
+            if (brushes[zone] is { } brush)
+            {
+                drawingContext.PushOpacity(brightnessValue);
+                drawingContext.DrawGeometry(brush, pen: null, litDots[zone]);
+                drawingContext.Pop();
+            }
+        }
     }
 
     private readonly record struct LayoutKey(

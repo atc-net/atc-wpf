@@ -214,6 +214,169 @@ public sealed class DotMatrixDisplayBaseTests
         Assert.Equal(LitColor, pixels(Centre(layout.GetDotRect(1, 0))));
     }
 
+    [StaFact]
+    public void TwoZones_DrawEachZoneInItsBrush()
+    {
+        var sut = new ZoneDotMatrixDisplay(zoneOneBelowRow: 2)
+        {
+            ZoneBrushes = [new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Blue)],
+        };
+        var layout = DotMatrixLayout.Create(sut.Grid, showBezel: false, new Size(80, 40), sut.Stretch);
+
+        var pixels = Render(sut, 80, 40);
+
+        Assert.Equal(Colors.Blue, pixels(Centre(layout.GetDotRect(3, 0))));
+        Assert.Equal(Colors.Blue, pixels(Centre(layout.GetDotRect(3, 1))));
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(3, 2))));
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(3, 3))));
+    }
+
+    [StaFact]
+    public void DefaultZone_RendersExactlyAsBefore()
+    {
+        var plain = new PlainAllLitDisplay();
+        var explicitDefaults = new ExplicitDefaultsAllLitDisplay();
+        plain.GlowRadius = 0.5;
+        explicitDefaults.GlowRadius = 0.5;
+        plain.DotCornerRadius = 0.3;
+        explicitDefaults.DotCornerRadius = 0.3;
+
+        Assert.Equal(RenderBytes(plain, 80, 40), RenderBytes(explicitDefaults, 80, 40));
+    }
+
+    [StaFact]
+    public void ZoneOutOfRange_IsDrawnAsZoneZero()
+    {
+        var sut = new ZoneDotMatrixDisplay(zoneOneBelowRow: 0)
+        {
+            OutOfRangeZone = 7,
+            ZoneBrushes = [new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Blue)],
+        };
+        var layout = DotMatrixLayout.Create(sut.Grid, showBezel: false, new Size(80, 40), sut.Stretch);
+
+        var pixels = Render(sut, 80, 40);
+
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(3, 1))));
+    }
+
+    [StaFact]
+    public void ZoneWithNullBrush_DrawsNoDotsForThatZone()
+    {
+        var sut = new ZoneDotMatrixDisplay(zoneOneBelowRow: 2)
+        {
+            ZoneBrushes = [new SolidColorBrush(Colors.Red), null],
+        };
+        var layout = DotMatrixLayout.Create(sut.Grid, showBezel: false, new Size(80, 40), sut.Stretch);
+
+        var pixels = Render(sut, 80, 40);
+
+        Assert.Equal(PanelColor, pixels(Centre(layout.GetDotRect(3, 0))));
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(3, 3))));
+    }
+
+    [StaTheory]
+    [InlineData(0)]
+    [InlineData(-3)]
+    public void ZoneCountBelowOne_IsCoercedToOneZone(int zoneCount)
+    {
+        var sut = new ZoneDotMatrixDisplay(zoneOneBelowRow: 2)
+        {
+            ZoneBrushes = [new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Blue)],
+            ZoneCountOverride = zoneCount,
+        };
+        var layout = DotMatrixLayout.Create(sut.Grid, showBezel: false, new Size(80, 40), sut.Stretch);
+
+        var pixels = Render(sut, 80, 40);
+
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(3, 0))));
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(3, 3))));
+    }
+
+    [StaFact]
+    public void ZoneCountAboveFour_IsCoercedToFourZones()
+    {
+        var sut = new ZoneDotMatrixDisplay(zoneOneBelowRow: 0)
+        {
+            ZoneBrushes =
+            [
+                new SolidColorBrush(Colors.Red),
+                new SolidColorBrush(Colors.Blue),
+                new SolidColorBrush(Colors.Lime),
+                new SolidColorBrush(Colors.Magenta),
+                new SolidColorBrush(Colors.Cyan),
+                new SolidColorBrush(Colors.Yellow),
+            ],
+            ZoneCountOverride = 9,
+            ZoneOf = (x, _) => x switch
+            {
+                < 2 => 0,
+                < 4 => 1,
+                < 6 => 2,
+                < 7 => 3,
+                _ => 5,
+            },
+        };
+        var layout = DotMatrixLayout.Create(sut.Grid, showBezel: false, new Size(80, 40), sut.Stretch);
+
+        var pixels = Render(sut, 80, 40);
+
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(0, 1))));
+        Assert.Equal(Colors.Blue, pixels(Centre(layout.GetDotRect(2, 1))));
+        Assert.Equal(Colors.Lime, pixels(Centre(layout.GetDotRect(4, 1))));
+        Assert.Equal(Colors.Magenta, pixels(Centre(layout.GetDotRect(6, 1))));
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(7, 1))));
+    }
+
+    [StaFact]
+    public void NegativeZone_IsDrawnAsZoneZero()
+    {
+        var sut = new ZoneDotMatrixDisplay(zoneOneBelowRow: 0)
+        {
+            ZoneBrushes = [new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Blue)],
+            ZoneOf = (_, _) => -1,
+        };
+        var layout = DotMatrixLayout.Create(sut.Grid, showBezel: false, new Size(80, 40), sut.Stretch);
+
+        var pixels = Render(sut, 80, 40);
+
+        Assert.Equal(Colors.Red, pixels(Centre(layout.GetDotRect(3, 1))));
+    }
+
+    [StaFact]
+    public void TwoZones_GlowUsesTheBrushOfItsZone()
+    {
+        var sut = new ZoneDotMatrixDisplay(zoneOneBelowRow: 2)
+        {
+            ZoneBrushes = [new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Blue)],
+            LitOf = (x, y) => x == 3 && (y == 0 || y == 3),
+            GlowRadius = 0.5,
+        };
+        var layout = DotMatrixLayout.Create(sut.Grid, showBezel: false, new Size(80, 40), sut.Stretch);
+
+        var pixels = Render(sut, 80, 40);
+
+        var blueDot = layout.GetDotRect(3, 0);
+        var redDot = layout.GetDotRect(3, 3);
+        var besideBlue = pixels(new Point(blueDot.Right + (blueDot.Width / 4), Centre(blueDot).Y));
+        var besideRed = pixels(new Point(redDot.Right + (redDot.Width / 4), Centre(redDot).Y));
+
+        Assert.True(besideBlue.B - besideBlue.R > 0x20, $"The glow of zone 1 is not blue: {besideBlue}.");
+        Assert.True(besideRed.R - besideRed.B > 0x20, $"The glow of zone 0 is not red: {besideRed}.");
+    }
+
+    private static byte[] RenderBytes(
+        FrameworkElement sut,
+        int width,
+        int height)
+    {
+        Layout(sut, width, height);
+        var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+        bitmap.Render(sut);
+        var bytes = new byte[width * height * 4];
+        bitmap.CopyPixels(bytes, width * 4, 0);
+        return bytes;
+    }
+
     private static TestDotMatrixDisplay CreateSut(
         DotMatrixGeometry geometry,
         params (int X, int Y)[] lit)
@@ -281,6 +444,106 @@ public sealed class DotMatrixDisplayBaseTests
                     (byte)System.Math.Min(255, bytes[i + 1] * 255 / alpha),
                     (byte)System.Math.Min(255, bytes[i] * 255 / alpha));
         };
+    }
+
+    private class PlainAllLitDisplay : DotMatrixDisplayBase
+    {
+        public PlainAllLitDisplay()
+        {
+            ShowBezel = false;
+            PanelBrush = new SolidColorBrush(PanelColor);
+            LitDotBrush = new SolidColorBrush(LitColor);
+        }
+
+        protected override DotMatrixGeometry GetGeometry()
+            => new(8, 4, 0, 0, 1.0, 0, 0);
+
+        protected override bool IsDotLit(
+            int x,
+            int y)
+            => true;
+    }
+
+    private sealed class ExplicitDefaultsAllLitDisplay : PlainAllLitDisplay
+    {
+        protected override int ColorZoneCount
+            => 1;
+
+        protected override int GetDotColorZone(
+            int x,
+            int y)
+            => 0;
+
+        protected override Brush? GetZoneLitDotBrush(int zone)
+            => LitDotBrush;
+    }
+
+    private sealed class ZoneDotMatrixDisplay : DotMatrixDisplayBase
+    {
+        private readonly int zoneOneBelowRow;
+
+        public ZoneDotMatrixDisplay(int zoneOneBelowRow)
+        {
+            this.zoneOneBelowRow = zoneOneBelowRow;
+            ShowBezel = false;
+            PanelBrush = new SolidColorBrush(PanelColor);
+            LitDotBrush = new SolidColorBrush(LitColor);
+        }
+
+        public DotMatrixGeometry Grid { get; } = new(8, 4, 0, 0, 1.0, 0, 0);
+
+        public int? OutOfRangeZone { get; set; }
+
+        public int? ZoneCountOverride { get; set; }
+
+        public Func<int, int, int>? ZoneOf { get; set; }
+
+        public Func<int, int, bool>? LitOf { get; set; }
+
+        public Brush?[]? ZoneBrushes { get; set; }
+
+        protected override int ColorZoneCount
+            => ZoneCountOverride ?? ZoneBrushes?.Length ?? base.ColorZoneCount;
+
+        protected override DotMatrixGeometry GetGeometry()
+            => Grid;
+
+        protected override bool IsDotLit(
+            int x,
+            int y)
+            => LitOf?.Invoke(x, y) ?? true;
+
+        protected override int GetDotColorZone(
+            int x,
+            int y)
+        {
+            if (ZoneOf is { } zoneOf)
+            {
+                return zoneOf(x, y);
+            }
+
+            if (OutOfRangeZone is { } outOfRange)
+            {
+                return outOfRange;
+            }
+
+            if (ZoneBrushes is null)
+            {
+                return base.GetDotColorZone(x, y);
+            }
+
+            return y < zoneOneBelowRow ? 1 : 0;
+        }
+
+        protected override Brush? GetZoneLitDotBrush(int zone)
+        {
+            if (ZoneBrushes is { } brushes)
+            {
+                return zone < brushes.Length ? brushes[zone] : null;
+            }
+
+            return base.GetZoneLitDotBrush(zone);
+        }
     }
 
     private sealed class TestDotMatrixDisplay : DotMatrixDisplayBase
