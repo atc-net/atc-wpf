@@ -174,9 +174,17 @@
             IsExpanded="True"
             SamplePath="DataDisplay.ChipGroupView" />
         <sample:SampleTreeViewItem
+            Header="ColorGraphicDisplay"
+            IsExpanded="True"
+            SamplePath="DataDisplay.ColorGraphicDisplayView" />
+        <sample:SampleTreeViewItem
             Header="Divider"
             IsExpanded="True"
             SamplePath="DataDisplay.DividerView" />
+        <sample:SampleTreeViewItem
+            Header="OledDisplay"
+            IsExpanded="True"
+            SamplePath="DataDisplay.OledDisplayView" />
         <sample:SampleTreeViewItem
             Header="Popover"
             IsExpanded="True"
