@@ -115,6 +115,11 @@ internal sealed class FlyoutWindow : IDisposable
         return condition();
     }
 
+    // Shuts down the test thread's dispatcher as well: a WPF handler on process exit hangs on a dispatcher
+    // whose thread ended without shutting it down, and the test host then reports foreground threads.
     public void Dispose()
-        => Window.Close();
+    {
+        Window.Close();
+        Window.Dispatcher.InvokeShutdown();
+    }
 }
