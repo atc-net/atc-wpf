@@ -157,6 +157,24 @@
                             </atc:GridEx>
                         </TabItem.Header>
                     </TabItem>
+                    <TabItem x:Name="TabWpfDisplays" Tag="WpfDisplays">
+                        <TabItem.Header>
+                            <atc:GridEx
+                                Columns="*,Auto"
+                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
+                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
+                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
+                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
+                                <TextBlock Grid.Column="0" Text="Wpf.Displays" />
+                                <dataDisplay:Badge
+                                    x:Name="BadgeWpfDisplays"
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    BadgePlacementMode="Right" />
+                            </atc:GridEx>
+                        </TabItem.Header>
+                    </TabItem>
                     <TabItem x:Name="TabWpfFontIcons" Tag="WpfFontIcons">
                         <TabItem.Header>
                             <atc:GridEx
@@ -309,6 +327,10 @@
                                 SelectedItemChanged="TreeViewOnSelectionChanged" />
                             <sample:SamplesWpfComponentsTreeView
                                 x:Name="StvSampleWpfComponents"
+                                BorderThickness="0"
+                                SelectedItemChanged="TreeViewOnSelectionChanged" />
+                            <sample:SamplesWpfDisplaysTreeView
+                                x:Name="StvSampleWpfDisplays"
                                 BorderThickness="0"
                                 SelectedItemChanged="TreeViewOnSelectionChanged" />
                             <sample:SamplesWpfNetworkTreeView

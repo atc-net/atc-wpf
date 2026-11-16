@@ -7,6 +7,7 @@
           "files": [
             "src/Atc.Wpf/Atc.Wpf.csproj",
             "src/Atc.Wpf.Controls/Atc.Wpf.Controls.csproj",
+            "src/Atc.Wpf.Displays/Atc.Wpf.Displays.csproj",
             "src/Atc.Wpf.Forms/Atc.Wpf.Forms.csproj",
             "src/Atc.Wpf.Components/Atc.Wpf.Components.csproj",
             "src/Atc.Wpf.FontIcons/Atc.Wpf.FontIcons.csproj",

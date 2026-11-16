@@ -32,6 +32,7 @@ public partial class MainWindow
             StvSampleWpfControls,
             StvSampleWpfForms,
             StvSampleWpfComponents,
+            StvSampleWpfDisplays,
             StvSampleWpfNetwork,
             StvSampleWpfHardware,
             StvSampleWpfUndoRedo,
@@ -50,6 +51,7 @@ public partial class MainWindow
         treeViewToTabItem[StvSampleWpfControls] = TabWpfControls;
         treeViewToTabItem[StvSampleWpfForms] = TabWpfForms;
         treeViewToTabItem[StvSampleWpfComponents] = TabWpfComponents;
+        treeViewToTabItem[StvSampleWpfDisplays] = TabWpfDisplays;
         treeViewToTabItem[StvSampleWpfNetwork] = TabWpfNetwork;
         treeViewToTabItem[StvSampleWpfHardware] = TabWpfHardware;
         treeViewToTabItem[StvSampleWpfUndoRedo] = TabWpfUndoRedo;
@@ -62,6 +64,7 @@ public partial class MainWindow
         treeViewToBadge[StvSampleWpfControls] = BadgeWpfControls;
         treeViewToBadge[StvSampleWpfForms] = BadgeWpfForms;
         treeViewToBadge[StvSampleWpfComponents] = BadgeWpfComponents;
+        treeViewToBadge[StvSampleWpfDisplays] = BadgeWpfDisplays;
         treeViewToBadge[StvSampleWpfNetwork] = BadgeWpfNetwork;
         treeViewToBadge[StvSampleWpfHardware] = BadgeWpfHardware;
         treeViewToBadge[StvSampleWpfUndoRedo] = BadgeWpfUndoRedo;

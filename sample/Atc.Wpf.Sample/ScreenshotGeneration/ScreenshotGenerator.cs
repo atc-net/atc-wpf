@@ -15,6 +15,7 @@ internal sealed class ScreenshotGenerator
         ["SamplesWpfControlsTreeView"] = "Wpf.Controls",
         ["SamplesWpfFormsTreeView"] = "Wpf.Forms",
         ["SamplesWpfComponentsTreeView"] = "Wpf.Components",
+        ["SamplesWpfDisplaysTreeView"] = "Wpf.Displays",
         ["SamplesWpfNetworkTreeView"] = "Wpf.Network",
         ["SamplesWpfUndoRedoTreeView"] = "Wpf.UndoRedo",
         ["SamplesWpfThemingTreeView"] = "Wpf.Theming",

@@ -18,6 +18,7 @@ public sealed class SampleCatalogTests
                 "StvSampleWpf",
                 "StvSampleWpfComponents",
                 "StvSampleWpfControls",
+                "StvSampleWpfDisplays",
                 "StvSampleWpfFontIcons",
                 "StvSampleWpfForms",
                 "StvSampleWpfHardware",

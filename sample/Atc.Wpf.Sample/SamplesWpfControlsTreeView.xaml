@@ -162,10 +162,6 @@
             IsExpanded="True"
             SamplePath="DataDisplay.CarouselView" />
         <sample:SampleTreeViewItem
-            Header="CharacterDisplay"
-            IsExpanded="True"
-            SamplePath="DataDisplay.CharacterDisplayView" />
-        <sample:SampleTreeViewItem
             Header="Chip"
             IsExpanded="True"
             SamplePath="DataDisplay.ChipView" />
@@ -174,17 +170,9 @@
             IsExpanded="True"
             SamplePath="DataDisplay.ChipGroupView" />
         <sample:SampleTreeViewItem
-            Header="ColorGraphicDisplay"
-            IsExpanded="True"
-            SamplePath="DataDisplay.ColorGraphicDisplayView" />
-        <sample:SampleTreeViewItem
             Header="Divider"
             IsExpanded="True"
             SamplePath="DataDisplay.DividerView" />
-        <sample:SampleTreeViewItem
-            Header="OledDisplay"
-            IsExpanded="True"
-            SamplePath="DataDisplay.OledDisplayView" />
         <sample:SampleTreeViewItem
             Header="Popover"
             IsExpanded="True"

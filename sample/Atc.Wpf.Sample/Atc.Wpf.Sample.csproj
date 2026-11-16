@@ -59,6 +59,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.14" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.14" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.14" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +67,7 @@
     <ProjectReference Include="..\..\src\Atc.Wpf.Components\Atc.Wpf.Components.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls.Sample\Atc.Wpf.Controls.Sample.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
+    <ProjectReference Include="..\..\src\Atc.Wpf.Displays\Atc.Wpf.Displays.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.FontIcons\Atc.Wpf.FontIcons.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Forms\Atc.Wpf.Forms.csproj" />
     <ProjectReference Include="..\..\src\Atc.Wpf.Hardware\Atc.Wpf.Hardware.csproj" />

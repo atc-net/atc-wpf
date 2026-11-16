@@ -113,10 +113,6 @@
     items:
     - name: DataGridFilter
       href: ../../src/Atc.Wpf.Controls/DataGrids/DataGridFilter_Readme.md
-  - name: Displays
-    items:
-    - name: CharacterDisplay
-      href: ../../src/Atc.Wpf.Controls/Displays/CharacterDisplay_Readme.md
   - name: Inputs
     items:
     - name: Overview
@@ -557,3 +553,23 @@
   items:
   - name: Overview
     href: ../../src/Atc.Wpf.Controls.Sample/Readme.md
+- name: Atc.Wpf.Displays
+  items:
+  - name: Overview
+    href: ../../src/Atc.Wpf.Displays/Readme.md
+  - name: CharacterDisplay
+    href: ../../src/Atc.Wpf.Displays/CharacterDisplay_Readme.md
+  - name: ColorGraphicDisplay
+    href: ../../src/Atc.Wpf.Displays/ColorGraphicDisplay_Readme.md
+  - name: DisplayMirror
+    href: ../../src/Atc.Wpf.Displays/DisplayMirror_Readme.md
+  - name: EPaperDisplay
+    href: ../../src/Atc.Wpf.Displays/EPaperDisplay_Readme.md
+  - name: GraphicLcdDisplay
+    href: ../../src/Atc.Wpf.Displays/GraphicLcdDisplay_Readme.md
+  - name: LedMatrixDisplay
+    href: ../../src/Atc.Wpf.Displays/LedMatrixDisplay_Readme.md
+  - name: OledDisplay
+    href: ../../src/Atc.Wpf.Displays/OledDisplay_Readme.md
+  - name: SevenSegmentDisplay
+    href: ../../src/Atc.Wpf.Displays/SevenSegmentDisplay_Readme.md

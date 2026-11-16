@@ -1,0 +1,47 @@
+<TreeView
+    x:Class="Atc.Wpf.Sample.SamplesWpfDisplaysTreeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    d:DesignHeight="450"
+    d:DesignWidth="230"
+    mc:Ignorable="d">
+
+    <TreeViewItem Header="Displays">
+        <sample:SampleTreeViewItem
+            Header="CharacterDisplay"
+            IsExpanded="True"
+            SamplePath="Displays.CharacterDisplayView" />
+        <sample:SampleTreeViewItem
+            Header="ColorGraphicDisplay"
+            IsExpanded="True"
+            SamplePath="Displays.ColorGraphicDisplayView" />
+        <sample:SampleTreeViewItem
+            Header="DisplayMirror"
+            IsExpanded="True"
+            SamplePath="Displays.DisplayMirrorView" />
+        <sample:SampleTreeViewItem
+            Header="EPaperDisplay"
+            IsExpanded="True"
+            SamplePath="Displays.EPaperDisplayView" />
+        <sample:SampleTreeViewItem
+            Header="GraphicLcdDisplay"
+            IsExpanded="True"
+            SamplePath="Displays.GraphicLcdDisplayView" />
+        <sample:SampleTreeViewItem
+            Header="LedMatrixDisplay"
+            IsExpanded="True"
+            SamplePath="Displays.LedMatrixDisplayView" />
+        <sample:SampleTreeViewItem
+            Header="OledDisplay"
+            IsExpanded="True"
+            SamplePath="Displays.OledDisplayView" />
+        <sample:SampleTreeViewItem
+            Header="SevenSegmentDisplay"
+            IsExpanded="True"
+            SamplePath="Displays.SevenSegmentDisplayView" />
+    </TreeViewItem>
+
+</TreeView>
