@@ -66,14 +66,14 @@
                     HorizontalAlignment="Right"
                     Orientation="Horizontal"
                     Spacing="10">
-                    <Button Click="SampleExpandAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=ExpandAll}">
+                    <Button Click="SampleExpandAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=ExpandAll}">
                         <atc:SvgImage
                             Width="16"
                             Height="16"
                             OverrideColor="DarkOrange"
                             Source="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg" />
                     </Button>
-                    <Button Click="SampleCollapseAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Controls.Resources.Miscellaneous, Key=CollapseAll}">
+                    <Button Click="SampleCollapseAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=CollapseAll}">
                         <atc:SvgImage
                             Width="16"
                             Height="16"
