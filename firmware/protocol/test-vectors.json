@@ -1,0 +1,164 @@
+{
+  "crcCheck": {
+    "inputAscii": "123456789",
+    "crc": "0x29B1"
+  },
+  "vectors": [
+    {
+      "name": "describe-oled-128x64-ssd1306",
+      "displayId": 0,
+      "type": 1,
+      "flags": 0,
+      "payloadHex": "0210800040004f4c4544",
+      "packetHex": "a7c0010001000a0000000210800040004f4c45443532"
+    },
+    {
+      "name": "describe-non-ascii-name",
+      "displayId": 3,
+      "type": 1,
+      "flags": 0,
+      "payloadHex": "075080004000c386c398c385",
+      "packetHex": "a7c0010301000c000000075080004000c386c398c385653f"
+    },
+    {
+      "name": "mono-frame-8x8",
+      "displayId": 0,
+      "type": 16,
+      "flags": 0,
+      "payloadHex": "08000800ff818181818181ff",
+      "packetHex": "a7c0010010000c00000008000800ff818181818181ff29fe"
+    },
+    {
+      "name": "color-frame-2x2",
+      "displayId": 1,
+      "type": 17,
+      "flags": 0,
+      "payloadHex": "02000200f80007e0001fffff",
+      "packetHex": "a7c0010111000c00000002000200f80007e0001fffffaa84"
+    },
+    {
+      "name": "epaper-frame-8x2-two-planes-partial",
+      "displayId": 2,
+      "type": 18,
+      "flags": 0,
+      "payloadHex": "0800020002f00f018001",
+      "packetHex": "a7c0010212000a0000000800020002f00f0180010873"
+    },
+    {
+      "name": "epaper-frame-8x2-one-plane-full",
+      "displayId": 2,
+      "type": 18,
+      "flags": 0,
+      "payloadHex": "0800020001f00f00",
+      "packetHex": "a7c001021200080000000800020001f00f0028b4"
+    },
+    {
+      "name": "commands",
+      "displayId": 0,
+      "type": 32,
+      "flags": 0,
+      "payloadHex": "aed580a83f",
+      "packetHex": "a7c00100200005000000aed580a83f6229"
+    },
+    {
+      "name": "data",
+      "displayId": 0,
+      "type": 33,
+      "flags": 0,
+      "payloadHex": "00ff017f",
+      "packetHex": "a7c0010021000400000000ff017f83ad"
+    },
+    {
+      "name": "i2c-write-0x3c",
+      "displayId": 0,
+      "type": 34,
+      "flags": 0,
+      "payloadHex": "3c008d14",
+      "packetHex": "a7c001002200040000003c008d14cc33"
+    },
+    {
+      "name": "reset-empty",
+      "displayId": 0,
+      "type": 35,
+      "flags": 0,
+      "payloadHex": "",
+      "packetHex": "a7c00100230000000000058d"
+    },
+    {
+      "name": "latch-4-bytes",
+      "displayId": 4,
+      "type": 36,
+      "flags": 0,
+      "payloadHex": "0c010900",
+      "packetHex": "a7c001042400040000000c010900048f"
+    },
+    {
+      "name": "data-300-bytes-counting-pattern",
+      "displayId": 0,
+      "type": 33,
+      "flags": 0,
+      "payloadHex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b",
+      "packetHex": "a7c0010021002c010000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b738d"
+    },
+    {
+      "name": "commands-display-255-flags-0x80",
+      "displayId": 255,
+      "type": 32,
+      "flags": 128,
+      "payloadHex": "ae",
+      "packetHex": "a7c001ff208001000000aebd23"
+    }
+  ],
+  "rejects": [
+    {
+      "name": "bad-crc",
+      "packetHex": "a7c001002300000000000572",
+      "reason": "BadCrc"
+    },
+    {
+      "name": "version-2",
+      "packetHex": "a7c002002300000000007045",
+      "reason": "UnsupportedVersion"
+    },
+    {
+      "name": "unknown-type-0x7f",
+      "packetHex": "a7c001007f000000000072f6",
+      "reason": "UnknownType"
+    },
+    {
+      "name": "truncated-missing-crc-byte",
+      "packetHex": "a7c00100200003000000aed580ff",
+      "reason": "Truncated"
+    },
+    {
+      "name": "truncated-shorter-than-header",
+      "packetHex": "a7c0010020",
+      "reason": "Truncated"
+    },
+    {
+      "name": "trailing-byte-after-crc",
+      "packetHex": "a7c00100200003000000aed580ffae00",
+      "reason": "Malformed"
+    },
+    {
+      "name": "bad-magic",
+      "packetHex": "a7c10100230000000000058d",
+      "reason": "Malformed"
+    },
+    {
+      "name": "data-over-64kib-cap",
+      "packetHex": "a7c001002100010001000000d381",
+      "reason": "TooLarge"
+    },
+    {
+      "name": "data-length-0xffffffff",
+      "packetHex": "a7c001002100ffffffff00001738",
+      "reason": "TooLarge"
+    },
+    {
+      "name": "color-frame-over-4mib-cap",
+      "packetHex": "a7c00100110001004000000027df",
+      "reason": "TooLarge"
+    }
+  ]
+}
