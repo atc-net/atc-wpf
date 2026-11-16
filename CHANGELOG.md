@@ -4,6 +4,95 @@ All notable changes to this project will be documented in this file.
 
 From 4.0.216 onwards this file is maintained by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.5.0](https://github.com/atc-net/atc-wpf/compare/v4.4.0...v4.5.0) (2026-11-16)
+
+
+### New features
+
+* **components:** show the standard dialogs inside the window with InWindowDialogService ([5bb2af7](https://github.com/atc-net/atc-wpf/commit/5bb2af77b8dfd39af1ab6d69f291e3776721f25c))
+* **controls:** add AnalogClock, DigitalClock and SevenSegment clock controls ([5691b44](https://github.com/atc-net/atc-wpf/commit/5691b440f8204f47dc78246a7f7e8770783c6536))
+* **controls:** add HD44780 character ROMs, display buffer, emulator, PCF8574 decoder and dot-matrix renderer ([19aeb13](https://github.com/atc-net/atc-wpf/commit/19aeb132a1cbd1348c23ea198b3927b5c271503b))
+* **controls:** add ST7735/ST7789/ILI9341, SSD1331 and SSD1351 emulators ([15d628c](https://github.com/atc-net/atc-wpf/commit/15d628c6462811086260062f32ec155f2adb618e))
+* **controls:** add the CharacterDisplay LCD/VFD control ([579d24f](https://github.com/atc-net/atc-wpf/commit/579d24fee55bbbfb067349c2869c46e691ef2c02))
+* **controls:** add the ColorGraphicDisplay colour display and colour frame buffer ([9c593ab](https://github.com/atc-net/atc-wpf/commit/9c593abee985b8615e2d023db61bde5e3e15eff5))
+* **controls:** add the OledDisplay mono graphic display with colour zones and a monochrome frame buffer ([fee2970](https://github.com/atc-net/atc-wpf/commit/fee297063271147d3b497edbad4e006cfaca5268))
+* **controls:** add the SSD1306/SSD1309/SH1106 emulator and SSD1306 I2C decoder ([9fdba2a](https://github.com/atc-net/atc-wpf/commit/9fdba2af2d73ea7fe50c44bb7111fc56a35397a1))
+* **controls:** report controls that load without their style ([86e8290](https://github.com/atc-net/atc-wpf/commit/86e8290d2c564156dff5c9f1c3d0e714c5b51b02))
+* **displays:** add the display mirror protocol, receiver and stream/UDP transports ([e962a8b](https://github.com/atc-net/atc-wpf/commit/e962a8bd243c1ab896e3a156c081d301a54c9965))
+* **displays:** add the EPaperDisplay e-paper control and SSD1680 emulator ([e4f4d9f](https://github.com/atc-net/atc-wpf/commit/e4f4d9f1724074627a4aee11dea4c9e5e53f6ca5))
+* **displays:** add the GraphicLcdDisplay control and ST7920 emulator and serial decoder ([ec25ded](https://github.com/atc-net/atc-wpf/commit/ec25dedb8fff5eab2fd97717fd8ecff8d09030dc))
+* **displays:** add the MAX7219 LedMatrixDisplay and SevenSegmentDisplay controls and emulator ([f8f36c7](https://github.com/atc-net/atc-wpf/commit/f8f36c7969f24e0a09251cf0e382550cdc6d443f))
+* **firmware:** add the Raspberry Pi Python and ESP32 Arduino display mirror helpers ([7ff81ba](https://github.com/atc-net/atc-wpf/commit/7ff81ba1118ac2c183ce8ec8a4351508c158d462))
+* **forms:** accept several ranges in the IPv4Cidr validation rule ([b6eb5f4](https://github.com/atc-net/atc-wpf/commit/b6eb5f48843d43572c24ebf521aa2a683cf93ae1))
+* **forms:** add LabelIPAddressBox, LabelIPRangeBox and LabelMacAddressBox ([014d813](https://github.com/atc-net/atc-wpf/commit/014d813a6662cac49f0f1ffd14334ddefa654504))
+* **forms:** enforce IsMandatory on the color and font pickers and add SelectorLostFocusValid ([9099b3c](https://github.com/atc-net/atc-wpf/commit/9099b3c4a1c549e20b9987b0d8940c92d0f00425))
+* **hardware:** raise DeviceError when a picker cannot watch or read its devices ([6ae6466](https://github.com/atc-net/atc-wpf/commit/6ae6466e511d74f30494275d0ec7bc59638f262b))
+* **network:** add retry, view-only, clipboard sharing and scale modes to the VNC viewer ([76c3fc9](https://github.com/atc-net/atc-wpf/commit/76c3fc9482117af9bc08f4db10512652d83781af))
+* **network:** add service discovery, ONVIF camera, diagnostics and client views ([3f1936f](https://github.com/atc-net/atc-wpf/commit/3f1936ff4d6f714e35f2800d614805d854e259be))
+* **network:** move the network scanner to Atc.Network 2.0 ([6c49296](https://github.com/atc-net/atc-wpf/commit/6c492962dc3ff479b7b6ed15a5122b565827c07d))
+* **sample:** copy a reference to the selected sample from its title ([f859df7](https://github.com/atc-net/atc-wpf/commit/f859df74d74eab31e9ddf391091fb821347fc10b))
+* **sample:** sort the sample tabs alphabetically ([988a826](https://github.com/atc-net/atc-wpf/commit/988a826d9f4f82f3f5dfbf1a779af353c5b0d97a))
+* **theming:** add TryGet theme color and brush lookups and trace missing keys ([7c41ae0](https://github.com/atc-net/atc-wpf/commit/7c41ae0efda70d09b828da01d9b7c21c542e108a))
+
+
+### Bug fixes
+
+* **components:** run the TerminalViewer queue loop only while loaded ([e0309ff](https://github.com/atc-net/atc-wpf/commit/e0309ff99d95889a6e1cb20f069a741767fc27b8))
+* **components:** show a view passed to FlyoutService.ShowAsync instead of a new instance of it ([875b3a7](https://github.com/atc-net/atc-wpf/commit/875b3a7bafef7d9a7fb693df273b683dcad7898f))
+* **controls:** activate breadcrumb items from the keyboard and unhook cleared items ([fd8a05a](https://github.com/atc-net/atc-wpf/commit/fd8a05af459ec7a26dd31ef125d4f42e36b0e3bf))
+* **controls:** keep RangeSlider bounds consistent in any order without recursion ([d2982ea](https://github.com/atc-net/atc-wpf/commit/d2982ea94f4cfc936499750a59f21f688def77a5))
+* **controls:** stop the alert pulse when it is turned off or unloaded ([ffbc666](https://github.com/atc-net/atc-wpf/commit/ffbc666e8581db60ebc54cfe92765bfd2b53f27b))
+* copy to the clipboard and save settings without crashing the host app ([238f212](https://github.com/atc-net/atc-wpf/commit/238f212b2f18b22a1cfa73f2db296bd55f5e5a57))
+* **forms:** create AdvancedFontPicker without application resources and list the default family's typefaces ([353c269](https://github.com/atc-net/atc-wpf/commit/353c269b25d3e198c691e85d7e85390fa813e810))
+* **forms:** include LabelPasswordBox values in input form results ([b1710e3](https://github.com/atc-net/atc-wpf/commit/b1710e3fac2fe9e16bd1a92e5f3bb88d7d08802e))
+* **forms:** resolve the label info tooltip style dynamically ([c02371a](https://github.com/atc-net/atc-wpf/commit/c02371a620899e94430a0e819cc8f343138dd952))
+* **hardware:** keep a Label picker valid when the selected device is in use ([569a76d](https://github.com/atc-net/atc-wpf/commit/569a76ddc74877b2f509c7af5555e3d5c7fa72bf))
+* **hardware:** never leave camera preview or audio meter restarts unobserved ([aa03b3e](https://github.com/atc-net/atc-wpf/commit/aa03b3e7acfaab316f1f59c4551ca1cd0a484b3f))
+* **hotkeys:** merge loaded bindings with registered hotkeys instead of duplicating them ([f7fb060](https://github.com/atc-net/atc-wpf/commit/f7fb060385a768b6a1676feee8320bee5e5140f2))
+* make resource caches, the theme-sync event and drag state safe across threads ([83af471](https://github.com/atc-net/atc-wpf/commit/83af471d41f9102bba8fb73424a06926ac3784a2))
+* **network:** harden the scan export and the VNC connect dialog ([a778558](https://github.com/atc-net/atc-wpf/commit/a7785583050d5452d4073940bb48e8cc70feae28))
+* **network:** line up the toolbars of the network views ([e57f0fc](https://github.com/atc-net/atc-wpf/commit/e57f0fc609c3d4a335058b8c63d0c4d2ccef4248))
+* **network:** send one Wake-on-LAN packet per click ([c44f6c5](https://github.com/atc-net/atc-wpf/commit/c44f6c57c0cca8772b1e42bdf5728fdf7f485a35))
+* **network:** sort the scanner columns without logging binding errors ([2aa0766](https://github.com/atc-net/atc-wpf/commit/2aa0766a86ac4e90050e3593058e86625d81afbb))
+* **sample:** read the expand/collapse all tooltips from the Atc.Wpf resources ([46a1473](https://github.com/atc-net/atc-wpf/commit/46a1473a89f86f1520d7d36cac49f5eda50097d3))
+* **svg:** do not download http(s) SVG sources ([3df1915](https://github.com/atc-net/atc-wpf/commit/3df19153813c82fb49719ce95265bb4caff75356))
+* **theming:** keep the old content in the previous TransitioningContentControl presenter ([ceeb1ae](https://github.com/atc-net/atc-wpf/commit/ceeb1ae923ce0434820ffe70848eb76ab362b597))
+* trace missing resource keys, invalid cultures and failing converters ([c706877](https://github.com/atc-net/atc-wpf/commit/c706877945340cc3de5a9c3c7a5d2e7b5c5aaa72))
+* **translation:** stop culture-change lambdas from keeping their owner alive ([87836eb](https://github.com/atc-net/atc-wpf/commit/87836eb8ed76e6bba182a30455c6a6d3c4a13d62))
+* **ui-tests:** skip windows without a name when looking for error windows ([21641ab](https://github.com/atc-net/atc-wpf/commit/21641ab0a43fd33e5feab7a592c1022ae1b55a91))
+
+
+### Performance improvements
+
+* **controls:** reuse zoom ruler labels and the quick-overlay selection pen ([1d7e8e9](https://github.com/atc-net/atc-wpf/commit/1d7e8e9245c3d79e209c86b9f8abc64c47c998c8))
+* **hardware:** poll the process and window lists only while the picker is open ([9fd36d8](https://github.com/atc-net/atc-wpf/commit/9fd36d810e03040ecd7d32e2a717add21ea48fd9))
+* **network:** skip unchanged ping, discovery and port data in scan reports ([2696a05](https://github.com/atc-net/atc-wpf/commit/2696a0573d249b9af3039ea03724cc3e7311e1bd))
+
+
+### Code refactoring
+
+* **displays:** move the display controls into the new Atc.Wpf.Displays package ([b7644a2](https://github.com/atc-net/atc-wpf/commit/b7644a2515efd9f7dff46867a19ee6ece2cd418a))
+
+
+### Documentation
+
+* add Network and undo/redo guides to the documentation site ([063e5ab](https://github.com/atc-net/atc-wpf/commit/063e5ab1adf9fa3024301e60d3030bf8c6772648))
+* add the CharacterDisplay sample, readme and docs ([9c9cccc](https://github.com/atc-net/atc-wpf/commit/9c9cccc826fa41e5e560d7addc4224392fd6b7a5))
+* add the display samples, readmes and docs ([fb0e442](https://github.com/atc-net/atc-wpf/commit/fb0e4421614c21c245e26bfdc6288eb66ae1ad7c))
+* add the OledDisplay and ColorGraphicDisplay samples, readmes and docs ([adbfcfe](https://github.com/atc-net/atc-wpf/commit/adbfcfe433584fd048d5fb92ee9946167f65fab5))
+* complete the contributor project tree ([8ad9078](https://github.com/atc-net/atc-wpf/commit/8ad90780dec5ca3dabea25cbe7c3e0db019559ec))
+* describe the benchmarks and list the new tests ([f93256b](https://github.com/atc-net/atc-wpf/commit/f93256b15ab66ab641dea4b94de4cdbcc74284ea))
+* describe the new network controls ([7e1c2d9](https://github.com/atc-net/atc-wpf/commit/7e1c2d9f86d6af96d5e02d0da3b328e0b2a0fc75))
+* document the dialog button bar, print preview window and toast overlay window ([5ea8e9a](https://github.com/atc-net/atc-wpf/commit/5ea8e9afe11cce541917aaf81bae6f2583a6db50))
+* generate the controls table of contents and list the new network controls ([f7cb5ab](https://github.com/atc-net/atc-wpf/commit/f7cb5ab00f17eaa7fbe4d57c05ce7004e54dc15f))
+* list the new tests in CLAUDE.md ([d0d1736](https://github.com/atc-net/atc-wpf/commit/d0d1736d219e775c753943d82d90be2ec847176c))
+* list the new tests in CLAUDE.md ([035f12d](https://github.com/atc-net/atc-wpf/commit/035f12df697911f257fad07cb0dd798730ef6ea7))
+* list the new tests in CLAUDE.md ([40ecf52](https://github.com/atc-net/atc-wpf/commit/40ecf524b9ddb0e73b12e71226f88e037ef59378))
+* list the new tests in CLAUDE.md ([b41c0f6](https://github.com/atc-net/atc-wpf/commit/b41c0f6af7efb73a8fa103aa299da4329109d089))
+* **network:** describe every control in the package readme and link the Atc.Network docs ([e5fd808](https://github.com/atc-net/atc-wpf/commit/e5fd808ffbc0506cbc590603d561615d88e7e74f))
+* **sample:** add the in-window dialogs sample ([826287d](https://github.com/atc-net/atc-wpf/commit/826287deec4b3c31041ae3c3ba1cf96dd53bab47))
+* state the required resource dictionaries and XAML namespaces in every package readme ([beb171e](https://github.com/atc-net/atc-wpf/commit/beb171e35943991e75b31498605bc593a32a881b))
+
 ## [4.4.0](https://github.com/atc-net/atc-wpf/compare/v4.3.0...v4.4.0) (2026-11-04)
 
 
