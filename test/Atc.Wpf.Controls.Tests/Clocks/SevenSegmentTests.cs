@@ -109,6 +109,34 @@ public sealed class SevenSegmentTests : IDisposable
     }
 
     [StaFact]
+    public void SevenSegment_SegmentsOverrideDigit_AndUnsetKeepsOldBehaviour()
+    {
+        var sut = new SevenSegment { PlayAnimation = false, Digit = 8 };
+        Assert.Null(sut.Segments);
+
+        sut.Segments = SevenSegmentParts.Middle;
+
+        Assert.Equal(SevenSegmentParts.Middle, sut.LitSegments);
+        Assert.Equal(1.0, sut.GetSegmentOpacity(SevenSegmentParts.Middle));
+        Assert.Equal(Unlit, sut.GetSegmentOpacity(SevenSegmentParts.Top));
+
+        sut.Digit = 1;
+
+        Assert.Equal(SevenSegmentParts.Middle, sut.LitSegments);
+
+        sut.Segments = SevenSegmentParts.None;
+
+        Assert.Equal(Unlit, sut.GetSegmentOpacity(SevenSegmentParts.Middle));
+        Assert.Equal(Unlit, sut.GetSegmentOpacity(SevenSegmentParts.TopRight));
+
+        sut.Segments = null;
+
+        Assert.Equal(SevenSegmentParts.TopRight | SevenSegmentParts.BottomRight, sut.LitSegments);
+        Assert.Equal(1.0, sut.GetSegmentOpacity(SevenSegmentParts.TopRight));
+        Assert.Equal(Unlit, sut.GetSegmentOpacity(SevenSegmentParts.Middle));
+    }
+
+    [StaFact]
     public void PulseColon_WithoutAnimateColon_KeepsTheColonLit()
     {
         var sut = new SevenSegment { ShowColon = true, AnimateColon = false };
