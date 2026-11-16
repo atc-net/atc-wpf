@@ -1,0 +1,20 @@
+global using System.Buffers.Binary;
+global using System.Collections.Frozen;
+global using System.Diagnostics;
+global using System.Diagnostics.CodeAnalysis;
+global using System.Globalization;
+global using System.IO;
+global using System.Runtime.CompilerServices;
+global using System.Runtime.InteropServices;
+global using System.Text;
+global using System.Windows;
+global using System.Windows.Automation;
+global using System.Windows.Automation.Peers;
+global using System.Windows.Controls;
+global using System.Windows.Markup;
+global using System.Windows.Media;
+global using System.Windows.Media.Imaging;
+global using System.Windows.Threading;
+
+global using Atc.Wpf.Controls.Clocks;
+global using Atc.XamlToolkit.Controls.Attributes;

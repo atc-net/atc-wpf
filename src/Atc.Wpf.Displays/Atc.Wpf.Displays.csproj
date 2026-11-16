@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Title>Atc.Wpf.Displays</Title>
+    <IsPackable>true</IsPackable>
+    <PackageId>Atc.Wpf.Displays</PackageId>
+    <PackageTags>wpf;display;lcd;oled;tft;epaper;hd44780;ssd1306;max7219;esp32;raspberry-pi;emulator;mirror</PackageTags>
+    <Description>WPF hardware display controls (character LCD, OLED, colour TFT, e-paper, graphic LCD, LED matrix and seven-segment), chip emulators and decoders, and a receiver that mirrors the displays of ESP32 and Raspberry Pi projects.</Description>
+    <NoWarn>$(NoWarn);CS0169;CS0649;CS8618;CA1823</NoWarn>
+    <!-- Every public member is documented: report missing XML comments. -->
+    <NoWarn>$(NoWarn.Replace('1591', ''))</NoWarn>
+  </PropertyGroup>
+
+  <!--
+    A new package: there is no published version to compare its API with, so package validation runs
+    without a baseline. Remove this override once Atc.Wpf.Displays has been released, so the shared
+    baseline in src/Directory.Build.props applies.
+  -->
+  <PropertyGroup Label="Package validation">
+    <PackageValidationBaselineVersion></PackageValidationBaselineVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Atc" Version="4.1.0" />
+    <PackageReference Include="Atc.XamlToolkit" Version="3.2.1" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Atc.Wpf.Controls\Atc.Wpf.Controls.csproj" />
+    <ProjectReference Include="..\Atc.Wpf.Theming\Atc.Wpf.Theming.csproj" />
+    <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
+  </ItemGroup>
+
+</Project>
