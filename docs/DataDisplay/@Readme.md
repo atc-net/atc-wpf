@@ -12,12 +12,9 @@ This document provides a comprehensive overview of all data display controls ava
 | [AvatarGroup](#-avatargroup) | Overlapping user avatars | ❌ No | ✅ Yes |
 | [Badge](#-badge) | Status indicator overlay | ❌ No | ✅ Yes |
 | [Card](#-card) | Content grouping with elevation | ✅ Expandable | ✅ Yes |
-| [CharacterDisplay](../../src/Atc.Wpf.Controls/Displays/CharacterDisplay_Readme.md) | Dot-by-dot HD44780 character LCD/VFD (1-40 x 1-4) that mirrors an ESP32 or Raspberry Pi display, with an HD44780 emulator and a PCF8574 I2C decoder | ❌ No | ❌ Own presets |
 | [Chip](#-chip) | Tags, filters, selections | ✅ Selectable | ✅ Yes |
 | [ChipGroup](../../src/Atc.Wpf.Controls/DataDisplay/ChipGroup_Readme.md) | A set of toggle chips bound to `Items` / `SelectedKeys` (quick filters, facets) | ✅ Single / multiple | ✅ Yes |
-| [ColorGraphicDisplay](../../src/Atc.Wpf.Controls/Displays/ColorGraphicDisplay_Readme.md) | Pixel-by-pixel colour TFT/OLED (ST7735, ST7789, ILI9341, SSD1331, SSD1351, up to 480 x 480) that mirrors an ESP32 or Raspberry Pi display, with RGB565 whole-frame `LoadFrameRgb565` and chip emulators | ❌ No | ❌ Own presets |
 | [Divider](#-divider) | Visual separator | ❌ No | ✅ Yes |
-| [OledDisplay](../../src/Atc.Wpf.Controls/Displays/OledDisplay_Readme.md) | Pixel-by-pixel monochrome OLED (SSD1306, SSD1309, SH1106, up to 132 x 64) that mirrors an ESP32 or Raspberry Pi display, with whole-frame `LoadFrame`, a chip emulator and an I2C decoder | ❌ No | ❌ Own presets |
 
 ---
 

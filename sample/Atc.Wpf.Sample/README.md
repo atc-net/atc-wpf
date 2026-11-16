@@ -24,6 +24,7 @@ The left panel hosts a `TabControl` (used as styled category buttons) plus stack
 | **Wpf.Controls** | `SamplesWpfControlsTreeView.xaml` | Base controls, Buttons, Color controls, Layouts, Progress |
 | **Wpf.Forms** | `SamplesWpfFormsTreeView.xaml` | `Label*` controls, Selectors, Pickers |
 | **Wpf.Components** | `SamplesWpfComponentsTreeView.xaml` | Dialogs, Viewers, Monitoring, Notifications |
+| **Wpf.Displays** | `SamplesWpfDisplaysTreeView.xaml` | Hardware displays (character LCD, OLED, TFT, e-paper, graphic LCD, LED matrix, seven-segment) and display mirroring |
 | **Wpf.Network** | `SamplesWpfNetworkTreeView.xaml` | `NetworkScannerView` + settings |
 | **Wpf.Theming** | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |
 | **Wpf.SourceGenerators** | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demos (`[ObservableProperty]`, `[RelayCommand]`, `[DependencyProperty]`, `[AttachedProperty]`) |

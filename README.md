@@ -26,6 +26,7 @@ This framework provides a rich collection of reusable controls, theming support,
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------|
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.svg?label=Atc.Wpf&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf)                                                 | Core library: MVVM, layouts, value converters       | <ul><li>Atc</li><li>Microsoft.Xaml.Behaviors.Wpf</li></ul> |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Controls.svg?label=Atc.Wpf.Controls&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Controls)                      | Atomic controls: base inputs, buttons, colors       | <ul><li>Atc</li><li>Atc.UndoRedo</li><li>Atc.Wpf</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
+| [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Displays.svg?label=Atc.Wpf.Displays&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Displays)                      | Hardware display controls (character LCD, OLED, TFT, e-paper, LED matrix, seven-segment), chip emulators and display mirroring | <ul><li>Atc</li><li>Atc.Wpf</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Forms.svg?label=Atc.Wpf.Forms&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Forms)                               | Form field controls: 25+ labeled controls with validation | <ul><li>Atc</li><li>Atc.Wpf.Controls</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.Components.svg?label=Atc.Wpf.Components&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.Components)                | Composite components: dialogs, viewers, settings    | <ul><li>Atc</li><li>Atc.Wpf</li><li>Atc.Wpf.Controls</li><li>Atc.Wpf.FontIcons</li><li>Atc.Wpf.Forms</li><li>Atc.Wpf.Theming</li><li>Atc.XamlToolkit</li><li>Atc.XamlToolkit.Wpf</li></ul> |
 | [![NuGet Version](https://img.shields.io/nuget/v/Atc.Wpf.FontIcons.svg?label=Atc.Wpf.FontIcons&logo=nuget&style=for-the-badge)](https://www.nuget.org/packages/Atc.Wpf.FontIcons)                   | Font-based icon rendering                           | <ul><li>Atc.Wpf</li></ul> |
@@ -90,6 +91,9 @@ Add the NuGet packages to your `.csproj` file:
 
   <!-- Optional: Font icons -->
   <PackageReference Include="Atc.Wpf.FontIcons" Version="4.*" />
+
+  <!-- Optional: hardware display controls and display mirroring (LCD, OLED, TFT, e-paper, ...) -->
+  <PackageReference Include="Atc.Wpf.Displays" Version="4.*" />
 
   <!-- Optional: hardware / system pickers (serial, USB, camera, audio, drives, displays, ...) -->
   <PackageReference Include="Atc.Wpf.Hardware" Version="4.*" />
@@ -204,6 +208,7 @@ graph TD
     Forms[Atc.Wpf.Forms]
     Components[Atc.Wpf.Components]
 
+    Displays[Atc.Wpf.Displays]
     Network[Atc.Wpf.Network]
     Hardware[Atc.Wpf.Hardware]
     UndoRedo[Atc.Wpf.UndoRedo]
@@ -223,6 +228,9 @@ graph TD
     Forms --> Components
     FontIcons --> Components
 
+    Controls --> Displays
+    Theming --> Displays
+
     Controls --> Network
     Forms --> Network
 
@@ -240,7 +248,7 @@ graph TD
     classDef ext fill:#757575,stroke:#212121,color:#fff
     class AtcWpf core
     class Controls,Forms,Components tier
-    class Theming,FontIcons,Network,Hardware,UndoRedo side
+    class Theming,FontIcons,Displays,Network,Hardware,UndoRedo side
     class Atc,XamlToolkit ext
 ```
 
@@ -253,7 +261,8 @@ A quick reference of all controls organized by category:
 | Category | Controls | Package |
 |----------|----------|---------|
 | **Layout Panels** | GridEx, AutoGrid, FlexPanel, StaggeredPanel, UniformSpacingPanel, ResponsivePanel, DockPanelPro | Atc.Wpf / Atc.Wpf.Controls |
-| **Data Display** | Alert, Card, Badge, Chip, ChipGroup, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented (single or multiple), Timeline, Popover, CharacterDisplay (HD44780 character LCD/VFD with emulator) | Atc.Wpf.Controls |
+| **Data Display** | Alert, Card, Badge, Chip, ChipGroup, Avatar, AvatarGroup, Divider, Carousel, Breadcrumb, Stepper, Segmented (single or multiple), Timeline, Popover | Atc.Wpf.Controls |
+| **Displays** | CharacterDisplay, OledDisplay, ColorGraphicDisplay, EPaperDisplay, GraphicLcdDisplay, LedMatrixDisplay, SevenSegmentDisplay, chip emulators and decoders, DisplayMirrorReceiver | Atc.Wpf.Displays |
 | **Flyouts** | Flyout, FlyoutHost, FlyoutService | Atc.Wpf.Components |
 | **Input Controls** | NumericBox, IntegerBox, DecimalBox, CurrencyBox, ToggleSwitch, RangeSlider, Rating, FilePicker, DirectoryPicker | Atc.Wpf.Controls |
 | **Color Controls** | HueSlider, SaturationBrightnessPicker, TransparencySlider, WellKnownColorPicker | Atc.Wpf.Controls |
@@ -377,7 +386,19 @@ Modern layout panels and containers for advanced UI composition. See the **[comp
 | **Stepper** | Step-by-step progress | Cancelable transitions | [Readme](src/Atc.Wpf.Controls/DataDisplay/Stepper_Readme.md) |
 | **Segmented** | Segment selector | Single, single-or-none or multiple selection (weekdays, B/I/U), vertical or separate pills | [Readme](src/Atc.Wpf.Controls/DataDisplay/Segmented_Readme.md) |
 | **Timeline** | Timeline display | Vertical/horizontal, alternate mode | [Readme](src/Atc.Wpf.Controls/DataDisplay/Timeline_Readme.md) |
-| **CharacterDisplay** | Character LCD/VFD module | 1-40 x 1-4 HD44780 dot matrix, A00/A02 ROMs, custom glyphs, cursor, HD44780 emulator and PCF8574 I2C decoder for mirroring ESP32/Raspberry Pi displays | [Readme](src/Atc.Wpf.Controls/Displays/CharacterDisplay_Readme.md) |
+
+### Display Controls (Atc.Wpf.Displays)
+
+| Control | Description | Key Features | Documentation |
+|---------|-------------|--------------|---------------|
+| **CharacterDisplay** | Character LCD/VFD module | 1-40 x 1-4 HD44780 dot matrix, A00/A02 ROMs, custom glyphs, cursor, HD44780 emulator and PCF8574 I2C decoder for mirroring ESP32/Raspberry Pi displays | [Readme](src/Atc.Wpf.Displays/CharacterDisplay_Readme.md) |
+| **OledDisplay** | Monochrome OLED module | SSD1306, SSD1309, SH1106 up to 132 x 64, colour zones, chip emulator and I2C decoder | [Readme](src/Atc.Wpf.Displays/OledDisplay_Readme.md) |
+| **ColorGraphicDisplay** | Colour TFT/OLED module | ST7735, ST7789, ILI9341, SSD1331, SSD1351, RGB565 frames and chip emulators | [Readme](src/Atc.Wpf.Displays/ColorGraphicDisplay_Readme.md) |
+| **EPaperDisplay** | E-paper module | SSD1680 black/white or black/white/red, refresh flash, emulator | [Readme](src/Atc.Wpf.Displays/EPaperDisplay_Readme.md) |
+| **GraphicLcdDisplay** | Graphic LCD module | ST7920 128 x 64, text and graphic layers, serial decoder | [Readme](src/Atc.Wpf.Displays/GraphicLcdDisplay_Readme.md) |
+| **LedMatrixDisplay** | LED matrix chain | 1-8 MAX7219 8 x 8 modules, module wirings, emulator | [Readme](src/Atc.Wpf.Displays/LedMatrixDisplay_Readme.md) |
+| **SevenSegmentDisplay** | Seven-segment module | MAX7219, 1-8 digits, Code B or raw segments | [Readme](src/Atc.Wpf.Displays/SevenSegmentDisplay_Readme.md) |
+| **DisplayMirrorReceiver** | Display mirroring | Protocol v1 over serial, TCP, UDP or MQTT from ESP32 / Raspberry Pi | [Readme](src/Atc.Wpf.Displays/DisplayMirror_Readme.md) |
 
 ### Media Controls
 

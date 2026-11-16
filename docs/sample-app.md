@@ -35,7 +35,7 @@ The left panel consists of:
 └──────────────────────┴──────────────────────────────┘
 ```
 
-### Categories (9 total)
+### Categories (11 total)
 
 | Category | TreeView File | Description |
 |----------|---------------|-------------|
@@ -43,9 +43,11 @@ The left panel consists of:
 | Wpf.Controls | `SamplesWpfControlsTreeView.xaml` | Atomic controls: Base, Buttons, Colors, Layouts, Progress |
 | Wpf.Forms | `SamplesWpfFormsTreeView.xaml` | Form controls: Label*, Selectors, Pickers |
 | Wpf.Components | `SamplesWpfComponentsTreeView.xaml` | Composite: Dialogs, Viewers, Monitoring, Notifications |
+| Wpf.Displays | `SamplesWpfDisplaysTreeView.xaml` | Hardware displays: CharacterDisplay, OledDisplay, ColorGraphicDisplay, EPaperDisplay, GraphicLcdDisplay, LedMatrixDisplay, SevenSegmentDisplay, DisplayMirror |
 | Wpf.Network | `SamplesWpfNetworkTreeView.xaml` | Network: NetworkScanner |
 | Wpf.Hardware | `SamplesWpfHardwareTreeView.xaml` | Hardware pickers: SerialPort, USB, USB Camera |
 | Wpf.Theming | `SamplesWpfThemingTreeView.xaml` | Themed standard WPF controls |
+| Wpf.UndoRedo | `SamplesWpfUndoRedoTreeView.xaml` | UndoRedoService, UndoRedoHistoryView |
 | Wpf.SourceGenerators | `SamplesWpfSourceGeneratorsTreeView.xaml` | Generator demonstrations |
 | Wpf.FontIcons | `SamplesWpfFontIconsTreeView.xaml` | Icon rendering |
 
@@ -197,11 +199,13 @@ The left panel consists of:
         <TabItem Tag="Wpf.Controls">...</TabItem>
         <TabItem Tag="Wpf.Forms">...</TabItem>
         <TabItem Tag="Wpf.Components">...</TabItem>
+        <TabItem Tag="Wpf.Displays">...</TabItem>
         <TabItem Tag="Wpf.Network">...</TabItem>
         <TabItem Tag="Wpf.Hardware">...</TabItem>
         <TabItem Tag="Wpf.Theming">...</TabItem>
         <TabItem Tag="Wpf.SourceGenerators">...</TabItem>
         <TabItem Tag="Wpf.FontIcons">...</TabItem>
+        <TabItem Tag="Wpf.UndoRedo">...</TabItem>
     </TabControl>
 
     <!-- TreeViews in ScrollViewer -->
@@ -212,8 +216,10 @@ The left panel consists of:
                 <sample:SamplesWpfControlsTreeView />
                 <sample:SamplesWpfFormsTreeView />
                 <sample:SamplesWpfComponentsTreeView />
+                <sample:SamplesWpfDisplaysTreeView />
                 <sample:SamplesWpfNetworkTreeView />
                 <sample:SamplesWpfHardwareTreeView />
+                <sample:SamplesWpfUndoRedoTreeView />
                 <sample:SamplesWpfThemingTreeView />
                 <sample:SamplesWpfSourceGeneratorsTreeView />
                 <sample:SamplesWpfFontIconsTreeView />
