@@ -47,7 +47,7 @@ jobs:
 
       # All packages share a single <Version> in Directory.Build.props, so they are
       # always packed and published together from one release-please tag.
-      # Only projects with IsPackable=true (the ten src libraries) produce a package.
+      # Only projects with IsPackable=true (the eleven src libraries) produce a package.
       # On Windows, dotnet nuget push only expands the wildcard in a path that uses backslashes.
       - name: 🗳️ Creating library packages for release
         if: ${{ steps.release.outputs.release_created }}
