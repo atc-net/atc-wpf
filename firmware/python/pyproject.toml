@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atc-display-mirror"
+version = "0.1.0"
+description = "Raspberry Pi side of ATC display mirroring: send display traffic to the Atc.Wpf display controls."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+serial = ["pyserial"]
+image = ["Pillow"]
+smbus = ["smbus2"]
+test = ["pytest", "Pillow"]
+
+[tool.setuptools]
+packages = ["atc_display_mirror"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
