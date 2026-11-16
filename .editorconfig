@@ -1,6 +1,6 @@
 # ATC coding rules - https://github.com/atc-net/atc-coding-rules
-# Version: 1.0.2
-# Updated: 20-10-2026
+# Version: 1.0.3
+# Updated: 14-11-2026
 # Location: Root
 # Distribution: DotNet10
 # Inspired by: https://learn.microsoft.com/dotnet/fundamentals/code-analysis/code-style-rule-options
@@ -465,6 +465,7 @@ dotnet_diagnostic.CA1515.severity = suggestion      # Because an application's A
 dotnet_diagnostic.CA1707.severity = error           # Identifiers should not contain underscores
 dotnet_diagnostic.CA1812.severity = none
 dotnet_diagnostic.CA1822.severity = suggestion
+dotnet_diagnostic.CA1830.severity = suggestion      # Prefer strongly-typed Append and Insert method overloads on StringBuilder
 dotnet_diagnostic.CA1849.severity = error           # Call async methods when in an async method
 dotnet_diagnostic.CA1854.severity = suggestion      # Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method
 dotnet_diagnostic.CA1855.severity = suggestion      # Prefer 'Clear' over 'Fill'
@@ -488,12 +489,15 @@ dotnet_diagnostic.CA1872.severity = suggestion      # Prefer 'Convert.ToHexStrin
 dotnet_diagnostic.CA1873.severity = suggestion      # Avoid potentially expensive logging (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1873)
 dotnet_diagnostic.CA1874.severity = suggestion      # Use 'Regex.IsMatch' instead of 'Regex.Match(...).Success' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1874)
 dotnet_diagnostic.CA1875.severity = suggestion      # Use 'Regex.Count' instead of 'Regex.Matches(...).Count' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1875)
-dotnet_diagnostic.CA1877.severity = suggestion      # Use 'Path.Combine' or 'Path.Join' overloads (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1877)
 dotnet_diagnostic.CA2007.severity = suggestion      # Do not directly await a Task
 dotnet_diagnostic.CA2017.severity = error           # Parameter count mismatch
 dotnet_diagnostic.CA2018.severity = error           # The count argument to Buffer.BlockCopy should specify the number of bytes to copy
 dotnet_diagnostic.CA2019.severity = error           # ThreadStatic fields should not use inline initialization
 dotnet_diagnostic.CA2021.severity = error           # Don't call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
+dotnet_diagnostic.CA2022.severity = error           # Avoid inexact read with 'Stream.Read' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2022)
+dotnet_diagnostic.CA2023.severity = error           # Invalid braces in message template (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2023)
+dotnet_diagnostic.CA2024.severity = error           # Do not use 'StreamReader.EndOfStream' in async methods (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2024)
+dotnet_diagnostic.CA2025.severity = suggestion      # Do not pass 'IDisposable' instances into unawaited tasks (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2025)
 dotnet_diagnostic.CA2250.severity = suggestion      # Use ThrowIfCancellationRequested
 dotnet_diagnostic.CA2252.severity = suggestion      # Opt-in to preview features should be used with caution
 dotnet_diagnostic.CA2253.severity = error           # Named placeholders should not be numeric values
@@ -506,6 +510,7 @@ dotnet_diagnostic.CA2262.severity = suggestion      # Set 'MaxResponseHeadersLen
 dotnet_diagnostic.CA2263.severity = suggestion      # Prefer generic overload when type is known
 dotnet_diagnostic.CA2264.severity = error           # Do not pass a non-nullable value to 'ArgumentNullException.ThrowIfNull'
 dotnet_diagnostic.CA2265.severity = error           # Do not compare Span<T> to 'null' or 'default' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2265)
+dotnet_diagnostic.CA2266.severity = error           # File-based program entry point should start with '#!' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2266)
 dotnet_diagnostic.IDE0005.severity = warning        # Remove unnecessary using directives
 dotnet_diagnostic.IDE0010.severity = suggestion     # Populate switch
 dotnet_diagnostic.IDE0028.severity = suggestion     # Collection initialization can be simplified
@@ -517,6 +522,13 @@ dotnet_diagnostic.IDE0130.severity = suggestion     # Namespace does not match f
 dotnet_diagnostic.IDE0290.severity = none           # Use primary constructor
 dotnet_diagnostic.IDE0301.severity = suggestion     # Use collection expression for empty
 dotnet_diagnostic.IDE0305.severity = suggestion     # Collection initialization can be simplified
+dotnet_diagnostic.IDE0340.severity = suggestion     # Use unbound generic type (C# 14 'nameof' with unbound generics)
+dotnet_diagnostic.IDE0350.severity = suggestion     # Use implicitly typed lambda
+dotnet_diagnostic.IDE0360.severity = suggestion     # Simplify property accessor (C# 14 'field' keyword)
+dotnet_diagnostic.IDE0370.severity = suggestion     # Remove unnecessary suppression (null-forgiving operator)
+dotnet_diagnostic.IDE0380.severity = suggestion     # Remove unnecessary 'unsafe' modifier
+dotnet_diagnostic.IDE0390.severity = suggestion     # Make method synchronous (async without await) - overlaps CS1998
+dotnet_diagnostic.IDE0391.severity = none           # Make method synchronous (overrides/interface implementations)
 
 
 # Microsoft - Compiler Errors
@@ -536,6 +548,7 @@ dotnet_diagnostic.SA1201.severity = none            # Elements should appear in 
 dotnet_diagnostic.SA1202.severity = none            # Elements should be ordered by access
 dotnet_diagnostic.SA1204.severity = none            # Static elements should appear before instance elements
 dotnet_diagnostic.SA1413.severity = error           # Use trailing commas in multi-line initializers
+dotnet_diagnostic.SA1504.severity = none            # All accessors should be single-line or multi-line - conflicts with ATC210 (expression-bodied get with a block set)
 dotnet_diagnostic.SA1600.severity = none            # Elements should be documented
 dotnet_diagnostic.SA1601.severity = none
 dotnet_diagnostic.SA1602.severity = none            # Enumeration items should be documented
