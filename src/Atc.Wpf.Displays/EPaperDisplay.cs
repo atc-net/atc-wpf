@@ -38,36 +38,6 @@ public sealed partial class EPaperDisplay : FrameworkElement
     private const double BezelCornerRadius = 1.0;
     private const double PanelCornerRadius = 0.5;
 
-    /// <summary>Identifies the <see cref="PaperBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty PaperBrushProperty = DependencyProperty.Register(
-        nameof(PaperBrush),
-        typeof(Brush),
-        typeof(EPaperDisplay),
-        new FrameworkPropertyMetadata(
-            CreateFrozenBrush(0xE8, 0xE6, 0xDF),
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OnInkChanged));
-
-    /// <summary>Identifies the <see cref="InkBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty InkBrushProperty = DependencyProperty.Register(
-        nameof(InkBrush),
-        typeof(Brush),
-        typeof(EPaperDisplay),
-        new FrameworkPropertyMetadata(
-            CreateFrozenBrush(0x1A, 0x1A, 0x1A),
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OnInkChanged));
-
-    /// <summary>Identifies the <see cref="RedInkBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty RedInkBrushProperty = DependencyProperty.Register(
-        nameof(RedInkBrush),
-        typeof(Brush),
-        typeof(EPaperDisplay),
-        new FrameworkPropertyMetadata(
-            CreateFrozenBrush(0xB2, 0x22, 0x22),
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OnInkChanged));
-
     private static readonly TimeSpan MinFlashPhase = TimeSpan.FromTicks(1);
     private static readonly Color DefaultPaperColor = Color.FromRgb(0xE8, 0xE6, 0xDF);
     private static readonly Color DefaultInkColor = Color.FromRgb(0x1A, 0x1A, 0x1A);
@@ -75,6 +45,34 @@ public sealed partial class EPaperDisplay : FrameworkElement
 
     private readonly EPaperFrameBuffer ownBuffer;
     private readonly Action updateAction;
+
+    /// <summary>
+    /// Gets or sets the colour of the paper (white pixels and the panel); the colour of a <see cref="SolidColorBrush"/> is used for the pixels,
+    /// any other brush gives them the default #E8E6DF.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "CreateFrozenBrush(0xE8, 0xE6, 0xDF)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnInkChanged))]
+    private Brush? paperBrush;
+
+    /// <summary>
+    /// Gets or sets the colour of black pixels; the colour of a <see cref="SolidColorBrush"/> is used, any other brush gives the default #1A1A1A.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "CreateFrozenBrush(0x1A, 0x1A, 0x1A)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnInkChanged))]
+    private Brush? inkBrush;
+
+    /// <summary>
+    /// Gets or sets the colour of red pixels; the colour of a <see cref="SolidColorBrush"/> is used, any other brush gives the default #B22222.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "CreateFrozenBrush(0xB2, 0x22, 0x22)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnInkChanged))]
+    private Brush? redInkBrush;
 
     /// <summary>The native (portrait) number of pixel columns of the panel, 1 to 400; 128 for the 2.9" and the 2.13" panels (the 2.13" glass shows 122 of them: set <see cref="VisibleColumns"/>).</summary>
     [DependencyProperty(
@@ -234,34 +232,6 @@ public sealed partial class EPaperDisplay : FrameworkElement
         None,
         Inverted,
         White,
-    }
-
-    /// <summary>
-    /// Gets or sets the colour of the paper (white pixels and the panel); the colour of a <see cref="SolidColorBrush"/> is used for the pixels,
-    /// any other brush gives them the default #E8E6DF.
-    /// </summary>
-    public Brush? PaperBrush
-    {
-        get => (Brush?)GetValue(PaperBrushProperty);
-        set => SetValue(PaperBrushProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the colour of black pixels; the colour of a <see cref="SolidColorBrush"/> is used, any other brush gives the default #1A1A1A.
-    /// </summary>
-    public Brush? InkBrush
-    {
-        get => (Brush?)GetValue(InkBrushProperty);
-        set => SetValue(InkBrushProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the colour of red pixels; the colour of a <see cref="SolidColorBrush"/> is used, any other brush gives the default #B22222.
-    /// </summary>
-    public Brush? RedInkBrush
-    {
-        get => (Brush?)GetValue(RedInkBrushProperty);
-        set => SetValue(RedInkBrushProperty, value);
     }
 
     /// <summary>Gets or sets the clock of the refresh flash; tests only.</summary>
