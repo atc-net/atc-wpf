@@ -3,16 +3,16 @@ namespace Atc.Wpf.ControlAttach;
 /// <summary>
 /// Provides attached properties for <see cref="System.Windows.Shapes.Rectangle"/>.
 /// </summary>
-public static class RectangleAttach
+public static partial class RectangleAttach
 {
     /// <summary>
     /// Identifies the Circular attached property, which binds the rectangle's corner radii so it renders as a circle or pill shape.
     /// </summary>
-    public static readonly DependencyProperty CircularProperty = DependencyProperty.RegisterAttached(
-        "Circular",
-        typeof(bool),
-        typeof(RectangleAttach),
-        new PropertyMetadata(false, OnCircularChanged));
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnCircularChanged),
+        GenerateClrAccessors = false)]
+    private static bool circular;
 
     /// <summary>
     /// Gets the value of the Circular attached property.

@@ -23,113 +23,62 @@ namespace Atc.Wpf.Controls.Layouts;
 /// ]]>
 /// </example>
 [SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "OK.")]
-public sealed class GridEx : Grid
+public sealed partial class GridEx : Grid
 {
-    /// <summary>Identifies the <see cref="Rows"/> dependency property.</summary>
-    public static readonly DependencyProperty RowsProperty = DependencyProperty.Register(
-        nameof(Rows),
-        typeof(string),
-        typeof(GridEx),
-        new PropertyMetadata(default(string), OnRowsChanged));
+    /// <summary>
+    /// Gets or sets the row definitions as a comma-separated list of sizes (for example <c>2*,Auto,*,66</c>).
+    /// </summary>
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnRowsChanged),
+        Category = "Layout",
+        Description = "The rows property")]
+    private string rows;
 
-    /// <summary>Identifies the <see cref="Columns"/> dependency property.</summary>
-    public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(
-        nameof(Columns),
-        typeof(string),
-        typeof(GridEx),
-        new PropertyMetadata(default(string), OnColumnsChanged));
+    /// <summary>
+    /// Gets or sets the column definitions as a comma-separated list of sizes (for example <c>2*,*,Auto</c>).
+    /// </summary>
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnColumnsChanged),
+        Category = "Layout",
+        Description = "The columns property")]
+    private string columns;
 
-    /// <summary>Identifies the <see cref="Spacing"/> dependency property.</summary>
-    public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(
-        nameof(Spacing),
-        typeof(double),
-        typeof(GridEx),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure));
+    /// <summary>
+    /// Gets or sets the uniform spacing between grid cells, applied both horizontally and vertically.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        Category = "Layout",
+        Description = "Sets uniform spacing between grid cells (sets both horizontal and vertical)")]
+    private double spacing;
 
-    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
-        nameof(HorizontalSpacing),
-        typeof(double),
-        typeof(GridEx),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure));
+    /// <summary>
+    /// Gets or sets the horizontal spacing between grid columns.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        Category = "Layout",
+        Description = "Sets horizontal spacing between grid columns")]
+    private double horizontalSpacing;
 
-    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
-        nameof(VerticalSpacing),
-        typeof(double),
-        typeof(GridEx),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure));
+    /// <summary>
+    /// Gets or sets the vertical spacing between grid rows.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        Category = "Layout",
+        Description = "Sets vertical spacing between grid rows")]
+    private double verticalSpacing;
 
     /// <summary>
     /// Remembers the margin GridEx last applied to a child, so spacing changes can be re-applied
     /// without overwriting a margin the user set.
     /// </summary>
-    private static readonly DependencyProperty AppliedSpacingMarginProperty = DependencyProperty.RegisterAttached(
-        "AppliedSpacingMargin",
-        typeof(Thickness?),
-        typeof(GridEx),
-        new PropertyMetadata(defaultValue: null));
-
-    /// <summary>
-    /// Gets or sets the row definitions as a comma-separated list of sizes (for example <c>2*,Auto,*,66</c>).
-    /// </summary>
-    [Category("Layout")]
-    [Description("The rows property")]
-    public string Rows
-    {
-        get => (string)GetValue(RowsProperty);
-        set => SetValue(RowsProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the column definitions as a comma-separated list of sizes (for example <c>2*,*,Auto</c>).
-    /// </summary>
-    [Category("Layout")]
-    [Description("The columns property")]
-    public string Columns
-    {
-        get => (string)GetValue(ColumnsProperty);
-        set => SetValue(ColumnsProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the uniform spacing between grid cells, applied both horizontally and vertically.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Sets uniform spacing between grid cells (sets both horizontal and vertical)")]
-    public double Spacing
-    {
-        get => (double)GetValue(SpacingProperty);
-        set => SetValue(SpacingProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the horizontal spacing between grid columns.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Sets horizontal spacing between grid columns")]
-    public double HorizontalSpacing
-    {
-        get => (double)GetValue(HorizontalSpacingProperty);
-        set => SetValue(HorizontalSpacingProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the vertical spacing between grid rows.
-    /// </summary>
-    [Category("Layout")]
-    [Description("Sets vertical spacing between grid rows")]
-    public double VerticalSpacing
-    {
-        get => (double)GetValue(VerticalSpacingProperty);
-        set => SetValue(VerticalSpacingProperty, value);
-    }
+    [AttachedProperty(AccessModifier = PropertyAccessModifier.Private, GenerateClrAccessors = false)]
+    private static Thickness? appliedSpacingMargin;
 
     /// <summary>
     /// Measures the children of a <see cref="Grid" /> in anticipation of arranging them during the ArrangeOverride pass.

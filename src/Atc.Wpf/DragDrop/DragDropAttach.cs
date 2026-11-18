@@ -10,217 +10,57 @@ namespace Atc.Wpf.DragDrop;
 ///          atc:DragDropAttach.DropHandler="{Binding}" /&gt;
 /// </code>
 /// </example>
-public static class DragDropAttach
+public static partial class DragDropAttach
 {
     /// <summary>
-    /// Identifies the IsDragSource attached property.
+    /// Gets or sets the value of the IsDragSource attached property.
     /// </summary>
-    public static readonly DependencyProperty IsDragSourceProperty =
-        DependencyProperty.RegisterAttached(
-            "IsDragSource",
-            typeof(bool),
-            typeof(DragDropAttach),
-            new PropertyMetadata(false, OnIsDragSourceChanged));
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnIsDragSourceChanged),
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.ThrowArgumentNullException)]
+    private static bool isDragSource;
 
     /// <summary>
-    /// Identifies the IsDropTarget attached property.
+    /// Gets or sets the value of the IsDropTarget attached property.
     /// </summary>
-    public static readonly DependencyProperty IsDropTargetProperty =
-        DependencyProperty.RegisterAttached(
-            "IsDropTarget",
-            typeof(bool),
-            typeof(DragDropAttach),
-            new PropertyMetadata(false, OnIsDropTargetChanged));
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnIsDropTargetChanged),
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.ThrowArgumentNullException)]
+    private static bool isDropTarget;
 
     /// <summary>
-    /// Identifies the DropHandler attached property.
+    /// Gets or sets the value of the DropHandler attached property.
     /// </summary>
-    public static readonly DependencyProperty DropHandlerProperty =
-        DependencyProperty.RegisterAttached(
-            "DropHandler",
-            typeof(IDropHandler),
-            typeof(DragDropAttach),
-            new PropertyMetadata(default(IDropHandler)));
+    [AttachedProperty(TargetType = typeof(UIElement), NullElementHandling = NullElementHandling.ThrowArgumentNullException)]
+    private static IDropHandler? dropHandler;
 
     /// <summary>
-    /// Identifies the DragHandler attached property.
+    /// Gets or sets the value of the DragHandler attached property.
     /// </summary>
-    public static readonly DependencyProperty DragHandlerProperty =
-        DependencyProperty.RegisterAttached(
-            "DragHandler",
-            typeof(IDragHandler),
-            typeof(DragDropAttach),
-            new PropertyMetadata(default(IDragHandler)));
+    [AttachedProperty(TargetType = typeof(UIElement), NullElementHandling = NullElementHandling.ThrowArgumentNullException)]
+    private static IDragHandler? dragHandler;
 
     /// <summary>
-    /// Identifies the AllowedEffects attached property.
+    /// Gets or sets the value of the AllowedEffects attached property.
     /// </summary>
-    public static readonly DependencyProperty AllowedEffectsProperty =
-        DependencyProperty.RegisterAttached(
-            "AllowedEffects",
-            typeof(DragDropEffects),
-            typeof(DragDropAttach),
-            new PropertyMetadata(DragDropEffects.Move));
+    [AttachedProperty(DefaultValue = DragDropEffects.Move, TargetType = typeof(UIElement), NullElementHandling = NullElementHandling.ThrowArgumentNullException)]
+    private static DragDropEffects allowedEffects;
 
     /// <summary>
-    /// Identifies the ShowDragAdorner attached property.
+    /// Gets or sets the value of the ShowDragAdorner attached property.
     /// </summary>
-    public static readonly DependencyProperty ShowDragAdornerProperty =
-        DependencyProperty.RegisterAttached(
-            "ShowDragAdorner",
-            typeof(bool),
-            typeof(DragDropAttach),
-            new PropertyMetadata(true));
+    [AttachedProperty(DefaultValue = true, TargetType = typeof(UIElement), NullElementHandling = NullElementHandling.ThrowArgumentNullException)]
+    private static bool showDragAdorner;
 
     /// <summary>
-    /// Identifies the ShowDropIndicator attached property.
+    /// Gets or sets the value of the ShowDropIndicator attached property.
     /// </summary>
-    public static readonly DependencyProperty ShowDropIndicatorProperty =
-        DependencyProperty.RegisterAttached(
-            "ShowDropIndicator",
-            typeof(bool),
-            typeof(DragDropAttach),
-            new PropertyMetadata(true));
-
-    /// <summary>
-    /// Gets the value of the IsDragSource attached property.
-    /// </summary>
-    public static bool GetIsDragSource(UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        return (bool)element.GetValue(IsDragSourceProperty);
-    }
-
-    /// <summary>
-    /// Sets the value of the IsDragSource attached property.
-    /// </summary>
-    public static void SetIsDragSource(
-        UIElement element,
-        bool value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        element.SetValue(IsDragSourceProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the value of the IsDropTarget attached property.
-    /// </summary>
-    public static bool GetIsDropTarget(UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        return (bool)element.GetValue(IsDropTargetProperty);
-    }
-
-    /// <summary>
-    /// Sets the value of the IsDropTarget attached property.
-    /// </summary>
-    public static void SetIsDropTarget(
-        UIElement element,
-        bool value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        element.SetValue(IsDropTargetProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the value of the DropHandler attached property.
-    /// </summary>
-    public static IDropHandler? GetDropHandler(UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        return (IDropHandler?)element.GetValue(DropHandlerProperty);
-    }
-
-    /// <summary>
-    /// Sets the value of the DropHandler attached property.
-    /// </summary>
-    public static void SetDropHandler(
-        UIElement element,
-        IDropHandler? value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        element.SetValue(DropHandlerProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the value of the DragHandler attached property.
-    /// </summary>
-    public static IDragHandler? GetDragHandler(UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        return (IDragHandler?)element.GetValue(DragHandlerProperty);
-    }
-
-    /// <summary>
-    /// Sets the value of the DragHandler attached property.
-    /// </summary>
-    public static void SetDragHandler(
-        UIElement element,
-        IDragHandler? value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        element.SetValue(DragHandlerProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the value of the AllowedEffects attached property.
-    /// </summary>
-    public static DragDropEffects GetAllowedEffects(UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        return (DragDropEffects)element.GetValue(AllowedEffectsProperty);
-    }
-
-    /// <summary>
-    /// Sets the value of the AllowedEffects attached property.
-    /// </summary>
-    public static void SetAllowedEffects(
-        UIElement element,
-        DragDropEffects value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        element.SetValue(AllowedEffectsProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the value of the ShowDragAdorner attached property.
-    /// </summary>
-    public static bool GetShowDragAdorner(UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        return (bool)element.GetValue(ShowDragAdornerProperty);
-    }
-
-    /// <summary>
-    /// Sets the value of the ShowDragAdorner attached property.
-    /// </summary>
-    public static void SetShowDragAdorner(
-        UIElement element,
-        bool value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        element.SetValue(ShowDragAdornerProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the value of the ShowDropIndicator attached property.
-    /// </summary>
-    public static bool GetShowDropIndicator(UIElement element)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        return (bool)element.GetValue(ShowDropIndicatorProperty);
-    }
-
-    /// <summary>
-    /// Sets the value of the ShowDropIndicator attached property.
-    /// </summary>
-    public static void SetShowDropIndicator(
-        UIElement element,
-        bool value)
-    {
-        ArgumentNullException.ThrowIfNull(element);
-        element.SetValue(ShowDropIndicatorProperty, value);
-    }
+    [AttachedProperty(DefaultValue = true, TargetType = typeof(UIElement), NullElementHandling = NullElementHandling.ThrowArgumentNullException)]
+    private static bool showDropIndicator;
 
     private static void OnIsDragSourceChanged(
         DependencyObject d,

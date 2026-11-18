@@ -2,43 +2,15 @@ namespace Atc.Wpf.Helpers;
 
 /// <summary>Provides attached properties that set a dependency property on an element to a resource looked up by key.</summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public static class StaticResourceHelper
+public static partial class StaticResourceHelper
 {
-    /// <summary>Identifies the Property attached property.</summary>
-    public static readonly DependencyProperty PropertyProperty =
-        DependencyProperty.RegisterAttached(
-            "Property",
-            typeof(DependencyProperty),
-            typeof(StaticResourceHelper),
-            new PropertyMetadata(OnPropertyChanged));
+    /// <summary>Gets or sets the value of the Property attached property.</summary>
+    [AttachedProperty(PropertyChangedCallback = nameof(OnPropertyChanged), TargetType = typeof(FrameworkElement), NullElementHandling = NullElementHandling.None)]
+    private static DependencyProperty property;
 
-    /// <summary>Identifies the ResourceKey attached property.</summary>
-    public static readonly DependencyProperty ResourceKeyProperty =
-        DependencyProperty.RegisterAttached(
-            "ResourceKey",
-            typeof(object),
-            typeof(StaticResourceHelper),
-            new PropertyMetadata(OnResourceKeyChanged));
-
-    /// <summary>Gets the value of the Property attached property.</summary>
-    public static DependencyProperty GetProperty(FrameworkElement element)
-        => (DependencyProperty)element.GetValue(PropertyProperty);
-
-    /// <summary>Sets the value of the Property attached property.</summary>
-    public static void SetProperty(
-        FrameworkElement element,
-        DependencyProperty value)
-        => element.SetValue(PropertyProperty, value);
-
-    /// <summary>Gets the value of the ResourceKey attached property.</summary>
-    public static object GetResourceKey(FrameworkElement element)
-        => element.GetValue(ResourceKeyProperty);
-
-    /// <summary>Sets the value of the ResourceKey attached property.</summary>
-    public static void SetResourceKey(
-        FrameworkElement element,
-        object value)
-        => element.SetValue(ResourceKeyProperty, value);
+    /// <summary>Gets or sets the value of the ResourceKey attached property.</summary>
+    [AttachedProperty(PropertyChangedCallback = nameof(OnResourceKeyChanged), TargetType = typeof(FrameworkElement), NullElementHandling = NullElementHandling.None)]
+    private static object resourceKey;
 
     private static void OnPropertyChanged(
         DependencyObject d,

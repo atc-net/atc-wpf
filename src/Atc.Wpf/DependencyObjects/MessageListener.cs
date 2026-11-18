@@ -4,23 +4,13 @@ namespace Atc.Wpf.DependencyObjects;
 /// Message listener, singleton pattern.
 /// Inherit from DependencyObject to implement DataBinding.
 /// </summary>
-public sealed class MessageListener : DependencyObject
+public sealed partial class MessageListener : DependencyObject
 {
-    /// <summary>Identifies the <see cref="Message"/> dependency property.</summary>
-    public static readonly DependencyProperty MessageProperty = DependencyProperty.Register(
-        nameof(Message),
-        typeof(string),
-        typeof(MessageListener),
-        new PropertyMetadata(default(string)));
-
     /// <summary>
     /// Gets or sets the last received message.
     /// </summary>
-    public string Message
-    {
-        get => (string)GetValue(MessageProperty);
-        set => SetValue(MessageProperty, value);
-    }
+    [DependencyProperty]
+    private string message;
 
     private static MessageListener? messageListener;
 

@@ -11,7 +11,8 @@ namespace Atc.Wpf.Controls.Media;
 /// multiple controls to share the same drawing instance.
 /// </summary>
 [SuppressMessage("Style", "IDE0066:Convert switch statement to expression", Justification = "OK.")]
-public sealed class SvgImage : Control
+[DefaultStyleKey]
+public sealed partial class SvgImage : Control
 {
     /// <summary>Identifies the <see cref="Background"/> dependency property.</summary>
     public static new readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
@@ -20,12 +21,14 @@ public sealed class SvgImage : Control
         typeof(SvgImage),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnBackgroundChanged));
 
-    /// <summary>Identifies the <see cref="ControlSizeType"/> dependency property.</summary>
-    public static readonly DependencyProperty ControlSizeTypeProperty = DependencyProperty.Register(
-        nameof(ControlSizeType),
-        typeof(ControlSizeType),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(ControlSizeType.ContentToSizeNoStretch, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnControlSizeTypeChanged));
+    /// <summary>
+    /// Gets or sets how the SVG drawing is sized relative to the control.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = ControlSizeType.ContentToSizeNoStretch,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnControlSizeTypeChanged))]
+    private ControlSizeType controlSizeType;
 
     /// <summary>Identifies the <see cref="Source"/> dependency property.</summary>
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
@@ -34,68 +37,73 @@ public sealed class SvgImage : Control
         typeof(SvgImage),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnSourceChanged));
 
-    /// <summary>Identifies the <see cref="FileSource"/> dependency property.</summary>
-    public static readonly DependencyProperty FileSourceProperty = DependencyProperty.Register(
-        nameof(FileSource),
-        typeof(string),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnFileSourceChanged));
+    /// <summary>
+    /// Gets or sets the path of an SVG file on disk to display.
+    /// </summary>
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnFileSourceChanged))]
+    private string fileSource;
 
-    /// <summary>Identifies the <see cref="ImageSource"/> dependency property.</summary>
-    public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
-        nameof(ImageSource),
-        typeof(Drawing),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender, OnImageSourceChanged));
+    /// <summary>
+    /// Gets or sets a pre-rendered <see cref="Drawing"/> to display.
+    /// </summary>
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnImageSourceChanged))]
+    private Drawing imageSource;
 
-    /// <summary>Identifies the <see cref="UseAnimations"/> dependency property.</summary>
-    public static readonly DependencyProperty UseAnimationsProperty = DependencyProperty.Register(
-        nameof(UseAnimations),
-        typeof(bool),
-        typeof(SvgImage),
-        new PropertyMetadata(true));
+    /// <summary>
+    /// Gets or sets a value indicating whether SVG animations are rendered.
+    /// </summary>
+    [DependencyProperty(DefaultValue = true)]
+    private bool useAnimations;
 
-    /// <summary>Identifies the <see cref="OverrideColor"/> dependency property.</summary>
-    public static readonly DependencyProperty OverrideColorProperty = DependencyProperty.Register(
-        nameof(OverrideColor),
-        typeof(Color?),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(default(Color?), FrameworkPropertyMetadataOptions.AffectsRender, OverrideColorPropertyChanged));
+    /// <summary>
+    /// Gets or sets an optional color that replaces the fill (and, unless <see cref="OverrideStrokeColor"/> is set, stroke) colors of the SVG.
+    /// </summary>
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OverrideColorPropertyChanged))]
+    private Color? overrideColor;
 
-    /// <summary>Identifies the <see cref="OverrideStrokeColor"/> dependency property.</summary>
-    public static readonly DependencyProperty OverrideStrokeColorProperty = DependencyProperty.Register(
-        nameof(OverrideStrokeColor),
-        typeof(Color?),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(default(Color?), FrameworkPropertyMetadataOptions.AffectsRender, OverrideStrokeColorPropertyChanged));
+    /// <summary>
+    /// Gets or sets an optional color that replaces the stroke colors of the SVG.
+    /// </summary>
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OverrideStrokeColorPropertyChanged))]
+    private Color? overrideStrokeColor;
 
-    /// <summary>Identifies the <see cref="OverrideStrokeWidth"/> dependency property.</summary>
-    public static readonly DependencyProperty OverrideStrokeWidthProperty = DependencyProperty.Register(
-        nameof(OverrideStrokeWidth),
-        typeof(double?),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, OverrideStrokeWidthPropertyChanged));
+    /// <summary>
+    /// Gets or sets an optional width that replaces the stroke widths of the SVG.
+    /// </summary>
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OverrideStrokeWidthPropertyChanged))]
+    private double? overrideStrokeWidth;
 
-    /// <summary>Identifies the <see cref="CustomBrushes"/> dependency property.</summary>
-    public static readonly DependencyProperty CustomBrushesProperty = DependencyProperty.Register(
-        nameof(CustomBrushes),
-        typeof(Dictionary<string, Brush>),
-        typeof(SvgImage),
-        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender, CustomBrushesPropertyChanged));
+    /// <summary>
+    /// Gets or sets named brushes that replace the matching brushes used by the SVG.
+    /// </summary>
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(CustomBrushesPropertyChanged))]
+    private Dictionary<string, Brush> customBrushes;
 
-    /// <summary>Identifies the <see cref="ExternalFileLoader"/> dependency property.</summary>
-    public static readonly DependencyProperty ExternalFileLoaderProperty = DependencyProperty.Register(
-        nameof(ExternalFileLoader),
-        typeof(IExternalFileLoader),
-        typeof(SvgImage),
-        new PropertyMetadata(FileSystemLoader.Instance));
+    /// <summary>
+    /// Gets or sets the loader used to resolve external files referenced by the SVG.
+    /// </summary>
+    [DependencyProperty(DefaultValueExpression = "FileSystemLoader.Instance")]
+    private IExternalFileLoader externalFileLoader;
 
-    /// <summary>Identifies the <see cref="ImageFailed"/> routed event.</summary>
-    public static readonly RoutedEvent ImageFailedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ImageFailed),
-        RoutingStrategy.Bubble,
-        typeof(EventHandler<SvgImageFailedEventArgs>),
-        typeof(SvgImage));
+    /// <summary>
+    /// Occurs when the SVG image from <see cref="Source"/>, <see cref="FileSource"/> or <see cref="SetImage(string)"/>
+    /// cannot be loaded, e.g. a missing file, a missing resource or malformed SVG. The image then shows nothing.
+    /// Like <see cref="System.Windows.Controls.Image.ImageFailed"/>, the error is reported here instead of being thrown.
+    /// </summary>
+    [RoutedEvent(RoutingStrategy.Bubble, HandlerType = typeof(EventHandler<SvgImageFailedEventArgs>))]
+    private static readonly RoutedEvent imageFailed;
 
     private readonly TranslateTransform translateTransform = new();
     private readonly ScaleTransform scaleTransform = new();
@@ -118,15 +126,6 @@ public sealed class SvgImage : Control
     }
 
     /// <summary>
-    /// Gets or sets how the SVG drawing is sized relative to the control.
-    /// </summary>
-    public ControlSizeType ControlSizeType
-    {
-        get => (ControlSizeType)GetValue(ControlSizeTypeProperty);
-        set => SetValue(ControlSizeTypeProperty, value);
-    }
-
-    /// <summary>
     /// Gets or sets the relative URI of an application resource containing the SVG image.
     /// </summary>
     public string Source
@@ -135,83 +134,9 @@ public sealed class SvgImage : Control
         set => SetValue(SourceProperty, value);
     }
 
-    /// <summary>
-    /// Gets or sets the path of an SVG file on disk to display.
-    /// </summary>
-    public string FileSource
-    {
-        get => (string)GetValue(FileSourceProperty);
-        set => SetValue(FileSourceProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a pre-rendered <see cref="Drawing"/> to display.
-    /// </summary>
-    public Drawing ImageSource
-    {
-        get => (Drawing)GetValue(ImageSourceProperty);
-        set => SetValue(ImageSourceProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether SVG animations are rendered.
-    /// </summary>
-    public bool UseAnimations
-    {
-        get => (bool)GetValue(UseAnimationsProperty);
-        set => SetValue(UseAnimationsProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets an optional color that replaces the fill (and, unless <see cref="OverrideStrokeColor"/> is set, stroke) colors of the SVG.
-    /// </summary>
-    public Color? OverrideColor
-    {
-        get => (Color?)GetValue(OverrideColorProperty);
-        set => SetValue(OverrideColorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets an optional color that replaces the stroke colors of the SVG.
-    /// </summary>
-    public Color? OverrideStrokeColor
-    {
-        get => (Color?)GetValue(OverrideStrokeColorProperty);
-        set => SetValue(OverrideStrokeColorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets an optional width that replaces the stroke widths of the SVG.
-    /// </summary>
-    public double? OverrideStrokeWidth
-    {
-        get => (double?)GetValue(OverrideStrokeWidthProperty);
-        set => SetValue(OverrideStrokeWidthProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets named brushes that replace the matching brushes used by the SVG.
-    /// </summary>
-    public Dictionary<string, Brush> CustomBrushes
-    {
-        get => (Dictionary<string, Brush>)GetValue(CustomBrushesProperty);
-        set => SetValue(CustomBrushesProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the loader used to resolve external files referenced by the SVG.
-    /// </summary>
-    public IExternalFileLoader ExternalFileLoader
-    {
-        get => (IExternalFileLoader)GetValue(ExternalFileLoaderProperty);
-        set => SetValue(ExternalFileLoaderProperty, value);
-    }
-
     static SvgImage()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(SvgImage),
-            new FrameworkPropertyMetadata(typeof(SvgImage)));
+        OverrideDefaultStyleKey();
         ClipToBoundsProperty.OverrideMetadata(
             typeof(SvgImage),
             new FrameworkPropertyMetadata(defaultValue: true));
@@ -227,17 +152,6 @@ public sealed class SvgImage : Control
     {
         ClipToBounds = true;
         SnapsToDevicePixels = true;
-    }
-
-    /// <summary>
-    /// Occurs when the SVG image from <see cref="Source"/>, <see cref="FileSource"/> or <see cref="SetImage(string)"/>
-    /// cannot be loaded, e.g. a missing file, a missing resource or malformed SVG. The image then shows nothing.
-    /// Like <see cref="System.Windows.Controls.Image.ImageFailed"/>, the error is reported here instead of being thrown.
-    /// </summary>
-    public event EventHandler<SvgImageFailedEventArgs> ImageFailed
-    {
-        add => AddHandler(ImageFailedEvent, value);
-        remove => RemoveHandler(ImageFailedEvent, value);
     }
 
     internal Svg? Svg => svgRender?.Svg;
