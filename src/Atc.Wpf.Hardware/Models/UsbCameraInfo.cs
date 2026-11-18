@@ -6,6 +6,12 @@ namespace Atc.Wpf.Hardware.Models;
 public sealed partial class UsbCameraInfo : ObservableObject, IDeviceInfo
 {
     private string friendlyName;
+
+    /// <summary>
+    /// Gets a value indicating whether the camera interface is enabled.
+    /// Follows the camera being disabled or enabled while the service is watching.
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private bool isEnabled;
 
     /// <summary>
@@ -52,25 +58,6 @@ public sealed partial class UsbCameraInfo : ObservableObject, IDeviceInfo
     /// Gets where the camera is mounted on the enclosure.
     /// </summary>
     public CameraPanel Panel { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether the camera interface is enabled.
-    /// Follows the camera being disabled or enabled while the service is watching.
-    /// </summary>
-    public bool IsEnabled
-    {
-        get => isEnabled;
-        internal set
-        {
-            if (value == isEnabled)
-            {
-                return;
-            }
-
-            isEnabled = value;
-            RaisePropertyChanged();
-        }
-    }
 
     /// <summary>
     /// Gets the text shown for the camera: its name, followed by where it is mounted when that is known.

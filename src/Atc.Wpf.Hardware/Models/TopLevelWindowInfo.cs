@@ -5,6 +5,12 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class TopLevelWindowInfo : ObservableObject, IDeviceInfo
 {
+    /// <summary>
+    /// Gets the window title.
+    /// </summary>
+    [ObservableProperty(
+        DependentPropertyNames = [nameof(FriendlyName)],
+        SetterAccessModifier = PropertyAccessModifier.Internal)]
     private string title;
 
     /// <summary>
@@ -33,25 +39,6 @@ public sealed partial class TopLevelWindowInfo : ObservableObject, IDeviceInfo
     /// Gets the native window handle (<c>HWND</c>).
     /// </summary>
     public nint Handle { get; }
-
-    /// <summary>
-    /// Gets the window title.
-    /// </summary>
-    public string Title
-    {
-        get => title;
-        internal set
-        {
-            if (string.Equals(value, title, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            title = value;
-            RaisePropertyChanged();
-            RaisePropertyChanged(nameof(FriendlyName));
-        }
-    }
 
     /// <summary>
     /// Gets the window class name.

@@ -5,6 +5,12 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class RunningProcessInfo : ObservableObject, IDeviceInfo
 {
+    /// <summary>
+    /// Gets the title of the process's main window, or an empty string when it has none.
+    /// </summary>
+    [ObservableProperty(
+        DependentPropertyNames = [nameof(FriendlyName)],
+        SetterAccessModifier = PropertyAccessModifier.Internal)]
     private string mainWindowTitle;
 
     /// <summary>
@@ -35,25 +41,6 @@ public sealed partial class RunningProcessInfo : ObservableObject, IDeviceInfo
     /// Gets the name of the process.
     /// </summary>
     public string ProcessName { get; }
-
-    /// <summary>
-    /// Gets the title of the process's main window, or an empty string when it has none.
-    /// </summary>
-    public string MainWindowTitle
-    {
-        get => mainWindowTitle;
-        internal set
-        {
-            if (string.Equals(value, mainWindowTitle, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            mainWindowTitle = value;
-            RaisePropertyChanged();
-            RaisePropertyChanged(nameof(FriendlyName));
-        }
-    }
 
     /// <summary>
     /// Gets the full path of the process's main module, or <see langword="null"/> when it could not be read.

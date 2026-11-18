@@ -2,43 +2,12 @@
 namespace Atc.Wpf.Hardware;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
+[UseDependencyPropertyTemplate(
+    typeof(DevicePickerMembers),
+    Exclude = ["DeviceError", "AutoRefreshOnDeviceChange", "ResolvedItemTemplate", "HasSelectedStateMessage"])]
+[UseDependencyPropertyTemplate(typeof(LabelDevicePickerMembers<UsbCameraInfo?>))]
 public partial class LabelUsbCameraPicker : ILabelUsbCameraPicker
 {
-    /// <summary>
-    /// Identifies the <see cref="DeviceError"/> routed event.
-    /// </summary>
-    public static readonly RoutedEvent DeviceErrorEvent = DevicePickerEvents.DeviceErrorEvent.AddOwner(typeof(LabelUsbCameraPicker));
-
-    /// <summary>
-    /// Occurs when the picker inside this control could not start watching for device changes or could not read its device list.
-    /// </summary>
-    public event EventHandler<DeviceErrorRoutedEventArgs> DeviceError
-    {
-        add => AddHandler(DeviceErrorEvent, value);
-        remove => RemoveHandler(DeviceErrorEvent, value);
-    }
-
-    [DependencyProperty]
-    private UsbCameraInfo? value;
-
-    [DependencyProperty(DefaultValue = "")]
-    private string watermarkText;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool showRefreshButton;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool autoRefreshOnDeviceChange;
-
-    [DependencyProperty(DefaultValue = false)]
-    private bool clearValueOnDisconnect;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool autoRebindOnReconnect;
-
-    [DependencyProperty(DefaultValue = false)]
-    private bool autoSelectFirstAvailable;
-
     [DependencyProperty(DefaultValue = false)]
     private bool showLivePreview;
 
@@ -46,24 +15,10 @@ public partial class LabelUsbCameraPicker : ILabelUsbCameraPicker
     private double previewHeight;
 
     /// <summary>
-    /// Identifies the <see cref="PreferredFormat"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty PreferredFormatProperty = DependencyProperty.Register(
-        nameof(PreferredFormat),
-        typeof(UsbCameraFormat),
-        typeof(LabelUsbCameraPicker),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-    /// <summary>
     /// Gets or sets the preferred resolution and frame rate for the live preview; the device default is used when no exact match exists.
     /// </summary>
-    public UsbCameraFormat? PreferredFormat
-    {
-        get => (UsbCameraFormat?)GetValue(PreferredFormatProperty);
-        set => SetValue(PreferredFormatProperty, value);
-    }
+    [DependencyProperty(Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+    private UsbCameraFormat? preferredFormat;
 
     /// <summary>
     /// Occurs when the selection changes and passes validation.

@@ -5,8 +5,22 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class DisplayInfo : ObservableObject, IDeviceInfo
 {
+    /// <summary>
+    /// Gets the full bounds of the monitor in virtual-screen coordinates.
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private Rect bounds;
+
+    /// <summary>
+    /// Gets the working area of the monitor in virtual-screen coordinates, excluding taskbars and docked windows.
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private Rect workingArea;
+
+    /// <summary>
+    /// Gets a value indicating whether the monitor is the primary display.
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private bool isPrimary;
 
     /// <summary>
@@ -40,60 +54,6 @@ public sealed partial class DisplayInfo : ObservableObject, IDeviceInfo
     /// Gets the device name of the monitor, for example <c>\\.\DISPLAY1</c>.
     /// </summary>
     public string DeviceName { get; }
-
-    /// <summary>
-    /// Gets the full bounds of the monitor in virtual-screen coordinates.
-    /// </summary>
-    public Rect Bounds
-    {
-        get => bounds;
-        internal set
-        {
-            if (value == bounds)
-            {
-                return;
-            }
-
-            bounds = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets the working area of the monitor in virtual-screen coordinates, excluding taskbars and docked windows.
-    /// </summary>
-    public Rect WorkingArea
-    {
-        get => workingArea;
-        internal set
-        {
-            if (value == workingArea)
-            {
-                return;
-            }
-
-            workingArea = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether the monitor is the primary display.
-    /// </summary>
-    public bool IsPrimary
-    {
-        get => isPrimary;
-        internal set
-        {
-            if (value == isPrimary)
-            {
-                return;
-            }
-
-            isPrimary = value;
-            RaisePropertyChanged();
-        }
-    }
 
     /// <inheritdoc />
     public string DeviceId

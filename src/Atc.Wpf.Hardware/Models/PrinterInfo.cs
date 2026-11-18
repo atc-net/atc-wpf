@@ -5,7 +5,16 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class PrinterInfo : ObservableObject, IDeviceInfo
 {
+    /// <summary>
+    /// Gets a value indicating whether the queue is the default printer.
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private bool isDefault;
+
+    /// <summary>
+    /// Gets the status of the queue as text, for example "None" or "Paused".
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private string queueStatus;
 
     /// <summary>
@@ -52,42 +61,6 @@ public sealed partial class PrinterInfo : ObservableObject, IDeviceInfo
     /// Gets a value indicating whether the queue is shared.
     /// </summary>
     public bool IsShared { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether the queue is the default printer.
-    /// </summary>
-    public bool IsDefault
-    {
-        get => isDefault;
-        internal set
-        {
-            if (value == isDefault)
-            {
-                return;
-            }
-
-            isDefault = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets the status of the queue as text, for example "None" or "Paused".
-    /// </summary>
-    public string QueueStatus
-    {
-        get => queueStatus;
-        internal set
-        {
-            if (string.Equals(value, queueStatus, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            queueStatus = value;
-            RaisePropertyChanged();
-        }
-    }
 
     /// <inheritdoc />
     public string DeviceId

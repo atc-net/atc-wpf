@@ -6,34 +6,17 @@ internal sealed partial class LiveAudioInputMeter : UserControl, IDisposable, IA
     private const int RingCapacity = 200;
     private const int RenderIntervalMilliseconds = 33;
 
-    public static readonly DependencyProperty DeviceIdProperty = DependencyProperty.Register(
-        nameof(DeviceId),
-        typeof(string),
-        typeof(LiveAudioInputMeter),
-        new PropertyMetadata(defaultValue: null, OnDeviceIdChanged));
-
-    public string? DeviceId
-    {
-        get => (string?)GetValue(DeviceIdProperty);
-        set => SetValue(DeviceIdProperty, value);
-    }
-
-    public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
-        nameof(IsActive),
-        typeof(bool),
-        typeof(LiveAudioInputMeter),
-        new PropertyMetadata(defaultValue: false, OnIsActiveChanged));
-
-    public bool IsActive
-    {
-        get => (bool)GetValue(IsActiveProperty);
-        set => SetValue(IsActiveProperty, value);
-    }
-
     private readonly float[] ring = new float[RingCapacity];
     private readonly WaveformPointBuffers waveformPoints = new(RingCapacity);
     private readonly DispatcherTimer renderTimer;
     private readonly DeviceSessionCoordinator session;
+
+    [DependencyProperty(PropertyChangedCallback = nameof(OnDeviceIdChanged))]
+    private string? deviceId;
+
+    [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnIsActiveChanged))]
+    private bool isActive;
+
     private int ringHead;
     private float currentPeak;
 

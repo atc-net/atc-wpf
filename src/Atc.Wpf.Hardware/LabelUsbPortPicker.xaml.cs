@@ -2,45 +2,14 @@
 namespace Atc.Wpf.Hardware;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
+[UseDependencyPropertyTemplate(
+    typeof(DevicePickerMembers),
+    Exclude = ["DeviceError", "AutoRefreshOnDeviceChange", "ResolvedItemTemplate", "HasSelectedStateMessage"])]
+[UseDependencyPropertyTemplate(typeof(LabelDevicePickerMembers<UsbDeviceInfo?>))]
 public partial class LabelUsbPortPicker : ILabelUsbPortPicker
 {
-    /// <summary>
-    /// Identifies the <see cref="DeviceError"/> routed event.
-    /// </summary>
-    public static readonly RoutedEvent DeviceErrorEvent = DevicePickerEvents.DeviceErrorEvent.AddOwner(typeof(LabelUsbPortPicker));
-
-    /// <summary>
-    /// Occurs when the picker inside this control could not start watching for device changes or could not read its device list.
-    /// </summary>
-    public event EventHandler<DeviceErrorRoutedEventArgs> DeviceError
-    {
-        add => AddHandler(DeviceErrorEvent, value);
-        remove => RemoveHandler(DeviceErrorEvent, value);
-    }
-
-    [DependencyProperty]
-    private UsbDeviceInfo? value;
-
-    [DependencyProperty(DefaultValue = "")]
-    private string watermarkText;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool showRefreshButton;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool autoRefreshOnDeviceChange;
-
     [DependencyProperty(DefaultValue = false)]
     private bool detectInUseState;
-
-    [DependencyProperty(DefaultValue = false)]
-    private bool clearValueOnDisconnect;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool autoRebindOnReconnect;
-
-    [DependencyProperty(DefaultValue = false)]
-    private bool autoSelectFirstAvailable;
 
     [DependencyProperty(DefaultValue = UsbDeviceClassFilter.None)]
     private UsbDeviceClassFilter classFilter;
