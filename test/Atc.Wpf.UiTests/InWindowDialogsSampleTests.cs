@@ -46,6 +46,20 @@ public sealed class InWindowDialogsSampleTests : IDisposable
 
     [Trait("Category", "UI")]
     [Fact]
+    public void Confirmation_WithNoAsTheDefault_EnterAnswersFalse()
+    {
+        Invoke(mainWindow, "InWindowShowConfirmationNoIsDefault");
+        var no = FindByAutomationId(mainWindow, "DialogBoxNegativeButton");
+        WaitUntil(() => no.Properties.HasKeyboardFocus.ValueOrDefault);
+
+        Keyboard.Type(VirtualKeyShort.ENTER);
+
+        WaitUntil(() => ResultText() == "Confirmation (No is default): False");
+        Assert.Equal("Confirmation (No is default): False", ResultText());
+    }
+
+    [Trait("Category", "UI")]
+    [Fact]
     public void Escape_CancelsTheDialog()
     {
         Invoke(mainWindow, "InWindowShowOkCancel");

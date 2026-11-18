@@ -2,7 +2,7 @@ namespace Atc.Wpf.Sample.SamplesWpf.Dialogs;
 
 public sealed partial class DialogServiceViewModel : ViewModelBase
 {
-    private readonly IDialogService dialogService = new DialogService();
+    private readonly DialogService dialogService = new();
     private string lastResult = "(none)";
     private Color? selectedColor;
 
@@ -84,6 +84,25 @@ public sealed partial class DialogServiceViewModel : ViewModelBase
             .ShowConfirmation(
                 "Confirm Action",
                 "Are you sure you want to proceed\rwith this action?")
+            .ConfigureAwait(false);
+
+        LastResult = result
+            ? "Yes clicked"
+            : "No clicked";
+    }
+
+    [RelayCommand]
+    private async Task ShowConfirmationNoIsDefault()
+    {
+        // The settings give the title, the button texts and the default button: Enter answers No.
+        var settings = DialogBoxSettings.Create(DialogBoxType.YesNo);
+        settings.TitleBarText = "Delete File";
+        settings.DefaultButton = DialogBoxButton.Negative;
+
+        var result = await dialogService
+            .ShowConfirmation(
+                settings,
+                "Do you want to delete 'report.pdf'?\rEnter answers No.")
             .ConfigureAwait(false);
 
         LastResult = result

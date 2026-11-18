@@ -31,6 +31,17 @@ public sealed partial class InWindowDialogsViewModel : ViewModelBase
         => Result = $"Confirmation: {await dialogService.ShowConfirmation("Delete file", "Do you want to delete 'report.pdf'?").ConfigureAwait(true)}";
 
     [RelayCommand]
+    private async Task ShowConfirmationNoIsDefault()
+    {
+        // The settings give the title, the button texts and the default button: Enter answers No.
+        var settings = DialogBoxSettings.Create(DialogBoxType.YesNo);
+        settings.TitleBarText = "Delete file";
+        settings.DefaultButton = DialogBoxButton.Negative;
+
+        Result = $"Confirmation (No is default): {await dialogService.ShowConfirmation(settings, "Do you want to delete 'report.pdf'?").ConfigureAwait(true)}";
+    }
+
+    [RelayCommand]
     private async Task ShowOkCancel()
         => Result = $"OK / Cancel: {await dialogService.ShowOkCancel("Save changes", "Save the changes before closing?").ConfigureAwait(true)}";
 
