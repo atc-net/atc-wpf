@@ -2,271 +2,103 @@ namespace Atc.Wpf.Helpers;
 
 /// <summary>Provides attached properties for a <see cref="Slider"/>, such as thumb and track brushes and mouse wheel value changes.</summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public static class SliderHelper
+public static partial class SliderHelper
 {
-    /// <summary>Identifies the ThumbFillBrush attached property.</summary>
-    public static readonly DependencyProperty ThumbFillBrushProperty = DependencyProperty.RegisterAttached(
-        "ThumbFillBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+    /// <summary>Gets or sets the value of the ThumbFillBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? thumbFillBrush;
 
-    /// <summary>Gets the value of the ThumbFillBrush attached property.</summary>
-    public static Brush? GetThumbFillBrush(UIElement element)
-        => (Brush?)element.GetValue(ThumbFillBrushProperty);
+    /// <summary>Gets or sets the value of the ThumbFillHoverBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? thumbFillHoverBrush;
 
-    /// <summary>Sets the value of the ThumbFillBrush attached property.</summary>
-    public static void SetThumbFillBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(ThumbFillBrushProperty, value);
+    /// <summary>Gets or sets the value of the ThumbFillPressedBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? thumbFillPressedBrush;
 
-    /// <summary>Identifies the ThumbFillHoverBrush attached property.</summary>
-    public static readonly DependencyProperty ThumbFillHoverBrushProperty = DependencyProperty.RegisterAttached(
-        "ThumbFillHoverBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+    /// <summary>Gets or sets the value of the ThumbFillDisabledBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? thumbFillDisabledBrush;
 
-    /// <summary>Gets the value of the ThumbFillHoverBrush attached property.</summary>
-    public static Brush? GetThumbFillHoverBrush(UIElement element)
-        => (Brush?)element.GetValue(ThumbFillHoverBrushProperty);
+    /// <summary>Gets or sets the value of the TrackFillBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? trackFillBrush;
 
-    /// <summary>Sets the value of the ThumbFillHoverBrush attached property.</summary>
-    public static void SetThumbFillHoverBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(ThumbFillHoverBrushProperty, value);
+    /// <summary>Gets or sets the value of the TrackFillHoverBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? trackFillHoverBrush;
 
-    /// <summary>Identifies the ThumbFillPressedBrush attached property.</summary>
-    public static readonly DependencyProperty ThumbFillPressedBrushProperty = DependencyProperty.RegisterAttached(
-        "ThumbFillPressedBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+    /// <summary>Gets or sets the value of the TrackFillPressedBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? trackFillPressedBrush;
 
-    /// <summary>Gets the value of the ThumbFillPressedBrush attached property.</summary>
-    public static Brush? GetThumbFillPressedBrush(UIElement element)
-        => (Brush?)element.GetValue(ThumbFillPressedBrushProperty);
+    /// <summary>Gets or sets the value of the TrackFillDisabledBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? trackFillDisabledBrush;
 
-    /// <summary>Sets the value of the ThumbFillPressedBrush attached property.</summary>
-    public static void SetThumbFillPressedBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(ThumbFillPressedBrushProperty, value);
+    /// <summary>Gets or sets the value of the TrackValueFillBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? trackValueFillBrush;
 
-    /// <summary>Identifies the ThumbFillDisabledBrush attached property.</summary>
-    public static readonly DependencyProperty ThumbFillDisabledBrushProperty = DependencyProperty.RegisterAttached(
-        "ThumbFillDisabledBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+    /// <summary>Gets or sets the value of the TrackValueFillHoverBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? trackValueFillHoverBrush;
 
-    /// <summary>Gets the value of the ThumbFillDisabledBrush attached property.</summary>
-    public static Brush? GetThumbFillDisabledBrush(UIElement element)
-        => (Brush?)element.GetValue(ThumbFillDisabledBrushProperty);
+    /// <summary>Gets or sets the value of the TrackValueFillPressedBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? trackValueFillPressedBrush;
 
-    /// <summary>Sets the value of the ThumbFillDisabledBrush attached property.</summary>
-    public static void SetThumbFillDisabledBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(ThumbFillDisabledBrushProperty, value);
+    /// <summary>Gets or sets the value of the TrackValueFillDisabledBrush attached property.</summary>
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static Brush? trackValueFillDisabledBrush;
 
-    /// <summary>Identifies the TrackFillBrush attached property.</summary>
-    public static readonly DependencyProperty TrackFillBrushProperty = DependencyProperty.RegisterAttached(
-        "TrackFillBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
+    /// <summary>Gets or sets the value of the ChangeValueBy attached property.</summary>
+    [AttachedProperty(DefaultValue = MouseWheelChangeState.SmallChange, TargetType = typeof(UIElement), NullElementHandling = NullElementHandling.None)]
+    private static MouseWheelChangeState changeValueBy;
 
-    /// <summary>Gets the value of the TrackFillBrush attached property.</summary>
-    public static Brush? GetTrackFillBrush(UIElement element)
-        => (Brush?)element.GetValue(TrackFillBrushProperty);
-
-    /// <summary>Sets the value of the TrackFillBrush attached property.</summary>
-    public static void SetTrackFillBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(TrackFillBrushProperty, value);
-
-    /// <summary>Identifies the TrackFillHoverBrush attached property.</summary>
-    public static readonly DependencyProperty TrackFillHoverBrushProperty = DependencyProperty.RegisterAttached(
-        "TrackFillHoverBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>Gets the value of the TrackFillHoverBrush attached property.</summary>
-    public static Brush? GetTrackFillHoverBrush(UIElement element)
-        => (Brush?)element.GetValue(TrackFillHoverBrushProperty);
-
-    /// <summary>Sets the value of the TrackFillHoverBrush attached property.</summary>
-    public static void SetTrackFillHoverBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(TrackFillHoverBrushProperty, value);
-
-    /// <summary>Identifies the TrackFillPressedBrush attached property.</summary>
-    public static readonly DependencyProperty TrackFillPressedBrushProperty = DependencyProperty.RegisterAttached(
-        "TrackFillPressedBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>Gets the value of the TrackFillPressedBrush attached property.</summary>
-    public static Brush? GetTrackFillPressedBrush(UIElement element)
-        => (Brush?)element.GetValue(TrackFillPressedBrushProperty);
-
-    /// <summary>Sets the value of the TrackFillPressedBrush attached property.</summary>
-    public static void SetTrackFillPressedBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(TrackFillPressedBrushProperty, value);
-
-    /// <summary>Identifies the TrackFillDisabledBrush attached property.</summary>
-    public static readonly DependencyProperty TrackFillDisabledBrushProperty = DependencyProperty.RegisterAttached(
-        "TrackFillDisabledBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>Gets the value of the TrackFillDisabledBrush attached property.</summary>
-    public static Brush? GetTrackFillDisabledBrush(UIElement element)
-        => (Brush?)element.GetValue(TrackFillDisabledBrushProperty);
-
-    /// <summary>Sets the value of the TrackFillDisabledBrush attached property.</summary>
-    public static void SetTrackFillDisabledBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(TrackFillDisabledBrushProperty, value);
-
-    /// <summary>Identifies the TrackValueFillBrush attached property.</summary>
-    public static readonly DependencyProperty TrackValueFillBrushProperty = DependencyProperty.RegisterAttached(
-        "TrackValueFillBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>Gets the value of the TrackValueFillBrush attached property.</summary>
-    public static Brush? GetTrackValueFillBrush(UIElement element)
-        => (Brush?)element.GetValue(TrackValueFillBrushProperty);
-
-    /// <summary>Sets the value of the TrackValueFillBrush attached property.</summary>
-    public static void SetTrackValueFillBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(TrackValueFillBrushProperty, value);
-
-    /// <summary>Identifies the TrackValueFillHoverBrush attached property.</summary>
-    public static readonly DependencyProperty TrackValueFillHoverBrushProperty = DependencyProperty.RegisterAttached(
-        "TrackValueFillHoverBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>Gets the value of the TrackValueFillHoverBrush attached property.</summary>
-    public static Brush? GetTrackValueFillHoverBrush(UIElement element)
-        => (Brush?)element.GetValue(TrackValueFillHoverBrushProperty);
-
-    /// <summary>Sets the value of the TrackValueFillHoverBrush attached property.</summary>
-    public static void SetTrackValueFillHoverBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(TrackValueFillHoverBrushProperty, value);
-
-    /// <summary>Identifies the TrackValueFillPressedBrush attached property.</summary>
-    public static readonly DependencyProperty TrackValueFillPressedBrushProperty = DependencyProperty.RegisterAttached(
-        "TrackValueFillPressedBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>Gets the value of the TrackValueFillPressedBrush attached property.</summary>
-    public static Brush? GetTrackValueFillPressedBrush(UIElement element)
-        => (Brush?)element.GetValue(TrackValueFillPressedBrushProperty);
-
-    /// <summary>Sets the value of the TrackValueFillPressedBrush attached property.</summary>
-    public static void SetTrackValueFillPressedBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(TrackValueFillPressedBrushProperty, value);
-
-    /// <summary>Identifies the TrackValueFillDisabledBrush attached property.</summary>
-    public static readonly DependencyProperty TrackValueFillDisabledBrushProperty = DependencyProperty.RegisterAttached(
-        "TrackValueFillDisabledBrush",
-        typeof(Brush),
-        typeof(SliderHelper),
-        new FrameworkPropertyMetadata(
-            default(Brush),
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>Gets the value of the TrackValueFillDisabledBrush attached property.</summary>
-    public static Brush? GetTrackValueFillDisabledBrush(UIElement element)
-        => (Brush?)element.GetValue(TrackValueFillDisabledBrushProperty);
-
-    /// <summary>Sets the value of the TrackValueFillDisabledBrush attached property.</summary>
-    public static void SetTrackValueFillDisabledBrush(
-        UIElement element,
-        Brush? value)
-        => element.SetValue(TrackValueFillDisabledBrushProperty, value);
-
-    /// <summary>Identifies the ChangeValueBy attached property.</summary>
-    public static readonly DependencyProperty ChangeValueByProperty = DependencyProperty.RegisterAttached(
-        "ChangeValueBy",
-        typeof(MouseWheelChangeState),
-        typeof(SliderHelper),
-        new PropertyMetadata(MouseWheelChangeState.SmallChange));
-
-    /// <summary>Gets the value of the ChangeValueBy attached property.</summary>
-    public static MouseWheelChangeState GetChangeValueBy(UIElement element)
-        => (MouseWheelChangeState)element.GetValue(ChangeValueByProperty);
-
-    /// <summary>Sets the value of the ChangeValueBy attached property.</summary>
-    public static void SetChangeValueBy(
-        UIElement element,
-        MouseWheelChangeState value)
-        => element.SetValue(ChangeValueByProperty, value);
-
-    /// <summary>Identifies the EnableMouseWheel attached property.</summary>
-    public static readonly DependencyProperty EnableMouseWheelProperty = DependencyProperty.RegisterAttached(
-        "EnableMouseWheel",
-        typeof(MouseWheelState),
-        typeof(SliderHelper),
-        new PropertyMetadata(
-            MouseWheelState.None,
-            OnEnableMouseWheelChanged));
-
-    /// <summary>Gets the value of the EnableMouseWheel attached property.</summary>
-    public static MouseWheelState GetEnableMouseWheel(UIElement element)
-        => (MouseWheelState)element.GetValue(EnableMouseWheelProperty);
-
-    /// <summary>Sets the value of the EnableMouseWheel attached property.</summary>
-    public static void SetEnableMouseWheel(
-        UIElement element,
-        MouseWheelState value)
-        => element.SetValue(EnableMouseWheelProperty, value);
+    /// <summary>Gets or sets the value of the EnableMouseWheel attached property.</summary>
+    [AttachedProperty(
+        DefaultValue = MouseWheelState.None,
+        PropertyChangedCallback = nameof(OnEnableMouseWheelChanged),
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None)]
+    private static MouseWheelState enableMouseWheel;
 
     private static void OnEnableMouseWheelChanged(
         DependencyObject d,

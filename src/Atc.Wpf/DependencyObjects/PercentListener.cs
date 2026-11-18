@@ -4,23 +4,13 @@ namespace Atc.Wpf.DependencyObjects;
 /// Message listener, singleton pattern.
 /// Inherit from DependencyObject to implement DataBinding.
 /// </summary>
-public sealed class PercentListener : DependencyObject
+public sealed partial class PercentListener : DependencyObject
 {
-    /// <summary>Identifies the <see cref="Percent"/> dependency property.</summary>
-    public static readonly DependencyProperty PercentProperty = DependencyProperty.Register(
-        nameof(Percent),
-        typeof(double),
-        typeof(PercentListener),
-        new PropertyMetadata(default(double)));
-
     /// <summary>
     /// Gets or sets the last received percent value (0-100).
     /// </summary>
-    public double Percent
-    {
-        get => (double)GetValue(PercentProperty);
-        set => SetValue(PercentProperty, value);
-    }
+    [DependencyProperty]
+    private double percent;
 
     private static PercentListener? percentListener;
 

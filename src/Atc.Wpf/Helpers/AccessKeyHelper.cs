@@ -4,18 +4,16 @@ namespace Atc.Wpf.Helpers;
 /// Class used to manage generic scoping of access keys.
 /// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public static class AccessKeyHelper
+public static partial class AccessKeyHelper
 {
     /// <summary>
     /// Identifies the IsAccessKeyScope attached dependency property.
     /// </summary>
-    public static readonly DependencyProperty IsAccessKeyScopeProperty = DependencyProperty.RegisterAttached(
-        "IsAccessKeyScope",
-        typeof(bool),
-        typeof(AccessKeyHelper),
-        new PropertyMetadata(
-            BooleanBoxes.FalseBox,
-            HandleIsAccessKeyScopePropertyChanged));
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(HandleIsAccessKeyScopePropertyChanged),
+        GenerateClrAccessors = false)]
+    private static bool isAccessKeyScope;
 
     /// <summary>
     /// Sets the IsAccessKeyScope attached property value for the specified object

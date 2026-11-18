@@ -4,36 +4,22 @@ namespace Atc.Wpf.Helpers;
 
 /// <summary>Provides attached properties for a <see cref="TextBlock"/>, such as a bindable collection of inline runs.</summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public static class TextBlockHelper
+public static partial class TextBlockHelper
 {
-    /// <summary>Identifies the Inlines attached property.</summary>
-    public static readonly DependencyProperty InlinesProperty = DependencyProperty.RegisterAttached(
-        "Inlines",
-        typeof(ObservableCollection<Run>),
-        typeof(TextBlockHelper),
-        new UIPropertyMetadata(
-            defaultValue: null,
-            OnInlinesChanged));
+    /// <summary>Gets or sets the value of the Inlines attached property.</summary>
+    [AttachedProperty(
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        PropertyChangedCallback = nameof(OnInlinesChanged),
+        ElementParameterName = "d",
+        NullElementHandling = NullElementHandling.None)]
+    private static ObservableCollection<Run> inlines;
 
     /// <summary>
     /// Holds the per-TextBlock CollectionChanged handler so it can be removed from the
     /// previous collection when <see cref="InlinesProperty"/> changes.
     /// </summary>
-    private static readonly DependencyProperty InlinesCollectionChangedHandlerProperty = DependencyProperty.RegisterAttached(
-        "InlinesCollectionChangedHandler",
-        typeof(NotifyCollectionChangedEventHandler),
-        typeof(TextBlockHelper),
-        new PropertyMetadata(defaultValue: null));
-
-    /// <summary>Gets the value of the Inlines attached property.</summary>
-    public static ObservableCollection<Run> GetInlines(DependencyObject d)
-        => (ObservableCollection<Run>)d.GetValue(InlinesProperty);
-
-    /// <summary>Sets the value of the Inlines attached property.</summary>
-    public static void SetInlines(
-        DependencyObject d,
-        ObservableCollection<Run> value)
-        => d.SetValue(InlinesProperty, value);
+    [AttachedProperty(AccessModifier = PropertyAccessModifier.Private, GenerateClrAccessors = false)]
+    private static NotifyCollectionChangedEventHandler inlinesCollectionChangedHandler;
 
     private static void OnInlinesChanged(
         DependencyObject d,
@@ -53,16 +39,16 @@ public static class TextBlockHelper
         textBlock.ClearValue(InlinesCollectionChangedHandlerProperty);
         textBlock.Inlines.Clear();
 
-        if (e.NewValue is not ObservableCollection<Run> inlines)
+        if (e.NewValue is not ObservableCollection<Run> newInlines)
         {
             return;
         }
 
-        textBlock.Inlines.AddRange(inlines);
+        textBlock.Inlines.AddRange(newInlines);
 
-        NotifyCollectionChangedEventHandler handler = (_, args) => OnCollectionChangedHandler(textBlock, inlines, args);
+        NotifyCollectionChangedEventHandler handler = (_, args) => OnCollectionChangedHandler(textBlock, newInlines, args);
         textBlock.SetValue(InlinesCollectionChangedHandlerProperty, handler);
-        inlines.CollectionChanged += handler;
+        newInlines.CollectionChanged += handler;
     }
 
     private static void OnCollectionChangedHandler(

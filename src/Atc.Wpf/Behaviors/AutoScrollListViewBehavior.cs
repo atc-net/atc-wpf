@@ -8,47 +8,21 @@ namespace Atc.Wpf.Behaviors;
 /// dispatcher at <see cref="DispatcherPriority.Background"/>, so it runs after the window has drawn the changes.
 /// Adding thousands of items one by one therefore costs one layout pass, not one per item.
 /// </remarks>
-public sealed class AutoScrollListViewBehavior : Behavior<ListView>
+public sealed partial class AutoScrollListViewBehavior : Behavior<ListView>
 {
-    /// <summary>
-    /// Identifies the <see cref="ScrollDirection"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ScrollDirectionProperty =
-        DependencyProperty.Register(
-            nameof(ScrollDirection),
-            typeof(ScrollDirectionType),
-            typeof(AutoScrollListViewBehavior),
-            new PropertyMetadata(ScrollDirectionType.Bottom));
-
     /// <summary>
     /// Gets or sets the direction to scroll to after items change (default is <see cref="ScrollDirectionType.Bottom"/>).
     /// </summary>
-    public ScrollDirectionType ScrollDirection
-    {
-        get => (ScrollDirectionType)GetValue(ScrollDirectionProperty);
-        set => SetValue(ScrollDirectionProperty, value);
-    }
+    [DependencyProperty(DefaultValue = ScrollDirectionType.Bottom)]
+    private ScrollDirectionType scrollDirection;
 
     private bool isScrollPending;
 
     /// <summary>
-    /// Identifies the <see cref="IsEnabled"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IsEnabledProperty =
-        DependencyProperty.Register(
-            nameof(IsEnabled),
-            typeof(bool),
-            typeof(AutoScrollListViewBehavior),
-            new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    /// <summary>
     /// Gets or sets a value indicating whether auto-scrolling is enabled.
     /// </summary>
-    public bool IsEnabled
-    {
-        get => (bool)GetValue(IsEnabledProperty);
-        set => SetValue(IsEnabledProperty, value);
-    }
+    [DependencyProperty(DefaultValue = false)]
+    private bool isEnabled;
 
     /// <inheritdoc />
     protected override void OnAttached()

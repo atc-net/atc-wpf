@@ -4,47 +4,41 @@ namespace Atc.Wpf.Animation;
 /// Provides attached properties for declarative XAML-based animations.
 /// </summary>
 [SuppressMessage("Usage", "MA0134:Observe result of async calls", Justification = "OK - Fire-and-forget animation in XAML callbacks.")]
-public static class AnimateAttach
+public static partial class AnimateAttach
 {
     /// <summary>
     /// Identifies the OnLoaded attached property.
     /// When set to a non-None value, the animation runs when the element is loaded.
     /// </summary>
-    public static readonly DependencyProperty OnLoadedProperty = DependencyProperty.RegisterAttached(
-        "OnLoaded",
-        typeof(AnimationKind),
-        typeof(AnimateAttach),
-        new PropertyMetadata(AnimationKind.None, OnOnLoadedChanged));
+    [AttachedProperty(
+        DefaultValue = AnimationKind.None,
+        PropertyChangedCallback = nameof(OnOnLoadedChanged),
+        GenerateClrAccessors = false)]
+    private static AnimationKind onLoaded;
 
     /// <summary>
     /// Identifies the OnVisible attached property.
     /// When set to a non-None value, the animation runs each time the element becomes visible.
     /// </summary>
-    public static readonly DependencyProperty OnVisibleProperty = DependencyProperty.RegisterAttached(
-        "OnVisible",
-        typeof(AnimationKind),
-        typeof(AnimateAttach),
-        new PropertyMetadata(AnimationKind.None, OnOnVisibleChanged));
+    [AttachedProperty(
+        DefaultValue = AnimationKind.None,
+        PropertyChangedCallback = nameof(OnOnVisibleChanged),
+        GenerateClrAccessors = false)]
+    private static AnimationKind onVisible;
 
     /// <summary>
     /// Identifies the Duration attached property.
     /// Specifies the animation duration in milliseconds.
     /// </summary>
-    public static readonly DependencyProperty DurationProperty = DependencyProperty.RegisterAttached(
-        "Duration",
-        typeof(double),
-        typeof(AnimateAttach),
-        new PropertyMetadata(300d));
+    [AttachedProperty(DefaultValue = 300d, GenerateClrAccessors = false)]
+    private static double duration;
 
     /// <summary>
     /// Identifies the SlideDistance attached property.
     /// Specifies the slide distance in pixels for slide animations.
     /// </summary>
-    public static readonly DependencyProperty SlideDistanceProperty = DependencyProperty.RegisterAttached(
-        "SlideDistance",
-        typeof(double),
-        typeof(AnimateAttach),
-        new PropertyMetadata(50d));
+    [AttachedProperty(DefaultValue = 50d, GenerateClrAccessors = false)]
+    private static double slideDistance;
 
     /// <summary>
     /// Gets the OnLoaded animation kind for the specified element.
@@ -128,13 +122,13 @@ public static class AnimateAttach
 
     private static AnimationParameters BuildParameters(DependencyObject obj)
     {
-        var duration = GetDuration(obj);
-        var slideDistance = GetSlideDistance(obj);
+        var durationInMs = GetDuration(obj);
+        var distance = GetSlideDistance(obj);
 
         return new AnimationParameters
         {
-            Duration = TimeSpan.FromMilliseconds(duration),
-            SlideDistance = slideDistance,
+            Duration = TimeSpan.FromMilliseconds(durationInMs),
+            SlideDistance = distance,
         };
     }
 

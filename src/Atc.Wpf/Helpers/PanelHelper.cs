@@ -28,18 +28,17 @@ namespace Atc.Wpf.Helpers;
 /// </WrapPanel>/// ]]>
 /// </example>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public static class PanelHelper
+public static partial class PanelHelper
 {
     private static readonly Thickness ZeroThickness = new(0);
 
     /// <summary>Identifies the Spacing attached property.</summary>
-    public static readonly DependencyProperty SpacingProperty = DependencyProperty.RegisterAttached(
-        "Spacing",
-        typeof(double),
-        typeof(PanelHelper),
-        new UIPropertyMetadata(
-            defaultValue: 0d,
-            OnSpacingChanged));
+    [AttachedProperty(
+        DefaultValue = 0d,
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        PropertyChangedCallback = nameof(OnSpacingChanged),
+        GenerateClrAccessors = false)]
+    private static double spacing;
 
     /// <summary>Gets the value of the Spacing attached property.</summary>
     public static double GetSpacing(DependencyObject obj)
@@ -52,13 +51,12 @@ public static class PanelHelper
         => obj.SetValue(SpacingProperty, space);
 
     /// <summary>Identifies the HorizontalSpacing attached property.</summary>
-    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.RegisterAttached(
-        "HorizontalSpacing",
-        typeof(double),
-        typeof(PanelHelper),
-        new UIPropertyMetadata(
-            defaultValue: 0d,
-            OnHorizontalSpacingChanged));
+    [AttachedProperty(
+        DefaultValue = 0d,
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        PropertyChangedCallback = nameof(OnHorizontalSpacingChanged),
+        GenerateClrAccessors = false)]
+    private static double horizontalSpacing;
 
     /// <summary>Gets the value of the HorizontalSpacing attached property.</summary>
     public static double GetHorizontalSpacing(DependencyObject obj)
@@ -70,33 +68,22 @@ public static class PanelHelper
         double space)
         => obj.SetValue(HorizontalSpacingProperty, space);
 
-    /// <summary>Identifies the VerticalSpacing attached property.</summary>
-    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.RegisterAttached(
-        "VerticalSpacing",
-        typeof(double),
-        typeof(PanelHelper),
-        new UIPropertyMetadata(
-            defaultValue: 0d,
-            OnVerticalSpacingChanged));
-
-    /// <summary>Gets the value of the VerticalSpacing attached property.</summary>
-    public static double GetVerticalSpacing(DependencyObject obj)
-        => (double)obj.GetValue(VerticalSpacingProperty);
-
-    /// <summary>Sets the value of the VerticalSpacing attached property.</summary>
-    public static void SetVerticalSpacing(
-        DependencyObject obj,
-        double value)
-        => obj.SetValue(VerticalSpacingProperty, value);
+    /// <summary>Gets or sets the value of the VerticalSpacing attached property.</summary>
+    [AttachedProperty(
+        DefaultValue = 0d,
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        PropertyChangedCallback = nameof(OnVerticalSpacingChanged),
+        ElementParameterName = "obj",
+        NullElementHandling = NullElementHandling.None)]
+    private static double verticalSpacing;
 
     /// <summary>Identifies the ItemMargin attached property.</summary>
-    public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.RegisterAttached(
-        "ItemMargin",
-        typeof(Thickness),
-        typeof(PanelHelper),
-        new UIPropertyMetadata(
-            new Thickness(0),
-            OnItemMarginChanged));
+    [AttachedProperty(
+        DefaultValueExpression = "new Thickness(0)",
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        PropertyChangedCallback = nameof(OnItemMarginChanged),
+        GenerateClrAccessors = false)]
+    private static Thickness itemMargin;
 
     /// <summary>Gets the value of the ItemMargin attached property.</summary>
     public static Thickness GetItemMargin(DependencyObject obj)
@@ -108,13 +95,12 @@ public static class PanelHelper
         => obj.SetValue(ItemMarginProperty, value);
 
     /// <summary>Identifies the LastItemMargin attached property.</summary>
-    public static readonly DependencyProperty LastItemMarginProperty = DependencyProperty.RegisterAttached(
-        "LastItemMargin",
-        typeof(Thickness),
-        typeof(PanelHelper),
-        new UIPropertyMetadata(
-            new Thickness(0),
-            OnItemMarginChanged));
+    [AttachedProperty(
+        DefaultValueExpression = "new Thickness(0)",
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        PropertyChangedCallback = nameof(OnItemMarginChanged),
+        GenerateClrAccessors = false)]
+    private static Thickness lastItemMargin;
 
     /// <summary>Gets the value of the LastItemMargin attached property.</summary>
     public static Thickness GetLastItemMargin(DependencyObject obj)
@@ -290,7 +276,7 @@ public static class PanelHelper
         }
 
         var lastShownIndex = children.FindLastIndex(x => x.Visibility != Visibility.Collapsed);
-        var itemMargin = GetItemMargin(panel);
+        var panelItemMargin = GetItemMargin(panel);
         var isSpacing = IsSpacingSet(panel);
 
         for (var i = 0; i < children.Count; i++)
@@ -303,8 +289,8 @@ public static class PanelHelper
             else
             {
                 var margin = isSpacing
-                    ? GetSpacingMargin(panel, child, itemMargin)
-                    : itemMargin;
+                    ? GetSpacingMargin(panel, child, panelItemMargin)
+                    : panelItemMargin;
                 ApplyMargin(child, margin);
             }
         }
@@ -348,15 +334,15 @@ public static class PanelHelper
         FrameworkElement element,
         Thickness margin)
     {
-        var appliedMargin = (Thickness?)element.GetValue(AppliedMarginProperty);
-        var ownsMargin = appliedMargin.HasValue && element.Margin == appliedMargin.Value;
+        var lastApplied = (Thickness?)element.GetValue(AppliedMarginProperty);
+        var ownsMargin = lastApplied.HasValue && element.Margin == lastApplied.Value;
 
         if (!ownsMargin &&
             DependencyPropertyHelper.GetValueSource(element, FrameworkElement.MarginProperty).BaseValueSource is BaseValueSource.Local)
         {
             // The margin was set locally by the user (value or binding) - leave it alone.
             // Style/theme margins are still replaced, as before.
-            if (appliedMargin.HasValue)
+            if (lastApplied.HasValue)
             {
                 element.ClearValue(AppliedMarginProperty);
             }
@@ -376,23 +362,14 @@ public static class PanelHelper
     /// Remembers the margin <see cref="PanelHelper"/> last applied to a child, so later
     /// spacing changes can be re-applied without overwriting a margin the user set.
     /// </summary>
-    private static readonly DependencyProperty AppliedMarginProperty = DependencyProperty.RegisterAttached(
-        "AppliedMargin",
-        typeof(Thickness?),
-        typeof(PanelHelper),
-        new PropertyMetadata(defaultValue: null));
+    [AttachedProperty(AccessModifier = PropertyAccessModifier.Private, GenerateClrAccessors = false)]
+    private static Thickness? appliedMargin;
 
-    private static readonly DependencyProperty LayoutUpdatedHandlerProperty = DependencyProperty.RegisterAttached(
-        "LayoutUpdatedHandler",
-        typeof(EventHandler),
-        typeof(PanelHelper),
-        new PropertyMetadata(defaultValue: null));
+    [AttachedProperty(AccessModifier = PropertyAccessModifier.Private, GenerateClrAccessors = false)]
+    private static EventHandler layoutUpdatedHandler;
 
-    private static readonly DependencyProperty ChildrenSnapshotProperty = DependencyProperty.RegisterAttached(
-        "ChildrenSnapshot",
-        typeof(ChildrenSnapshot),
-        typeof(PanelHelper),
-        new PropertyMetadata(defaultValue: null));
+    [AttachedProperty(AccessModifier = PropertyAccessModifier.Private, GenerateClrAccessors = false)]
+    private static ChildrenSnapshot childrenSnapshot;
 
     /// <summary>
     /// A cheap fingerprint of a panel's children (count, the last child, which children are collapsed,
