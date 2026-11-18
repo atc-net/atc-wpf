@@ -81,6 +81,28 @@ public class InWindowDialogService : IDialogService
             () => fallback.ShowConfirmation(title, message, cancellationToken),
             cancellationToken);
 
+    /// <summary>
+    /// Shows a confirmation dialog inside the window with the given settings: its title, button texts and
+    /// default button, for example <see cref="DialogBoxButton.Negative"/> so that Enter answers No to a question
+    /// that deletes something.
+    /// </summary>
+    /// <param name="settings">The dialog settings; <see cref="DialogBoxSettings.TitleBarText"/> is the title.</param>
+    /// <param name="message">The question.</param>
+    /// <param name="cancellationToken">Optional cancellation token. Cancelling it closes the dialog if it is open and cancels the returned task.</param>
+    /// <returns>True if the user answered with the affirmative button, false otherwise.</returns>
+    public Task<bool> ShowConfirmation(
+        DialogBoxSettings settings,
+        string message,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(settings);
+
+        return Show(
+            () => ShowMessage(settings.TitleBarText, message, settings, cancellationToken),
+            () => WindowedFallback().ShowConfirmation(settings, message, cancellationToken),
+            cancellationToken);
+    }
+
     /// <inheritdoc />
     public Task<bool> ShowOkCancel(
         string title,
