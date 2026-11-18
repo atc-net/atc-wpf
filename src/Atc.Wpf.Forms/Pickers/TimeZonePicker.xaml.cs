@@ -13,64 +13,27 @@ public partial class TimeZonePicker
     private static readonly RoutedEvent valueChanged;
 
     /// <summary>
-    /// Identifies the <see cref="Value"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(TimeZoneInfo),
-        typeof(TimeZonePicker),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnValuePropertyChanged));
-
-    /// <summary>
     /// Gets or sets the selected time zone; binds two-way by default.
     /// </summary>
-    public TimeZoneInfo? Value
-    {
-        get => (TimeZoneInfo?)GetValue(ValueProperty);
-        set => SetValue(ValueProperty, value);
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnValuePropertyChanged))]
+    private TimeZoneInfo? value;
 
     [DependencyProperty(DefaultValue = "")]
     private string watermarkText;
 
     /// <summary>
-    /// Identifies the <see cref="ItemTemplate"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-        nameof(ItemTemplate),
-        typeof(DataTemplate),
-        typeof(TimeZonePicker),
-        new PropertyMetadata(defaultValue: null, OnItemTemplateChanged));
-
-    /// <summary>
     /// Gets or sets a custom template for the time zone items; when <see langword="null"/>, the built-in template is used.
     /// </summary>
-    public DataTemplate? ItemTemplate
-    {
-        get => (DataTemplate?)GetValue(ItemTemplateProperty);
-        set => SetValue(ItemTemplateProperty, value);
-    }
-
-    /// <summary>
-    /// Identifies the <see cref="ResolvedItemTemplate"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ResolvedItemTemplateProperty = DependencyProperty.Register(
-        nameof(ResolvedItemTemplate),
-        typeof(DataTemplate),
-        typeof(TimeZonePicker),
-        new PropertyMetadata(defaultValue: null));
+    [DependencyProperty(PropertyChangedCallback = nameof(OnItemTemplateChanged))]
+    private DataTemplate? itemTemplate;
 
     /// <summary>
     /// Gets the item template in use: <see cref="ItemTemplate"/> if set, otherwise the built-in template.
     /// </summary>
-    public DataTemplate? ResolvedItemTemplate
-    {
-        get => (DataTemplate?)GetValue(ResolvedItemTemplateProperty);
-        private set => SetValue(ResolvedItemTemplateProperty, value);
-    }
+    [DependencyProperty(SetterAccessModifier = PropertyAccessModifier.Private)]
+    private DataTemplate? resolvedItemTemplate;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TimeZonePicker"/> class.

@@ -12,16 +12,16 @@ namespace Atc.Wpf.Forms;
 public partial class LabelMultiColumnComboBox : ILabelMultiColumnComboBox
 {
     /// <summary>
-    /// Identifies the <see cref="ItemsSource"/> dependency property.
+    /// Gets or sets the objects shown as rows.
     /// </summary>
-    public static readonly DependencyProperty ItemsSourceProperty = MultiColumnComboBox.ItemsSourceProperty.AddOwner(
-        typeof(LabelMultiColumnComboBox));
+    [DependencyProperty(AddOwnerOf = typeof(MultiColumnComboBox))]
+    private IEnumerable? itemsSource;
 
     /// <summary>
-    /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
+    /// Gets or sets the maximum height of the pop-up; the grid scrolls (virtualized) beyond it.
     /// </summary>
-    public static readonly DependencyProperty MaxDropDownHeightProperty = MultiColumnComboBox.MaxDropDownHeightProperty.AddOwner(
-        typeof(LabelMultiColumnComboBox));
+    [DependencyProperty(AddOwnerOf = typeof(MultiColumnComboBox))]
+    private double maxDropDownHeight;
 
     /// <summary>
     /// The (dotted) property path of an item's key; empty uses the item's <see cref="object.ToString"/>.
@@ -210,28 +210,10 @@ public partial class LabelMultiColumnComboBox : ILabelMultiColumnComboBox
     }
 
     /// <summary>
-    /// Gets or sets the objects shown as rows.
-    /// </summary>
-    public IEnumerable? ItemsSource
-    {
-        get => (IEnumerable?)GetValue(ItemsSourceProperty);
-        set => SetValue(ItemsSourceProperty, value);
-    }
-
-    /// <summary>
     /// Gets the grid columns after the check-box column (the inner drop-down's own collection), as on
     /// <see cref="DataGrid"/>.
     /// </summary>
     public ObservableCollection<DataGridColumn> Columns => PartComboBox.Columns;
-
-    /// <summary>
-    /// Gets or sets the maximum height of the pop-up; the grid scrolls (virtualized) beyond it.
-    /// </summary>
-    public double MaxDropDownHeight
-    {
-        get => (double)GetValue(MaxDropDownHeightProperty);
-        set => SetValue(MaxDropDownHeightProperty, value);
-    }
 
     /// <summary>
     /// Gets the inner multi-column drop-down.

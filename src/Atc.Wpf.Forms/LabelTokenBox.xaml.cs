@@ -8,28 +8,30 @@ namespace Atc.Wpf.Forms;
 public partial class LabelTokenBox : ILabelTokenBox
 {
     /// <summary>
-    /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
+    /// Gets or sets the maximum height of the suggestion pop-up.
     /// </summary>
-    public static readonly DependencyProperty MaxDropDownHeightProperty = TokenBox.MaxDropDownHeightProperty.AddOwner(
-        typeof(LabelTokenBox));
+    [DependencyProperty(AddOwnerOf = typeof(TokenBox))]
+    private double maxDropDownHeight;
 
     /// <summary>
-    /// Identifies the <see cref="CreateValidator"/> dependency property.
+    /// Gets or sets the check of a new value: it returns an error text to reject the value, or <see langword="null"/>
+    /// to accept it.
     /// </summary>
-    public static readonly DependencyProperty CreateValidatorProperty = TokenBox.CreateValidatorProperty.AddOwner(
-        typeof(LabelTokenBox));
+    [DependencyProperty(AddOwnerOf = typeof(TokenBox))]
+    private Func<string, string?>? createValidator;
 
     /// <summary>
-    /// Identifies the <see cref="CustomFilter"/> dependency property.
+    /// Gets or sets the filter used when <see cref="FilterMode"/> is <see cref="TokenFilterMode.Custom"/>.
     /// </summary>
-    public static readonly DependencyProperty CustomFilterProperty = TokenBox.CustomFilterProperty.AddOwner(
-        typeof(LabelTokenBox));
+    [DependencyProperty(AddOwnerOf = typeof(TokenBox))]
+    private Func<string, KeyValuePair<string, string>, bool>? customFilter;
 
     /// <summary>
-    /// Identifies the <see cref="SuggestionsProvider"/> dependency property.
+    /// Gets or sets an asynchronous lookup that replaces the filtering of <see cref="Items"/> (debounced by
+    /// <see cref="SuggestionDelay"/>; a new keystroke cancels the previous lookup).
     /// </summary>
-    public static readonly DependencyProperty SuggestionsProviderProperty = TokenBox.SuggestionsProviderProperty.AddOwner(
-        typeof(LabelTokenBox));
+    [DependencyProperty(AddOwnerOf = typeof(TokenBox))]
+    private Func<string, CancellationToken, Task<IReadOnlyList<KeyValuePair<string, string>>>>? suggestionsProvider;
 
     /// <summary>
     /// The known values, keyed by their selection key, with their display value.
@@ -201,44 +203,6 @@ public partial class LabelTokenBox : ILabelTokenBox
 
         PartTokenBox.SelectedKeysChanged += OnTokenBoxSelectedKeysChanged;
         PartTokenBox.TokenCreating += OnTokenBoxTokenCreating;
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum height of the suggestion pop-up.
-    /// </summary>
-    public double MaxDropDownHeight
-    {
-        get => (double)GetValue(MaxDropDownHeightProperty);
-        set => SetValue(MaxDropDownHeightProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the check of a new value: it returns an error text to reject the value, or <see langword="null"/>
-    /// to accept it.
-    /// </summary>
-    public Func<string, string?>? CreateValidator
-    {
-        get => (Func<string, string?>?)GetValue(CreateValidatorProperty);
-        set => SetValue(CreateValidatorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the filter used when <see cref="FilterMode"/> is <see cref="TokenFilterMode.Custom"/>.
-    /// </summary>
-    public Func<string, KeyValuePair<string, string>, bool>? CustomFilter
-    {
-        get => (Func<string, KeyValuePair<string, string>, bool>?)GetValue(CustomFilterProperty);
-        set => SetValue(CustomFilterProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets an asynchronous lookup that replaces the filtering of <see cref="Items"/> (debounced by
-    /// <see cref="SuggestionDelay"/>; a new keystroke cancels the previous lookup).
-    /// </summary>
-    public Func<string, CancellationToken, Task<IReadOnlyList<KeyValuePair<string, string>>>>? SuggestionsProvider
-    {
-        get => (Func<string, CancellationToken, Task<IReadOnlyList<KeyValuePair<string, string>>>>?)GetValue(SuggestionsProviderProperty);
-        set => SetValue(SuggestionsProviderProperty, value);
     }
 
     /// <summary>

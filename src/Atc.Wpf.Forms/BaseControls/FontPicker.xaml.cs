@@ -4,12 +4,12 @@ public partial class FontPicker
 {
     [DependencyProperty(
         DefaultValue = "Segoe UI",
-        PropertyChangedCallback = nameof(OnSelectedFontFamilyChanged))]
+        GeneratePartialHooks = true)]
     private FontFamily? selectedFontFamily;
 
     [DependencyProperty(
         DefaultValue = FontDescription.DefaultSize,
-        PropertyChangedCallback = nameof(OnSelectedFontSizeChanged))]
+        GeneratePartialHooks = true)]
     private double selectedFontSize;
 
     [DependencyProperty]
@@ -92,24 +92,12 @@ public partial class FontPicker
     private string previewText;
 
     /// <summary>
-    /// Identifies the <see cref="DisplayText"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty DisplayTextProperty = DependencyProperty.Register(
-        nameof(DisplayText),
-        typeof(string),
-        typeof(FontPicker),
-        new FrameworkPropertyMetadata(
-            string.Empty,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-    /// <summary>
     /// Gets or sets the summary text shown in the picker, such as the font family and size in points.
     /// </summary>
-    public string? DisplayText
-    {
-        get => (string?)GetValue(DisplayTextProperty);
-        set => SetValue(DisplayTextProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+    private string? displayText;
 
     /// <summary>
     /// Occurs when a font is chosen in the font picker dialog.
@@ -187,26 +175,26 @@ public partial class FontPicker
         UpdateDisplayText();
     }
 
-    private static void OnSelectedFontFamilyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((FontPicker)d).UpdateDisplayText();
+    partial void OnSelectedFontFamilyChanged(
+        FontFamily? oldValue,
+        FontFamily? newValue)
+        => UpdateDisplayText();
 
-    private static void OnSelectedFontSizeChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((FontPicker)d).UpdateDisplayText();
+    partial void OnSelectedFontSizeChanged(
+        double oldValue,
+        double newValue)
+        => UpdateDisplayText();
 
     private void UpdateDisplayText()
     {
         var family = SelectedFontFamily?.Source ?? string.Empty;
         var size = SelectedFontSize.ToString("0.#", GlobalizationConstants.EnglishCultureInfo);
 
-        var displayText = string.IsNullOrEmpty(family)
+        var text = string.IsNullOrEmpty(family)
             ? string.Empty
             : $"{family}  {size}pt";
 
-        SetCurrentValue(DisplayTextProperty, displayText);
+        SetCurrentValue(DisplayTextProperty, text);
     }
 
     private void OnEditClick(

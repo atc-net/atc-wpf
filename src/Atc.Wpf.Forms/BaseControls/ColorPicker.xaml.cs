@@ -17,24 +17,12 @@ public partial class ColorPicker
     private SolidColorBrush? brushValue;
 
     /// <summary>
-    /// Identifies the <see cref="DisplayHexCode"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty DisplayHexCodeProperty = DependencyProperty.Register(
-        nameof(DisplayHexCode),
-        typeof(string),
-        typeof(ColorPicker),
-        new FrameworkPropertyMetadata(
-            Brushes.Black.Color.ToString(GlobalizationConstants.EnglishCultureInfo),
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-    /// <summary>
     /// Gets or sets the hex code of the selected color as shown in the picker.
     /// </summary>
-    public string? DisplayHexCode
-    {
-        get => (string?)GetValue(DisplayHexCodeProperty);
-        set => SetValue(DisplayHexCodeProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValueExpression = "Brushes.Black.Color.ToString(GlobalizationConstants.EnglishCultureInfo)",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+    private string? displayHexCode;
 
     /// <summary>
     /// Occurs when a color is chosen in the color picker dialog.

@@ -8,16 +8,17 @@ namespace Atc.Wpf.Forms;
 public partial class LabelCascaderComboBox : ILabelCascaderComboBox
 {
     /// <summary>
-    /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
+    /// Gets or sets the maximum height of the pop-up; each column scrolls (virtualized) beyond it.
     /// </summary>
-    public static readonly DependencyProperty MaxDropDownHeightProperty = CascaderComboBox.MaxDropDownHeightProperty.AddOwner(
-        typeof(LabelCascaderComboBox));
+    [DependencyProperty(AddOwnerOf = typeof(CascaderComboBox))]
+    private double maxDropDownHeight;
 
     /// <summary>
-    /// Identifies the <see cref="LoadChildrenAsync"/> dependency property.
+    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
+    /// when the node becomes active; children of a ticked node inherit the tick.
     /// </summary>
-    public static readonly DependencyProperty LoadChildrenAsyncProperty = CascaderComboBox.LoadChildrenAsyncProperty.AddOwner(
-        typeof(LabelCascaderComboBox));
+    [DependencyProperty(AddOwnerOf = typeof(CascaderComboBox))]
+    private Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? loadChildrenAsync;
 
     /// <summary>
     /// The root nodes (the first column).
@@ -213,25 +214,6 @@ public partial class LabelCascaderComboBox : ILabelCascaderComboBox
         Forward(CascaderComboBox.NodesProperty, NodesProperty);
 
         PartComboBox.SelectedKeysChanged += OnComboBoxSelectedKeysChanged;
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum height of the pop-up; each column scrolls (virtualized) beyond it.
-    /// </summary>
-    public double MaxDropDownHeight
-    {
-        get => (double)GetValue(MaxDropDownHeightProperty);
-        set => SetValue(MaxDropDownHeightProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
-    /// when the node becomes active; children of a ticked node inherit the tick.
-    /// </summary>
-    public Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? LoadChildrenAsync
-    {
-        get => (Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?)GetValue(LoadChildrenAsyncProperty);
-        set => SetValue(LoadChildrenAsyncProperty, value);
     }
 
     /// <summary>
