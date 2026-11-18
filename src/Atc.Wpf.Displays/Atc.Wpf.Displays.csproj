@@ -24,8 +24,8 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="4.1.0" />
-    <PackageReference Include="Atc.XamlToolkit" Version="3.2.1" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.2.1" />
+    <PackageReference Include="Atc.XamlToolkit" Version="4.0.0" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>

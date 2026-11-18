@@ -52,8 +52,8 @@
 
   <ItemGroup>
     <PackageReference Include="Atc" Version="4.1.0" />
-    <PackageReference Include="Atc.XamlToolkit" Version="3.2.1" />
-    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="3.2.1" />
+    <PackageReference Include="Atc.XamlToolkit" Version="4.0.0" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="4.0.0" />
     <PackageReference Include="ControlzEx" Version="7.0.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.14" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.14" />
