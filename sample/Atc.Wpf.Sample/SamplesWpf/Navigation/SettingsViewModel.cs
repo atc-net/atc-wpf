@@ -1,59 +1,18 @@
 namespace Atc.Wpf.Sample.SamplesWpf.Navigation;
 
-public sealed class SettingsViewModel : ViewModelBase, INavigationAware, INavigationGuard
+public sealed partial class SettingsViewModel : ViewModelBase, INavigationAware, INavigationGuard
 {
     private bool initialNotificationsEnabled;
     private string initialTheme = string.Empty;
+
+    [ObservableProperty(AfterChangedCallback = nameof(UpdateUnsavedChanges))]
     private bool notificationsEnabled = true;
+
+    [ObservableProperty(AfterChangedCallback = nameof(UpdateUnsavedChanges))]
     private string theme = "Dark";
+
+    [ObservableProperty(SetterAccessModifier = Atc.XamlToolkit.PropertyAccessModifier.Private)]
     private bool hasUnsavedChanges;
-
-    public bool NotificationsEnabled
-    {
-        get => notificationsEnabled;
-        set
-        {
-            if (notificationsEnabled == value)
-            {
-                return;
-            }
-
-            notificationsEnabled = value;
-            RaisePropertyChanged();
-            UpdateUnsavedChanges();
-        }
-    }
-
-    public string Theme
-    {
-        get => theme;
-        set
-        {
-            if (string.Equals(theme, value, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            theme = value;
-            RaisePropertyChanged();
-            UpdateUnsavedChanges();
-        }
-    }
-
-    public bool HasUnsavedChanges
-    {
-        get => hasUnsavedChanges;
-        private set
-        {
-            if (hasUnsavedChanges == value)
-            {
-                return;
-            }
-
-            hasUnsavedChanges = value;
-            RaisePropertyChanged();
-        }
-    }
 
     public void OnNavigatedTo(NavigationParameters? parameters)
     {
