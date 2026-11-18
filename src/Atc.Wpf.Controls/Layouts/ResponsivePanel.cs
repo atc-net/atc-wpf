@@ -7,7 +7,7 @@ namespace Atc.Wpf.Controls.Layouts;
 /// visibility control, and item ordering per breakpoint.
 /// </summary>
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Complex layout algorithm.")]
-public class ResponsivePanel : Panel
+public partial class ResponsivePanel : Panel
 {
     /// <summary>
     /// Maximum width for extra-small breakpoint (default: 576px).
@@ -35,349 +35,181 @@ public class ResponsivePanel : Panel
     public static readonly int MaxColumns = 12;
 
     /// <summary>
-    /// Identifies the Gap dependency property.
-    /// </summary>
-    public static readonly DependencyProperty GapProperty = DependencyProperty.Register(
-        nameof(Gap),
-        typeof(double),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsGapValid);
-
-    /// <summary>
-    /// Identifies the RowGap dependency property.
-    /// </summary>
-    public static readonly DependencyProperty RowGapProperty = DependencyProperty.Register(
-        nameof(RowGap),
-        typeof(double),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsGapValid);
-
-    /// <summary>
-    /// Identifies the ColumnGap dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ColumnGapProperty = DependencyProperty.Register(
-        nameof(ColumnGap),
-        typeof(double),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsGapValid);
-
-    /// <summary>
-    /// Identifies the MinItemWidth dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MinItemWidthProperty = DependencyProperty.Register(
-        nameof(MinItemWidth),
-        typeof(double),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            double.NaN,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsMinItemWidthValid);
-
-    /// <summary>
-    /// Identifies the ColumnsXs dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ColumnsXsProperty = DependencyProperty.Register(
-        nameof(ColumnsXs),
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            1,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsColumnCountValid);
-
-    /// <summary>
-    /// Identifies the ColumnsSm dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ColumnsSmProperty = DependencyProperty.Register(
-        nameof(ColumnsSm),
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            2,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsColumnCountValid);
-
-    /// <summary>
-    /// Identifies the ColumnsMd dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ColumnsMdProperty = DependencyProperty.Register(
-        nameof(ColumnsMd),
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            3,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsColumnCountValid);
-
-    /// <summary>
-    /// Identifies the ColumnsLg dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ColumnsLgProperty = DependencyProperty.Register(
-        nameof(ColumnsLg),
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            4,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsColumnCountValid);
-
-    /// <summary>
-    /// Identifies the ColumnsXl dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ColumnsXlProperty = DependencyProperty.Register(
-        nameof(ColumnsXl),
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            6,
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsColumnCountValid);
-
-    /// <summary>
-    /// Identifies the SpanXs attached property.
-    /// </summary>
-    public static readonly DependencyProperty SpanXsProperty = DependencyProperty.RegisterAttached(
-        "SpanXs",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            0,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange),
-        IsSpanValid);
-
-    /// <summary>
-    /// Identifies the SpanSm attached property.
-    /// </summary>
-    public static readonly DependencyProperty SpanSmProperty = DependencyProperty.RegisterAttached(
-        "SpanSm",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            0,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange),
-        IsSpanValid);
-
-    /// <summary>
-    /// Identifies the SpanMd attached property.
-    /// </summary>
-    public static readonly DependencyProperty SpanMdProperty = DependencyProperty.RegisterAttached(
-        "SpanMd",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            0,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange),
-        IsSpanValid);
-
-    /// <summary>
-    /// Identifies the SpanLg attached property.
-    /// </summary>
-    public static readonly DependencyProperty SpanLgProperty = DependencyProperty.RegisterAttached(
-        "SpanLg",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            0,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange),
-        IsSpanValid);
-
-    /// <summary>
-    /// Identifies the SpanXl attached property.
-    /// </summary>
-    public static readonly DependencyProperty SpanXlProperty = DependencyProperty.RegisterAttached(
-        "SpanXl",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            0,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange),
-        IsSpanValid);
-
-    /// <summary>
-    /// Identifies the VisibleFrom attached property.
-    /// </summary>
-    public static readonly DependencyProperty VisibleFromProperty = DependencyProperty.RegisterAttached(
-        "VisibleFrom",
-        typeof(ResponsiveBreakpoint?),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            null,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange));
-
-    /// <summary>
-    /// Identifies the HiddenFrom attached property.
-    /// </summary>
-    public static readonly DependencyProperty HiddenFromProperty = DependencyProperty.RegisterAttached(
-        "HiddenFrom",
-        typeof(ResponsiveBreakpoint?),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            null,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange));
-
-    /// <summary>
-    /// Identifies the OrderXs attached property.
-    /// </summary>
-    public static readonly DependencyProperty OrderXsProperty = DependencyProperty.RegisterAttached(
-        "OrderXs",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            int.MaxValue,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange));
-
-    /// <summary>
-    /// Identifies the OrderSm attached property.
-    /// </summary>
-    public static readonly DependencyProperty OrderSmProperty = DependencyProperty.RegisterAttached(
-        "OrderSm",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            int.MaxValue,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange));
-
-    /// <summary>
-    /// Identifies the OrderMd attached property.
-    /// </summary>
-    public static readonly DependencyProperty OrderMdProperty = DependencyProperty.RegisterAttached(
-        "OrderMd",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            int.MaxValue,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange));
-
-    /// <summary>
-    /// Identifies the OrderLg attached property.
-    /// </summary>
-    public static readonly DependencyProperty OrderLgProperty = DependencyProperty.RegisterAttached(
-        "OrderLg",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            int.MaxValue,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange));
-
-    /// <summary>
-    /// Identifies the OrderXl attached property.
-    /// </summary>
-    public static readonly DependencyProperty OrderXlProperty = DependencyProperty.RegisterAttached(
-        "OrderXl",
-        typeof(int),
-        typeof(ResponsivePanel),
-        new FrameworkPropertyMetadata(
-            int.MaxValue,
-            FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange));
-
-    /// <summary>
     /// Gets or sets the uniform gap between items (both row and column).
     /// </summary>
-    [Category("Layout")]
-    [Description("The uniform gap between items (both row and column).")]
-    public double Gap
-    {
-        get => (double)GetValue(GapProperty);
-        set => SetValue(GapProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0.0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsGapValid),
+        Category = "Layout",
+        Description = "The uniform gap between items (both row and column).")]
+    private double gap;
 
     /// <summary>
     /// Gets or sets the vertical gap between rows. Overrides Gap for vertical spacing.
     /// </summary>
-    [Category("Layout")]
-    [Description("The vertical gap between rows. Overrides Gap for vertical spacing.")]
-    public double RowGap
-    {
-        get => (double)GetValue(RowGapProperty);
-        set => SetValue(RowGapProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsGapValid),
+        Category = "Layout",
+        Description = "The vertical gap between rows. Overrides Gap for vertical spacing.")]
+    private double rowGap;
 
     /// <summary>
     /// Gets or sets the horizontal gap between columns. Overrides Gap for horizontal spacing.
     /// </summary>
-    [Category("Layout")]
-    [Description("The horizontal gap between columns. Overrides Gap for horizontal spacing.")]
-    public double ColumnGap
-    {
-        get => (double)GetValue(ColumnGapProperty);
-        set => SetValue(ColumnGapProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsGapValid),
+        Category = "Layout",
+        Description = "The horizontal gap between columns. Overrides Gap for horizontal spacing.")]
+    private double columnGap;
 
     /// <summary>
     /// Gets or sets the minimum item width for auto-calculating column count.
     /// When set, overrides explicit ColumnsXs/Sm/Md/Lg/Xl values.
     /// </summary>
-    [Category("Layout")]
-    [Description("The minimum item width for auto-calculating column count.")]
-    public double MinItemWidth
-    {
-        get => (double)GetValue(MinItemWidthProperty);
-        set => SetValue(MinItemWidthProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsMinItemWidthValid),
+        Category = "Layout",
+        Description = "The minimum item width for auto-calculating column count.")]
+    private double minItemWidth;
 
     /// <summary>
     /// Gets or sets the number of columns at extra-small breakpoint (less than 576px).
     /// </summary>
-    [Category("Layout")]
-    [Description("Number of columns at extra-small breakpoint (< 576px).")]
-    public int ColumnsXs
-    {
-        get => (int)GetValue(ColumnsXsProperty);
-        set => SetValue(ColumnsXsProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 1,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsColumnCountValid),
+        Category = "Layout",
+        Description = "Number of columns at extra-small breakpoint (< 576px).")]
+    private int columnsXs;
 
     /// <summary>
     /// Gets or sets the number of columns at small breakpoint (576px to 767px).
     /// </summary>
-    [Category("Layout")]
-    [Description("Number of columns at small breakpoint (576-767px).")]
-    public int ColumnsSm
-    {
-        get => (int)GetValue(ColumnsSmProperty);
-        set => SetValue(ColumnsSmProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 2,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsColumnCountValid),
+        Category = "Layout",
+        Description = "Number of columns at small breakpoint (576-767px).")]
+    private int columnsSm;
 
     /// <summary>
     /// Gets or sets the number of columns at medium breakpoint (768px to 991px).
     /// </summary>
-    [Category("Layout")]
-    [Description("Number of columns at medium breakpoint (768-991px).")]
-    public int ColumnsMd
-    {
-        get => (int)GetValue(ColumnsMdProperty);
-        set => SetValue(ColumnsMdProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 3,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsColumnCountValid),
+        Category = "Layout",
+        Description = "Number of columns at medium breakpoint (768-991px).")]
+    private int columnsMd;
 
     /// <summary>
     /// Gets or sets the number of columns at large breakpoint (992px to 1199px).
     /// </summary>
-    [Category("Layout")]
-    [Description("Number of columns at large breakpoint (992-1199px).")]
-    public int ColumnsLg
-    {
-        get => (int)GetValue(ColumnsLgProperty);
-        set => SetValue(ColumnsLgProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 4,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsColumnCountValid),
+        Category = "Layout",
+        Description = "Number of columns at large breakpoint (992-1199px).")]
+    private int columnsLg;
 
     /// <summary>
     /// Gets or sets the number of columns at extra-large breakpoint (1200px and above).
     /// </summary>
-    [Category("Layout")]
-    [Description("Number of columns at extra-large breakpoint (>= 1200px).")]
-    public int ColumnsXl
-    {
-        get => (int)GetValue(ColumnsXlProperty);
-        set => SetValue(ColumnsXlProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 6,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsColumnCountValid),
+        Category = "Layout",
+        Description = "Number of columns at extra-large breakpoint (>= 1200px).")]
+    private int columnsXl;
+
+    // The Get/Set methods of the attached properties are hand-written below: each has its own documentation,
+    // which the generator cannot reproduce.
+    [AttachedProperty(
+        DefaultValue = 0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        ValidateValueCallback = nameof(IsSpanValid),
+        GenerateClrAccessors = false)]
+    private static int spanXs;
+
+    [AttachedProperty(
+        DefaultValue = 0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        ValidateValueCallback = nameof(IsSpanValid),
+        GenerateClrAccessors = false)]
+    private static int spanSm;
+
+    [AttachedProperty(
+        DefaultValue = 0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        ValidateValueCallback = nameof(IsSpanValid),
+        GenerateClrAccessors = false)]
+    private static int spanMd;
+
+    [AttachedProperty(
+        DefaultValue = 0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        ValidateValueCallback = nameof(IsSpanValid),
+        GenerateClrAccessors = false)]
+    private static int spanLg;
+
+    [AttachedProperty(
+        DefaultValue = 0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        ValidateValueCallback = nameof(IsSpanValid),
+        GenerateClrAccessors = false)]
+    private static int spanXl;
+
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        GenerateClrAccessors = false)]
+    private static ResponsiveBreakpoint? visibleFrom;
+
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        GenerateClrAccessors = false)]
+    private static ResponsiveBreakpoint? hiddenFrom;
+
+    [AttachedProperty(
+        DefaultValue = int.MaxValue,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        GenerateClrAccessors = false)]
+    private static int orderXs;
+
+    [AttachedProperty(
+        DefaultValue = int.MaxValue,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        GenerateClrAccessors = false)]
+    private static int orderSm;
+
+    [AttachedProperty(
+        DefaultValue = int.MaxValue,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        GenerateClrAccessors = false)]
+    private static int orderMd;
+
+    [AttachedProperty(
+        DefaultValue = int.MaxValue,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        GenerateClrAccessors = false)]
+    private static int orderLg;
+
+    [AttachedProperty(
+        DefaultValue = int.MaxValue,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        GenerateClrAccessors = false)]
+    private static int orderXl;
 
     /// <summary>
     /// Gets the column span at extra-small breakpoint.
@@ -683,8 +515,8 @@ public class ResponsivePanel : Panel
         // If MinItemWidth is set, auto-calculate columns
         if (!double.IsNaN(MinItemWidth) && MinItemWidth > 0)
         {
-            var columnGap = GetEffectiveColumnGap();
-            var columns = (int)System.Math.Floor((availableWidth + columnGap) / (MinItemWidth + columnGap));
+            var effectiveColumnGap = GetEffectiveColumnGap();
+            var columns = (int)System.Math.Floor((availableWidth + effectiveColumnGap) / (MinItemWidth + effectiveColumnGap));
             return System.Math.Max(1, System.Math.Min(columns, MaxColumns));
         }
 
@@ -762,17 +594,17 @@ public class ResponsivePanel : Panel
             return false;
         }
 
-        var visibleFrom = GetVisibleFrom(element);
-        var hiddenFrom = GetHiddenFrom(element);
+        var elementVisibleFrom = GetVisibleFrom(element);
+        var elementHiddenFrom = GetHiddenFrom(element);
 
         // Check VisibleFrom - element only visible at this breakpoint and larger
-        if (visibleFrom.HasValue && breakpoint < visibleFrom.Value)
+        if (elementVisibleFrom.HasValue && breakpoint < elementVisibleFrom.Value)
         {
             return false;
         }
 
         // Check HiddenFrom - element hidden at this breakpoint and larger
-        if (hiddenFrom.HasValue && breakpoint >= hiddenFrom.Value)
+        if (elementHiddenFrom.HasValue && breakpoint >= elementHiddenFrom.Value)
         {
             return false;
         }
@@ -827,11 +659,11 @@ public class ResponsivePanel : Panel
 
         var breakpoint = GetBreakpoint(availableWidth);
         var columnCount = GetColumnCount(availableWidth, breakpoint);
-        var columnGap = GetEffectiveColumnGap();
-        var rowGap = GetEffectiveRowGap();
+        var effectiveColumnGap = GetEffectiveColumnGap();
+        var effectiveRowGap = GetEffectiveRowGap();
 
         // Calculate column width
-        var totalGapWidth = (columnCount - 1) * columnGap;
+        var totalGapWidth = (columnCount - 1) * effectiveColumnGap;
         var columnWidth = System.Math.Max(0, (availableWidth - totalGapWidth) / columnCount);
 
         // Get ordered visible children
@@ -858,12 +690,12 @@ public class ResponsivePanel : Panel
             var effectiveSpan = span > 0 ? System.Math.Min(span, columnCount) : 1;
 
             // Measure at the width the child is arranged at, so wrapping content reports its real height.
-            child.Measure(new Size(GetSpannedWidth(effectiveSpan, columnWidth, columnGap), double.PositiveInfinity));
+            child.Measure(new Size(GetSpannedWidth(effectiveSpan, columnWidth, effectiveColumnGap), double.PositiveInfinity));
 
             // Check if we need to wrap to next row
             if (currentColumn + effectiveSpan > columnCount)
             {
-                totalHeight += currentRowHeight + rowGap;
+                totalHeight += currentRowHeight + effectiveRowGap;
                 currentRowHeight = 0;
                 currentColumn = 0;
             }
@@ -889,11 +721,11 @@ public class ResponsivePanel : Panel
 
         var breakpoint = GetBreakpoint(finalSize.Width);
         var columnCount = GetColumnCount(finalSize.Width, breakpoint);
-        var columnGap = GetEffectiveColumnGap();
-        var rowGap = GetEffectiveRowGap();
+        var effectiveColumnGap = GetEffectiveColumnGap();
+        var effectiveRowGap = GetEffectiveRowGap();
 
         // Calculate column width
-        var totalGapWidth = (columnCount - 1) * columnGap;
+        var totalGapWidth = (columnCount - 1) * effectiveColumnGap;
         var columnWidth = System.Math.Max(0, (finalSize.Width - totalGapWidth) / columnCount);
 
         // Get ordered visible children
@@ -948,14 +780,14 @@ public class ResponsivePanel : Panel
             // Second pass: arrange children
             foreach (var (element, span) in row)
             {
-                var childWidth = GetSpannedWidth(span, columnWidth, columnGap);
+                var childWidth = GetSpannedWidth(span, columnWidth, effectiveColumnGap);
                 var rect = new Rect(xOffset, yOffset, childWidth, rowHeight);
                 element.Arrange(rect);
 
-                xOffset += childWidth + columnGap;
+                xOffset += childWidth + effectiveColumnGap;
             }
 
-            yOffset += rowHeight + rowGap;
+            yOffset += rowHeight + effectiveRowGap;
         }
 
         // Hide non-visible children (arrange at zero size)

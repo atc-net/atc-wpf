@@ -6,10 +6,8 @@ namespace Atc.Wpf.Controls.Inputs;
 
 /// <summary>The base numeric input control: a text box with up/down spin buttons, range clamping, formatting and keyboard/mouse-wheel input.</summary>
 [SuppressMessage("Performance", "MA0023:Add RegexOptions.ExplicitCapture", Justification = "OK.")]
-[TemplatePart(Name = PART_NumericUp, Type = typeof(RepeatButton))]
-[TemplatePart(Name = PART_NumericDown, Type = typeof(RepeatButton))]
-[TemplatePart(Name = PART_TextBox, Type = typeof(TextBox))]
 [StyleTypedProperty(Property = nameof(SpinButtonStyle), StyleTargetType = typeof(ButtonBase))]
+[DefaultStyleKey]
 public partial class NumericBox : Control
 {
     private const string PART_NumericDown = "PART_NumericDownButton";
@@ -43,9 +41,16 @@ public partial class NumericBox : Control
     private double internalLargeChange = DefaultInterval * 100;
     private double intervalValueSinceReset;
     private bool manualChange;
-    private RepeatButton? repeatDown;
+
+    [TemplatePartField(PART_NumericUp)]
     private RepeatButton? repeatUp;
+
+    [TemplatePartField(PART_NumericDown)]
+    private RepeatButton? repeatDown;
+
+    [TemplatePartField(PART_TextBox)]
     private TextBox? valueTextBox;
+
     private ScrollViewer? scrollViewer;
 
     /// <summary>Occurs when the value is incremented by a spin step.</summary>
@@ -78,45 +83,22 @@ public partial class NumericBox : Control
         ValidateValueCallback = nameof(ValidateDefaultDelay))]
     private int delay;
 
-    /// <summary>Identifies the <see cref="TextAlignment"/> dependency property.</summary>
-    public static readonly DependencyProperty TextAlignmentProperty = TextBox.TextAlignmentProperty.AddOwner(typeof(NumericBox));
-
     /// <summary>Gets or sets the horizontal alignment of the text in the input box.</summary>
-    public TextAlignment TextAlignment
-    {
-        get => (TextAlignment)GetValue(TextAlignmentProperty);
-        set
-        {
-            SetValue(
-            TextAlignmentProperty,
-            value);
-        }
-    }
+    [DependencyProperty(AddOwnerOf = typeof(TextBox))]
+    private TextAlignment textAlignment;
 
     [DependencyProperty(
         DefaultValue = true,
         PropertyChangedCallback = nameof(OnSpeedupPropertyChanged))]
     private bool speedup;
 
-    /// <summary>Identifies the <see cref="IsReadOnly"/> dependency property.</summary>
-    public static readonly DependencyProperty IsReadOnlyProperty = TextBoxBase.IsReadOnlyProperty.AddOwner(
-        typeof(NumericBox),
-        new FrameworkPropertyMetadata(
-            BooleanBoxes.FalseBox,
-            FrameworkPropertyMetadataOptions.Inherits,
-            OnIsReadOnlyPropertyChanged));
-
     /// <summary>Gets or sets a value indicating whether the value is read-only.</summary>
-    public bool IsReadOnly
-    {
-        get => (bool)GetValue(IsReadOnlyProperty);
-        set
-        {
-            SetValue(
-            IsReadOnlyProperty,
-            BooleanBoxes.Box(value));
-        }
-    }
+    [DependencyProperty(
+        AddOwnerOf = typeof(TextBoxBase),
+        DefaultValue = false,
+        Flags = FrameworkPropertyMetadataOptions.Inherits,
+        PropertyChangedCallback = nameof(OnIsReadOnlyPropertyChanged))]
+    private bool isReadOnly;
 
     [DependencyProperty(
         DefaultValue = "",
@@ -244,9 +226,7 @@ public partial class NumericBox : Control
 
     static NumericBox()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(NumericBox),
-            new FrameworkPropertyMetadata(typeof(NumericBox)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(NumericBox));
 
         VerticalContentAlignmentProperty.OverrideMetadata(
@@ -663,9 +643,7 @@ public partial class NumericBox : Control
     {
         base.OnApplyTemplate();
 
-        repeatUp = GetTemplateChild(PART_NumericUp) as RepeatButton;
-        repeatDown = GetTemplateChild(PART_NumericDown) as RepeatButton;
-        valueTextBox = GetTemplateChild(PART_TextBox) as TextBox;
+        ResolveTemplateParts();
 
         if (repeatUp is null || repeatDown is null || valueTextBox is null)
         {

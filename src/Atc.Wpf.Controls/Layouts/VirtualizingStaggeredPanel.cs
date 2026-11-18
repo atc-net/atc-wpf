@@ -12,41 +12,29 @@ using Math = System.Math;
 /// Use this panel inside an ItemsControl with VirtualizingPanel.IsVirtualizing="True"
 /// for best performance with large collections.
 /// </remarks>
-public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
+public sealed partial class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
 {
-    /// <summary>Identifies the <see cref="DesiredItemWidth"/> dependency property.</summary>
-    public static readonly DependencyProperty DesiredItemWidthProperty = DependencyProperty.Register(
-        nameof(DesiredItemWidth),
-        typeof(double),
-        typeof(VirtualizingStaggeredPanel),
-        new PropertyMetadata(250d, OnLayoutPropertyChanged));
-
-    /// <summary>Identifies the <see cref="Padding"/> dependency property.</summary>
-    public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
-        nameof(Padding),
-        typeof(Thickness),
-        typeof(VirtualizingStaggeredPanel),
-        new PropertyMetadata(default(Thickness), OnLayoutPropertyChanged));
-
-    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
-        nameof(HorizontalSpacing),
-        typeof(double),
-        typeof(VirtualizingStaggeredPanel),
-        new PropertyMetadata(0d, OnLayoutPropertyChanged));
-
-    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
-        nameof(VerticalSpacing),
-        typeof(double),
-        typeof(VirtualizingStaggeredPanel),
-        new PropertyMetadata(0d, OnLayoutPropertyChanged));
-
     private const double ScrollLineSize = 16;
     private const double ScrollWheelSize = 48;
 
     private readonly Dictionary<int, double> itemHeightCache = [];
     private readonly List<double> columnHeights = [];
+
+    /// <summary>Gets or sets the target width of each column.</summary>
+    [DependencyProperty(DefaultValue = 250d, PropertyChangedCallback = nameof(OnLayoutPropertyChanged))]
+    private double desiredItemWidth;
+
+    /// <summary>Gets or sets the padding around the panel content.</summary>
+    [DependencyProperty(DefaultValueExpression = "default(Thickness)", PropertyChangedCallback = nameof(OnLayoutPropertyChanged))]
+    private Thickness padding;
+
+    /// <summary>Gets or sets the horizontal gap between columns.</summary>
+    [DependencyProperty(DefaultValue = 0d, PropertyChangedCallback = nameof(OnLayoutPropertyChanged))]
+    private double horizontalSpacing;
+
+    /// <summary>Gets or sets the vertical gap between items within a column.</summary>
+    [DependencyProperty(DefaultValue = 0d, PropertyChangedCallback = nameof(OnLayoutPropertyChanged))]
+    private double verticalSpacing;
 
     private double itemWidth;
     private int columnCount;
@@ -54,34 +42,6 @@ public sealed class VirtualizingStaggeredPanel : VirtualizingPanel, IScrollInfo
     private Size extent;
     private Size viewport;
     private Point offset;
-
-    /// <summary>Gets or sets the target width of each column.</summary>
-    public double DesiredItemWidth
-    {
-        get => (double)GetValue(DesiredItemWidthProperty);
-        set => SetValue(DesiredItemWidthProperty, value);
-    }
-
-    /// <summary>Gets or sets the padding around the panel content.</summary>
-    public Thickness Padding
-    {
-        get => (Thickness)GetValue(PaddingProperty);
-        set => SetValue(PaddingProperty, value);
-    }
-
-    /// <summary>Gets or sets the horizontal gap between columns.</summary>
-    public double HorizontalSpacing
-    {
-        get => (double)GetValue(HorizontalSpacingProperty);
-        set => SetValue(HorizontalSpacingProperty, value);
-    }
-
-    /// <summary>Gets or sets the vertical gap between items within a column.</summary>
-    public double VerticalSpacing
-    {
-        get => (double)GetValue(VerticalSpacingProperty);
-        set => SetValue(VerticalSpacingProperty, value);
-    }
 
     /// <summary>Gets the measured heights of realized items, keyed by item index.</summary>
     internal IReadOnlyDictionary<int, double> CachedItemHeights

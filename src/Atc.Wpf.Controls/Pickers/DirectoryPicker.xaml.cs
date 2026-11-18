@@ -14,23 +14,12 @@ public partial class DirectoryPicker
         HandlerType = typeof(RoutedPropertyChangedEventHandler<DirectoryInfo?>))]
     private static readonly RoutedEvent valueChanged;
 
-    /// <summary>Identifies the <see cref="Value"/> dependency property.</summary>
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(DirectoryInfo),
-        typeof(DirectoryPicker),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnValuePropertyChanged,
-            (o, value) => CoerceValue(o, value).Item1));
-
     /// <summary>Gets or sets the selected directory.</summary>
-    public DirectoryInfo? Value
-    {
-        get => (DirectoryInfo?)GetValue(ValueProperty);
-        set => SetValue(ValueProperty, value);
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnValuePropertyChanged),
+        CoerceValueCallback = nameof(CoerceValueProperty))]
+    private DirectoryInfo? value;
 
     /// <summary>Identifies the <see cref="DisplayValue"/> dependency property.</summary>
     public static readonly DependencyProperty FullNameProperty = DependencyProperty.Register(
@@ -87,13 +76,18 @@ public partial class DirectoryPicker
     protected override AutomationPeer OnCreateAutomationPeer()
         => new DirectoryPickerAutomationPeer(this);
 
+    private static object? CoerceValueProperty(
+        DependencyObject d,
+        object? baseValue)
+        => CoerceValue(d, baseValue).Item1;
+
     private static Tuple<DirectoryInfo?, bool> CoerceValue(
         DependencyObject d,
         object? baseValue)
     {
-        var value = (DirectoryInfo?)baseValue;
+        var directory = (DirectoryInfo?)baseValue;
 
-        return new Tuple<DirectoryInfo?, bool>(value, item2: false);
+        return new Tuple<DirectoryInfo?, bool>(directory, item2: false);
     }
 
     private static void OnValuePropertyChanged(
@@ -127,9 +121,9 @@ public partial class DirectoryPicker
         DependencyObject d,
         object? baseValue)
     {
-        var value = (string?)baseValue;
+        var text = (string?)baseValue;
 
-        return new Tuple<string?, bool>(value, item2: false);
+        return new Tuple<string?, bool>(text, item2: false);
     }
 
     private static void OnDisplayValuePropertyChanged(
@@ -146,12 +140,12 @@ public partial class DirectoryPicker
             return;
         }
 
-        var value = e.NewValue?.ToString();
-        if (directoryPicker.Value?.ToString() != value)
+        var text = e.NewValue?.ToString();
+        if (directoryPicker.Value?.ToString() != text)
         {
-            directoryPicker.Value = string.IsNullOrEmpty(value)
+            directoryPicker.Value = string.IsNullOrEmpty(text)
                 ? null
-                : new DirectoryInfo(value);
+                : new DirectoryInfo(text);
         }
     }
 

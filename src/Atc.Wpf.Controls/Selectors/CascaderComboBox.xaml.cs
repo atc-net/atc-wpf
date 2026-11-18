@@ -23,33 +23,27 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </remarks>
 public partial class CascaderComboBox
 {
-    /// <summary>
-    /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MaxDropDownHeightProperty = ComboBox.MaxDropDownHeightProperty.AddOwner(
-        typeof(CascaderComboBox));
-
-    /// <summary>
-    /// Identifies the <see cref="LoadChildrenAsync"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty LoadChildrenAsyncProperty = DependencyProperty.Register(
-        nameof(LoadChildrenAsync),
-        typeof(Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>),
-        typeof(CascaderComboBox),
-        new PropertyMetadata(defaultValue: null));
-
-    private static readonly DependencyPropertyKey SummaryTextPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(SummaryText),
-        typeof(string),
-        typeof(CascaderComboBox),
-        new PropertyMetadata(string.Empty));
-
-    /// <summary>
-    /// Identifies the <see cref="SummaryText"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SummaryTextProperty = SummaryTextPropertyKey.DependencyProperty;
-
     private readonly TextBlock summaryTextBlock;
+
+    /// <summary>
+    /// Gets or sets the maximum height of the pop-up; each column scrolls (virtualized) beyond it.
+    /// </summary>
+    [DependencyProperty(AddOwnerOf = typeof(ComboBox))]
+    private double maxDropDownHeight;
+
+    /// <summary>
+    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
+    /// when the node becomes active; the next column shows a busy row meanwhile and activating another row cancels the
+    /// load. Children of a ticked node inherit the tick.
+    /// </summary>
+    [DependencyProperty]
+    private Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? loadChildrenAsync;
+
+    /// <summary>
+    /// Gets the text the closed box shows for the ticked nodes (also the UI Automation value).
+    /// </summary>
+    [DependencyProperty(DefaultValue = "", IsReadOnly = true)]
+    private string summaryText;
 
     /// <summary>
     /// The root nodes (the first column).
@@ -289,35 +283,6 @@ public partial class CascaderComboBox
         AddHandler(Mouse.LostMouseCaptureEvent, new MouseEventHandler(OnLostMouseCaptureWithin));
 
         UpdateSummary();
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum height of the pop-up; each column scrolls (virtualized) beyond it.
-    /// </summary>
-    public double MaxDropDownHeight
-    {
-        get => (double)GetValue(MaxDropDownHeightProperty);
-        set => SetValue(MaxDropDownHeightProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
-    /// when the node becomes active; the next column shows a busy row meanwhile and activating another row cancels the
-    /// load. Children of a ticked node inherit the tick.
-    /// </summary>
-    public Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? LoadChildrenAsync
-    {
-        get => (Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?)GetValue(LoadChildrenAsyncProperty);
-        set => SetValue(LoadChildrenAsyncProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the text the closed box shows for the ticked nodes (also the UI Automation value).
-    /// </summary>
-    public string SummaryText
-    {
-        get => (string)GetValue(SummaryTextProperty);
-        private set => SetValue(SummaryTextPropertyKey, value);
     }
 
     /// <summary>

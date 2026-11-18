@@ -13,6 +13,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// </list>
 /// </remarks>
 [ContentProperty(nameof(Children))]
+[DefaultStyleKey]
 public sealed partial class AvatarGroup : Control
 {
     private StackPanel? itemsHost;
@@ -54,9 +55,7 @@ public sealed partial class AvatarGroup : Control
 
     static AvatarGroup()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(AvatarGroup),
-            new FrameworkPropertyMetadata(typeof(AvatarGroup)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(AvatarGroup));
     }
 

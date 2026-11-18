@@ -5,10 +5,12 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// with customizable separators and optional overflow handling.
 /// </summary>
 [ContentProperty(nameof(Items))]
-[TemplatePart(Name = "PART_ItemsHost", Type = typeof(StackPanel))]
+[DefaultStyleKey]
 public sealed partial class Breadcrumb : Control
 {
     private readonly List<BreadcrumbItem> hookedItems = [];
+
+    [TemplatePartField("PART_ItemsHost")]
     private StackPanel? itemsHost;
 
     /// <summary>
@@ -52,9 +54,7 @@ public sealed partial class Breadcrumb : Control
 
     static Breadcrumb()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Breadcrumb),
-            new FrameworkPropertyMetadata(typeof(Breadcrumb)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Breadcrumb));
     }
 
@@ -70,7 +70,7 @@ public sealed partial class Breadcrumb : Control
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-        itemsHost = GetTemplateChild("PART_ItemsHost") as StackPanel;
+        ResolveTemplateParts();
         RebuildVisualTree();
     }
 

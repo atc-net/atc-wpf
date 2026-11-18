@@ -1,6 +1,7 @@
 namespace Atc.Wpf.Controls.Progressing;
 
 /// <summary>An animated placeholder shape used to build skeleton loading screens.</summary>
+[DefaultStyleKey]
 public sealed partial class SkeletonElement : Control
 {
     [DependencyProperty(DefaultValue = SkeletonShape.Rectangle)]
@@ -17,9 +18,7 @@ public sealed partial class SkeletonElement : Control
 
     static SkeletonElement()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(SkeletonElement),
-            new FrameworkPropertyMetadata(typeof(SkeletonElement)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(SkeletonElement));
     }
 }

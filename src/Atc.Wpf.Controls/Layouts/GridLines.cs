@@ -1,57 +1,33 @@
 namespace Atc.Wpf.Controls.Layouts;
 
 /// <summary>A content control that draws a grid of horizontal and vertical lines on top of its content.</summary>
-public sealed class GridLines : ContentControl
+public sealed partial class GridLines : ContentControl
 {
-    /// <summary>Identifies the <see cref="HorizontalStep"/> dependency property.</summary>
-    public static readonly DependencyProperty HorizontalStepProperty = DependencyProperty.Register(
-        nameof(HorizontalStep),
-        typeof(double),
-        typeof(GridLines),
-        new PropertyMetadata(20d, OnReDrawGridLines));
-
-    /// <summary>Identifies the <see cref="VerticalStep"/> dependency property.</summary>
-    public static readonly DependencyProperty VerticalStepProperty = DependencyProperty.Register(
-        nameof(VerticalStep),
-        typeof(double),
-        typeof(GridLines),
-        new PropertyMetadata(20d, OnReDrawGridLines));
-
-    /// <summary>Identifies the <see cref="LineBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty LineBrushProperty = DependencyProperty.Register(
-        nameof(LineBrush),
-        typeof(Brush),
-        typeof(GridLines),
-        new PropertyMetadata(Brushes.DeepPink, OnReDrawGridLines));
-
     private readonly Canvas containerCanvas = new();
 
     /// <summary>Gets or sets the horizontal spacing between the vertical lines; a value that is not positive draws none.</summary>
-    [Category("Layout")]
-    [Description("The horizontal step property")]
-    public double HorizontalStep
-    {
-        get => (double)GetValue(HorizontalStepProperty);
-        set => SetValue(HorizontalStepProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 20d,
+        PropertyChangedCallback = nameof(OnReDrawGridLines),
+        Category = "Layout",
+        Description = "The horizontal step property")]
+    private double horizontalStep;
 
     /// <summary>Gets or sets the vertical spacing between the horizontal lines; a value that is not positive draws none.</summary>
-    [Category("Layout")]
-    [Description("The vertical step property")]
-    public double VerticalStep
-    {
-        get => (double)GetValue(VerticalStepProperty);
-        set => SetValue(VerticalStepProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 20d,
+        PropertyChangedCallback = nameof(OnReDrawGridLines),
+        Category = "Layout",
+        Description = "The vertical step property")]
+    private double verticalStep;
 
     /// <summary>Gets or sets the brush used to draw the grid lines.</summary>
-    [Category("Layout")]
-    [Description("The line brush property")]
-    public Brush LineBrush
-    {
-        get => (Brush)GetValue(LineBrushProperty);
-        set => SetValue(LineBrushProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValueExpression = "Brushes.DeepPink",
+        PropertyChangedCallback = nameof(OnReDrawGridLines),
+        Category = "Layout",
+        Description = "The line brush property")]
+    private Brush lineBrush;
 
     /// <summary>Initializes a new instance of the <see cref="GridLines"/> class.</summary>
     public GridLines()

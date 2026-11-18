@@ -4,6 +4,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// Represents a single clickable segment in a <see cref="Breadcrumb"/> control.
 /// </summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class BreadcrumbItem : ContentControl
 {
     /// <summary>
@@ -44,9 +45,7 @@ public sealed partial class BreadcrumbItem : ContentControl
 
     static BreadcrumbItem()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(BreadcrumbItem),
-            new FrameworkPropertyMetadata(typeof(BreadcrumbItem)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(BreadcrumbItem));
     }
 

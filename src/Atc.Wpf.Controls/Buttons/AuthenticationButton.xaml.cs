@@ -26,7 +26,7 @@ public partial class AuthenticationButton
 
     [DependencyProperty(
         DefaultValue = false,
-        PropertyChangedCallback = nameof(OnIsAuthenticatedChanged))]
+        GeneratePartialHooks = true)]
     private bool isAuthenticated;
 
     [DependencyProperty]
@@ -144,10 +144,10 @@ public partial class AuthenticationButton
         SetCurrentValue(LogoutContentProperty, Word.Logout);
     }
 
-    private static void OnIsAuthenticatedChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((AuthenticationButton)d).RaiseIsAuthenticatedChanged();
+    partial void OnIsAuthenticatedChanged(
+        bool oldValue,
+        bool newValue)
+        => RaiseIsAuthenticatedChanged();
 
     private void RaiseIsAuthenticatedChanged()
         => IsAuthenticatedChanged?.Invoke(this, new RoutedEventArgs());

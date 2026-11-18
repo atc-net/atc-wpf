@@ -5,10 +5,12 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// layout with customizable dots, connecting lines, and alternating content placement.
 /// </summary>
 [ContentProperty(nameof(Items))]
-[TemplatePart(Name = "PART_ItemsHost", Type = typeof(StackPanel))]
+[DefaultStyleKey]
 public sealed partial class Timeline : Control
 {
     private readonly List<TimelineItem> logicalItems = [];
+
+    [TemplatePartField("PART_ItemsHost")]
     private StackPanel? itemsHost;
 
     /// <summary>
@@ -88,9 +90,7 @@ public sealed partial class Timeline : Control
 
     static Timeline()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Timeline),
-            new FrameworkPropertyMetadata(typeof(Timeline)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Timeline));
     }
 
@@ -105,7 +105,7 @@ public sealed partial class Timeline : Control
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-        itemsHost = GetTemplateChild("PART_ItemsHost") as StackPanel;
+        ResolveTemplateParts();
         RebuildVisualTree();
     }
 

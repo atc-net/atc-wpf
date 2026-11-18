@@ -1,17 +1,12 @@
 namespace Atc.Wpf.Controls.Buttons;
 
 /// <summary>A button with a primary action and a dropdown arrow that opens a popup with secondary content.</summary>
-[TemplatePart(Name = "PART_ActionButton", Type = typeof(Button))]
-[TemplatePart(Name = "PART_DropdownButton", Type = typeof(Button))]
-[TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
+[DefaultStyleKey]
 public partial class SplitButton : ContentControl
 {
-    /// <summary>Identifies the <see cref="Click"/> routed event.</summary>
-    public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
-        nameof(Click),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(SplitButton));
+    /// <summary>Occurs when the primary action part of the button is clicked.</summary>
+    [RoutedEvent(RoutingStrategy.Bubble)]
+    private static readonly RoutedEvent click;
 
     [DependencyProperty]
     private ICommand? command;
@@ -25,29 +20,25 @@ public partial class SplitButton : ContentControl
     [DependencyProperty]
     private DataTemplate? dropdownContentTemplate;
 
-    [DependencyProperty(DefaultValue = false, Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChangedCallback = nameof(OnIsDropdownOpenChanged))]
+    [DependencyProperty(DefaultValue = false, Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, GeneratePartialHooks = true)]
     private bool isDropdownOpen;
 
     [DependencyProperty]
     private CornerRadius cornerRadius;
 
+    [TemplatePartField("PART_ActionButton")]
     private Button? actionButton;
+
+    [TemplatePartField("PART_DropdownButton")]
     private Button? dropdownButton;
+
+    [TemplatePartField("PART_Popup")]
     private Popup? popup;
 
     static SplitButton()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(SplitButton),
-            new FrameworkPropertyMetadata(typeof(SplitButton)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(SplitButton));
-    }
-
-    /// <summary>Occurs when the primary action part of the button is clicked.</summary>
-    public event RoutedEventHandler Click
-    {
-        add => AddHandler(ClickEvent, value);
-        remove => RemoveHandler(ClickEvent, value);
     }
 
     /// <inheritdoc />
@@ -70,9 +61,7 @@ public partial class SplitButton : ContentControl
             popup.Closed -= OnPopupClosed;
         }
 
-        actionButton = GetTemplateChild("PART_ActionButton") as Button;
-        dropdownButton = GetTemplateChild("PART_DropdownButton") as Button;
-        popup = GetTemplateChild("PART_Popup") as Popup;
+        ResolveTemplateParts();
 
         if (actionButton is not null)
         {
@@ -146,15 +135,13 @@ public partial class SplitButton : ContentControl
         SetCurrentValue(IsDropdownOpenProperty, false);
     }
 
-    private static void OnIsDropdownOpenChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    partial void OnIsDropdownOpenChanged(
+        bool oldValue,
+        bool newValue)
     {
-        var splitButton = (SplitButton)d;
-
-        if (splitButton.popup is not null)
+        if (popup is not null)
         {
-            splitButton.popup.IsOpen = (bool)e.NewValue;
+            popup.IsOpen = newValue;
         }
     }
 }

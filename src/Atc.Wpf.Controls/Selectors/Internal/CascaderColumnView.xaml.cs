@@ -20,26 +20,6 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </remarks>
 internal partial class CascaderColumnView
 {
-    /// <summary>
-    /// Identifies the <see cref="LoadChildrenAsync"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty LoadChildrenAsyncProperty = DependencyProperty.Register(
-        nameof(LoadChildrenAsync),
-        typeof(Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>),
-        typeof(CascaderColumnView),
-        new PropertyMetadata(defaultValue: null, OnLoadChildrenAsyncChanged));
-
-    private static readonly DependencyPropertyKey IsAtSelectionLimitPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(IsAtSelectionLimit),
-        typeof(bool),
-        typeof(CascaderColumnView),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    /// <summary>
-    /// Identifies the <see cref="IsAtSelectionLimit"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IsAtSelectionLimitProperty = IsAtSelectionLimitPropertyKey.DependencyProperty;
-
     private const int AutoFilterNodeCount = 20;
 
     private static readonly TimeSpan HoverDelay = TimeSpan.FromMilliseconds(150);
@@ -54,6 +34,19 @@ internal partial class CascaderColumnView
     private readonly HashSet<CheckTreeNode> placeholderSet = new(ReferenceEqualityComparer.Instance);
     private readonly HashSet<CascaderColumnItem> realizedContainers = [];
     private readonly CascaderColumnList filterList;
+
+    /// <summary>
+    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
+    /// when the node becomes active.
+    /// </summary>
+    [DependencyProperty(GeneratePartialHooks = true)]
+    private Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? loadChildrenAsync;
+
+    /// <summary>
+    /// Gets a value indicating whether <see cref="SelectedKeys"/> holds <see cref="MaxSelectionCount"/> keys (or more).
+    /// </summary>
+    [DependencyProperty(DefaultValue = false, IsReadOnly = true)]
+    private bool isAtSelectionLimit;
 
     /// <summary>
     /// The root nodes (the first column).
@@ -114,7 +107,7 @@ internal partial class CascaderColumnView
     /// <summary>
     /// What makes a row active: a click, or also resting the mouse on it.
     /// </summary>
-    [DependencyProperty(DefaultValue = CascaderExpandTrigger.Click, PropertyChangedCallback = nameof(OnExpandTriggerChanged))]
+    [DependencyProperty(DefaultValue = CascaderExpandTrigger.Click, GeneratePartialHooks = true)]
     private CascaderExpandTrigger expandTrigger;
 
     /// <summary>
@@ -195,25 +188,6 @@ internal partial class CascaderColumnView
         SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(NodesProperty, new ObservableCollection<CheckTreeNode>());
         RefreshChrome();
-    }
-
-    /// <summary>
-    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
-    /// when the node becomes active.
-    /// </summary>
-    public Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? LoadChildrenAsync
-    {
-        get => (Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?)GetValue(LoadChildrenAsyncProperty);
-        set => SetValue(LoadChildrenAsyncProperty, value);
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether <see cref="SelectedKeys"/> holds <see cref="MaxSelectionCount"/> keys (or more).
-    /// </summary>
-    public bool IsAtSelectionLimit
-    {
-        get => (bool)GetValue(IsAtSelectionLimitProperty);
-        private set => SetValue(IsAtSelectionLimitPropertyKey, BooleanBoxes.Box(value));
     }
 
     /// <summary>
@@ -919,10 +893,10 @@ internal partial class CascaderColumnView
         DependencyPropertyChangedEventArgs e)
         => ((CascaderColumnView)d).RefreshChrome();
 
-    private static void OnExpandTriggerChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((CascaderColumnView)d).CancelPendingHover();
+    partial void OnExpandTriggerChanged(
+        CascaderExpandTrigger oldValue,
+        CascaderExpandTrigger newValue)
+        => CancelPendingHover();
 
     private static void OnPathSeparatorChanged(
         DependencyObject d,
@@ -935,10 +909,10 @@ internal partial class CascaderColumnView
         }
     }
 
-    private static void OnLoadChildrenAsyncChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((CascaderColumnView)d).RebuildColumns();
+    partial void OnLoadChildrenAsyncChanged(
+        Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? oldValue,
+        Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? newValue)
+        => RebuildColumns();
 
     private static void OnFilterTextChanged(
         DependencyObject d,

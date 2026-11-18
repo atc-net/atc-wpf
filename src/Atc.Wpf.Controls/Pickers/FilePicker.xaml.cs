@@ -13,23 +13,12 @@ public partial class FilePicker
         HandlerType = typeof(RoutedPropertyChangedEventHandler<FileInfo?>))]
     private static readonly RoutedEvent valueChanged;
 
-    /// <summary>Identifies the <see cref="Value"/> dependency property.</summary>
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(FileInfo),
-        typeof(FilePicker),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnValuePropertyChanged,
-            (o, value) => CoerceValue(o, value).Item1));
-
     /// <summary>Gets or sets the selected file.</summary>
-    public FileInfo? Value
-    {
-        get => (FileInfo?)GetValue(ValueProperty);
-        set => SetValue(ValueProperty, value);
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnValuePropertyChanged),
+        CoerceValueCallback = nameof(CoerceValueProperty))]
+    private FileInfo? value;
 
     /// <summary>Identifies the <see cref="DisplayValue"/> dependency property.</summary>
     public static readonly DependencyProperty FullNameProperty = DependencyProperty.Register(
@@ -95,13 +84,18 @@ public partial class FilePicker
     protected override AutomationPeer OnCreateAutomationPeer()
         => new FilePickerAutomationPeer(this);
 
+    private static object? CoerceValueProperty(
+        DependencyObject d,
+        object? baseValue)
+        => CoerceValue(d, baseValue).Item1;
+
     private static Tuple<FileInfo?, bool> CoerceValue(
         DependencyObject d,
         object? baseValue)
     {
-        var value = (FileInfo?)baseValue;
+        var file = (FileInfo?)baseValue;
 
-        return new Tuple<FileInfo?, bool>(value, item2: false);
+        return new Tuple<FileInfo?, bool>(file, item2: false);
     }
 
     private static void OnValuePropertyChanged(
@@ -135,9 +129,9 @@ public partial class FilePicker
         DependencyObject d,
         object? baseValue)
     {
-        var value = (string?)baseValue;
+        var text = (string?)baseValue;
 
-        return new Tuple<string?, bool>(value, item2: false);
+        return new Tuple<string?, bool>(text, item2: false);
     }
 
     private static void OnDisplayValuePropertyChanged(
@@ -154,12 +148,12 @@ public partial class FilePicker
             return;
         }
 
-        var value = e.NewValue?.ToString();
-        if (filePicker.Value?.ToString() != value)
+        var text = e.NewValue?.ToString();
+        if (filePicker.Value?.ToString() != text)
         {
-            filePicker.Value = string.IsNullOrEmpty(value)
+            filePicker.Value = string.IsNullOrEmpty(text)
                 ? null
-                : new FileInfo(value);
+                : new FileInfo(text);
         }
     }
 

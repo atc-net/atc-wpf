@@ -20,30 +20,23 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </remarks>
 public partial class CheckTreeView
 {
-    /// <summary>
-    /// Identifies the <see cref="LoadChildrenAsync"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty LoadChildrenAsyncProperty = DependencyProperty.Register(
-        nameof(LoadChildrenAsync),
-        typeof(Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>),
-        typeof(CheckTreeView),
-        new PropertyMetadata(defaultValue: null, OnLoadChildrenAsyncChanged));
-
-    private static readonly DependencyPropertyKey IsAtSelectionLimitPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(IsAtSelectionLimit),
-        typeof(bool),
-        typeof(CheckTreeView),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    /// <summary>
-    /// Identifies the <see cref="IsAtSelectionLimit"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IsAtSelectionLimitProperty = IsAtSelectionLimitPropertyKey.DependencyProperty;
-
     private const int AutoFilterNodeCount = 20;
 
     private readonly CheckTreeState state = new();
     private readonly SelectedKeysCleanup keysReshape;
+
+    /// <summary>
+    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
+    /// on its first expand; a "please wait" row is shown meanwhile. Children of a ticked node inherit the tick.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnLoadChildrenAsyncChanged))]
+    private Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? loadChildrenAsync;
+
+    /// <summary>
+    /// Gets a value indicating whether <see cref="SelectedKeys"/> holds <see cref="MaxSelectionCount"/> keys (or more).
+    /// </summary>
+    [DependencyProperty(DefaultValue = false, IsReadOnly = true)]
+    private bool isAtSelectionLimit;
 
     /// <summary>
     /// The root nodes.
@@ -171,25 +164,6 @@ public partial class CheckTreeView
         SetCurrentValue(SelectedKeysProperty, new ObservableCollectionEx<string>());
         SetCurrentValue(NodesProperty, new ObservableCollection<CheckTreeNode>());
         RefreshChrome();
-    }
-
-    /// <summary>
-    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
-    /// on its first expand; a "please wait" row is shown meanwhile. Children of a ticked node inherit the tick.
-    /// </summary>
-    public Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? LoadChildrenAsync
-    {
-        get => (Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?)GetValue(LoadChildrenAsyncProperty);
-        set => SetValue(LoadChildrenAsyncProperty, value);
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether <see cref="SelectedKeys"/> holds <see cref="MaxSelectionCount"/> keys (or more).
-    /// </summary>
-    public bool IsAtSelectionLimit
-    {
-        get => (bool)GetValue(IsAtSelectionLimitProperty);
-        private set => SetValue(IsAtSelectionLimitPropertyKey, BooleanBoxes.Box(value));
     }
 
     /// <summary>

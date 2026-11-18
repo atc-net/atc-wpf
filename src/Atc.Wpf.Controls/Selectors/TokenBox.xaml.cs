@@ -15,59 +15,46 @@ namespace Atc.Wpf.Controls.Selectors;
 public partial class TokenBox
 {
     /// <summary>
-    /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
+    /// Gets or sets the maximum height of the suggestion pop-up; the list scrolls (virtualized) beyond it.
     /// </summary>
-    public static readonly DependencyProperty MaxDropDownHeightProperty = ComboBox.MaxDropDownHeightProperty.AddOwner(
-        typeof(TokenBox));
+    [DependencyProperty(AddOwnerOf = typeof(ComboBox))]
+    private double maxDropDownHeight;
 
     /// <summary>
-    /// Identifies the <see cref="CreateValidator"/> dependency property.
+    /// Gets or sets the check of a new value before it becomes a token: it returns an error text to reject the value
+    /// (the text then stays in the field with the theme's error look, and <see cref="ErrorText"/> holds the error), or
+    /// <see langword="null"/> to accept it.
     /// </summary>
-    public static readonly DependencyProperty CreateValidatorProperty = DependencyProperty.Register(
-        nameof(CreateValidator),
-        typeof(Func<string, string?>),
-        typeof(TokenBox),
-        new PropertyMetadata(defaultValue: null));
+    [DependencyProperty]
+    private Func<string, string?>? createValidator;
 
     /// <summary>
-    /// Identifies the <see cref="CustomFilter"/> dependency property.
+    /// Gets or sets the filter used when <see cref="FilterMode"/> is <see cref="TokenFilterMode.Custom"/>: it gets the
+    /// typed text and an item, and returns whether the item is suggested.
     /// </summary>
-    public static readonly DependencyProperty CustomFilterProperty = DependencyProperty.Register(
-        nameof(CustomFilter),
-        typeof(Func<string, KeyValuePair<string, string>, bool>),
-        typeof(TokenBox),
-        new PropertyMetadata(defaultValue: null));
+    [DependencyProperty]
+    private Func<string, KeyValuePair<string, string>, bool>? customFilter;
 
     /// <summary>
-    /// Identifies the <see cref="SuggestionsProvider"/> dependency property.
+    /// Gets or sets an asynchronous lookup for huge or remote lists: it gets the typed text and a cancellation token
+    /// and returns the suggestions (key, display value). When set, it replaces the filtering of <see cref="Items"/>;
+    /// it runs after a pause in typing of <see cref="SuggestionDelay"/>, and a new keystroke cancels the previous
+    /// lookup. A picked suggestion is added to <see cref="Items"/>.
     /// </summary>
-    public static readonly DependencyProperty SuggestionsProviderProperty = DependencyProperty.Register(
-        nameof(SuggestionsProvider),
-        typeof(Func<string, CancellationToken, Task<IReadOnlyList<KeyValuePair<string, string>>>>),
-        typeof(TokenBox),
-        new PropertyMetadata(defaultValue: null));
-
-    private static readonly DependencyPropertyKey ErrorTextPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(ErrorText),
-        typeof(string),
-        typeof(TokenBox),
-        new PropertyMetadata(string.Empty, OnErrorTextChanged));
+    [DependencyProperty]
+    private Func<string, CancellationToken, Task<IReadOnlyList<KeyValuePair<string, string>>>>? suggestionsProvider;
 
     /// <summary>
-    /// Identifies the <see cref="ErrorText"/> dependency property.
+    /// Gets the error from <see cref="CreateValidator"/> for the typed text; empty when there is none.
     /// </summary>
-    public static readonly DependencyProperty ErrorTextProperty = ErrorTextPropertyKey.DependencyProperty;
-
-    private static readonly DependencyPropertyKey HasErrorPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(HasError),
-        typeof(bool),
-        typeof(TokenBox),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(DefaultValue = "", IsReadOnly = true, GeneratePartialHooks = true)]
+    private string errorText;
 
     /// <summary>
-    /// Identifies the <see cref="HasError"/> dependency property.
+    /// Gets a value indicating whether <see cref="ErrorText"/> is not empty (the field shows the error look).
     /// </summary>
-    public static readonly DependencyProperty HasErrorProperty = HasErrorPropertyKey.DependencyProperty;
+    [DependencyProperty(DefaultValue = false, IsReadOnly = true)]
+    private bool hasError;
 
     /// <summary>
     /// The known values, keyed by their selection key, with their display value. Changing it drops the tokens whose
@@ -278,66 +265,6 @@ public partial class TokenBox
         SetCurrentValue(ItemsProperty, new Dictionary<string, string>(StringComparer.Ordinal));
 
         UpdateTokens();
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum height of the suggestion pop-up; the list scrolls (virtualized) beyond it.
-    /// </summary>
-    public double MaxDropDownHeight
-    {
-        get => (double)GetValue(MaxDropDownHeightProperty);
-        set => SetValue(MaxDropDownHeightProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the check of a new value before it becomes a token: it returns an error text to reject the value
-    /// (the text then stays in the field with the theme's error look, and <see cref="ErrorText"/> holds the error), or
-    /// <see langword="null"/> to accept it.
-    /// </summary>
-    public Func<string, string?>? CreateValidator
-    {
-        get => (Func<string, string?>?)GetValue(CreateValidatorProperty);
-        set => SetValue(CreateValidatorProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the filter used when <see cref="FilterMode"/> is <see cref="TokenFilterMode.Custom"/>: it gets the
-    /// typed text and an item, and returns whether the item is suggested.
-    /// </summary>
-    public Func<string, KeyValuePair<string, string>, bool>? CustomFilter
-    {
-        get => (Func<string, KeyValuePair<string, string>, bool>?)GetValue(CustomFilterProperty);
-        set => SetValue(CustomFilterProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets an asynchronous lookup for huge or remote lists: it gets the typed text and a cancellation token
-    /// and returns the suggestions (key, display value). When set, it replaces the filtering of <see cref="Items"/>;
-    /// it runs after a pause in typing of <see cref="SuggestionDelay"/>, and a new keystroke cancels the previous
-    /// lookup. A picked suggestion is added to <see cref="Items"/>.
-    /// </summary>
-    public Func<string, CancellationToken, Task<IReadOnlyList<KeyValuePair<string, string>>>>? SuggestionsProvider
-    {
-        get => (Func<string, CancellationToken, Task<IReadOnlyList<KeyValuePair<string, string>>>>?)GetValue(SuggestionsProviderProperty);
-        set => SetValue(SuggestionsProviderProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the error from <see cref="CreateValidator"/> for the typed text; empty when there is none.
-    /// </summary>
-    public string ErrorText
-    {
-        get => (string)GetValue(ErrorTextProperty);
-        private set => SetValue(ErrorTextPropertyKey, value);
-    }
-
-    /// <summary>
-    /// Gets a value indicating whether <see cref="ErrorText"/> is not empty (the field shows the error look).
-    /// </summary>
-    public bool HasError
-    {
-        get => (bool)GetValue(HasErrorProperty);
-        private set => SetValue(HasErrorPropertyKey, BooleanBoxes.Box(value));
     }
 
     /// <summary>
@@ -557,14 +484,12 @@ public partial class TokenBox
         }
     }
 
-    private static void OnErrorTextChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    partial void OnErrorTextChanged(
+        string oldValue,
+        string newValue)
     {
-        var control = (TokenBox)d;
-        var error = e.NewValue as string;
-        control.HasError = !string.IsNullOrEmpty(error);
-        control.PartTextBox.ToolTip = string.IsNullOrEmpty(error) ? null : error;
+        HasError = !string.IsNullOrEmpty(newValue);
+        PartTextBox.ToolTip = string.IsNullOrEmpty(newValue) ? null : newValue;
     }
 
     private static void OnItemTemplateChanged(

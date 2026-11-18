@@ -7,118 +7,101 @@ namespace Atc.Wpf.Controls.Layouts;
 /// and per-child grow/shrink/basis attached properties.
 /// </summary>
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "Complex layout algorithm.")]
-public class FlexPanel : Panel
+public partial class FlexPanel : Panel
 {
     #region Dependency Properties
 
     /// <summary>
-    /// Identifies the Direction dependency property.
+    /// Gets or sets the direction in which children are laid out.
     /// </summary>
-    public static readonly DependencyProperty DirectionProperty = DependencyProperty.Register(
-        nameof(Direction),
-        typeof(FlexDirection),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(FlexDirection.Row, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange));
+    [DependencyProperty(
+        DefaultValue = FlexDirection.Row,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange)]
+    private FlexDirection direction;
 
     /// <summary>
-    /// Identifies the JustifyContent dependency property.
+    /// Gets or sets how children are justified along the main axis.
     /// </summary>
-    public static readonly DependencyProperty JustifyContentProperty = DependencyProperty.Register(
-        nameof(JustifyContent),
-        typeof(FlexJustify),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(FlexJustify.Start, FrameworkPropertyMetadataOptions.AffectsArrange));
+    [DependencyProperty(
+        DefaultValue = FlexJustify.Start,
+        Flags = FrameworkPropertyMetadataOptions.AffectsArrange)]
+    private FlexJustify justifyContent;
 
     /// <summary>
-    /// Identifies the AlignItems dependency property.
+    /// Gets or sets how children are aligned along the cross axis.
     /// </summary>
-    public static readonly DependencyProperty AlignItemsProperty = DependencyProperty.Register(
-        nameof(AlignItems),
-        typeof(FlexAlign),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(FlexAlign.Stretch, FrameworkPropertyMetadataOptions.AffectsArrange));
+    [DependencyProperty(
+        DefaultValue = FlexAlign.Stretch,
+        Flags = FrameworkPropertyMetadataOptions.AffectsArrange)]
+    private FlexAlign alignItems;
 
     /// <summary>
-    /// Identifies the Wrap dependency property.
+    /// Gets or sets whether children should wrap when they overflow.
     /// </summary>
-    public static readonly DependencyProperty WrapProperty = DependencyProperty.Register(
-        nameof(Wrap),
-        typeof(FlexWrap),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(FlexWrap.NoWrap, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange));
+    [DependencyProperty(
+        DefaultValue = FlexWrap.NoWrap,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange)]
+    private FlexWrap wrap;
 
     /// <summary>
-    /// Identifies the Gap dependency property.
+    /// Gets or sets the gap between children (both row and column).
     /// </summary>
-    public static readonly DependencyProperty GapProperty = DependencyProperty.Register(
-        nameof(Gap),
-        typeof(double),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsGapValid);
+    [DependencyProperty(
+        DefaultValue = 0.0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsGapValid))]
+    private double gap;
 
     /// <summary>
-    /// Identifies the RowGap dependency property.
+    /// Gets or sets the gap between rows (cross-axis gap when wrapping).
     /// </summary>
-    public static readonly DependencyProperty RowGapProperty = DependencyProperty.Register(
-        nameof(RowGap),
-        typeof(double),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsGapValid);
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsGapValid))]
+    private double rowGap;
 
     /// <summary>
-    /// Identifies the ColumnGap dependency property.
+    /// Gets or sets the gap between columns (main-axis gap).
     /// </summary>
-    public static readonly DependencyProperty ColumnGapProperty = DependencyProperty.Register(
-        nameof(ColumnGap),
-        typeof(double),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange),
-        IsGapValid);
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange,
+        ValidateValueCallback = nameof(IsGapValid))]
+    private double columnGap;
 
     #endregion
 
     #region Attached Properties
 
-    /// <summary>
-    /// Identifies the Grow attached property.
-    /// </summary>
-    public static readonly DependencyProperty GrowProperty = DependencyProperty.RegisterAttached(
-        "Grow",
-        typeof(double),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange),
-        IsGrowShrinkValid);
+    // The Get/Set methods of the attached properties are hand-written below: each has its own documentation,
+    // which the generator cannot reproduce.
+    [AttachedProperty(
+        DefaultValue = 0.0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        ValidateValueCallback = nameof(IsGrowShrinkValid),
+        GenerateClrAccessors = false)]
+    private static double grow;
 
-    /// <summary>
-    /// Identifies the Shrink attached property.
-    /// </summary>
-    public static readonly DependencyProperty ShrinkProperty = DependencyProperty.RegisterAttached(
-        "Shrink",
-        typeof(double),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange),
-        IsGrowShrinkValid);
+    [AttachedProperty(
+        DefaultValue = 1.0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        ValidateValueCallback = nameof(IsGrowShrinkValid),
+        GenerateClrAccessors = false)]
+    private static double shrink;
 
-    /// <summary>
-    /// Identifies the Basis attached property.
-    /// </summary>
-    public static readonly DependencyProperty BasisProperty = DependencyProperty.RegisterAttached(
-        "Basis",
-        typeof(double),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange),
-        IsBasisValid);
+    [AttachedProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentMeasure | FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        ValidateValueCallback = nameof(IsBasisValid),
+        GenerateClrAccessors = false)]
+    private static double basis;
 
-    /// <summary>
-    /// Identifies the AlignSelf attached property.
-    /// </summary>
-    public static readonly DependencyProperty AlignSelfProperty = DependencyProperty.RegisterAttached(
-        "AlignSelf",
-        typeof(FlexAlign),
-        typeof(FlexPanel),
-        new FrameworkPropertyMetadata(FlexAlign.Auto, FrameworkPropertyMetadataOptions.AffectsParentArrange));
+    [AttachedProperty(
+        DefaultValue = FlexAlign.Auto,
+        Flags = FrameworkPropertyMetadataOptions.AffectsParentArrange,
+        GenerateClrAccessors = false)]
+    private static FlexAlign alignSelf;
 
     /// <summary>
     /// Gets the Grow value for a child element.
@@ -202,73 +185,6 @@ public class FlexPanel : Panel
 
     #endregion
 
-    #region Properties
-
-    /// <summary>
-    /// Gets or sets the direction in which children are laid out.
-    /// </summary>
-    public FlexDirection Direction
-    {
-        get => (FlexDirection)GetValue(DirectionProperty);
-        set => SetValue(DirectionProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets how children are justified along the main axis.
-    /// </summary>
-    public FlexJustify JustifyContent
-    {
-        get => (FlexJustify)GetValue(JustifyContentProperty);
-        set => SetValue(JustifyContentProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets how children are aligned along the cross axis.
-    /// </summary>
-    public FlexAlign AlignItems
-    {
-        get => (FlexAlign)GetValue(AlignItemsProperty);
-        set => SetValue(AlignItemsProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets whether children should wrap when they overflow.
-    /// </summary>
-    public FlexWrap Wrap
-    {
-        get => (FlexWrap)GetValue(WrapProperty);
-        set => SetValue(WrapProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the gap between children (both row and column).
-    /// </summary>
-    public double Gap
-    {
-        get => (double)GetValue(GapProperty);
-        set => SetValue(GapProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the gap between rows (cross-axis gap when wrapping).
-    /// </summary>
-    public double RowGap
-    {
-        get => (double)GetValue(RowGapProperty);
-        set => SetValue(RowGapProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the gap between columns (main-axis gap).
-    /// </summary>
-    public double ColumnGap
-    {
-        get => (double)GetValue(ColumnGapProperty);
-        set => SetValue(ColumnGapProperty, value);
-    }
-
-    #endregion
-
     #region Validation
 
     private static bool IsGapValid(object value)
@@ -286,14 +202,14 @@ public class FlexPanel : Panel
 
     private double GetMainGap()
     {
-        var columnGap = ColumnGap;
-        return double.IsNaN(columnGap) ? Gap : columnGap;
+        var mainGap = ColumnGap;
+        return double.IsNaN(mainGap) ? Gap : mainGap;
     }
 
     private double GetCrossGap()
     {
-        var rowGap = RowGap;
-        return double.IsNaN(rowGap) ? Gap : rowGap;
+        var crossGap = RowGap;
+        return double.IsNaN(crossGap) ? Gap : crossGap;
     }
 
     private bool IsHorizontal()
@@ -322,10 +238,10 @@ public class FlexPanel : Panel
         UIElement child,
         bool isHorizontal)
     {
-        var basis = GetBasis(child);
-        if (!double.IsNaN(basis))
+        var childBasis = GetBasis(child);
+        if (!double.IsNaN(childBasis))
         {
-            return basis;
+            return childBasis;
         }
 
         return GetMainSize(child.DesiredSize, isHorizontal);
@@ -364,7 +280,7 @@ public class FlexPanel : Panel
         var isHorizontal = IsHorizontal();
         var mainGap = GetMainGap();
         var crossGap = GetCrossGap();
-        var wrap = Wrap;
+        var wrapMode = Wrap;
 
         var availableMain = GetMainSize(availableSize, isHorizontal);
 
@@ -375,7 +291,7 @@ public class FlexPanel : Panel
         }
 
         // Build flex lines
-        var lines = BuildFlexLines(children, availableMain, mainGap, isHorizontal, wrap);
+        var lines = BuildFlexLines(children, availableMain, mainGap, isHorizontal, wrapMode);
 
         // Calculate total size
         double totalMain = 0;
@@ -460,17 +376,17 @@ public class FlexPanel : Panel
         var isReversed = IsReversed();
         var mainGap = GetMainGap();
         var crossGap = GetCrossGap();
-        var wrap = Wrap;
-        var justifyContent = JustifyContent;
-        var alignItems = AlignItems;
+        var wrapMode = Wrap;
+        var justify = JustifyContent;
+        var align = AlignItems;
 
         var availableMain = GetMainSize(finalSize, isHorizontal);
 
         // Build flex lines
-        var lines = BuildFlexLines(children, availableMain, mainGap, isHorizontal, wrap);
+        var lines = BuildFlexLines(children, availableMain, mainGap, isHorizontal, wrapMode);
 
         // Handle WrapReverse
-        if (wrap == FlexWrap.WrapReverse)
+        if (wrapMode == FlexWrap.WrapReverse)
         {
             lines.Reverse();
         }
@@ -491,7 +407,7 @@ public class FlexPanel : Panel
 
         foreach (var line in lines)
         {
-            ArrangeLine(line, crossOffset, availableMain, isHorizontal, isReversed, mainGap, justifyContent, alignItems);
+            ArrangeLine(line, crossOffset, availableMain, isHorizontal, isReversed, mainGap, justify, align);
             crossOffset += line.CrossSize + crossGap;
         }
 
@@ -536,9 +452,9 @@ public class FlexPanel : Panel
             for (var i = 0; i < childCount; i++)
             {
                 var child = lineChildren[i];
-                var basis = GetChildBasis(child, isHorizontal);
-                var grow = GetGrow(child);
-                childSizes[i] = basis + ((grow / line.TotalGrow) * freeSpace);
+                var childBasis = GetChildBasis(child, isHorizontal);
+                var childGrow = GetGrow(child);
+                childSizes[i] = childBasis + ((childGrow / line.TotalGrow) * freeSpace);
             }
         }
         else if (freeSpace < 0 && line.TotalShrink > 0)
@@ -548,11 +464,11 @@ public class FlexPanel : Panel
             for (var i = 0; i < childCount; i++)
             {
                 var child = lineChildren[i];
-                var basis = GetChildBasis(child, isHorizontal);
-                var shrink = GetShrink(child);
-                var scaledShrink = shrink * basis;
+                var childBasis = GetChildBasis(child, isHorizontal);
+                var childShrink = GetShrink(child);
+                var scaledShrink = childShrink * childBasis;
                 var reduction = (scaledShrink / line.TotalShrink) * shrinkAmount;
-                childSizes[i] = System.Math.Max(0, basis - reduction);
+                childSizes[i] = System.Math.Max(0, childBasis - reduction);
             }
         }
         else

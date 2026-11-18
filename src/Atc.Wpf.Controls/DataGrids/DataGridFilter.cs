@@ -21,78 +21,50 @@ namespace Atc.Wpf.Controls.DataGrids;
 /// </remarks>
 public static partial class DataGridFilter
 {
-    private static readonly TimeSpan DefaultSearchDelay = TimeSpan.FromMilliseconds(300);
+    // The accessor methods of the public attached properties are hand-written (further down): each has its own
+    // documentation and parameter texts, which the generator cannot reproduce.
 
-    /// <summary>
-    /// Identifies the <c>IsEnabled</c> attached property: <see langword="true"/> on a <see cref="DataGrid"/> adds a
-    /// filter button to each column header (Alt+Down on the button or on a cell opens the column's filter).
-    /// </summary>
-    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached(
-        "IsEnabled",
-        typeof(bool),
-        typeof(DataGridFilter),
-        new PropertyMetadata(BooleanBoxes.FalseBox, OnIsEnabledChanged));
+    // True on a DataGrid adds a filter button to each column header (Alt+Down on the button or on a cell opens
+    // the column's filter).
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnIsEnabledChanged),
+        GenerateClrAccessors = false)]
+    private static bool isEnabled;
 
-    /// <summary>
-    /// Identifies the <c>ShowColumnChooser</c> attached property: <see langword="true"/> on a <see cref="DataGrid"/>
-    /// shows a menu of the columns with check boxes when a column header is right-clicked.
-    /// </summary>
-    public static readonly DependencyProperty ShowColumnChooserProperty = DependencyProperty.RegisterAttached(
-        "ShowColumnChooser",
-        typeof(bool),
-        typeof(DataGridFilter),
-        new PropertyMetadata(BooleanBoxes.FalseBox, OnShowColumnChooserChanged));
+    // True on a DataGrid shows a menu of the columns with check boxes when a column header is right-clicked.
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnShowColumnChooserChanged),
+        GenerateClrAccessors = false)]
+    private static bool showColumnChooser;
 
-    /// <summary>
-    /// Identifies the <c>SearchText</c> attached property: the text a <see cref="DataGrid"/> searches for in all
-    /// visible columns (contains, case-insensitive), applied after <c>SearchDelay</c> and ANDed with the column filters.
-    /// Bind it to a search box's <c>Text</c>.
-    /// </summary>
-    public static readonly DependencyProperty SearchTextProperty = DependencyProperty.RegisterAttached(
-        "SearchText",
-        typeof(string),
-        typeof(DataGridFilter),
-        new PropertyMetadata(string.Empty, OnSearchTextChanged));
+    // The text a DataGrid searches for in all visible columns (contains, case-insensitive), applied after
+    // SearchDelay and ANDed with the column filters. Bind it to a search box's Text.
+    [AttachedProperty(
+        DefaultValue = "",
+        PropertyChangedCallback = nameof(OnSearchTextChanged),
+        GenerateClrAccessors = false)]
+    private static string searchText;
 
-    /// <summary>
-    /// Identifies the <c>SearchDelay</c> attached property: how long a <see cref="DataGrid"/> waits after the last
-    /// change of <c>SearchText</c> before it searches (default 300 ms; zero searches at once).
-    /// </summary>
-    public static readonly DependencyProperty SearchDelayProperty = DependencyProperty.RegisterAttached(
-        "SearchDelay",
-        typeof(TimeSpan),
-        typeof(DataGridFilter),
-        new PropertyMetadata(DefaultSearchDelay));
+    // How long a DataGrid waits after the last change of SearchText before it searches (default 300 ms; zero
+    // searches at once).
+    [AttachedProperty(
+        DefaultValueExpression = "TimeSpan.FromMilliseconds(300)",
+        GenerateClrAccessors = false)]
+    private static TimeSpan searchDelay;
 
-    /// <summary>
-    /// Identifies the <c>IsColumnFilterEnabled</c> attached property: <see langword="false"/> on a column removes its
-    /// filter button.
-    /// </summary>
-    public static readonly DependencyProperty IsColumnFilterEnabledProperty = DependencyProperty.RegisterAttached(
-        "IsColumnFilterEnabled",
-        typeof(bool),
-        typeof(DataGridFilter),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+    // False on a column removes its filter button.
+    [AttachedProperty(DefaultValue = true, GenerateClrAccessors = false)]
+    private static bool isColumnFilterEnabled;
 
-    /// <summary>
-    /// Identifies the <c>ColumnKey</c> attached property: a stable key of a column for filters and saved layouts
-    /// (see <see cref="ResolveColumnKey"/>).
-    /// </summary>
-    public static readonly DependencyProperty ColumnKeyProperty = DependencyProperty.RegisterAttached(
-        "ColumnKey",
-        typeof(string),
-        typeof(DataGridFilter),
-        new PropertyMetadata(defaultValue: null));
+    // A stable key of a column for filters and saved layouts (see ResolveColumnKey).
+    [AttachedProperty(GenerateClrAccessors = false)]
+    private static string? columnKey;
 
-    /// <summary>
-    /// Identifies the <c>CanUserHideColumn</c> attached property: <see langword="false"/> on a column keeps it from
-    /// being hidden in the column chooser (e.g. the key column).
-    /// </summary>
-    public static readonly DependencyProperty CanUserHideColumnProperty = DependencyProperty.RegisterAttached(
-        "CanUserHideColumn",
-        typeof(bool),
-        typeof(DataGridFilter),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+    // False on a column keeps it from being hidden in the column chooser (e.g. the key column).
+    [AttachedProperty(DefaultValue = true, GenerateClrAccessors = false)]
+    private static bool canUserHideColumn;
 
     /// <summary>
     /// Identifies the read-only <c>IsColumnFilterActive</c> attached property key.
@@ -119,51 +91,39 @@ public static partial class DataGridFilter
         typeof(DataGridFilterChangedEventHandler),
         typeof(DataGridFilter));
 
-    /// <summary>
-    /// Identifies the internal <c>IsColumnFilterSupported</c> attached property: <see langword="false"/> on a column
-    /// whose grid source cannot apply its filter (the filter button is disabled).
-    /// </summary>
-    internal static readonly DependencyProperty IsColumnFilterSupportedProperty = DependencyProperty.RegisterAttached(
-        "IsColumnFilterSupported",
-        typeof(bool),
-        typeof(DataGridFilter),
-        new PropertyMetadata(BooleanBoxes.TrueBox));
+    // False on a column whose grid source cannot apply its filter (the filter button is disabled).
+    [AttachedProperty(
+        DefaultValue = true,
+        AccessModifier = PropertyAccessModifier.Internal,
+        GenerateClrAccessors = false)]
+    private static bool isColumnFilterSupported;
 
-    private static readonly DependencyProperty StateProperty = DependencyProperty.RegisterAttached(
-        "State",
-        typeof(DataGridFilterState),
-        typeof(DataGridFilter),
-        new PropertyMetadata(defaultValue: null));
+    [AttachedProperty(AccessModifier = PropertyAccessModifier.Private, GenerateClrAccessors = false)]
+    private static DataGridFilterState? state;
 
-    private static readonly DependencyProperty ObservedItemsSourceProperty = DependencyProperty.RegisterAttached(
-        "ObservedItemsSource",
-        typeof(object),
-        typeof(DataGridFilter),
-        new PropertyMetadata(defaultValue: null, OnObservedItemsSourceChanged));
+    [AttachedProperty(
+        PropertyChangedCallback = nameof(OnObservedItemsSourceChanged),
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateClrAccessors = false)]
+    private static object? observedItemsSource;
 
-    private static readonly DependencyProperty OriginalHeaderTemplateProperty = DependencyProperty.RegisterAttached(
-        "OriginalHeaderTemplate",
-        typeof(DataTemplate),
-        typeof(DataGridFilter),
-        new PropertyMetadata(defaultValue: null));
+    [AttachedProperty(AccessModifier = PropertyAccessModifier.Private, GenerateClrAccessors = false)]
+    private static DataTemplate? originalHeaderTemplate;
 
-    private static readonly DependencyProperty WrapperHeaderTemplateProperty = DependencyProperty.RegisterAttached(
-        "WrapperHeaderTemplate",
-        typeof(DataTemplate),
-        typeof(DataGridFilter),
-        new PropertyMetadata(defaultValue: null));
+    [AttachedProperty(AccessModifier = PropertyAccessModifier.Private, GenerateClrAccessors = false)]
+    private static DataTemplate? wrapperHeaderTemplate;
 
-    private static readonly DependencyProperty ObservedHeaderTemplateProperty = DependencyProperty.RegisterAttached(
-        "ObservedHeaderTemplate",
-        typeof(DataTemplate),
-        typeof(DataGridFilter),
-        new PropertyMetadata(defaultValue: null, OnObservedHeaderTemplateChanged));
+    [AttachedProperty(
+        PropertyChangedCallback = nameof(OnObservedHeaderTemplateChanged),
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateClrAccessors = false)]
+    private static DataTemplate? observedHeaderTemplate;
 
-    private static readonly DependencyProperty ObservedHeaderTemplateSelectorProperty = DependencyProperty.RegisterAttached(
-        "ObservedHeaderTemplateSelector",
-        typeof(DataTemplateSelector),
-        typeof(DataGridFilter),
-        new PropertyMetadata(defaultValue: null, OnObservedHeaderTemplateSelectorChanged));
+    [AttachedProperty(
+        PropertyChangedCallback = nameof(OnObservedHeaderTemplateSelectorChanged),
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateClrAccessors = false)]
+    private static DataTemplateSelector? observedHeaderTemplateSelector;
 
     /// <summary>Gets whether the column filter buttons are shown on the grid.</summary>
     /// <param name="element">The grid.</param>
@@ -489,8 +449,8 @@ public static partial class DataGridFilter
         DataGrid grid,
         DataGridColumn? column = null)
     {
-        var state = GetState(grid);
-        return state?.PopupContent is { } content && (column is null || ReferenceEquals(state.PopupColumn, column))
+        var gridState = GetState(grid);
+        return gridState?.PopupContent is { } content && (column is null || ReferenceEquals(gridState.PopupColumn, column))
             ? content
             : null;
     }
@@ -672,18 +632,18 @@ public static partial class DataGridFilter
 
     private static DataGridFilterState EnsureState(DataGrid grid)
     {
-        if (GetState(grid) is { } state)
+        if (GetState(grid) is { } gridState)
         {
-            return state;
+            return gridState;
         }
 
-        state = new DataGridFilterState(grid);
-        grid.SetValue(StateProperty, state);
+        gridState = new DataGridFilterState(grid);
+        grid.SetValue(StateProperty, gridState);
         BindingOperations.SetBinding(
             grid,
             ObservedItemsSourceProperty,
             new Binding(nameof(ItemsControl.ItemsSource)) { Source = grid });
-        return state;
+        return gridState;
     }
 
     private static DataGridFilterButton? FindFilterButton(

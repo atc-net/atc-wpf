@@ -2,6 +2,7 @@ namespace Atc.Wpf.Controls.Layouts;
 
 /// <summary>A group box with a header that can expand and collapse its content.</summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class GroupBoxExpander : HeaderedContentControl
 {
     [DependencyProperty(
@@ -33,9 +34,7 @@ public sealed partial class GroupBoxExpander : HeaderedContentControl
 
     static GroupBoxExpander()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(GroupBoxExpander),
-            new FrameworkPropertyMetadata(typeof(GroupBoxExpander)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(GroupBoxExpander));
     }
 

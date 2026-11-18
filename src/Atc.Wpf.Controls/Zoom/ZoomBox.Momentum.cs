@@ -8,24 +8,14 @@ public partial class ZoomBox
     private double momentumVelocity;
     private Point momentumFocus;
 
-    /// <summary>Identifies the <see cref="IsZoomMomentumEnabled"/> dependency property.</summary>
-    public static readonly DependencyProperty IsZoomMomentumEnabledProperty = DependencyProperty.Register(
-        nameof(IsZoomMomentumEnabled),
-        typeof(bool),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-
     /// <summary>
     /// Gets or sets a value indicating whether zoom momentum is enabled.
     /// When <see langword="true"/>, a fast scroll-zoom gesture continues
     /// briefly with decaying momentum after release.
     /// Default is <see langword="false"/> (opt-in).
     /// </summary>
-    public bool IsZoomMomentumEnabled
-    {
-        get => (bool)GetValue(IsZoomMomentumEnabledProperty);
-        set => SetValue(IsZoomMomentumEnabledProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(DefaultValue = false, MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata)]
+    private bool isZoomMomentumEnabled;
 
     [DependencyProperty(DefaultValue = 0.85)]
     private double momentumFriction;

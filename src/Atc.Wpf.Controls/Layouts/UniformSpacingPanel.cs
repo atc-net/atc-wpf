@@ -3,140 +3,69 @@ namespace Atc.Wpf.Controls.Layouts;
 
 /// <summary>A panel that arranges its children with uniform spacing, horizontally or vertically, with optional wrapping.</summary>
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-public sealed class UniformSpacingPanel : Panel
+public sealed partial class UniformSpacingPanel : Panel
 {
-    /// <summary>Identifies the <see cref="Orientation"/> dependency property.</summary>
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        nameof(Orientation),
-        typeof(Orientation),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(Orientation.Horizontal, FrameworkPropertyMetadataOptions.AffectsMeasure, OnOrientationChanged));
-
-    /// <summary>Identifies the <see cref="ChildWrapping"/> dependency property.</summary>
-    public static readonly DependencyProperty ChildWrappingProperty = DependencyProperty.Register(
-        nameof(ChildWrapping),
-        typeof(VisualWrappingType),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(default(VisualWrappingType), FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    /// <summary>Identifies the <see cref="Spacing"/> dependency property.</summary>
-    public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(
-        nameof(Spacing),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsSpacingValid);
-
-    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
-        nameof(HorizontalSpacing),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsSpacingValid);
-
-    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
-        nameof(VerticalSpacing),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsSpacingValid);
-
-    /// <summary>Identifies the <see cref="ItemWidth"/> dependency property.</summary>
-    public static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register(
-        nameof(ItemWidth),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsWidthHeightValid);
-
-    /// <summary>Identifies the <see cref="ItemHeight"/> dependency property.</summary>
-    public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register(
-        nameof(ItemHeight),
-        typeof(double),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
-        IsWidthHeightValid);
-
-    /// <summary>Identifies the <see cref="ItemHorizontalAlignment"/> dependency property.</summary>
-    public static readonly DependencyProperty ItemHorizontalAlignmentProperty = DependencyProperty.Register(
-        nameof(ItemHorizontalAlignment),
-        typeof(HorizontalAlignment?),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    /// <summary>Identifies the <see cref="ItemVerticalAlignment"/> dependency property.</summary>
-    public static readonly DependencyProperty ItemVerticalAlignmentProperty = DependencyProperty.Register(
-        nameof(ItemVerticalAlignment),
-        typeof(VerticalAlignment?),
-        typeof(UniformSpacingPanel),
-        new FrameworkPropertyMetadata(VerticalAlignment.Stretch, FrameworkPropertyMetadataOptions.AffectsMeasure));
-
-    private Orientation orientation;
+    // Also the cached value of the property: OnOrientationChanged writes it, the layout code reads it.
 
     /// <summary>Gets or sets the layout direction.</summary>
-    public Orientation Orientation
-    {
-        get => (Orientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = Orientation.Horizontal,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        PropertyChangedCallback = nameof(OnOrientationChanged))]
+    private Orientation orientation;
 
     /// <summary>Gets or sets how children wrap when they run out of space.</summary>
-    public VisualWrappingType ChildWrapping
-    {
-        get => (VisualWrappingType)GetValue(ChildWrappingProperty);
-        set => SetValue(ChildWrappingProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValueExpression = "default(VisualWrappingType)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private VisualWrappingType childWrapping;
 
     /// <summary>Gets or sets the uniform spacing between items; sets both the horizontal and vertical spacing.</summary>
-    public double Spacing
-    {
-        get => (double)GetValue(SpacingProperty);
-        set => SetValue(SpacingProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsSpacingValid))]
+    private double spacing;
 
     /// <summary>Gets or sets the horizontal gap between items.</summary>
-    public double HorizontalSpacing
-    {
-        get => (double)GetValue(HorizontalSpacingProperty);
-        set => SetValue(HorizontalSpacingProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsSpacingValid))]
+    private double horizontalSpacing;
 
     /// <summary>Gets or sets the vertical gap between items.</summary>
-    public double VerticalSpacing
-    {
-        get => (double)GetValue(VerticalSpacingProperty);
-        set => SetValue(VerticalSpacingProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsSpacingValid))]
+    private double verticalSpacing;
 
     /// <summary>Gets or sets a fixed width for all items.</summary>
-    public double ItemWidth
-    {
-        get => (double)GetValue(ItemWidthProperty);
-        set => SetValue(ItemWidthProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsWidthHeightValid))]
+    private double itemWidth;
 
     /// <summary>Gets or sets a fixed height for all items.</summary>
-    public double ItemHeight
-    {
-        get => (double)GetValue(ItemHeightProperty);
-        set => SetValue(ItemHeightProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = double.NaN,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure,
+        ValidateValueCallback = nameof(IsWidthHeightValid))]
+    private double itemHeight;
 
     /// <summary>Gets or sets the horizontal alignment of the children.</summary>
-    public HorizontalAlignment? ItemHorizontalAlignment
-    {
-        get => (HorizontalAlignment?)GetValue(ItemHorizontalAlignmentProperty);
-        set => SetValue(ItemHorizontalAlignmentProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = HorizontalAlignment.Stretch,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private HorizontalAlignment? itemHorizontalAlignment;
 
     /// <summary>Gets or sets the vertical alignment of the children.</summary>
-    public VerticalAlignment? ItemVerticalAlignment
-    {
-        get => (VerticalAlignment?)GetValue(ItemVerticalAlignmentProperty);
-        set => SetValue(ItemVerticalAlignmentProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = VerticalAlignment.Stretch,
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure)]
+    private VerticalAlignment? itemVerticalAlignment;
 
     private static void OnOrientationChanged(
         DependencyObject d,
@@ -236,10 +165,10 @@ public sealed class UniformSpacingPanel : Panel
         var uvConstraint = new PanelUvSize(orientation, availableSize);
         var itemWidthSet = !double.IsNaN(ItemWidth);
         var itemHeightSet = !double.IsNaN(ItemHeight);
-        var itemHorizontalAlignment = ItemHorizontalAlignment;
-        var itemVerticalAlignment = ItemVerticalAlignment;
-        var itemHorizontalAlignmentSet = itemHorizontalAlignment is not null;
-        var itemVerticalAlignmentSet = itemVerticalAlignment is not null;
+        var horizontalAlignment = ItemHorizontalAlignment;
+        var verticalAlignment = ItemVerticalAlignment;
+        var itemHorizontalAlignmentSet = horizontalAlignment is not null;
+        var itemVerticalAlignmentSet = verticalAlignment is not null;
         var spacingSize = GetSpacingSize();
 
         var childConstraint = new Size(
@@ -322,12 +251,12 @@ public sealed class UniformSpacingPanel : Panel
 
                 if (itemHorizontalAlignmentSet)
                 {
-                    child.SetCurrentValue(HorizontalAlignmentProperty, itemHorizontalAlignment);
+                    child.SetCurrentValue(HorizontalAlignmentProperty, horizontalAlignment);
                 }
 
                 if (itemVerticalAlignmentSet)
                 {
-                    child.SetCurrentValue(VerticalAlignmentProperty, itemVerticalAlignment);
+                    child.SetCurrentValue(VerticalAlignmentProperty, verticalAlignment);
                 }
 
                 child.Measure(layoutSlotSize);

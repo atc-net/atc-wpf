@@ -2,13 +2,14 @@
 namespace Atc.Wpf.Controls.Progressing;
 
 /// <summary>An animated indicator that signals an ongoing operation, in one of several visual styles.</summary>
-[TemplatePart(Name = TemplateBorderName, Type = typeof(Border))]
+[DefaultStyleKey]
 public sealed partial class LoadingIndicator : Control
 {
     internal const string TemplateBorderName = "PART_Border";
 
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:Field names should begin with lower-case letter", Justification = "OK.")]
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]
+    [TemplatePartField(TemplateBorderName)]
     private Border? PART_Border;
 
     [DependencyProperty(
@@ -31,9 +32,7 @@ public sealed partial class LoadingIndicator : Control
 
     static LoadingIndicator()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(LoadingIndicator),
-            new FrameworkPropertyMetadata(typeof(LoadingIndicator)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(LoadingIndicator));
     }
 
@@ -47,7 +46,7 @@ public sealed partial class LoadingIndicator : Control
             SetCurrentValue(ForegroundProperty, CustomColorBrush);
         }
 
-        PART_Border = GetTemplateChild(TemplateBorderName) as Border;
+        ResolveTemplateParts();
 
         if (PART_Border == null)
         {

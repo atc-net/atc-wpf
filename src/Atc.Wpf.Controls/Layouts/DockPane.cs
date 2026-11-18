@@ -4,18 +4,17 @@ namespace Atc.Wpf.Controls.Layouts;
 /// A pane of a <see cref="DockRegion"/>. Several panes in one region are shown as tabs; a pane can be
 /// floated into its own tool window, docked back and closed (and restored) through its <see cref="DockPanelPro"/>.
 /// </summary>
+[DefaultStyleKey]
 public sealed partial class DockPane : HeaderedContentControl
 {
-    private static readonly DependencyPropertyKey StatePropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(State),
-        typeof(DockPaneState),
-        typeof(DockPane),
-        new FrameworkPropertyMetadata(DockPaneState.Docked));
-
     /// <summary>
-    /// Identifies the <see cref="State"/> dependency property.
+    /// Gets where the pane is shown: docked as a tab, floating in a tool window, or closed.
     /// </summary>
-    public static readonly DependencyProperty StateProperty = StatePropertyKey.DependencyProperty;
+    [DependencyProperty(
+        DefaultValue = DockPaneState.Docked,
+        Flags = FrameworkPropertyMetadataOptions.None,
+        IsReadOnly = true)]
+    private DockPaneState state;
 
     /// <summary>
     /// Gets or sets a unique identifier for this pane, used by <see cref="DockPanelPro.FindPane"/> and layout persistence.
@@ -38,22 +37,11 @@ public sealed partial class DockPane : HeaderedContentControl
 
     static DockPane()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(DockPane),
-            new FrameworkPropertyMetadata(typeof(DockPane)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(DockPane));
         FocusableProperty.OverrideMetadata(
             typeof(DockPane),
             new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-    }
-
-    /// <summary>
-    /// Gets where the pane is shown: docked as a tab, floating in a tool window, or closed.
-    /// </summary>
-    public DockPaneState State
-    {
-        get => (DockPaneState)GetValue(StateProperty);
-        private set => SetValue(StatePropertyKey, value);
     }
 
     /// <summary>

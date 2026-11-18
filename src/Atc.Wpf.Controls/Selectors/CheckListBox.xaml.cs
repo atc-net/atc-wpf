@@ -73,7 +73,7 @@ public partial class CheckListBox
     /// The group of each key (key to group name); <see langword="null"/> for no groups. Keys without a group are listed
     /// first; the groups follow in the order of first appearance, each under a header.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnItemGroupsChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private Dictionary<string, string>? itemGroups;
 
     /// <summary>
@@ -85,7 +85,7 @@ public partial class CheckListBox
     /// <summary>
     /// The maximum number of ticked keys; <see langword="null"/> for no limit. At the limit the unticked items are disabled.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
+    [DependencyProperty(GeneratePartialHooks = true, ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -317,10 +317,10 @@ public partial class CheckListBox
             SelectNewItems && (canSelectNewItems || oldItemKeys.Count == 0),
             MaxSelectionCount));
 
-    private static void OnItemGroupsChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((CheckListBox)d).RebuildRows(keepScrollPosition: true);
+    partial void OnItemGroupsChanged(
+        Dictionary<string, string>? oldValue,
+        Dictionary<string, string>? newValue)
+        => RebuildRows(keepScrollPosition: true);
 
     private static void OnSelectedKeysChanged(
         DependencyObject d,
@@ -365,10 +365,10 @@ public partial class CheckListBox
         control.RefreshStates();
     }
 
-    private static void OnStateChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((CheckListBox)d).RefreshStates();
+    partial void OnMaxSelectionCountChanged(
+        int? oldValue,
+        int? newValue)
+        => RefreshStates();
 
     private static void OnChromeChanged(
         DependencyObject d,

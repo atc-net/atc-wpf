@@ -27,80 +27,40 @@ namespace Atc.Wpf.Controls.Layouts;
 /// &lt;/atc:StaggeredPanel&gt;
 /// </code>
 /// </example>
-public sealed class StaggeredPanel : Panel
+public sealed partial class StaggeredPanel : Panel
 {
-    /// <summary>Identifies the <see cref="DesiredItemWidth"/> dependency property.</summary>
-    public static readonly DependencyProperty DesiredItemWidthProperty = DependencyProperty.Register(
-        nameof(DesiredItemWidth),
-        typeof(double),
-        typeof(StaggeredPanel),
-        new PropertyMetadata(250d, OnInvalidateMeasure));
-
-    /// <summary>Identifies the <see cref="Padding"/> dependency property.</summary>
-    public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
-        nameof(Padding),
-        typeof(Thickness),
-        typeof(StaggeredPanel),
-        new PropertyMetadata(default(Thickness), OnInvalidateMeasure));
-
-    /// <summary>Identifies the <see cref="HorizontalSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
-        nameof(HorizontalSpacing),
-        typeof(double),
-        typeof(StaggeredPanel),
-        new PropertyMetadata(0d, OnInvalidateMeasure));
-
-    /// <summary>Identifies the <see cref="VerticalSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
-        nameof(VerticalSpacing),
-        typeof(double),
-        typeof(StaggeredPanel),
-        new PropertyMetadata(0d, OnInvalidateMeasure));
-
-    private double itemWidth;
-    private int columnCount;
-
     /// <summary>
     /// Gets or sets the desired width for each column.
     /// The actual width may be larger if <see cref="FrameworkElement.HorizontalAlignment"/>
     /// is set to <see cref="HorizontalAlignment.Stretch"/>.
     /// </summary>
     /// <value>The desired column width in device-independent units. Default is 250.</value>
-    public double DesiredItemWidth
-    {
-        get => (double)GetValue(DesiredItemWidthProperty);
-        set => SetValue(DesiredItemWidthProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 250d, PropertyChangedCallback = nameof(OnInvalidateMeasure))]
+    private double desiredItemWidth;
 
     /// <summary>
     /// Gets or sets the padding inside the panel.
     /// </summary>
     /// <value>The padding as a <see cref="Thickness"/>. Default is 0 on all sides.</value>
-    public Thickness Padding
-    {
-        get => (Thickness)GetValue(PaddingProperty);
-        set => SetValue(PaddingProperty, value);
-    }
+    [DependencyProperty(DefaultValueExpression = "default(Thickness)", PropertyChangedCallback = nameof(OnInvalidateMeasure))]
+    private Thickness padding;
 
     /// <summary>
     /// Gets or sets the horizontal spacing between columns.
     /// </summary>
     /// <value>The horizontal spacing in device-independent units. Default is 0.</value>
-    public double HorizontalSpacing
-    {
-        get => (double)GetValue(HorizontalSpacingProperty);
-        set => SetValue(HorizontalSpacingProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 0d, PropertyChangedCallback = nameof(OnInvalidateMeasure))]
+    private double horizontalSpacing;
 
     /// <summary>
     /// Gets or sets the vertical spacing between items in a column.
     /// </summary>
     /// <value>The vertical spacing in device-independent units. Default is 0.</value>
-    public double VerticalSpacing
-    {
-        get => (double)GetValue(VerticalSpacingProperty);
-        set => SetValue(VerticalSpacingProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 0d, PropertyChangedCallback = nameof(OnInvalidateMeasure))]
+    private double verticalSpacing;
+
+    private double itemWidth;
+    private int columnCount;
 
     private static void OnInvalidateMeasure(
         DependencyObject d,

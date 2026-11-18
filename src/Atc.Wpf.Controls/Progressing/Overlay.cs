@@ -5,36 +5,32 @@ namespace Atc.Wpf.Controls.Progressing;
 /// over its content with optional centered overlay content.
 /// Useful for modals, loading states, and interaction blocking.
 /// </summary>
-[TemplatePart(Name = PartOverlayPanel, Type = typeof(Grid))]
-[TemplatePart(Name = PartDimmingRect, Type = typeof(Rectangle))]
 [TemplatePart(Name = PartOverlayContentPresenter, Type = typeof(ContentPresenter))]
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public partial class Overlay : ContentControl
 {
     private const string PartOverlayPanel = "PART_OverlayPanel";
     private const string PartDimmingRect = "PART_DimmingRect";
     private const string PartOverlayContentPresenter = "PART_OverlayContentPresenter";
 
+    [TemplatePartField(PartOverlayPanel)]
     private Grid? overlayPanel;
+
+    [TemplatePartField(PartDimmingRect)]
     private Rectangle? dimmingRect;
 
     /// <summary>
-    /// Identifies the Activated routed event.
+    /// Occurs when the overlay becomes active.
     /// </summary>
-    public static readonly RoutedEvent ActivatedEvent = EventManager.RegisterRoutedEvent(
-        nameof(Activated),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(Overlay));
+    [RoutedEvent(RoutingStrategy.Bubble)]
+    private static readonly RoutedEvent activated;
 
     /// <summary>
-    /// Identifies the Deactivated routed event.
+    /// Occurs when the overlay becomes inactive.
     /// </summary>
-    public static readonly RoutedEvent DeactivatedEvent = EventManager.RegisterRoutedEvent(
-        nameof(Deactivated),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(Overlay));
+    [RoutedEvent(RoutingStrategy.Bubble)]
+    private static readonly RoutedEvent deactivated;
 
     /// <summary>
     /// Gets or sets whether the overlay is currently active (visible).
@@ -86,29 +82,9 @@ public partial class Overlay : ContentControl
     [DependencyProperty(DefaultValue = "new TimeSpan(0, 0, 0, 0, 150)")]
     private TimeSpan fadeOutDuration;
 
-    /// <summary>
-    /// Occurs when the overlay becomes active.
-    /// </summary>
-    public event RoutedEventHandler Activated
-    {
-        add => AddHandler(ActivatedEvent, value);
-        remove => RemoveHandler(ActivatedEvent, value);
-    }
-
-    /// <summary>
-    /// Occurs when the overlay becomes inactive.
-    /// </summary>
-    public event RoutedEventHandler Deactivated
-    {
-        add => AddHandler(DeactivatedEvent, value);
-        remove => RemoveHandler(DeactivatedEvent, value);
-    }
-
     static Overlay()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Overlay),
-            new FrameworkPropertyMetadata(typeof(Overlay)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Overlay));
     }
 
@@ -122,8 +98,7 @@ public partial class Overlay : ContentControl
 
         base.OnApplyTemplate();
 
-        overlayPanel = GetTemplateChild(PartOverlayPanel) as Grid;
-        dimmingRect = GetTemplateChild(PartDimmingRect) as Rectangle;
+        ResolveTemplateParts();
 
         if (dimmingRect is not null)
         {

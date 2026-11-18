@@ -27,44 +27,32 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </remarks>
 public partial class MultiColumnComboBox
 {
-    /// <summary>
-    /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MaxDropDownHeightProperty = ComboBox.MaxDropDownHeightProperty.AddOwner(
-        typeof(MultiColumnComboBox));
-
-    private static readonly DependencyPropertyKey SummaryTextPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(SummaryText),
-        typeof(string),
-        typeof(MultiColumnComboBox),
-        new PropertyMetadata(string.Empty));
-
-    /// <summary>
-    /// Identifies the <see cref="SummaryText"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SummaryTextProperty = SummaryTextPropertyKey.DependencyProperty;
-
-    private static readonly DependencyPropertyKey SelectedItemsPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(SelectedItems),
-        typeof(IReadOnlyList<object>),
-        typeof(MultiColumnComboBox),
-        new PropertyMetadata(Array.Empty<object>()));
-
-    /// <summary>
-    /// Identifies the <see cref="SelectedItems"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SelectedItemsProperty = SelectedItemsPropertyKey.DependencyProperty;
-
-    /// <summary>
-    /// Identifies the <see cref="ItemsSource"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
-        nameof(ItemsSource),
-        typeof(System.Collections.IEnumerable),
-        typeof(MultiColumnComboBox),
-        new PropertyMetadata(defaultValue: null, OnItemsSourceChanged));
-
     private readonly TextBlock summaryTextBlock;
+
+    /// <summary>
+    /// Gets or sets the maximum height of the pop-up; the grid scrolls (virtualized) beyond it.
+    /// </summary>
+    [DependencyProperty(AddOwnerOf = typeof(ComboBox))]
+    private double maxDropDownHeight;
+
+    /// <summary>
+    /// Gets the text the closed box shows for the ticked items (also the UI Automation value).
+    /// </summary>
+    [DependencyProperty(DefaultValue = "", IsReadOnly = true)]
+    private string summaryText;
+
+    /// <summary>
+    /// Gets the ticked items, in the order of <see cref="SelectedKeys"/> (keys without an item are skipped).
+    /// </summary>
+    [DependencyProperty(DefaultValueExpression = "Array.Empty<object>()", IsReadOnly = true)]
+    private IReadOnlyList<object> selectedItems;
+
+    /// <summary>
+    /// Gets or sets the objects shown as rows. An <see cref="INotifyCollectionChanged"/> source is followed; keys of
+    /// removed items are dropped from <see cref="SelectedKeys"/>.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnItemsSourceChanged))]
+    private System.Collections.IEnumerable? itemsSource;
 
     /// <summary>
     /// The (dotted) property path of an item's key; the value is turned into a string. Empty uses the item's
@@ -296,43 +284,6 @@ public partial class MultiColumnComboBox
         AddHandler(Mouse.LostMouseCaptureEvent, new MouseEventHandler(OnLostMouseCaptureWithin));
 
         UpdateSummary();
-    }
-
-    /// <summary>
-    /// Gets or sets the objects shown as rows. An <see cref="INotifyCollectionChanged"/> source is followed; keys of
-    /// removed items are dropped from <see cref="SelectedKeys"/>.
-    /// </summary>
-    public System.Collections.IEnumerable? ItemsSource
-    {
-        get => (System.Collections.IEnumerable?)GetValue(ItemsSourceProperty);
-        set => SetValue(ItemsSourceProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum height of the pop-up; the grid scrolls (virtualized) beyond it.
-    /// </summary>
-    public double MaxDropDownHeight
-    {
-        get => (double)GetValue(MaxDropDownHeightProperty);
-        set => SetValue(MaxDropDownHeightProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the text the closed box shows for the ticked items (also the UI Automation value).
-    /// </summary>
-    public string SummaryText
-    {
-        get => (string)GetValue(SummaryTextProperty);
-        private set => SetValue(SummaryTextPropertyKey, value);
-    }
-
-    /// <summary>
-    /// Gets the ticked items, in the order of <see cref="SelectedKeys"/> (keys without an item are skipped).
-    /// </summary>
-    public IReadOnlyList<object> SelectedItems
-    {
-        get => (IReadOnlyList<object>)GetValue(SelectedItemsProperty);
-        private set => SetValue(SelectedItemsPropertyKey, value);
     }
 
     /// <summary>

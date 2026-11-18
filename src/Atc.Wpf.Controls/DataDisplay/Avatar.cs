@@ -13,6 +13,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 ///   <item>Status indicator (Online, Offline, Busy, Away, DoNotDisturb)</item>
 /// </list>
 /// </remarks>
+[DefaultStyleKey]
 public sealed partial class Avatar : Control
 {
     /// <summary>
@@ -107,9 +108,7 @@ public sealed partial class Avatar : Control
 
     static Avatar()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Avatar),
-            new FrameworkPropertyMetadata(typeof(Avatar)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Avatar));
     }
 

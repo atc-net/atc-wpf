@@ -2,6 +2,7 @@ namespace Atc.Wpf.Controls.Progressing;
 
 /// <summary>A content wrapper that shows placeholder loading content while data is loading.</summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class Skeleton : ContentControl
 {
     [DependencyProperty(DefaultValue = false)]
@@ -15,9 +16,7 @@ public sealed partial class Skeleton : ContentControl
 
     static Skeleton()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Skeleton),
-            new FrameworkPropertyMetadata(typeof(Skeleton)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Skeleton));
     }
 }

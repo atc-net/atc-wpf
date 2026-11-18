@@ -66,7 +66,7 @@ public partial class DigitalClock
     /// </summary>
     [DependencyProperty(
         DefaultValue = true,
-        PropertyChangedCallback = nameof(OnShowSecondsChanged))]
+        GeneratePartialHooks = true)]
     private bool showSeconds;
 
     /// <summary>
@@ -150,10 +150,10 @@ public partial class DigitalClock
         clock.MinuteB.PulseColon();
     }
 
-    private static void OnShowSecondsChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((DigitalClock)d).UpdateDigits();
+    partial void OnShowSecondsChanged(
+        bool oldValue,
+        bool newValue)
+        => UpdateDigits();
 
     private static void OnFollowCurrentTimeChanged(
         DependencyObject d,

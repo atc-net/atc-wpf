@@ -4,12 +4,13 @@ namespace Atc.Wpf.Controls.Layouts.Internal;
 /// The tab of a docked <see cref="DockPane"/>: shows the pane header and a close button (when the pane can close),
 /// opens a Float/Close context menu (also with Shift+F10), floats the pane on double-click or when dragged out of the strip.
 /// </summary>
-[TemplatePart(Name = PartCloseButton, Type = typeof(ButtonBase))]
-internal sealed class DockPaneTabItem : TabItem
+internal sealed partial class DockPaneTabItem : TabItem
 {
     private const string PartCloseButton = "PART_CloseButton";
 
+    [TemplatePartField(PartCloseButton)]
     private ButtonBase? closeButton;
+
     private Point? dragStart;
 
     public DockPaneTabItem()
@@ -78,7 +79,7 @@ internal sealed class DockPaneTabItem : TabItem
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-        closeButton = GetTemplateChild(PartCloseButton) as ButtonBase;
+        ResolveTemplateParts();
         ApplyTexts();
     }
 

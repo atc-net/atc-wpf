@@ -10,45 +10,41 @@ public sealed partial class ZoomRuler : FrameworkElement
 
     private static readonly Typeface LabelTypeface = new("Segoe UI");
 
-    /// <summary>Identifies the <see cref="ZoomRuler.ZoomBox"/> dependency property.</summary>
-    public static readonly DependencyProperty ZoomBoxProperty = DependencyProperty.Register(
-        nameof(ZoomBox),
-        typeof(ZoomBox),
-        typeof(ZoomRuler),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            OnZoomBoxChanged));
-
-    /// <summary>Identifies the <see cref="Orientation"/> dependency property.</summary>
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        nameof(Orientation),
-        typeof(ZoomRulerOrientation),
-        typeof(ZoomRuler),
-        new FrameworkPropertyMetadata(
-            ZoomRulerOrientation.Horizontal,
-            FrameworkPropertyMetadataOptions.AffectsRender));
-
-    /// <summary>Identifies the <see cref="TickBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty TickBrushProperty = DependencyProperty.Register(
-        nameof(TickBrush),
-        typeof(Brush),
-        typeof(ZoomRuler),
-        new FrameworkPropertyMetadata(
-            Brushes.Gray,
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            OnTickBrushChanged));
-
-    /// <summary>Identifies the <see cref="LabelBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty LabelBrushProperty = DependencyProperty.Register(
-        nameof(LabelBrush),
-        typeof(Brush),
-        typeof(ZoomRuler),
-        new FrameworkPropertyMetadata(
-            Brushes.Gray,
-            FrameworkPropertyMetadataOptions.AffectsRender));
-
     // Label layouts by text; valid while the font size, label brush and DPI they were made with stay the same.
     private readonly Dictionary<string, FormattedText> cachedLabels = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Gets or sets the <see cref="ZoomBox"/> this ruler tracks.
+    /// </summary>
+    [DependencyProperty(
+        MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata,
+        PropertyChangedCallback = nameof(OnZoomBoxChanged))]
+    private ZoomBox? zoomBox;
+
+    /// <summary>
+    /// Gets or sets the ruler orientation.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = ZoomRulerOrientation.Horizontal,
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
+    private ZoomRulerOrientation orientation;
+
+    /// <summary>
+    /// Gets or sets the brush for tick marks.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "Brushes.Gray",
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        GeneratePartialHooks = true)]
+    private Brush tickBrush;
+
+    /// <summary>
+    /// Gets or sets the brush for position labels.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "Brushes.Gray",
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
+    private Brush labelBrush;
 
     [DependencyProperty(DefaultValue = 10.0, Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
     private double fontSize;
@@ -59,42 +55,6 @@ public sealed partial class ZoomRuler : FrameworkElement
     private double cachedLabelFontSize;
     private Brush? cachedLabelBrush;
     private double cachedLabelPixelsPerDip;
-
-    /// <summary>
-    /// Gets or sets the <see cref="ZoomBox"/> this ruler tracks.
-    /// </summary>
-    public ZoomBox? ZoomBox
-    {
-        get => (ZoomBox?)GetValue(ZoomBoxProperty);
-        set => SetValue(ZoomBoxProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the ruler orientation.
-    /// </summary>
-    public ZoomRulerOrientation Orientation
-    {
-        get => (ZoomRulerOrientation)GetValue(OrientationProperty);
-        set => SetValue(OrientationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the brush for tick marks.
-    /// </summary>
-    public Brush TickBrush
-    {
-        get => (Brush)GetValue(TickBrushProperty);
-        set => SetValue(TickBrushProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the brush for position labels.
-    /// </summary>
-    public Brush LabelBrush
-    {
-        get => (Brush)GetValue(LabelBrushProperty);
-        set => SetValue(LabelBrushProperty, value);
-    }
 
     /// <inheritdoc />
     protected override void OnRender(DrawingContext drawingContext)
@@ -231,10 +191,10 @@ public sealed partial class ZoomRuler : FrameworkElement
         dc.Pop();
     }
 
-    private static void OnTickBrushChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ZoomRuler)d).cachedTickPen = null;
+    partial void OnTickBrushChanged(
+        Brush oldValue,
+        Brush newValue)
+        => cachedTickPen = null;
 
     private Pen CreateTickPen()
     {
@@ -257,15 +217,15 @@ public sealed partial class ZoomRuler : FrameworkElement
             : value.ToString("F0", CultureInfo.InvariantCulture);
 
         var labelFontSize = FontSize;
-        var labelBrush = LabelBrush;
+        var currentLabelBrush = LabelBrush;
         if (System.Math.Abs(labelFontSize - cachedLabelFontSize) > 0.001 ||
-            !ReferenceEquals(labelBrush, cachedLabelBrush) ||
+            !ReferenceEquals(currentLabelBrush, cachedLabelBrush) ||
             System.Math.Abs(pixelsPerDip - cachedLabelPixelsPerDip) > 0.001 ||
             cachedLabels.Count >= MaxCachedLabels)
         {
             cachedLabels.Clear();
             cachedLabelFontSize = labelFontSize;
-            cachedLabelBrush = labelBrush;
+            cachedLabelBrush = currentLabelBrush;
             cachedLabelPixelsPerDip = pixelsPerDip;
         }
 
@@ -277,7 +237,7 @@ public sealed partial class ZoomRuler : FrameworkElement
                 FlowDirection.LeftToRight,
                 LabelTypeface,
                 labelFontSize,
-                labelBrush,
+                currentLabelBrush,
                 pixelsPerDip);
             cachedLabels[label] = formatted;
         }

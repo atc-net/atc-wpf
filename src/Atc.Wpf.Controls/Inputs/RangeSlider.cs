@@ -3,16 +3,21 @@ namespace Atc.Wpf.Controls.Inputs;
 /// <summary>
 /// A dual-thumb slider control for selecting a range of values.
 /// </summary>
-[TemplatePart(Name = "PART_Track", Type = typeof(FrameworkElement))]
-[TemplatePart(Name = "PART_RangeHighlight", Type = typeof(FrameworkElement))]
-[TemplatePart(Name = "PART_LowerThumb", Type = typeof(Thumb))]
-[TemplatePart(Name = "PART_UpperThumb", Type = typeof(Thumb))]
+[DefaultStyleKey]
 public sealed partial class RangeSlider : Control
 {
+    [TemplatePartField("PART_Track")]
     private FrameworkElement? track;
+
+    [TemplatePartField("PART_RangeHighlight")]
     private FrameworkElement? rangeHighlight;
+
+    [TemplatePartField("PART_LowerThumb")]
     private Thumb? lowerThumb;
+
+    [TemplatePartField("PART_UpperThumb")]
     private Thumb? upperThumb;
+
     private bool isSourceUpdateQueued;
 
     /// <summary>
@@ -27,7 +32,7 @@ public sealed partial class RangeSlider : Control
     [DependencyProperty(
         DefaultValue = 100.0,
         PropertyChangedCallback = nameof(OnMaximumChanged),
-        CoerceValueCallback = nameof(CoerceMaximum))]
+        GenerateCoerceHook = true)]
     private double maximum;
 
     /// <summary>
@@ -36,7 +41,7 @@ public sealed partial class RangeSlider : Control
     [DependencyProperty(
         DefaultValue = 0.0,
         PropertyChangedCallback = nameof(OnRangeStartChanged),
-        CoerceValueCallback = nameof(CoerceRangeStart),
+        GenerateCoerceHook = true,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
     private double rangeStart;
 
@@ -46,7 +51,7 @@ public sealed partial class RangeSlider : Control
     [DependencyProperty(
         DefaultValue = 100.0,
         PropertyChangedCallback = nameof(OnRangeEndChanged),
-        CoerceValueCallback = nameof(CoerceRangeEnd),
+        GenerateCoerceHook = true,
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
     private double rangeEnd;
 
@@ -117,9 +122,7 @@ public sealed partial class RangeSlider : Control
 
     static RangeSlider()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(RangeSlider),
-            new FrameworkPropertyMetadata(typeof(RangeSlider)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(RangeSlider));
     }
 
@@ -134,10 +137,7 @@ public sealed partial class RangeSlider : Control
 
         UnhookThumbEvents();
 
-        track = GetTemplateChild("PART_Track") as FrameworkElement;
-        rangeHighlight = GetTemplateChild("PART_RangeHighlight") as FrameworkElement;
-        lowerThumb = GetTemplateChild("PART_LowerThumb") as Thumb;
-        upperThumb = GetTemplateChild("PART_UpperThumb") as Thumb;
+        ResolveTemplateParts();
 
         HookThumbEvents();
         UpdateThumbPositions();
@@ -415,26 +415,14 @@ public sealed partial class RangeSlider : Control
     // The bounds and the range are kept consistent with WPF value coercion: each property keeps the value it
     // was given and shows it clamped, so the order the four values are set in (XAML attribute order, bindings)
     // does not matter, and a range set before its bounds is restored once the bounds allow it.
-    private static object CoerceMaximum(
-        DependencyObject d,
-        object value)
-        => System.Math.Max((double)value, ((RangeSlider)d).Minimum);
+    private partial double CoerceMaximum(double value)
+        => System.Math.Max(value, Minimum);
 
-    private static object CoerceRangeStart(
-        DependencyObject d,
-        object value)
-    {
-        var slider = (RangeSlider)d;
-        return slider.Clamped((double)value, slider.Minimum, slider.Maximum);
-    }
+    private partial double CoerceRangeStart(double value)
+        => Clamped(value, Minimum, Maximum);
 
-    private static object CoerceRangeEnd(
-        DependencyObject d,
-        object value)
-    {
-        var slider = (RangeSlider)d;
-        return slider.Clamped((double)value, System.Math.Max(slider.Minimum, slider.RangeStart), slider.Maximum);
-    }
+    private partial double CoerceRangeEnd(double value)
+        => Clamped(value, System.Math.Max(Minimum, RangeStart), Maximum);
 
     private double Clamped(
         double value,

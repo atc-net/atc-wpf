@@ -5,34 +5,26 @@ namespace Atc.Wpf.Controls.Layouts;
 /// Supports collapsible behavior, header, and size constraints.
 /// </summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class DockRegion : HeaderedContentControl
 {
     /// <summary>
-    /// Identifies the Expanded routed event.
+    /// Occurs when the region is expanded.
     /// </summary>
-    public static readonly RoutedEvent ExpandedEvent = EventManager.RegisterRoutedEvent(
-        nameof(Expanded),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(DockRegion));
+    [RoutedEvent(RoutingStrategy.Bubble, GenerateRaiseMethod = true)]
+    private static readonly RoutedEvent expanded;
 
     /// <summary>
-    /// Identifies the Collapsed routed event.
+    /// Occurs when the region is collapsed.
     /// </summary>
-    public static readonly RoutedEvent CollapsedEvent = EventManager.RegisterRoutedEvent(
-        nameof(Collapsed),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(DockRegion));
+    [RoutedEvent(RoutingStrategy.Bubble, GenerateRaiseMethod = true)]
+    private static readonly RoutedEvent collapsed;
 
     /// <summary>
-    /// Identifies the SizeChanged routed event for layout persistence.
+    /// Occurs when the region's size changes (for layout persistence).
     /// </summary>
-    public static readonly RoutedEvent RegionSizeChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(RegionSizeChanged),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(DockRegion));
+    [RoutedEvent(RoutingStrategy.Bubble)]
+    private static readonly RoutedEvent regionSizeChanged;
 
     /// <summary>
     /// Gets or sets a unique identifier for this region for layout persistence.
@@ -91,38 +83,9 @@ public sealed partial class DockRegion : HeaderedContentControl
     [DependencyProperty(DefaultValue = "new Thickness(0)")]
     private Thickness contentPadding;
 
-    /// <summary>
-    /// Occurs when the region is expanded.
-    /// </summary>
-    public event RoutedEventHandler Expanded
-    {
-        add => AddHandler(ExpandedEvent, value);
-        remove => RemoveHandler(ExpandedEvent, value);
-    }
-
-    /// <summary>
-    /// Occurs when the region is collapsed.
-    /// </summary>
-    public event RoutedEventHandler Collapsed
-    {
-        add => AddHandler(CollapsedEvent, value);
-        remove => RemoveHandler(CollapsedEvent, value);
-    }
-
-    /// <summary>
-    /// Occurs when the region's size changes (for layout persistence).
-    /// </summary>
-    public event RoutedEventHandler RegionSizeChanged
-    {
-        add => AddHandler(RegionSizeChangedEvent, value);
-        remove => RemoveHandler(RegionSizeChangedEvent, value);
-    }
-
     static DockRegion()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(DockRegion),
-            new FrameworkPropertyMetadata(typeof(DockRegion)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(DockRegion));
 
         // A side region whose panes are all floating or closed collapses, so it takes no space.
@@ -152,12 +115,12 @@ public sealed partial class DockRegion : HeaderedContentControl
 
     private void OnExpanded()
     {
-        RaiseEvent(new RoutedEventArgs(ExpandedEvent, this));
+        RaiseExpanded();
     }
 
     private void OnCollapsed()
     {
-        RaiseEvent(new RoutedEventArgs(CollapsedEvent, this));
+        RaiseCollapsed();
     }
 
     private static void OnIsExpandedChanged(

@@ -1,23 +1,14 @@
 namespace Atc.Wpf.Controls.Zoom;
 
 /// <summary>A scroll viewer that hosts a <see cref="ZoomBox"/> and exposes its zoom properties and commands.</summary>
+[DefaultStyleKey]
 public partial class ZoomScrollViewer : ScrollViewer
 {
-    /// <summary>Identifies the <see cref="ZoomContent"/> dependency property.</summary>
-    public static readonly DependencyProperty ZoomContentProperty = DependencyProperty.Register(
-        nameof(ZoomContent),
-        typeof(ZoomBox),
-        typeof(ZoomScrollViewer),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
-
     /// <summary>
     /// Gets or sets the ZoomBox content control.
     /// </summary>
-    public ZoomBox? ZoomContent
-    {
-        get => (ZoomBox)GetValue(ZoomContentProperty);
-        set => SetValue(ZoomContentProperty, value);
-    }
+    [DependencyProperty(MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata)]
+    private ZoomBox? zoomContent;
 
     [DependencyProperty(DefaultValue = ZoomMinimumType.MinimumZoom)]
     private ZoomMinimumType minimumZoomType;
@@ -25,39 +16,17 @@ public partial class ZoomScrollViewer : ScrollViewer
     [DependencyProperty]
     private Point? mousePosition;
 
-    /// <summary>Identifies the <see cref="UseAnimations"/> dependency property.</summary>
-    public static readonly DependencyProperty UseAnimationsProperty = DependencyProperty.Register(
-        nameof(UseAnimations),
-        typeof(bool),
-        typeof(ZoomScrollViewer),
-        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
-
     /// <summary>
     /// Gets or sets a value indicating whether animations are enabled.
     /// </summary>
-    public bool UseAnimations
-    {
-        get => (bool)GetValue(UseAnimationsProperty);
-        set => SetValue(UseAnimationsProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="ViewportZoom"/> dependency property.</summary>
-    public static readonly DependencyProperty ViewportZoomProperty = DependencyProperty.Register(
-        nameof(ViewportZoom),
-        typeof(double),
-        typeof(ZoomScrollViewer),
-        new FrameworkPropertyMetadata(
-            1.0,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+    [DependencyProperty(DefaultValue = true, MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata)]
+    private bool useAnimations;
 
     /// <summary>
     /// Gets or sets the current zoom level.
     /// </summary>
-    public double ViewportZoom
-    {
-        get => (double)GetValue(ViewportZoomProperty);
-        set => SetValue(ViewportZoomProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 1.0, Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
+    private double viewportZoom;
 
     [DependencyProperty(DefaultValue = ZoomInitialPositionType.Default)]
     private ZoomInitialPositionType zoomInitialPosition;
@@ -76,9 +45,7 @@ public partial class ZoomScrollViewer : ScrollViewer
 
     static ZoomScrollViewer()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(ZoomScrollViewer),
-            new FrameworkPropertyMetadata(typeof(ZoomScrollViewer)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(ZoomScrollViewer));
     }
 
