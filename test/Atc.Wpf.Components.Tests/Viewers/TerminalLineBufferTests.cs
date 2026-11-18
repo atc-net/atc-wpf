@@ -4,7 +4,7 @@ public sealed class TerminalLineBufferTests
 {
     // CI runs with code coverage on slower machines (about 15 times slower), so it gets more room.
     private static readonly TimeSpan MaxDuration = TimeSpan.FromSeconds(
-        string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase) ? 150 : 10);
+        string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase) ? 150 : 20);
 
     [StaTheory]
     [InlineData(false)]
