@@ -13,15 +13,6 @@
     <NoWarn>$(NoWarn.Replace('1591', ''))</NoWarn>
   </PropertyGroup>
 
-  <!--
-    A new package: there is no published version to compare its API with, so package validation runs
-    without a baseline. Remove this override once Atc.Wpf.Displays has been released, so the shared
-    baseline in src/Directory.Build.props applies.
-  -->
-  <PropertyGroup Label="Package validation">
-    <PackageValidationBaselineVersion></PackageValidationBaselineVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Atc" Version="4.1.0" />
     <PackageReference Include="Atc.XamlToolkit" Version="4.0.0" />

@@ -37,16 +37,16 @@
   </PropertyGroup>
 
   <!--
-    Package validation runs on 'dotnet pack' (not on build): it compares the public API of each
-    package with the last published release and fails on a breaking change.
-    After a release, bump PackageValidationBaselineVersion to the version just published and delete
-    any CompatibilitySuppressions.xml entries that only applied to the old baseline.
-    tool/Check-PackageValidationBaseline.ps1 runs in CI and fails while the baseline lags behind the
-    latest release tag.
+    Package validation runs on 'dotnet pack' (not on build). With a PackageValidationBaselineVersion it
+    also compares the public API of each package with that published release and fails on a breaking
+    change. The baseline is not set here: CI passes the latest v* release tag, so it never has to be
+    bumped by hand. To compare locally, pass the version yourself:
+    dotnet pack -c Release -p:PackageValidationBaselineVersion=4.6.0
+    After a release, delete any CompatibilitySuppressions.xml entries that only applied to the old
+    baseline.
   -->
   <PropertyGroup Label="Package validation">
     <EnablePackageValidation>true</EnablePackageValidation>
-    <PackageValidationBaselineVersion>4.5.1</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <!--

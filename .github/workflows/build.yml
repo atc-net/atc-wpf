@@ -24,19 +24,30 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      # Package validation compares the public API with the latest release. MSBuild reads the
+      # environment variable as the PackageValidationBaselineVersion property, so restore downloads
+      # that release and pack compares with it. The tag lookup needs fetch-depth: 0 above.
+      - name: 🧭 Use the latest release as the API baseline
+        shell: pwsh
+        run: |
+          $tag = git describe --tags --abbrev=0 --match 'v*'
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($tag)) {
+            Write-Error -Message 'No v* release tag is reachable from this commit.'
+            exit 1
+          }
+
+          $baseline = $tag.Trim().TrimStart('v')
+          Write-Output -InputObject "Comparing the public API with release $baseline."
+          "PackageValidationBaselineVersion=$baseline" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
       - name: 🔁 Restore packages
         run: dotnet restore Atc.Wpf.slnx
 
       - name: 🛠️ Build solution
         run: dotnet build Atc.Wpf.slnx -c Release --no-restore
 
-      # The baseline must be the last release, or the pack below compares against an old API.
-      # The tag lookup needs the full history (fetch-depth: 0 above).
-      - name: 🧭 Check the API baseline is the latest release
-        run: pwsh tool/Check-PackageValidationBaseline.ps1
-
-      # Packing runs package validation: it fails on a public API break against the
-      # baseline version set in src/Directory.Build.props.
+      # Packing runs package validation: it fails on a public API break against the latest
+      # release, read from the newest v* tag.
       - name: 🔍 Validate package API compatibility
         run: dotnet pack Atc.Wpf.slnx -c Release --no-build -o "${{ runner.temp }}\packages"
 

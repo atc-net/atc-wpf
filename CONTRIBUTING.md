@@ -40,7 +40,7 @@ dotnet run --project sample/Atc.Wpf.Sample
 
 ## 🛡️ Public API compatibility
 
-`dotnet pack` runs package validation against the last published release (`PackageValidationBaselineVersion` in `src/Directory.Build.props`), and CI packs on every pull request, so a removed or changed public member fails the build. If a break is intentional, run `dotnet pack -c Release -p:GenerateCompatibilitySuppressionFile=true`, review the generated `CompatibilitySuppressions.xml` next to the project, and commit it. After a release, bump `PackageValidationBaselineVersion` to the version just published and delete the suppression files, since they only apply to the old baseline. CI runs `tool/Check-PackageValidationBaseline.ps1`, which fails until the baseline matches the latest release tag.
+CI packs on every pull request and runs package validation against the last published release: it passes the newest `v*` tag as `PackageValidationBaselineVersion`, so a removed or changed public member fails the build and the baseline never has to be bumped by hand. To check locally, pass the version yourself: `dotnet pack -c Release -p:PackageValidationBaselineVersion=4.6.0`. If a break is intentional, add `-p:GenerateCompatibilitySuppressionFile=true` to that command, review the generated `CompatibilitySuppressions.xml` next to the project, and commit it. After a release, delete the suppression files, since they only apply to the old baseline.
 
 ## 🧱 Project structure
 
