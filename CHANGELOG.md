@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 From 4.0.216 onwards this file is maintained by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.5.1](https://github.com/atc-net/atc-wpf/compare/v4.5.0...v4.5.1) (2026-11-18)
+
+
+### Bug fixes
+
+* **components:** round the top corners of the flyout header ([223153a](https://github.com/atc-net/atc-wpf/commit/223153ac2e5fb67c0fba19ff85ea932b48a7ab8d))
+
+
+### Code refactoring
+
+* **components:** generate the boilerplate of Atc.Wpf.Components with the toolkit source generators ([adf6f6f](https://github.com/atc-net/atc-wpf/commit/adf6f6f7e05f2a38cf7e4b3b3ad5deb3967c3d60))
+* **controls:** generate the boilerplate of Atc.Wpf.Controls with the toolkit source generators ([c57335b](https://github.com/atc-net/atc-wpf/commit/c57335bb5c6c0adc118b887ef7597face933ab37))
+* **fonticons:** generate the boilerplate of Atc.Wpf.FontIcons with the toolkit source generators ([baa71f7](https://github.com/atc-net/atc-wpf/commit/baa71f7a473bf0ee91410456d4444f32975f6f9a))
+* **forms:** generate the boilerplate of Atc.Wpf.Forms with the toolkit source generators ([e42b12a](https://github.com/atc-net/atc-wpf/commit/e42b12a1d70ed19951975a0c01cad9fafce3de1e))
+* generate the boilerplate of Atc.Wpf.Displays and Atc.Wpf.UndoRedo with the toolkit source generators ([8b42ebd](https://github.com/atc-net/atc-wpf/commit/8b42ebdbc4bcc7f4d315ba244331d784b44d9cdf))
+* **hardware:** generate the boilerplate of Atc.Wpf.Hardware with the toolkit source generators ([079b94b](https://github.com/atc-net/atc-wpf/commit/079b94b810da0c684e07bcaa456ba47d75899fb1))
+* **sample:** generate the boilerplate of the sample applications with the toolkit source generators ([4d3ded1](https://github.com/atc-net/atc-wpf/commit/4d3ded129d0df643b6d9b5954b3b86057929b3b8))
+* **theming:** generate the boilerplate of Atc.Wpf.Theming with the toolkit source generators ([dc1c13d](https://github.com/atc-net/atc-wpf/commit/dc1c13d81e19f692e62218f89511aeb05487bc39))
+* **wpf:** generate the boilerplate of Atc.Wpf with the toolkit source generators ([363c8f8](https://github.com/atc-net/atc-wpf/commit/363c8f8999ac209d37e21cebd3f067de50657e7c))
+
 ## [4.5.0](https://github.com/atc-net/atc-wpf/compare/v4.4.0...v4.5.0) (2026-11-16)
 
 
