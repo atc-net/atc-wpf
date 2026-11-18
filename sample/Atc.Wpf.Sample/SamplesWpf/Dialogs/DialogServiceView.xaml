@@ -74,6 +74,12 @@
                     <Button
                         MinWidth="200"
                         HorizontalAlignment="Left"
+                        Command="{Binding ShowConfirmationNoIsDefaultCommand}"
+                        Content="Show Yes/No Confirmation (No is default)" />
+
+                    <Button
+                        MinWidth="200"
+                        HorizontalAlignment="Left"
                         Command="{Binding ShowOkCancelCommand}"
                         Content="Show OK/Cancel Confirmation" />
 
