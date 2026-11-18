@@ -27,7 +27,7 @@ public partial class WellKnownColorSelector
     [DependencyProperty(
         DefaultValue = "",
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
-        PropertyChangedCallback = nameof(OnSelectedKeyChanged),
+        GeneratePartialHooks = true,
         IsAnimationProhibited = true,
         DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus)]
     private string selectedKey;
@@ -213,15 +213,13 @@ public partial class WellKnownColorSelector
         UiCultureEventArgs e)
         => UpdateDataOnUiCultureChanged();
 
-    private static void OnSelectedKeyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    partial void OnSelectedKeyChanged(
+        string oldValue,
+        string newValue)
     {
-        var colorSelector = (WellKnownColorSelector)d;
-
-        if (!colorSelector.processingUiCultureChanged)
+        if (!processingUiCultureChanged)
         {
-            colorSelector.SetSelectedIndexBySelectedKey();
+            SetSelectedIndexBySelectedKey();
         }
     }
 

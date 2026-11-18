@@ -4,20 +4,40 @@ namespace Atc.Wpf.Theming.Behaviors;
 /// Provides a bindable <c>Password</c> attached property for a <see cref="PasswordBox"/>.
 /// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
+public partial class PasswordBoxBindingBehavior : Behavior<PasswordBox>
 {
     /// <summary>
     /// Gets or sets the Password property on the PasswordBox control. This is a dependency property.
     /// </summary>
-    public static readonly DependencyProperty PasswordProperty
-        = DependencyProperty.RegisterAttached(
-            "Password",
-            typeof(string),
-            typeof(PasswordBoxBindingBehavior),
-            new FrameworkPropertyMetadata(
-                string.Empty,
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnPasswordPropertyChanged));
+    [AttachedProperty(
+        DefaultValue = "",
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnPasswordPropertyChanged),
+        GenerateClrAccessors = false)]
+    private static string password;
+
+    [AttachedProperty(
+        DefaultValue = false,
+        TargetType = typeof(UIElement),
+        NullElementHandling = NullElementHandling.None,
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateDocumentation = false)]
+    private static bool isChanging;
+
+    [AttachedProperty(
+        NullElementHandling = NullElementHandling.None,
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateDocumentation = false)]
+    private static TextSelection? selection;
+
+    [AttachedProperty(
+        NullElementHandling = NullElementHandling.None,
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateDocumentation = false)]
+    private static TextBox? revealedPasswordTextBox;
 
     /// <summary>Helper for getting <see cref="PasswordProperty"/> from <paramref name="d"/>.</summary>
     /// <param name="d"><see cref="DependencyObject"/> to read <see cref="PasswordProperty"/> from.</param>
@@ -85,15 +105,15 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
 
     private static int GetPasswordBoxCaretPosition(PasswordBox passwordBox)
     {
-        var selection = GetSelection(passwordBox);
-        var tTextRange = selection?
+        var textSelection = GetSelection(passwordBox);
+        var tTextRange = textSelection?
             .GetType()
             .GetInterfaces()
             .FirstOrDefault(i => i.Name == "ITextRange");
         var oStart = tTextRange?
             .GetProperty("Start")?
             .GetGetMethod()?
-            .Invoke(selection, parameters: null);
+            .Invoke(textSelection, parameters: null);
         var value = oStart?
             .GetType()
             .GetProperty("Offset", BindingFlags.NonPublic | BindingFlags.Instance)?
@@ -114,10 +134,10 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
 
         AssociatedObject.PasswordChanged += PasswordBoxPasswordChanged;
         AssociatedObject.Loaded += PasswordBoxLoaded;
-        var selection = GetSelection(AssociatedObject);
-        if (selection is not null)
+        var textSelection = GetSelection(AssociatedObject);
+        if (textSelection is not null)
         {
-            selection.Changed += PasswordBoxSelectionChanged;
+            textSelection.Changed += PasswordBoxSelectionChanged;
         }
     }
 
@@ -133,8 +153,8 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
             return;
         }
 
-        var selection = GetSelection(AssociatedObject);
-        if (selection is not null)
+        var textSelection = GetSelection(AssociatedObject);
+        if (textSelection is not null)
         {
             return;
         }
@@ -142,9 +162,9 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
         var infos = AssociatedObject
             .GetType()
             .GetProperty("Selection", BindingFlags.NonPublic | BindingFlags.Instance);
-        selection = infos?.GetValue(AssociatedObject, null) as TextSelection;
-        SetSelection(AssociatedObject, selection);
-        if (selection is null)
+        textSelection = infos?.GetValue(AssociatedObject, null) as TextSelection;
+        SetSelection(AssociatedObject, textSelection);
+        if (textSelection is null)
         {
             return;
         }
@@ -152,7 +172,7 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
         SetRevealedPasswordTextBox(AssociatedObject, textBox);
         SetRevealedPasswordCaretIndex(AssociatedObject);
 
-        selection.Changed += PasswordBoxSelectionChanged;
+        textSelection.Changed += PasswordBoxSelectionChanged;
     }
 
     private void PasswordBoxSelectionChanged(
@@ -171,10 +191,10 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
         // it seems, it was already detached, or never attached
         if (AssociatedObject != null)
         {
-            var selection = GetSelection(AssociatedObject);
-            if (selection != null)
+            var textSelection = GetSelection(AssociatedObject);
+            if (textSelection != null)
             {
-                selection.Changed -= PasswordBoxSelectionChanged;
+                textSelection.Changed -= PasswordBoxSelectionChanged;
             }
 
             AssociatedObject.Loaded -= PasswordBoxLoaded;
@@ -182,56 +202,5 @@ public class PasswordBoxBindingBehavior : Behavior<PasswordBox>
         }
 
         base.OnDetaching();
-    }
-
-    private static readonly DependencyProperty IsChangingProperty
-        = DependencyProperty.RegisterAttached(
-            "IsChanging",
-            typeof(bool),
-            typeof(PasswordBoxBindingBehavior),
-            new UIPropertyMetadata(BooleanBoxes.FalseBox));
-
-    private static bool GetIsChanging(UIElement element)
-        => (bool)element.GetValue(IsChangingProperty);
-
-    private static void SetIsChanging(
-        UIElement element,
-        bool value)
-    {
-        element.SetValue(IsChangingProperty, BooleanBoxes.Box(value));
-    }
-
-    private static readonly DependencyProperty SelectionProperty
-        = DependencyProperty.RegisterAttached(
-            "Selection",
-            typeof(TextSelection),
-            typeof(PasswordBoxBindingBehavior),
-            new UIPropertyMetadata(default(TextSelection)));
-
-    private static TextSelection? GetSelection(DependencyObject obj)
-        => (TextSelection?)obj.GetValue(SelectionProperty);
-
-    private static void SetSelection(
-        DependencyObject obj,
-        TextSelection? value)
-    {
-        obj.SetValue(SelectionProperty, value);
-    }
-
-    private static readonly DependencyProperty RevealedPasswordTextBoxProperty
-        = DependencyProperty.RegisterAttached(
-            "RevealedPasswordTextBox",
-            typeof(TextBox),
-            typeof(PasswordBoxBindingBehavior),
-            new UIPropertyMetadata(default(TextBox)));
-
-    private static TextBox? GetRevealedPasswordTextBox(DependencyObject obj)
-        => (TextBox?)obj.GetValue(RevealedPasswordTextBoxProperty);
-
-    private static void SetRevealedPasswordTextBox(
-        DependencyObject obj,
-        TextBox? value)
-    {
-        obj.SetValue(RevealedPasswordTextBoxProperty, value);
     }
 }

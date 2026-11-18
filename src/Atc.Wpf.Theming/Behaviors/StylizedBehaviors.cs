@@ -6,17 +6,20 @@ namespace Atc.Wpf.Theming.Behaviors;
 /// each behavior is cloned and attached to the target element.
 /// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public static class StylizedBehaviors
+public static partial class StylizedBehaviors
 {
-    /// <summary>Identifies the <c>Behaviors</c> attached property.</summary>
-    public static readonly DependencyProperty BehaviorsProperty
-        = DependencyProperty.RegisterAttached(
-            "Behaviors",
-            typeof(StylizedBehaviorCollection),
-            typeof(StylizedBehaviors),
-            new FrameworkPropertyMetadata(
-                defaultValue: null,
-                OnPropertyChanged));
+    [AttachedProperty(
+        PropertyChangedCallback = nameof(OnPropertyChanged),
+        MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata,
+        GenerateClrAccessors = false)]
+    private static StylizedBehaviorCollection? behaviors;
+
+    [AttachedProperty(
+        NullElementHandling = NullElementHandling.None,
+        MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata,
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateDocumentation = false)]
+    private static Behavior? originalBehavior;
 
     /// <summary>
     /// Gets the behaviors assigned to the specified element.
@@ -131,19 +134,19 @@ public static class StylizedBehaviors
     {
         var index = -1;
 
-        var originalBehavior = GetOriginalBehavior(behavior);
+        var original = GetOriginalBehavior(behavior);
 
         for (var i = 0; i < itemBehaviors.Count; i++)
         {
             var currentBehavior = itemBehaviors[i];
-            if (currentBehavior == behavior || currentBehavior == originalBehavior)
+            if (currentBehavior == behavior || currentBehavior == original)
             {
                 index = i;
                 break;
             }
 
             var currentOriginalBehavior = GetOriginalBehavior(currentBehavior);
-            if (currentOriginalBehavior == behavior || currentOriginalBehavior == originalBehavior)
+            if (currentOriginalBehavior == behavior || currentOriginalBehavior == original)
             {
                 index = i;
                 break;
@@ -152,19 +155,4 @@ public static class StylizedBehaviors
 
         return index;
     }
-
-    private static readonly DependencyProperty OriginalBehaviorProperty
-        = DependencyProperty.RegisterAttached(
-            "OriginalBehavior",
-            typeof(Behavior),
-            typeof(StylizedBehaviors),
-            new UIPropertyMetadata(propertyChangedCallback: null));
-
-    private static Behavior? GetOriginalBehavior(DependencyObject d)
-        => (Behavior?)d.GetValue(OriginalBehaviorProperty);
-
-    private static void SetOriginalBehavior(
-        DependencyObject d,
-        Behavior? value)
-        => d.SetValue(OriginalBehaviorProperty, value);
 }

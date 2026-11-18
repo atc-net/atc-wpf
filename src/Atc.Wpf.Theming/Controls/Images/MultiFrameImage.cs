@@ -4,25 +4,15 @@ namespace Atc.Wpf.Theming.Controls.Images;
 /// An <see cref="Image"/> that renders the best-fitting frame of a multi-frame source (for example an icon file)
 /// for the current render size.
 /// </summary>
-public sealed class MultiFrameImage : Image
+public sealed partial class MultiFrameImage : Image
 {
-    /// <summary>Identifies the <see cref="MultiFrameImageMode"/> dependency property.</summary>
-    public static readonly DependencyProperty MultiFrameImageModeProperty = DependencyProperty.Register(
-        nameof(MultiFrameImageMode),
-        typeof(MultiFrameImageMode),
-        typeof(MultiFrameImage),
-        new FrameworkPropertyMetadata(
-            MultiFrameImageMode.ScaleDownLargerFrame,
-            FrameworkPropertyMetadataOptions.AffectsRender));
-
     /// <summary>
     /// Gets or sets the mode for the rendered image.
     /// </summary>
-    public MultiFrameImageMode MultiFrameImageMode
-    {
-        get => (MultiFrameImageMode)GetValue(MultiFrameImageModeProperty);
-        set => SetValue(MultiFrameImageModeProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = MultiFrameImageMode.ScaleDownLargerFrame,
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
+    private MultiFrameImageMode multiFrameImageMode;
 
     static MultiFrameImage()
     {

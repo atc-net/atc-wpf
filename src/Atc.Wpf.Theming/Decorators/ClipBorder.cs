@@ -5,7 +5,7 @@ namespace Atc.Wpf.Theming.Decorators;
 /// of the border. The border may have rounded corners.
 /// </summary>
 [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]
-public sealed class ClipBorder : Decorator
+public sealed partial class ClipBorder : Decorator
 {
     private StreamGeometry? backgroundGeometryCache;
     private StreamGeometry? borderGeometryCache;
@@ -16,117 +16,55 @@ public sealed class ClipBorder : Decorator
     // changes), so it's safe to cache here and invalidate alongside them.
     private Geometry? borderRingGeometryCache;
 
-    /// <summary>Identifies the <see cref="BorderThickness"/> dependency property.</summary>
-    public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register(
-        nameof(BorderThickness),
-        typeof(Thickness),
-        typeof(ClipBorder),
-        new FrameworkPropertyMetadata(
-            new Thickness(0),
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender),
-        OnValidateThickness);
-
     /// <summary>
     /// Gets or sets the thickness of the border.
     /// </summary>
-    public Thickness BorderThickness
-    {
-        get => (Thickness)GetValue(BorderThicknessProperty);
-        set => SetValue(BorderThicknessProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="Padding"/> dependency property.</summary>
-    public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
-        nameof(Padding),
-        typeof(Thickness),
-        typeof(ClipBorder),
-        new FrameworkPropertyMetadata(
-            new Thickness(0),
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender),
-        OnValidateThickness);
-
-    /// <summary>
-    /// Gets or sets the space between the border and the child.
-    /// </summary>
-    public Thickness Padding
-    {
-        get => (Thickness)GetValue(PaddingProperty);
-        set => SetValue(PaddingProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="CornerRadius"/> dependency property.</summary>
-    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        nameof(CornerRadius),
-        typeof(CornerRadius),
-        typeof(ClipBorder),
-        new FrameworkPropertyMetadata(
-            new CornerRadius(0),
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender),
-        OnValidateCornerRadius);
+    [DependencyProperty(
+        DefaultValueExpression = "new Thickness(0)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        ValidateValueCallback = nameof(OnValidateThickness))]
+    private Thickness borderThickness;
 
     /// <summary>
     /// Gets or sets the radius of the corners; the child is clipped to the matching inner shape.
     /// </summary>
-    public CornerRadius CornerRadius
-    {
-        get => (CornerRadius)GetValue(CornerRadiusProperty);
-        set => SetValue(CornerRadiusProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="BorderBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register(
-        nameof(BorderBrush),
-        typeof(Brush),
-        typeof(ClipBorder),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender));
-
-    /// <summary>
-    /// Gets or sets the brush used to draw the border.
-    /// </summary>
-    public Brush? BorderBrush
-    {
-        get => (Brush?)GetValue(BorderBrushProperty);
-        set => SetValue(BorderBrushProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="Background"/> dependency property.</summary>
-    public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-        nameof(Background),
-        typeof(Brush),
-        typeof(ClipBorder),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender));
+    [DependencyProperty(
+        DefaultValueExpression = "new CornerRadius(0)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        ValidateValueCallback = nameof(OnValidateCornerRadius))]
+    private CornerRadius cornerRadius;
 
     /// <summary>
     /// Gets or sets the brush used to fill the area inside the border.
     /// </summary>
-    public Brush? Background
-    {
-        get => (Brush?)GetValue(BackgroundProperty);
-        set => SetValue(BackgroundProperty, value);
-    }
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender)]
+    private Brush? background;
 
-    /// <summary>Identifies the <see cref="OptimizeClipRendering"/> dependency property.</summary>
-    public static readonly DependencyProperty OptimizeClipRenderingProperty = DependencyProperty.Register(
-        nameof(OptimizeClipRendering),
-        typeof(bool),
-        typeof(ClipBorder),
-        new FrameworkPropertyMetadata(
-            BooleanBoxes.FalseBox,
-            FrameworkPropertyMetadataOptions.AffectsRender));
+    /// <summary>
+    /// Gets or sets the space between the border and the child.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "new Thickness(0)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        ValidateValueCallback = nameof(OnValidateThickness))]
+    private Thickness padding;
+
+    /// <summary>
+    /// Gets or sets the brush used to draw the border.
+    /// </summary>
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.SubPropertiesDoNotAffectRender)]
+    private Brush? borderBrush;
 
     /// <summary>
     /// Gets or sets a value indicating whether the whole border area is filled with <see cref="BorderBrush"/> only,
     /// without drawing the background separately.
     /// </summary>
-    public bool OptimizeClipRendering
-    {
-        get => (bool)GetValue(OptimizeClipRenderingProperty);
-        set => SetValue(OptimizeClipRenderingProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(
+        DefaultValue = false,
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender)]
+    private bool optimizeClipRendering;
 
     /// <inheritdoc />
     protected override Size MeasureOverride(Size constraint)
@@ -174,8 +112,8 @@ public sealed class ClipBorder : Decorator
         var boundRect = new Rect(arrangeSize);
         var innerRect = boundRect.Deflate(borders);
         var corners = CornerRadius;
-        var padding = Padding;
-        var childRect = innerRect.Deflate(padding);
+        var paddings = Padding;
+        var childRect = innerRect.Deflate(paddings);
 
         // Geometries are about to be regenerated; the cached ring depends on
         // them and must be invalidated so OnRender rebuilds it lazily.
@@ -223,7 +161,7 @@ public sealed class ClipBorder : Decorator
             child.Arrange(childRect);
 
             var clipGeometry = new StreamGeometry();
-            var childBorderInfo = new BorderInfo(corners, borders, padding, isOuterBorder: false);
+            var childBorderInfo = new BorderInfo(corners, borders, paddings, isOuterBorder: false);
             using (var ctx = clipGeometry.Open())
             {
                 GenerateGeometry(ctx, new Rect(0, 0, childRect.Width, childRect.Height), childBorderInfo);
@@ -242,32 +180,32 @@ public sealed class ClipBorder : Decorator
         ArgumentNullException.ThrowIfNull(drawingContext);
 
         var borders = BorderThickness;
-        var borderBrush = BorderBrush;
+        var brush = BorderBrush;
         var bgBrush = Background;
         var borderGeometry = borderGeometryCache;
         var backgroundGeometry = backgroundGeometryCache;
-        var optimizeClipRendering = OptimizeClipRendering;
+        var optimize = OptimizeClipRendering;
 
-        if (optimizeClipRendering)
+        if (optimize)
         {
-            drawingContext.DrawGeometry(borderBrush, pen: null, borderGeometry);
+            drawingContext.DrawGeometry(brush, pen: null, borderGeometry);
             return;
         }
 
-        if (borderBrush is not null &&
+        if (brush is not null &&
             !borders.IsZero() &&
             bgBrush is not null)
         {
-            if (borderBrush.IsEqualTo(bgBrush))
+            if (brush.IsEqualTo(bgBrush))
             {
-                drawingContext.DrawGeometry(borderBrush, pen: null, borderGeometry);
+                drawingContext.DrawGeometry(brush, pen: null, borderGeometry);
             }
-            else if (borderBrush.IsOpaqueSolidColorBrush() && bgBrush.IsOpaqueSolidColorBrush())
+            else if (brush.IsOpaqueSolidColorBrush() && bgBrush.IsOpaqueSolidColorBrush())
             {
-                drawingContext.DrawGeometry(borderBrush, pen: null, borderGeometry);
+                drawingContext.DrawGeometry(brush, pen: null, borderGeometry);
                 drawingContext.DrawGeometry(bgBrush, pen: null, backgroundGeometry);
             }
-            else if (borderBrush.IsOpaqueSolidColorBrush())
+            else if (brush.IsOpaqueSolidColorBrush())
             {
                 var borderOutlineGeometry = GetOrBuildBorderRingGeometry(borderGeometry, backgroundGeometry);
                 if (borderOutlineGeometry is null)
@@ -276,7 +214,7 @@ public sealed class ClipBorder : Decorator
                 }
 
                 drawingContext.DrawGeometry(bgBrush, pen: null, borderGeometry);
-                drawingContext.DrawGeometry(borderBrush, pen: null, borderOutlineGeometry);
+                drawingContext.DrawGeometry(brush, pen: null, borderOutlineGeometry);
             }
             else
             {
@@ -286,25 +224,25 @@ public sealed class ClipBorder : Decorator
                     return;
                 }
 
-                drawingContext.DrawGeometry(borderBrush, pen: null, borderOutlineGeometry);
+                drawingContext.DrawGeometry(brush, pen: null, borderOutlineGeometry);
                 drawingContext.DrawGeometry(bgBrush, pen: null, backgroundGeometry);
             }
 
             return;
         }
 
-        if (borderBrush != null &&
+        if (brush != null &&
             !borders.IsZero())
         {
             if (borderGeometry is not null &&
                 backgroundGeometry is not null)
             {
                 var borderOutlineGeometry = GetOrBuildBorderRingGeometry(borderGeometry, backgroundGeometry);
-                drawingContext.DrawGeometry(borderBrush, pen: null, borderOutlineGeometry);
+                drawingContext.DrawGeometry(brush, pen: null, borderOutlineGeometry);
             }
             else
             {
-                drawingContext.DrawGeometry(borderBrush, pen: null, borderGeometry);
+                drawingContext.DrawGeometry(brush, pen: null, borderGeometry);
             }
         }
 

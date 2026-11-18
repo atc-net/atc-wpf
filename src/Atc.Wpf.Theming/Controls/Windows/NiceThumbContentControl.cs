@@ -4,18 +4,42 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 /// A content control that behaves like a thumb, raising drag events when the user drags it
 /// with the mouse or touch.
 /// </summary>
-public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
+[DefaultStyleKey]
+public sealed partial class NiceThumbContentControl : ContentControlEx, INiceThumb
 {
+    /// <summary>
+    /// Adds or remove a DragStartedEvent handler
+    /// </summary>
+    [RoutedEvent(RoutingStrategy.Bubble, HandlerType = typeof(DragStartedEventHandler))]
+    private static readonly RoutedEvent dragStarted;
+
+    /// <summary>
+    /// Adds or remove a DragDeltaEvent handler
+    /// </summary>
+    [RoutedEvent(RoutingStrategy.Bubble, HandlerType = typeof(DragDeltaEventHandler))]
+    private static readonly RoutedEvent dragDelta;
+
+    /// <summary>
+    /// Adds or remove a DragCompletedEvent handler
+    /// </summary>
+    [RoutedEvent(RoutingStrategy.Bubble, HandlerType = typeof(DragCompletedEventHandler))]
+    private static readonly RoutedEvent dragCompleted;
+
     private TouchDevice? currentDevice;
     private Point startDragPoint;
     private Point startDragScreenPoint;
     private Point oldDragScreenPoint;
 
+    [DependencyProperty(
+        DefaultValue = false,
+        IsReadOnly = true,
+        MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata,
+        GenerateClrAccessors = false)]
+    private bool isDragging;
+
     static NiceThumbContentControl()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(NiceThumbContentControl),
-            new FrameworkPropertyMetadata(typeof(NiceThumbContentControl)));
+        OverrideDefaultStyleKey();
         FocusableProperty.OverrideMetadata(
             typeof(NiceThumbContentControl),
             new FrameworkPropertyMetadata(default(bool)));
@@ -24,63 +48,6 @@ public sealed class NiceThumbContentControl : ContentControlEx, INiceThumb
             Mouse.LostMouseCaptureEvent,
             new MouseEventHandler(OnLostMouseCapture));
     }
-
-    /// <summary>Identifies the <see cref="DragStarted"/> routed event.</summary>
-    public static readonly RoutedEvent DragStartedEvent = EventManager.RegisterRoutedEvent(
-        nameof(DragStarted),
-        RoutingStrategy.Bubble,
-        typeof(DragStartedEventHandler),
-        typeof(NiceThumbContentControl));
-
-    /// <summary>Identifies the <see cref="DragDelta"/> routed event.</summary>
-    public static readonly RoutedEvent DragDeltaEvent = EventManager.RegisterRoutedEvent(
-        nameof(DragDelta),
-        RoutingStrategy.Bubble,
-        typeof(DragDeltaEventHandler),
-        typeof(NiceThumbContentControl));
-
-    /// <summary>Identifies the <see cref="DragCompleted"/> routed event.</summary>
-    public static readonly RoutedEvent DragCompletedEvent = EventManager.RegisterRoutedEvent(
-        nameof(DragCompleted),
-        RoutingStrategy.Bubble,
-        typeof(DragCompletedEventHandler),
-        typeof(NiceThumbContentControl));
-
-    /// <summary>
-    /// Adds or remove a DragStartedEvent handler
-    /// </summary>
-    public event DragStartedEventHandler DragStarted
-    {
-        add => AddHandler(DragStartedEvent, value);
-        remove => RemoveHandler(DragStartedEvent, value);
-    }
-
-    /// <summary>
-    /// Adds or remove a DragDeltaEvent handler
-    /// </summary>
-    public event DragDeltaEventHandler DragDelta
-    {
-        add => AddHandler(DragDeltaEvent, value);
-        remove => RemoveHandler(DragDeltaEvent, value);
-    }
-
-    /// <summary>
-    /// Adds or remove a DragCompletedEvent handler
-    /// </summary>
-    public event DragCompletedEventHandler DragCompleted
-    {
-        add => AddHandler(DragCompletedEvent, value);
-        remove => RemoveHandler(DragCompletedEvent, value);
-    }
-
-    private static readonly DependencyPropertyKey IsDraggingPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(IsDragging),
-        typeof(bool),
-        typeof(NiceThumbContentControl),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-
-    /// <summary>Identifies the <see cref="IsDragging"/> dependency property.</summary>
-    public static readonly DependencyProperty IsDraggingProperty = IsDraggingPropertyKey.DependencyProperty;
 
     /// <summary>
     /// Gets or sets a value indicating whether the control is currently being dragged.

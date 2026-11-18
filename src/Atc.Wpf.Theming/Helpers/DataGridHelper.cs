@@ -7,27 +7,27 @@ namespace Atc.Wpf.Theming.Helpers;
 /// it is outside the grid's visual tree then simply sees the default value, where a
 /// <c>RelativeSource FindAncestor</c> binding to the grid would log "Cannot find source for binding" (error 4).
 /// </summary>
-public static class DataGridHelper
+public static partial class DataGridHelper
 {
     /// <summary>
     /// The visibility of the row headers, as <see cref="DataGrid.HeadersVisibility"/> gives it for rows
     /// (inherited; <see cref="Visibility.Collapsed"/> by default, as the themed grid shows column headers only).
     /// </summary>
-    public static readonly DependencyProperty RowHeaderVisibilityProperty = DependencyProperty.RegisterAttached(
-        "RowHeaderVisibility",
-        typeof(Visibility),
-        typeof(DataGridHelper),
-        new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.Inherits));
+    [AttachedProperty(
+        DefaultValue = Visibility.Collapsed,
+        Flags = FrameworkPropertyMetadataOptions.Inherits,
+        GenerateClrAccessors = false)]
+    private static Visibility rowHeaderVisibility;
 
     /// <summary>
     /// The scrolling orientation of the row details, as <see cref="DataGrid.AreRowDetailsFrozen"/> gives it
     /// (inherited; <see cref="SelectiveScrollingOrientation.Both"/> by default, i.e. details that are not frozen).
     /// </summary>
-    public static readonly DependencyProperty RowDetailsScrollingOrientationProperty = DependencyProperty.RegisterAttached(
-        "RowDetailsScrollingOrientation",
-        typeof(SelectiveScrollingOrientation),
-        typeof(DataGridHelper),
-        new FrameworkPropertyMetadata(SelectiveScrollingOrientation.Both, FrameworkPropertyMetadataOptions.Inherits));
+    [AttachedProperty(
+        DefaultValue = SelectiveScrollingOrientation.Both,
+        Flags = FrameworkPropertyMetadataOptions.Inherits,
+        GenerateClrAccessors = false)]
+    private static SelectiveScrollingOrientation rowDetailsScrollingOrientation;
 
     /// <summary>
     /// Gets the visibility of the row headers.

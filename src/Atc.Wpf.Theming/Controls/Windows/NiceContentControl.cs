@@ -5,12 +5,14 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 /// A ContentControl which use a transition to slide in the content.
 /// </summary>
 [SuppressMessage("WpfAnalyzers.TemplatePart", "WPF0132:Use PART prefix", Justification = "OK.")]
-[TemplatePart(Name = "AfterLoadedStoryboard", Type = typeof(Storyboard))]
-[TemplatePart(Name = "AfterLoadedReverseStoryboard", Type = typeof(Storyboard))]
 public sealed partial class NiceContentControl : ContentControl
 {
+    [TemplatePartField("AfterLoadedStoryboard")]
     private Storyboard? afterLoadedStoryboard;
+
+    [TemplatePartField("AfterLoadedReverseStoryboard")]
     private Storyboard? afterLoadedReverseStoryboard;
+
     private bool transitionLoaded;
 
     /// <summary>
@@ -152,8 +154,7 @@ public sealed partial class NiceContentControl : ContentControl
     {
         base.OnApplyTemplate();
 
-        afterLoadedStoryboard = GetTemplateChild("AfterLoadedStoryboard") as Storyboard;
-        afterLoadedReverseStoryboard = GetTemplateChild("AfterLoadedReverseStoryboard") as Storyboard;
+        ResolveTemplateParts();
     }
 
     private void AfterLoadedStoryboardCurrentTimeInvalidated(

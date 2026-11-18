@@ -4,43 +4,31 @@ namespace Atc.Wpf.Theming.Controls.Icons;
 /// <summary>
 /// Represents an icon that uses a glyph from the specified font.
 /// </summary>
-[TemplatePart(Name = nameof(PART_Glyph), Type = typeof(TextBlock))]
-public sealed class FontIcon : IconElement
+[DefaultStyleKey]
+public sealed partial class FontIcon : IconElement
 {
-    /// <summary>Identifies the <see cref="Glyph"/> dependency property.</summary>
-    public static readonly DependencyProperty GlyphProperty = DependencyProperty.Register(
-        nameof(Glyph),
-        typeof(string),
-        typeof(FontIcon),
-        new FrameworkPropertyMetadata(string.Empty));
-
     /// <summary>
     /// Gets or sets the character code that identifies the icon glyph.
     /// </summary>
     /// <returns>The hexadecimal character code for the icon glyph.</returns>
-    public string Glyph
-    {
-        get => (string)GetValue(GlyphProperty);
-        set => SetValue(GlyphProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = "",
+        MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata)]
+    private string glyph;
 
-    static FontIcon()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(FontIcon), new FrameworkPropertyMetadata(typeof(FontIcon)));
-    }
-
-    private TextBlock? PART_Glyph { get; set; }
+    [TemplatePartField("PART_Glyph")]
+    private TextBlock? glyphPart;
 
     /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
 
-        PART_Glyph = GetTemplateChild(nameof(PART_Glyph)) as TextBlock;
+        ResolveTemplateParts();
 
-        if (PART_Glyph is not null && InheritsForegroundFromVisualParent)
+        if (glyphPart is not null && InheritsForegroundFromVisualParent)
         {
-            PART_Glyph.Foreground = VisualParentForeground;
+            glyphPart.Foreground = VisualParentForeground;
         }
     }
 
@@ -50,15 +38,15 @@ public sealed class FontIcon : IconElement
     {
         base.OnInheritsForegroundFromVisualParentPropertyChanged(e);
 
-        if (PART_Glyph is not null)
+        if (glyphPart is not null)
         {
             if (InheritsForegroundFromVisualParent)
             {
-                PART_Glyph.Foreground = VisualParentForeground;
+                glyphPart.Foreground = VisualParentForeground;
             }
             else
             {
-                PART_Glyph.ClearValue(TextBlock.ForegroundProperty);
+                glyphPart.ClearValue(TextBlock.ForegroundProperty);
             }
         }
     }
@@ -69,9 +57,9 @@ public sealed class FontIcon : IconElement
     {
         base.OnVisualParentForegroundPropertyChanged(e);
 
-        if (PART_Glyph is not null && InheritsForegroundFromVisualParent)
+        if (glyphPart is not null && InheritsForegroundFromVisualParent)
         {
-            PART_Glyph.Foreground = e.NewValue as Brush;
+            glyphPart.Foreground = e.NewValue as Brush;
         }
     }
 }

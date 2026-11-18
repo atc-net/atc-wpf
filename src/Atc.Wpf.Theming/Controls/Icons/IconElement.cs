@@ -5,9 +5,29 @@ namespace Atc.Wpf.Theming.Controls.Icons;
 /// Represents the base class for an icon UI element.
 /// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
-public abstract class IconElement : Control
+public abstract partial class IconElement : Control
 {
     private bool isForegroundPropertyDefaultOrInherited = true;
+
+    /// <summary>
+    /// Gets whether that this element inherits the <see cref="Control.Foreground"/> form the <see cref="Visual.VisualParent"/>.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnInheritsForegroundFromVisualParentChanged),
+        IsReadOnly = true,
+        SetterAccessModifier = PropertyAccessModifier.Protected)]
+    private bool inheritsForegroundFromVisualParent;
+
+    [DependencyProperty(
+        PropertyChangedCallback = nameof(OnVisualParentForegroundChanged),
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateClrAccessors = false,
+        GenerateDocumentation = false)]
+    private Brush? visualParentForeground;
+
+    [AttachedProperty(GenerateClrAccessors = false)]
+    private static Geometry geometry;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="IconElement"/> class.
@@ -60,31 +80,10 @@ public abstract class IconElement : Control
               && !Parent.Equals(VisualParent);
     }
 
-    internal static readonly DependencyPropertyKey InheritsForegroundFromVisualParentPropertyKey =
-        DependencyProperty.RegisterReadOnly(
-            nameof(InheritsForegroundFromVisualParent),
-            typeof(bool),
-            typeof(IconElement),
-            new PropertyMetadata(
-                BooleanBoxes.FalseBox,
-                (sender, e) => ((IconElement)sender).OnInheritsForegroundFromVisualParentPropertyChanged(e)));
-
-    /// <summary>Identifies the <see cref="InheritsForegroundFromVisualParent"/> dependency property.</summary>
-    public static readonly DependencyProperty InheritsForegroundFromVisualParentProperty = InheritsForegroundFromVisualParentPropertyKey.DependencyProperty;
-
-    /// <summary>
-    /// Gets whether that this element inherits the <see cref="Control.Foreground"/> form the <see cref="Visual.VisualParent"/>.
-    /// </summary>
-    public bool InheritsForegroundFromVisualParent
-    {
-        get => (bool)GetValue(InheritsForegroundFromVisualParentProperty);
-        protected set
-        {
-            SetValue(
-            InheritsForegroundFromVisualParentPropertyKey,
-            BooleanBoxes.Box(value));
-        }
-    }
+    private static void OnInheritsForegroundFromVisualParentChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((IconElement)d).OnInheritsForegroundFromVisualParentPropertyChanged(e);
 
     /// <summary>
     /// Called when <see cref="InheritsForegroundFromVisualParent"/> changes; binds or clears
@@ -116,14 +115,10 @@ public abstract class IconElement : Control
         }
     }
 
-    private static readonly DependencyProperty VisualParentForegroundProperty =
-        DependencyProperty.Register(
-            nameof(VisualParentForeground),
-            typeof(Brush),
-            typeof(IconElement),
-            new PropertyMetadata(
-                default(Brush),
-                (sender, e) => ((IconElement)sender).OnVisualParentForegroundPropertyChanged(e)));
+    private static void OnVisualParentForegroundChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e)
+        => ((IconElement)d).OnVisualParentForegroundPropertyChanged(e);
 
     /// <summary>
     /// Gets or sets the foreground brush of the visual parent, bound while
@@ -143,14 +138,6 @@ public abstract class IconElement : Control
         DependencyPropertyChangedEventArgs e)
     {
     }
-
-    /// <summary>Identifies the <c>Geometry</c> attached property.</summary>
-    public static readonly DependencyProperty GeometryProperty =
-        DependencyProperty.RegisterAttached(
-            "Geometry",
-            typeof(Geometry),
-            typeof(IconElement),
-            new PropertyMetadata(default(Geometry)));
 
     /// <summary>
     /// Sets the <c>Geometry</c> attached property on the specified element.
