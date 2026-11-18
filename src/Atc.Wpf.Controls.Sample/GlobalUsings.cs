@@ -17,6 +17,7 @@ global using Atc.Wpf.Controls.Inputs;
 global using Atc.Wpf.Controls.Layouts;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Theming.Controls.Selectors;
+global using Atc.XamlToolkit;
 global using Atc.XamlToolkit.Command;
 global using Atc.XamlToolkit.Controls.Attributes;
 global using Atc.XamlToolkit.Messaging;

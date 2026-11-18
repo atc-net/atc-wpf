@@ -7,31 +7,26 @@ namespace Atc.Wpf.Controls.Sample;
 /// editor's actual background brush, which the style binds to a theme resource, so a theme switch is picked up
 /// through that brush without listening to the theme manager.
 /// </summary>
-public static class MarkdownCodeBlockTheming
+public static partial class MarkdownCodeBlockTheming
 {
-    /// <summary>Identifies the IsEnabled attached property.</summary>
-    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached(
-        "IsEnabled",
-        typeof(bool),
-        typeof(MarkdownCodeBlockTheming),
-        new PropertyMetadata(
-            defaultValue: false,
-            OnIsEnabledChanged));
+    // The Get/Set methods stay hand-written: their element parameter is named obj and each has its own documentation.
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnIsEnabledChanged),
+        GenerateClrAccessors = false)]
+    private static bool isEnabled;
 
-    private static readonly DependencyProperty AttachmentProperty = DependencyProperty.RegisterAttached(
-        "Attachment",
-        typeof(Attachment),
-        typeof(MarkdownCodeBlockTheming),
-        new PropertyMetadata(defaultValue: null));
+    [AttachedProperty(
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateClrAccessors = false)]
+    private static Attachment? attachment;
 
-    /// <summary>Mirrors the editor's Background through a one-way self binding, so changes to it can be followed without pinning the editor.</summary>
-    private static readonly DependencyProperty BackgroundProxyProperty = DependencyProperty.RegisterAttached(
-        "BackgroundProxy",
-        typeof(Brush),
-        typeof(MarkdownCodeBlockTheming),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnBackgroundProxyChanged));
+    // Mirrors the editor's Background through a one-way self binding, so changes to it can be followed without pinning the editor.
+    [AttachedProperty(
+        PropertyChangedCallback = nameof(OnBackgroundProxyChanged),
+        AccessModifier = PropertyAccessModifier.Private,
+        GenerateClrAccessors = false)]
+    private static Brush? backgroundProxy;
 
     /// <summary>Gets whether the editor's syntax colours are adjusted to its background.</summary>
     /// <param name="obj">The text editor.</param>
@@ -87,9 +82,9 @@ public static class MarkdownCodeBlockTheming
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d.GetValue(AttachmentProperty) is Attachment attachment)
+        if (d.GetValue(AttachmentProperty) is Attachment current)
         {
-            attachment.Apply();
+            current.Apply();
         }
     }
 

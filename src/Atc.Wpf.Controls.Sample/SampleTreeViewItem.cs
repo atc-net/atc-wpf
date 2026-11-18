@@ -3,28 +3,16 @@ namespace Atc.Wpf.Controls.Sample;
 /// <summary>
 /// A tree view item in the sample tree that refers to a sample by its <see cref="SamplePath"/>.
 /// </summary>
-public sealed class SampleTreeViewItem : TreeViewItem
+public sealed partial class SampleTreeViewItem : TreeViewItem
 {
-    /// <summary>
-    /// The sample path property.
-    /// </summary>
-    public static readonly DependencyProperty SamplePathProperty = DependencyProperty.Register(
-        nameof(SamplePath),
-        typeof(string),
-        typeof(SampleTreeViewItem),
-        new UIPropertyMetadata(propertyChangedCallback: null));
-
     /// <summary>
     /// Gets or sets the sample path.
     /// </summary>
     /// <value>
     /// The sample path.
     /// </value>
-    public string SamplePath
-    {
-        get => (string)GetValue(SamplePathProperty);
-        set => SetValue(SamplePathProperty, value);
-    }
+    [DependencyProperty(MetadataType = DependencyPropertyMetadataType.UIPropertyMetadata)]
+    private string samplePath;
 
     /// <summary>
     /// Provides class handling for a MouseLeftButtonDown event.

@@ -70,12 +70,6 @@ public sealed partial class DisplayMirrorDemoViewModel : ViewModelBase, IDisposa
         // Both events are raised on the thread that fed the packet: hand them to the UI thread without waiting.
         receiver.DescribeReceived += OnDescribeReceived;
         receiver.PacketRejected += OnPacketRejected;
-
-        StartCommand = new RelayCommand(Start);
-        StopCommand = new RelayCommand(StopSource);
-        LoopbackCommand = new RelayCommand(StartLoopback);
-        AddDisplayCommand = new RelayCommand(AddDisplay);
-        ClearDisplaysCommand = new RelayCommand(ClearDisplays);
     }
 
     /// <summary>
@@ -93,16 +87,6 @@ public sealed partial class DisplayMirrorDemoViewModel : ViewModelBase, IDisposa
     /// Gets the receiver.
     /// </summary>
     public DisplayMirrorReceiver Receiver => receiver;
-
-    public ICommand StartCommand { get; }
-
-    public ICommand StopCommand { get; }
-
-    public ICommand LoopbackCommand { get; }
-
-    public ICommand AddDisplayCommand { get; }
-
-    public ICommand ClearDisplaysCommand { get; }
 
     /// <summary>
     /// Starts the statistics; the view calls it when it is loaded.
@@ -201,6 +185,7 @@ public sealed partial class DisplayMirrorDemoViewModel : ViewModelBase, IDisposa
         receiver.Dispose();
     }
 
+    [RelayCommand]
     private void Start()
     {
         StopSource();
@@ -236,6 +221,7 @@ public sealed partial class DisplayMirrorDemoViewModel : ViewModelBase, IDisposa
     }
 
     // The loopback and the stream transports feed the same stream parser, so only one source runs at a time.
+    [RelayCommand("Loopback")]
     private void StartLoopback()
     {
         StopSource();
@@ -245,6 +231,7 @@ public sealed partial class DisplayMirrorDemoViewModel : ViewModelBase, IDisposa
                  + "MAX7219 scrolling text (#5) and ST7920 serial text and graphics (#6) at 20 fps, with some noise.";
     }
 
+    [RelayCommand("Stop")]
     private void StopSource()
     {
         if (!loopback.Stop())
@@ -378,12 +365,14 @@ public sealed partial class DisplayMirrorDemoViewModel : ViewModelBase, IDisposa
             }
         });
 
+    [RelayCommand]
     private void AddDisplay()
     {
         var displayId = (byte)System.Math.Clamp(ManualDisplayId, 0, 255);
         ApplyDescribe(displayId, SelectedPreset.ToDescribe());
     }
 
+    [RelayCommand]
     private void ClearDisplays()
     {
         foreach (var card in Cards)
