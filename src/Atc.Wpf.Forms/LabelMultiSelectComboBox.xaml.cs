@@ -7,10 +7,10 @@ namespace Atc.Wpf.Forms;
 public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
 {
     /// <summary>
-    /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
+    /// Gets or sets the maximum height of the pop-up; the list scrolls (virtualized) beyond it.
     /// </summary>
-    public static readonly DependencyProperty MaxDropDownHeightProperty = MultiSelectComboBox.MaxDropDownHeightProperty.AddOwner(
-        typeof(LabelMultiSelectComboBox));
+    [DependencyProperty(AddOwnerOf = typeof(MultiSelectComboBox))]
+    private double maxDropDownHeight;
 
     /// <summary>
     /// The items, keyed by their selection key, with their display value.
@@ -204,15 +204,6 @@ public partial class LabelMultiSelectComboBox : ILabelMultiSelectComboBox
         Forward(MultiSelectComboBox.ItemsProperty, ItemsProperty);
 
         PartComboBox.SelectedKeysChanged += OnComboBoxSelectedKeysChanged;
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum height of the pop-up; the list scrolls (virtualized) beyond it.
-    /// </summary>
-    public double MaxDropDownHeight
-    {
-        get => (double)GetValue(MaxDropDownHeightProperty);
-        set => SetValue(MaxDropDownHeightProperty, value);
     }
 
     /// <summary>

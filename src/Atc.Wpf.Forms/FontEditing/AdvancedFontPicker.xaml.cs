@@ -75,18 +75,18 @@ public partial class AdvancedFontPicker
 
     [DependencyProperty(
         DefaultValue = "Segoe UI",
-        PropertyChangedCallback = nameof(OnSelectedFontFamilyChanged))]
+        GeneratePartialHooks = true)]
     private FontFamily? selectedFontFamily;
 
     [DependencyProperty(
         DefaultValue = FontDescription.DefaultSize,
-        PropertyChangedCallback = nameof(OnSelectedFontSizeChanged))]
+        GeneratePartialHooks = true)]
     private double selectedFontSize;
 
-    [DependencyProperty(PropertyChangedCallback = nameof(OnSelectedFontWeightChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private FontWeight selectedFontWeight;
 
-    [DependencyProperty(PropertyChangedCallback = nameof(OnSelectedFontStyleChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private FontStyle selectedFontStyle;
 
     [DependencyProperty]
@@ -98,12 +98,12 @@ public partial class AdvancedFontPicker
     [DependencyProperty(DefaultValue = "Transparent")]
     private SolidColorBrush? selectedBackgroundBrush;
 
-    [DependencyProperty(PropertyChangedCallback = nameof(OnSelectedTextDecorationsChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private TextDecorationCollection? selectedTextDecorations;
 
     [DependencyProperty(
         DefaultValue = "",
-        PropertyChangedCallback = nameof(OnFamilyFilterChanged))]
+        GeneratePartialHooks = true)]
     private string familyFilter;
 
     private ICollectionView? familyView;
@@ -365,25 +365,25 @@ public partial class AdvancedFontPicker
         SetCurrentValue(SelectedTextDecorationsProperty, current);
     }
 
-    private static void OnSelectedFontWeightChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((AdvancedFontPicker)d).SyncQuickToggleStates();
+    partial void OnSelectedFontWeightChanged(
+        FontWeight oldValue,
+        FontWeight newValue)
+        => SyncQuickToggleStates();
 
-    private static void OnSelectedFontStyleChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((AdvancedFontPicker)d).SyncQuickToggleStates();
+    partial void OnSelectedFontStyleChanged(
+        FontStyle oldValue,
+        FontStyle newValue)
+        => SyncQuickToggleStates();
 
-    private static void OnSelectedTextDecorationsChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((AdvancedFontPicker)d).SyncQuickToggleStates();
+    partial void OnSelectedTextDecorationsChanged(
+        TextDecorationCollection? oldValue,
+        TextDecorationCollection? newValue)
+        => SyncQuickToggleStates();
 
-    private static void OnSelectedFontFamilyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((AdvancedFontPicker)d).RefreshTypefaceLists();
+    partial void OnSelectedFontFamilyChanged(
+        FontFamily? oldValue,
+        FontFamily? newValue)
+        => RefreshTypefaceLists();
 
     /// <summary>
     /// Pushes the user-selected family to <see cref="SelectedFontFamily"/>.
@@ -439,15 +439,15 @@ public partial class AdvancedFontPicker
         }
     }
 
-    private static void OnSelectedFontSizeChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((AdvancedFontPicker)d).EnsureSizeInList();
+    partial void OnSelectedFontSizeChanged(
+        double oldValue,
+        double newValue)
+        => EnsureSizeInList();
 
-    private static void OnFamilyFilterChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((AdvancedFontPicker)d).familyView?.Refresh();
+    partial void OnFamilyFilterChanged(
+        string oldValue,
+        string newValue)
+        => familyView?.Refresh();
 
     private bool FilterFamily(object item)
     {

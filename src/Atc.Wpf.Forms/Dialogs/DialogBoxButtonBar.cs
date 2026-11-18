@@ -6,7 +6,7 @@ namespace Atc.Wpf.Forms.Dialogs;
 /// <see cref="DialogBoxSettings.ShowCancelButton"/> is set. Enter clicks <see cref="DialogBoxSettings.DefaultButton"/>;
 /// Escape clicks Cancel, or the negative button when there is no Cancel button.
 /// </summary>
-public sealed class DialogBoxButtonBar : ContentControl
+public sealed partial class DialogBoxButtonBar : ContentControl
 {
     /// <summary>
     /// The automation id of the affirmative button.
@@ -37,13 +37,10 @@ public sealed class DialogBoxButtonBar : ContentControl
     private static readonly TimeSpan CopiedFeedbackDuration = TimeSpan.FromSeconds(1.5);
 
     /// <summary>
-    /// Identifies the <see cref="Settings"/> dependency property.
+    /// Gets or sets the settings that give the buttons, their texts and colors and the default button.
     /// </summary>
-    public static readonly DependencyProperty SettingsProperty = DependencyProperty.Register(
-        nameof(Settings),
-        typeof(DialogBoxSettings),
-        typeof(DialogBoxButtonBar),
-        new PropertyMetadata(defaultValue: null, OnSettingsChanged));
+    [DependencyProperty(GeneratePartialHooks = true)]
+    private DialogBoxSettings? settings;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogBoxButtonBar"/> class.
@@ -68,15 +65,6 @@ public sealed class DialogBoxButtonBar : ContentControl
     public event EventHandler? CopyClicked;
 
     /// <summary>
-    /// Gets or sets the settings that give the buttons, their texts and colors and the default button.
-    /// </summary>
-    public DialogBoxSettings? Settings
-    {
-        get => (DialogBoxSettings?)GetValue(SettingsProperty);
-        set => SetValue(SettingsProperty, value);
-    }
-
-    /// <summary>
     /// Gets the button shown for <paramref name="button"/>, or <see langword="null"/> when it is not shown.
     /// </summary>
     /// <param name="button">The dialog box button.</param>
@@ -95,15 +83,15 @@ public sealed class DialogBoxButtonBar : ContentControl
             .OfType<Button>()
             .FirstOrDefault(x => AutomationProperties.GetAutomationId(x) == CopyButtonAutomationId);
 
-    private static void OnSettingsChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((DialogBoxButtonBar)d).BuildButtons();
+    partial void OnSettingsChanged(
+        DialogBoxSettings? oldValue,
+        DialogBoxSettings? newValue)
+        => BuildButtons();
 
     private void BuildButtons()
     {
-        var settings = Settings;
-        if (settings is null)
+        var barSettings = Settings;
+        if (barSettings is null)
         {
             Content = null;
             return;
@@ -115,25 +103,25 @@ public sealed class DialogBoxButtonBar : ContentControl
             Spacing = 20,
         };
 
-        if (settings.ShowCopyButton)
+        if (barSettings.ShowCopyButton)
         {
             panel.Children.Add(CreateCopyButton());
         }
 
-        panel.Children.Add(CreateButton(DialogBoxButton.Affirmative, settings.AffirmativeButtonText, settings.AffirmativeButtonBackground, settings.AffirmativeButtonForeground, AffirmativeButtonAutomationId));
+        panel.Children.Add(CreateButton(DialogBoxButton.Affirmative, barSettings.AffirmativeButtonText, barSettings.AffirmativeButtonBackground, barSettings.AffirmativeButtonForeground, AffirmativeButtonAutomationId));
 
-        if (settings.ShowNegativeButton)
+        if (barSettings.ShowNegativeButton)
         {
-            panel.Children.Add(CreateButton(DialogBoxButton.Negative, settings.NegativeButtonText, settings.NegativeButtonBackground, settings.NegativeButtonForeground, NegativeButtonAutomationId));
+            panel.Children.Add(CreateButton(DialogBoxButton.Negative, barSettings.NegativeButtonText, barSettings.NegativeButtonBackground, barSettings.NegativeButtonForeground, NegativeButtonAutomationId));
         }
 
-        if (settings.ShowCancelButton)
+        if (barSettings.ShowCancelButton)
         {
-            panel.Children.Add(CreateButton(DialogBoxButton.Cancel, settings.CancelButtonText, settings.NegativeButtonBackground, settings.NegativeButtonForeground, CancelButtonAutomationId));
+            panel.Children.Add(CreateButton(DialogBoxButton.Cancel, barSettings.CancelButtonText, barSettings.NegativeButtonBackground, barSettings.NegativeButtonForeground, CancelButtonAutomationId));
         }
 
         var buttons = panel.Children.OfType<Button>().Where(x => x.Tag is DialogBoxButton).ToList();
-        var defaultButton = buttons.Find(x => (DialogBoxButton)x.Tag == settings.DefaultButton) ?? buttons[0];
+        var defaultButton = buttons.Find(x => (DialogBoxButton)x.Tag == barSettings.DefaultButton) ?? buttons[0];
         defaultButton.IsDefault = true;
 
         var cancelButton = buttons.Find(x => (DialogBoxButton)x.Tag == DialogBoxButton.Cancel) ??

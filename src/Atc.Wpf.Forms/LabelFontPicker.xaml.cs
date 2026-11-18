@@ -2,7 +2,7 @@ namespace Atc.Wpf.Forms;
 
 public partial class LabelFontPicker : ILabelFontPicker
 {
-    [DependencyProperty(DefaultValue = "Segoe UI", PropertyChangedCallback = nameof(OnSelectedFontFamilyChanged))]
+    [DependencyProperty(DefaultValue = "Segoe UI", GeneratePartialHooks = true)]
     private FontFamily? selectedFontFamily;
 
     [DependencyProperty(DefaultValue = FontDescription.DefaultSize)]
@@ -137,10 +137,10 @@ public partial class LabelFontPicker : ILabelFontPicker
             ? Validations.FieldIsRequired
             : string.Empty;
 
-    private static void OnSelectedFontFamilyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((LabelFontPicker)d).Validate();
+    partial void OnSelectedFontFamilyChanged(
+        FontFamily? oldValue,
+        FontFamily? newValue)
+        => Validate();
 
     private void OnFontChanged(
         object? sender,
