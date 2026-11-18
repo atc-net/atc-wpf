@@ -93,7 +93,7 @@ public sealed partial class ChipGroup : UserControl
     /// <summary>
     /// The maximum number of selected keys; <see langword="null"/> for no limit. At the limit the unselected chips are disabled.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged), ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
+    [DependencyProperty(GeneratePartialHooks = true, ValidateValueCallback = nameof(ValidateMaxSelectionCount))]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -105,13 +105,13 @@ public sealed partial class ChipGroup : UserControl
     /// <summary>
     /// An optional icon per key (a font icon, an image or any other content) shown before the text.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnItemIconsChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private Dictionary<string, object>? itemIcons;
 
     /// <summary>
     /// An optional count per key shown after the text, e.g. "Error 12" for facets.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnItemCountsChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private Dictionary<string, int>? itemCounts;
 
     private HashSet<string> itemKeys = new(StringComparer.Ordinal);
@@ -381,20 +381,20 @@ public sealed partial class ChipGroup : UserControl
         DependencyPropertyChangedEventArgs e)
         => ((ChipGroup)d).ApplyLayout();
 
-    private static void OnStateChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ChipGroup)d).RefreshStates();
+    partial void OnMaxSelectionCountChanged(
+        int? oldValue,
+        int? newValue)
+        => RefreshStates();
 
-    private static void OnItemIconsChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ChipGroup)d).ApplyIcons();
+    partial void OnItemIconsChanged(
+        Dictionary<string, object>? oldValue,
+        Dictionary<string, object>? newValue)
+        => ApplyIcons();
 
-    private static void OnItemCountsChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ChipGroup)d).ApplyCounts();
+    partial void OnItemCountsChanged(
+        Dictionary<string, int>? oldValue,
+        Dictionary<string, int>? newValue)
+        => ApplyCounts();
 
     private void OnUiCultureChanged(
         object? sender,

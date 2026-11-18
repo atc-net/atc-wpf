@@ -4,6 +4,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// Represents a single step in a <see cref="Stepper"/> control.
 /// </summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class StepperItem : ContentControl
 {
     /// <summary>
@@ -103,9 +104,7 @@ public sealed partial class StepperItem : ContentControl
 
     static StepperItem()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(StepperItem),
-            new FrameworkPropertyMetadata(typeof(StepperItem)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(StepperItem));
     }
 }

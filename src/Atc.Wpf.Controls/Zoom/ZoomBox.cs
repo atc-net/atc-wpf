@@ -9,6 +9,7 @@ namespace Atc.Wpf.Controls.Zoom;
 [TemplatePart(Name = "PART_Content", Type = typeof(FrameworkElement))]
 [TemplatePart(Name = "PART_DragZoomCanvas", Type = typeof(Canvas))]
 [TemplatePart(Name = "PART_DragZoomBorder", Type = typeof(Border))]
+[DefaultStyleKey]
 public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChanged
 {
     private FrameworkElement? content;
@@ -21,21 +22,11 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     private bool disableScrollOffsetSync;
     private CurrentZoomType currentZoomType;
 
-    /// <summary>Identifies the <see cref="UseAnimations"/> dependency property.</summary>
-    public static readonly DependencyProperty UseAnimationsProperty = DependencyProperty.Register(
-        nameof(UseAnimations),
-        typeof(bool),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
-
     /// <summary>
     /// Gets or sets a value indicating whether zoom animations are enabled.
     /// </summary>
-    public bool UseAnimations
-    {
-        get => (bool)GetValue(UseAnimationsProperty);
-        set => SetValue(UseAnimationsProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(DefaultValue = true, Flags = FrameworkPropertyMetadataOptions.None)]
+    private bool useAnimations;
 
     [DependencyProperty(DefaultValue = 0.4)]
     private double animationDuration;
@@ -57,43 +48,25 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty(DefaultValue = ZoomInitialPositionType.Default)]
     private ZoomInitialPositionType zoomInitialPosition;
 
-    /// <summary>Identifies the <see cref="ContentOffsetX"/> dependency property.</summary>
-    public static readonly DependencyProperty ContentOffsetXProperty = DependencyProperty.Register(
-        nameof(ContentOffsetX),
-        typeof(double),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(
-            0.0,
-            OnContentOffsetXChanged,
-            CoerceContentOffsetX));
-
     /// <summary>
     /// Gets or sets the X offset (in content coordinates) of the view on the content.
     /// </summary>
-    public double ContentOffsetX
-    {
-        get => (double)GetValue(ContentOffsetXProperty);
-        set => SetValue(ContentOffsetXProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="ContentOffsetY"/> dependency property.</summary>
-    public static readonly DependencyProperty ContentOffsetYProperty = DependencyProperty.Register(
-        nameof(ContentOffsetY),
-        typeof(double),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(
-            0.0,
-            OnContentOffsetYChanged,
-            CoerceContentOffsetY));
+    [DependencyProperty(
+        DefaultValue = 0.0,
+        Flags = FrameworkPropertyMetadataOptions.None,
+        PropertyChangedCallback = nameof(OnContentOffsetXChanged),
+        CoerceValueCallback = nameof(CoerceContentOffsetX))]
+    private double contentOffsetX;
 
     /// <summary>
     /// Gets or sets the Y offset (in content coordinates) of the view on the content.
     /// </summary>
-    public double ContentOffsetY
-    {
-        get => (double)GetValue(ContentOffsetYProperty);
-        set => SetValue(ContentOffsetYProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0.0,
+        Flags = FrameworkPropertyMetadataOptions.None,
+        PropertyChangedCallback = nameof(OnContentOffsetYChanged),
+        CoerceValueCallback = nameof(CoerceContentOffsetY))]
+    private double contentOffsetY;
 
     [DependencyProperty]
     private double contentViewportHeight;
@@ -107,82 +80,45 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty]
     private double contentZoomFocusY;
 
-    /// <summary>Identifies the <see cref="IsMouseWheelScrollingEnabled"/> dependency property.</summary>
-    public static readonly DependencyProperty IsMouseWheelScrollingEnabledProperty = DependencyProperty.Register(
-        nameof(IsMouseWheelScrollingEnabled),
-        typeof(bool),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-
     /// <summary>
     /// Gets or sets a value indicating whether mouse wheel scrolling is enabled.
     /// </summary>
-    public bool IsMouseWheelScrollingEnabled
-    {
-        get => (bool)GetValue(IsMouseWheelScrollingEnabledProperty);
-        set => SetValue(IsMouseWheelScrollingEnabledProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="MaximumZoom"/> dependency property.</summary>
-    public static readonly DependencyProperty MaximumZoomProperty = DependencyProperty.Register(
-        nameof(MaximumZoom),
-        typeof(double),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(
-            10.0,
-            OnMinimumOrMaximumZoomChanged,
-            CoerceMaximumZoom));
+    [DependencyProperty(DefaultValue = false, Flags = FrameworkPropertyMetadataOptions.None)]
+    private bool isMouseWheelScrollingEnabled;
 
     /// <summary>
     /// Gets or sets the maximum value for 'ViewportZoom'.
     /// </summary>
-    public double MaximumZoom
-    {
-        get => (double)GetValue(MaximumZoomProperty);
-        set => SetValue(MaximumZoomProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 10.0,
+        Flags = FrameworkPropertyMetadataOptions.None,
+        PropertyChangedCallback = nameof(OnMinimumOrMaximumZoomChanged),
+        CoerceValueCallback = nameof(CoerceMaximumZoom))]
+    private double maximumZoom;
 
     [DependencyProperty(DefaultValue = ZoomMinimumType.MinimumZoom)]
     private ZoomMinimumType minimumZoomType;
 
-    /// <summary>Identifies the <see cref="MinimumZoom"/> dependency property.</summary>
-    public static readonly DependencyProperty MinimumZoomProperty = DependencyProperty.Register(
-        nameof(MinimumZoom),
-        typeof(double),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(
-            0.1,
-            OnMinimumOrMaximumZoomChanged));
-
     /// <summary>
     /// Gets or sets the minimum value for 'ViewportZoom'.
     /// </summary>
-    public double MinimumZoom
-    {
-        get => (double)GetValue(MinimumZoomProperty);
-        set => SetValue(MinimumZoomProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 0.1,
+        Flags = FrameworkPropertyMetadataOptions.None,
+        PropertyChangedCallback = nameof(OnMinimumOrMaximumZoomChanged))]
+    private double minimumZoom;
 
     [DependencyProperty]
     private Point? mousePosition;
 
-    /// <summary>Identifies the <see cref="ViewportZoom"/> dependency property.</summary>
-    public static readonly DependencyProperty ViewportZoomProperty = DependencyProperty.Register(
-        nameof(ViewportZoom),
-        typeof(double),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(
-            1.0,
-            OnViewportZoomChanged));
-
     /// <summary>
     /// Gets or sets the current zoom level.
     /// </summary>
-    public double ViewportZoom
-    {
-        get => (double)GetValue(ViewportZoomProperty);
-        set => SetValue(ViewportZoomProperty, value);
-    }
+    [DependencyProperty(
+        DefaultValue = 1.0,
+        Flags = FrameworkPropertyMetadataOptions.None,
+        PropertyChangedCallback = nameof(OnViewportZoomChanged))]
+    private double viewportZoom;
 
     [DependencyProperty]
     private double viewportZoomFocusX;
@@ -193,63 +129,24 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     [DependencyProperty(DefaultValue = 10.0)]
     private double dragZoomThreshold;
 
-    /// <summary>Identifies the <see cref="IsTouchEnabled"/> dependency property.</summary>
-    public static readonly DependencyProperty IsTouchEnabledProperty = DependencyProperty.Register(
-        nameof(IsTouchEnabled),
-        typeof(bool),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
-
     /// <summary>
     /// Gets or sets a value indicating whether touch gestures (pinch-to-zoom, two-finger pan) are enabled.
     /// </summary>
-    public bool IsTouchEnabled
-    {
-        get => (bool)GetValue(IsTouchEnabledProperty);
-        set => SetValue(IsTouchEnabledProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="IsSpacebarPanEnabled"/> dependency property.</summary>
-    public static readonly DependencyProperty IsSpacebarPanEnabledProperty = DependencyProperty.Register(
-        nameof(IsSpacebarPanEnabled),
-        typeof(bool),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = true, Flags = FrameworkPropertyMetadataOptions.None)]
+    private bool isTouchEnabled;
 
     /// <summary>
     /// Gets or sets a value indicating whether holding the spacebar enables temporary pan mode.
     /// When enabled, holding Space and dragging pans the content with a hand cursor.
     /// </summary>
-    public bool IsSpacebarPanEnabled
-    {
-        get => (bool)GetValue(IsSpacebarPanEnabledProperty);
-        set => SetValue(IsSpacebarPanEnabledProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="IsShiftScrollHorizontalPanEnabled"/> dependency property.</summary>
-    public static readonly DependencyProperty IsShiftScrollHorizontalPanEnabledProperty = DependencyProperty.Register(
-        nameof(IsShiftScrollHorizontalPanEnabled),
-        typeof(bool),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
+    [DependencyProperty(DefaultValue = true, Flags = FrameworkPropertyMetadataOptions.None)]
+    private bool isSpacebarPanEnabled;
 
     /// <summary>
     /// Gets or sets a value indicating whether Shift+MouseWheel pans horizontally.
     /// </summary>
-    public bool IsShiftScrollHorizontalPanEnabled
-    {
-        get => (bool)GetValue(IsShiftScrollHorizontalPanEnabledProperty);
-        set => SetValue(IsShiftScrollHorizontalPanEnabledProperty, BooleanBoxes.Box(value));
-    }
-
-    private static readonly double[] DefaultZoomPresets = [0.1, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 10.0];
-
-    /// <summary>Identifies the <see cref="ZoomPresets"/> dependency property.</summary>
-    public static readonly DependencyProperty ZoomPresetsProperty = DependencyProperty.Register(
-        nameof(ZoomPresets),
-        typeof(IList<double>),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(defaultValue: null));
+    [DependencyProperty(DefaultValue = true, Flags = FrameworkPropertyMetadataOptions.None)]
+    private bool isShiftScrollHorizontalPanEnabled;
 
     /// <summary>
     /// Gets or sets the list of preset zoom levels used by
@@ -257,74 +154,44 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
     /// When <see langword="null"/>, a default set is used (10% to 1000%).
     /// Values represent zoom ratios where 1.0 = 100%.
     /// </summary>
-    public IList<double>? ZoomPresets
-    {
-        get => (IList<double>?)GetValue(ZoomPresetsProperty);
-        set => SetValue(ZoomPresetsProperty, value);
-    }
-
-    internal IList<double> EffectiveZoomPresets
-        => ZoomPresets ?? DefaultZoomPresets;
-
-    /// <summary>Identifies the <see cref="ConstraintMode"/> dependency property.</summary>
-    public static readonly DependencyProperty ConstraintModeProperty = DependencyProperty.Register(
-        nameof(ConstraintMode),
-        typeof(ZoomConstraintMode),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(ZoomConstraintMode.Inside));
+    [DependencyProperty(Flags = FrameworkPropertyMetadataOptions.None)]
+    private IList<double>? zoomPresets;
 
     /// <summary>
     /// Gets or sets how the viewport is constrained relative to the content bounds.
     /// </summary>
-    public ZoomConstraintMode ConstraintMode
-    {
-        get => (ZoomConstraintMode)GetValue(ConstraintModeProperty);
-        set => SetValue(ConstraintModeProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="ZoomKeyBindings"/> dependency property.</summary>
-    public static readonly DependencyProperty ZoomKeyBindingsProperty = DependencyProperty.Register(
-        nameof(ZoomKeyBindings),
-        typeof(IList<ZoomKeyBinding>),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(defaultValue: null));
+    [DependencyProperty(DefaultValue = ZoomConstraintMode.Inside, Flags = FrameworkPropertyMetadataOptions.None)]
+    private ZoomConstraintMode constraintMode;
 
     /// <summary>
     /// Gets or sets custom keyboard bindings for zoom actions.
     /// When <see langword="null"/>, the default bindings are used.
     /// </summary>
-    public IList<ZoomKeyBinding>? ZoomKeyBindings
-    {
-        get => (IList<ZoomKeyBinding>?)GetValue(ZoomKeyBindingsProperty);
-        set => SetValue(ZoomKeyBindingsProperty, value);
-    }
+    [DependencyProperty(Flags = FrameworkPropertyMetadataOptions.None)]
+    private IList<ZoomKeyBinding>? zoomKeyBindings;
+
+    [DependencyProperty(
+        DefaultValue = 1.0,
+        Flags = FrameworkPropertyMetadataOptions.None,
+        PropertyChangedCallback = nameof(OnInternalViewportZoomChanged),
+        CoerceValueCallback = nameof(CoerceInternalViewportZoom),
+        AccessModifier = PropertyAccessModifier.Private)]
+    private double internalViewportZoom;
+
+    private static readonly double[] DefaultZoomPresets = [0.1, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 10.0];
 
     private static readonly IList<ZoomKeyBinding> DefaultZoomKeyBindings
         = new ReadOnlyCollection<ZoomKeyBinding>(ZoomKeyBinding.CreateDefaults());
 
+    internal IList<double> EffectiveZoomPresets
+        => ZoomPresets ?? DefaultZoomPresets;
+
     internal IList<ZoomKeyBinding> EffectiveZoomKeyBindings
         => ZoomKeyBindings ?? DefaultZoomKeyBindings;
 
-    private static readonly DependencyProperty InternalViewportZoomProperty = DependencyProperty.Register(
-        nameof(InternalViewportZoom),
-        typeof(double),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(
-            1.0,
-            OnInternalViewportZoomChanged,
-            CoerceInternalViewportZoom));
-
-    private double InternalViewportZoom
-    {
-        get => (double)GetValue(InternalViewportZoomProperty);
-        set => SetValue(InternalViewportZoomProperty, value);
-    }
-
     static ZoomBox()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(ZoomBox),
-            new FrameworkPropertyMetadata(typeof(ZoomBox)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(ZoomBox));
     }
 
@@ -546,10 +413,10 @@ public partial class ZoomBox : ContentControl, IScrollInfo, INotifyPropertyChang
 
                 var viewportOffsetX = c.ViewportZoomFocusX - (c.ViewportWidth / 2);
                 var viewportOffsetY = c.ViewportZoomFocusY - (c.ViewportHeight / 2);
-                var contentOffsetX = viewportOffsetX / c.InternalViewportZoom;
-                var contentOffsetY = viewportOffsetY / c.InternalViewportZoom;
-                c.ContentOffsetX = c.ContentZoomFocusX - (c.ContentViewportWidth / 2) - contentOffsetX;
-                c.ContentOffsetY = c.ContentZoomFocusY - (c.ContentViewportHeight / 2) - contentOffsetY;
+                var focusOffsetX = viewportOffsetX / c.InternalViewportZoom;
+                var focusOffsetY = viewportOffsetY / c.InternalViewportZoom;
+                c.ContentOffsetX = c.ContentZoomFocusX - (c.ContentViewportWidth / 2) - focusOffsetX;
+                c.ContentOffsetY = c.ContentZoomFocusY - (c.ContentViewportHeight / 2) - focusOffsetY;
             }
             finally
             {

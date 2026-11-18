@@ -5,45 +5,53 @@ namespace Atc.Wpf.Controls.Zoom;
 /// The grid density adjusts automatically based on the current zoom level —
 /// coarse lines at low zoom, fine lines at high zoom.
 /// </summary>
-public sealed class ZoomGridOverlay : Adorner
+public sealed partial class ZoomGridOverlay : Adorner
 {
-    /// <summary>Identifies the <see cref="BaseGridSpacing"/> dependency property.</summary>
-    public static readonly DependencyProperty BaseGridSpacingProperty = DependencyProperty.Register(
-        nameof(BaseGridSpacing),
-        typeof(double),
-        typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(50.0, FrameworkPropertyMetadataOptions.AffectsRender),
-        IsValidGridSpacing);
-
-    /// <summary>Identifies the <see cref="MinorLineBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty MinorLineBrushProperty = DependencyProperty.Register(
-        nameof(MinorLineBrush),
-        typeof(Brush),
-        typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(CreateFrozenBrush(40), FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
-
-    /// <summary>Identifies the <see cref="MajorLineBrush"/> dependency property.</summary>
-    public static readonly DependencyProperty MajorLineBrushProperty = DependencyProperty.Register(
-        nameof(MajorLineBrush),
-        typeof(Brush),
-        typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(CreateFrozenBrush(80), FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
-
-    /// <summary>Identifies the <see cref="MinorLineThickness"/> dependency property.</summary>
-    public static readonly DependencyProperty MinorLineThicknessProperty = DependencyProperty.Register(
-        nameof(MinorLineThickness),
-        typeof(double),
-        typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
-
-    /// <summary>Identifies the <see cref="MajorLineThickness"/> dependency property.</summary>
-    public static readonly DependencyProperty MajorLineThicknessProperty = DependencyProperty.Register(
-        nameof(MajorLineThickness),
-        typeof(double),
-        typeof(ZoomGridOverlay),
-        new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender, OnPenPropertyChanged));
-
     private readonly ZoomBox zoomBox;
+
+    // The CLR property is hand-written below: its setter validates the value before it reaches the property system.
+    [DependencyProperty(
+        DefaultValue = 50.0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        ValidateValueCallback = nameof(IsValidGridSpacing),
+        GenerateClrAccessors = false)]
+    private double baseGridSpacing;
+
+    /// <summary>
+    /// Gets or sets the brush used for minor grid lines.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "CreateFrozenBrush(40)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnPenPropertyChanged))]
+    private Brush minorLineBrush;
+
+    /// <summary>
+    /// Gets or sets the brush used for major grid lines (every 5th line).
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "CreateFrozenBrush(80)",
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnPenPropertyChanged))]
+    private Brush majorLineBrush;
+
+    /// <summary>
+    /// Gets or sets the thickness of minor grid lines.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = 0.5,
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnPenPropertyChanged))]
+    private double minorLineThickness;
+
+    /// <summary>
+    /// Gets or sets the thickness of major grid lines.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = 1.0,
+        Flags = FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnPenPropertyChanged))]
+    private double majorLineThickness;
 
     // Rendered on every pan/zoom frame: pens are rebuilt only when a brush or thickness changes.
     private Pen? minorPen;
@@ -79,42 +87,6 @@ public sealed class ZoomGridOverlay : Adorner
 
             SetValue(BaseGridSpacingProperty, value);
         }
-    }
-
-    /// <summary>
-    /// Gets or sets the brush used for minor grid lines.
-    /// </summary>
-    public Brush MinorLineBrush
-    {
-        get => (Brush)GetValue(MinorLineBrushProperty);
-        set => SetValue(MinorLineBrushProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the brush used for major grid lines (every 5th line).
-    /// </summary>
-    public Brush MajorLineBrush
-    {
-        get => (Brush)GetValue(MajorLineBrushProperty);
-        set => SetValue(MajorLineBrushProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the thickness of minor grid lines.
-    /// </summary>
-    public double MinorLineThickness
-    {
-        get => (double)GetValue(MinorLineThicknessProperty);
-        set => SetValue(MinorLineThicknessProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the thickness of major grid lines.
-    /// </summary>
-    public double MajorLineThickness
-    {
-        get => (double)GetValue(MajorLineThicknessProperty);
-        set => SetValue(MajorLineThicknessProperty, value);
     }
 
     /// <inheritdoc />

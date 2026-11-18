@@ -5,6 +5,7 @@ namespace Atc.Wpf.Controls.Zoom;
 /// <summary>
 /// A minimap control that shows an overview of the ZoomBox content with a draggable viewport indicator.
 /// </summary>
+[DefaultStyleKey]
 public partial class ZoomMiniMap : ContentControl
 {
     private Border? dragBorder;
@@ -30,14 +31,12 @@ public partial class ZoomMiniMap : ContentControl
     /// Gets or sets the on-screen thickness of the viewport indicator border.
     /// When <see langword="null"/>, <see cref="Control.BorderThickness"/> is used.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnViewportBorderThicknessChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private double? viewportBorderThickness;
 
     static ZoomMiniMap()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(ZoomMiniMap),
-            new FrameworkPropertyMetadata(typeof(ZoomMiniMap)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(ZoomMiniMap));
 
         DataContextProperty.OverrideMetadata(
@@ -202,10 +201,10 @@ public partial class ZoomMiniMap : ContentControl
         c.ApplyViewportBorderBrush(c.sizingBorder);
     }
 
-    private static void OnViewportBorderThicknessChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ZoomMiniMap)d).UpdateViewportBorderThickness();
+    partial void OnViewportBorderThicknessChanged(
+        double? oldValue,
+        double? newValue)
+        => UpdateViewportBorderThickness();
 
     /// <summary>
     /// Overrides the template's border brush; clearing the local value restores the template brush.

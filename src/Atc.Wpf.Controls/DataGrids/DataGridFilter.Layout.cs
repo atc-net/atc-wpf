@@ -91,7 +91,7 @@ public static partial class DataGridFilter
 
         ApplyColumns(grid, columnsByKey, known);
 
-        var state = EnsureState(grid);
+        var gridState = EnsureState(grid);
         var sorts = (layout.Sorts ?? [])
             .Where(x => !string.IsNullOrEmpty(x.PropertyName))
             .ToList();
@@ -102,16 +102,16 @@ public static partial class DataGridFilter
         }
 
         var savedCulture = GetLayoutCulture(grid, layout.Culture);
-        state.ReplaceFilters(
+        gridState.ReplaceFilters(
             (layout.Filters ?? [])
                 .Where(x => x is not null && !string.IsNullOrEmpty(x.ColumnKey) && columnsByKey.ContainsKey(x.ColumnKey))
                 .Select(x => savedCulture is null
                     ? x
-                    : state.TranslateValues(columnsByKey[x.ColumnKey], x, savedCulture))
+                    : gridState.TranslateValues(columnsByKey[x.ColumnKey], x, savedCulture))
                 .ToList());
 
         // Sorting and filtering are refused during an edit or add transaction: they wait for it to end.
-        state.RunViewWork(LayoutWorkKey, () => ApplySortsAndFilters(grid, state, sorts));
+        gridState.RunViewWork(LayoutWorkKey, () => ApplySortsAndFilters(grid, gridState, sorts));
     }
 
     /// <summary>

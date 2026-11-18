@@ -26,7 +26,7 @@ public partial class ConnectivityButton
 
     [DependencyProperty(
         DefaultValue = false,
-        PropertyChangedCallback = nameof(OnIsConnectedChanged))]
+        GeneratePartialHooks = true)]
     private bool isConnected;
 
     [DependencyProperty]
@@ -144,10 +144,10 @@ public partial class ConnectivityButton
         SetCurrentValue(DisconnectContentProperty, Word.Disconnect);
     }
 
-    private static void OnIsConnectedChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ConnectivityButton)d).RaiseIsConnectedChanged();
+    partial void OnIsConnectedChanged(
+        bool oldValue,
+        bool newValue)
+        => RaiseIsConnectedChanged();
 
     private void RaiseIsConnectedChanged()
         => IsConnectedChanged?.Invoke(this, new RoutedEventArgs());

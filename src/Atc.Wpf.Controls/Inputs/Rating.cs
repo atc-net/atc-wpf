@@ -15,6 +15,7 @@ namespace Atc.Wpf.Controls.Inputs;
 /// </list>
 /// </remarks>
 [TemplatePart(Name = nameof(ItemsHost), Type = typeof(StackPanel))]
+[DefaultStyleKey]
 public partial class Rating : Control
 {
     private StackPanel? ItemsHost { get; set; }
@@ -63,7 +64,7 @@ public partial class Rating : Control
     /// Gets or sets the content displayed for a filled rating item.
     /// </summary>
     [DependencyProperty(
-        DefaultValue = "\"★\"",
+        DefaultValue = "★",
         PropertyChangedCallback = nameof(OnIconChanged))]
     private object filledIcon;
 
@@ -71,7 +72,7 @@ public partial class Rating : Control
     /// Gets or sets the content displayed for an empty rating item.
     /// </summary>
     [DependencyProperty(
-        DefaultValue = "\"☆\"",
+        DefaultValue = "☆",
         PropertyChangedCallback = nameof(OnIconChanged))]
     private object emptyIcon;
 
@@ -79,7 +80,7 @@ public partial class Rating : Control
     /// Gets or sets the content displayed for a half-filled rating item.
     /// </summary>
     [DependencyProperty(
-        DefaultValue = "\"★\"",
+        DefaultValue = "★",
         PropertyChangedCallback = nameof(OnIconChanged))]
     private object halfFilledIcon;
 
@@ -124,9 +125,7 @@ public partial class Rating : Control
 
     static Rating()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Rating),
-            new FrameworkPropertyMetadata(typeof(Rating)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Rating));
 
         FocusableProperty.OverrideMetadata(

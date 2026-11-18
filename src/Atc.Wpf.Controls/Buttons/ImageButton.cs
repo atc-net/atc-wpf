@@ -1,6 +1,7 @@
 namespace Atc.Wpf.Controls.Buttons;
 
 /// <summary>A button that displays an image icon alongside its content, with configurable image placement.</summary>
+[DefaultStyleKey]
 public partial class ImageButton : Button
 {
     [DependencyProperty(
@@ -43,9 +44,7 @@ public partial class ImageButton : Button
 
     static ImageButton()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(ImageButton),
-            new FrameworkPropertyMetadata(typeof(ImageButton)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(ImageButton));
     }
 

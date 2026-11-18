@@ -13,30 +13,26 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </remarks>
 public partial class TreeSelectComboBox
 {
-    /// <summary>
-    /// Identifies the <see cref="MaxDropDownHeight"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty MaxDropDownHeightProperty = ComboBox.MaxDropDownHeightProperty.AddOwner(
-        typeof(TreeSelectComboBox));
-
-    /// <summary>
-    /// Identifies the <see cref="LoadChildrenAsync"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty LoadChildrenAsyncProperty = CheckTreeView.LoadChildrenAsyncProperty.AddOwner(
-        typeof(TreeSelectComboBox));
-
-    private static readonly DependencyPropertyKey SummaryTextPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(SummaryText),
-        typeof(string),
-        typeof(TreeSelectComboBox),
-        new PropertyMetadata(string.Empty));
-
-    /// <summary>
-    /// Identifies the <see cref="SummaryText"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SummaryTextProperty = SummaryTextPropertyKey.DependencyProperty;
-
     private readonly TextBlock summaryTextBlock;
+
+    /// <summary>
+    /// Gets or sets the maximum height of the pop-up; the tree scrolls (virtualized) beyond it.
+    /// </summary>
+    [DependencyProperty(AddOwnerOf = typeof(ComboBox))]
+    private double maxDropDownHeight;
+
+    /// <summary>
+    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
+    /// on its first expand; children of a ticked node inherit the tick.
+    /// </summary>
+    [DependencyProperty(AddOwnerOf = typeof(CheckTreeView))]
+    private Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? loadChildrenAsync;
+
+    /// <summary>
+    /// Gets the text the closed box shows for the ticked nodes (also the UI Automation value).
+    /// </summary>
+    [DependencyProperty(DefaultValue = "", IsReadOnly = true)]
+    private string summaryText;
 
     /// <summary>
     /// The root nodes.
@@ -254,34 +250,6 @@ public partial class TreeSelectComboBox
         AddHandler(Mouse.LostMouseCaptureEvent, new MouseEventHandler(OnLostMouseCaptureWithin));
 
         UpdateSummary();
-    }
-
-    /// <summary>
-    /// Gets or sets the maximum height of the pop-up; the tree scrolls (virtualized) beyond it.
-    /// </summary>
-    public double MaxDropDownHeight
-    {
-        get => (double)GetValue(MaxDropDownHeightProperty);
-        set => SetValue(MaxDropDownHeightProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the callback that loads the children of a node with <see cref="CheckTreeNode.HasUnloadedChildren"/>
-    /// on its first expand; children of a ticked node inherit the tick.
-    /// </summary>
-    public Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>? LoadChildrenAsync
-    {
-        get => (Func<CheckTreeNode, CancellationToken, Task<IReadOnlyList<CheckTreeNode>>>?)GetValue(LoadChildrenAsyncProperty);
-        set => SetValue(LoadChildrenAsyncProperty, value);
-    }
-
-    /// <summary>
-    /// Gets the text the closed box shows for the ticked nodes (also the UI Automation value).
-    /// </summary>
-    public string SummaryText
-    {
-        get => (string)GetValue(SummaryTextProperty);
-        private set => SetValue(SummaryTextPropertyKey, value);
     }
 
     /// <summary>

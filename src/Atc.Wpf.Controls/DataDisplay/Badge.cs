@@ -4,6 +4,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// A control that overlays content with a small badge indicator (count, status dot, etc.).
 /// </summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class Badge : ContentControl
 {
     /// <summary>
@@ -142,9 +143,7 @@ public sealed partial class Badge : ContentControl
 
     static Badge()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Badge),
-            new FrameworkPropertyMetadata(typeof(Badge)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Badge));
     }
 

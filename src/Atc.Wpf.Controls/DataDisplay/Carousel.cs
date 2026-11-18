@@ -17,12 +17,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 ///   <item>Keyboard navigation</item>
 /// </list>
 /// </remarks>
-[TemplatePart(Name = PartPreviousButton, Type = typeof(Button))]
-[TemplatePart(Name = PartNextButton, Type = typeof(Button))]
-[TemplatePart(Name = PartIndicatorsPanel, Type = typeof(Panel))]
-[TemplatePart(Name = PartContentCanvas, Type = typeof(Canvas))]
-[TemplatePart(Name = PartCurrentContent, Type = typeof(ContentPresenter))]
-[TemplatePart(Name = PartNextContent, Type = typeof(ContentPresenter))]
+[DefaultStyleKey]
 public sealed partial class Carousel : Selector
 {
     private const string PartPreviousButton = "PART_PreviousButton";
@@ -32,11 +27,22 @@ public sealed partial class Carousel : Selector
     private const string PartCurrentContent = "PART_CurrentContent";
     private const string PartNextContent = "PART_NextContent";
 
+    [TemplatePartField(PartPreviousButton)]
     private Button? previousButton;
+
+    [TemplatePartField(PartNextButton)]
     private Button? nextButton;
+
+    [TemplatePartField(PartIndicatorsPanel)]
     private Panel? indicatorsPanel;
+
+    [TemplatePartField(PartContentCanvas)]
     private Canvas? contentCanvas;
+
+    [TemplatePartField(PartCurrentContent)]
     private ContentPresenter? currentContent;
+
+    [TemplatePartField(PartNextContent)]
     private ContentPresenter? nextContent;
 
     private DispatcherTimer? autoPlayTimer;
@@ -152,9 +158,7 @@ public sealed partial class Carousel : Selector
 
     static Carousel()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Carousel),
-            new FrameworkPropertyMetadata(typeof(Carousel)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Carousel));
     }
 
@@ -174,12 +178,7 @@ public sealed partial class Carousel : Selector
 
         UnhookEvents();
 
-        previousButton = GetTemplateChild(PartPreviousButton) as Button;
-        nextButton = GetTemplateChild(PartNextButton) as Button;
-        indicatorsPanel = GetTemplateChild(PartIndicatorsPanel) as Panel;
-        contentCanvas = GetTemplateChild(PartContentCanvas) as Canvas;
-        currentContent = GetTemplateChild(PartCurrentContent) as ContentPresenter;
-        nextContent = GetTemplateChild(PartNextContent) as ContentPresenter;
+        ResolveTemplateParts();
 
         HookEvents();
         UpdateIndicators();

@@ -5,6 +5,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// </summary>
 [ContentProperty(nameof(Content))]
 [TemplatePart(Name = "PART_RemoveButton", Type = typeof(Button))]
+[DefaultStyleKey]
 public sealed partial class Chip : ContentControl
 {
     /// <summary>
@@ -118,9 +119,7 @@ public sealed partial class Chip : ContentControl
 
     static Chip()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Chip),
-            new FrameworkPropertyMetadata(typeof(Chip)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Chip));
     }
 

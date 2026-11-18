@@ -5,6 +5,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// and expand/collapse functionality.
 /// </summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class Card : HeaderedContentControl
 {
     /// <summary>
@@ -112,9 +113,7 @@ public sealed partial class Card : HeaderedContentControl
 
     static Card()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Card),
-            new FrameworkPropertyMetadata(typeof(Card)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Card));
     }
 

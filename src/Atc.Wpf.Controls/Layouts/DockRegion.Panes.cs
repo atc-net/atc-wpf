@@ -3,10 +3,6 @@ namespace Atc.Wpf.Controls.Layouts;
 /// <content>
 /// Tabbed pane groups of a <see cref="DockRegion"/>.
 /// </content>
-[TemplatePart(Name = PartPaneHost, Type = typeof(Decorator))]
-[TemplatePart(Name = PartHeaderBorder, Type = typeof(Border))]
-[TemplatePart(Name = PartFloatButton, Type = typeof(ButtonBase))]
-[TemplatePart(Name = PartCloseButton, Type = typeof(ButtonBase))]
 public sealed partial class DockRegion
 {
     private const string PartPaneHost = "PART_PaneHost";
@@ -14,28 +10,23 @@ public sealed partial class DockRegion
     private const string PartFloatButton = "PART_FloatButton";
     private const string PartCloseButton = "PART_CloseButton";
 
-    private static readonly DependencyPropertyKey HasPanesPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(HasPanes),
-        typeof(bool),
-        typeof(DockRegion),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-
     /// <summary>
-    /// Identifies the <see cref="HasPanes"/> dependency property.
+    /// Occurs when the active pane of the region changes.
     /// </summary>
-    public static readonly DependencyProperty HasPanesProperty = HasPanesPropertyKey.DependencyProperty;
-
-    /// <summary>
-    /// Identifies the <see cref="ActivePaneChanged"/> routed event.
-    /// </summary>
-    public static readonly RoutedEvent ActivePaneChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(ActivePaneChanged),
+    [RoutedEvent(
         RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<DockPane?>),
-        typeof(DockRegion));
+        HandlerType = typeof(RoutedPropertyChangedEventHandler<DockPane?>),
+        GenerateRaiseMethod = true)]
+    private static readonly RoutedEvent activePaneChanged;
 
     private readonly ObservableCollection<DockPane> dockedPanes = [];
     private readonly List<DockPane> attachedPanes = [];
+
+    /// <summary>
+    /// Gets a value indicating whether the region has panes (and shows them as tabs).
+    /// </summary>
+    [DependencyProperty(DefaultValue = false, Flags = FrameworkPropertyMetadataOptions.None, IsReadOnly = true)]
+    private bool hasPanes;
 
     /// <summary>
     /// Gets or sets the active (selected) docked pane of this region.
@@ -52,10 +43,19 @@ public sealed partial class DockRegion
     private Dock tabStripPlacement;
 
     private DockPaneTabControl? tabControl;
+
+    [TemplatePartField(PartPaneHost)]
     private Decorator? paneHost;
+
+    [TemplatePartField(PartHeaderBorder)]
     private Border? headerBorder;
+
+    [TemplatePartField(PartFloatButton)]
     private ButtonBase? floatButton;
+
+    [TemplatePartField(PartCloseButton)]
     private ButtonBase? closeButton;
+
     private bool isSyncingPanes;
     private Point? headerDragStart;
 
@@ -71,15 +71,6 @@ public sealed partial class DockRegion
     }
 
     /// <summary>
-    /// Occurs when the active pane of the region changes.
-    /// </summary>
-    public event RoutedPropertyChangedEventHandler<DockPane?> ActivePaneChanged
-    {
-        add => AddHandler(ActivePaneChangedEvent, value);
-        remove => RemoveHandler(ActivePaneChangedEvent, value);
-    }
-
-    /// <summary>
     /// Gets the panes of this region, in tab order. A region with panes shows them as tabs instead of its
     /// <see cref="ContentControl.Content"/>. Floating and closed panes stay in this collection, so they return to
     /// their position when docked again.
@@ -90,11 +81,6 @@ public sealed partial class DockRegion
     /// Gets the panes that are currently docked (shown as tabs), in tab order.
     /// </summary>
     public ReadOnlyObservableCollection<DockPane> DockedPanes { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether the region has panes (and shows them as tabs).
-    /// </summary>
-    public bool HasPanes => (bool)GetValue(HasPanesProperty);
 
     /// <summary>
     /// Gets a value indicating whether a region with panes has none docked, so it takes no space in the panel.
@@ -158,10 +144,7 @@ public sealed partial class DockRegion
 
         base.OnApplyTemplate();
 
-        paneHost = GetTemplateChild(PartPaneHost) as Decorator;
-        headerBorder = GetTemplateChild(PartHeaderBorder) as Border;
-        floatButton = GetTemplateChild(PartFloatButton) as ButtonBase;
-        closeButton = GetTemplateChild(PartCloseButton) as ButtonBase;
+        ResolveTemplateParts();
 
         if (headerBorder is not null)
         {
@@ -331,11 +314,6 @@ public sealed partial class DockRegion
         => d is DockRegion { IsEmptyPaneGroup: true } region && DockPanelPro.GetDock(region) != DockPosition.Center
             ? Visibility.Collapsed
             : baseValue;
-
-    private void RaiseActivePaneChanged(
-        DockPane? oldValue,
-        DockPane? newValue)
-        => RaiseEvent(new RoutedPropertyChangedEventArgs<DockPane?>(oldValue, newValue, ActivePaneChangedEvent));
 
     private void SyncDockedPanes(List<DockPane> desired)
     {

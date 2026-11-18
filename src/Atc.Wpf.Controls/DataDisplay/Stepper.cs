@@ -5,9 +5,10 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// numbered step indicators, completion states, connecting lines, and programmatic navigation.
 /// </summary>
 [ContentProperty(nameof(Items))]
-[TemplatePart(Name = "PART_ItemsHost", Type = typeof(Panel))]
+[DefaultStyleKey]
 public sealed partial class Stepper : Control
 {
+    [TemplatePartField("PART_ItemsHost")]
     private Panel? itemsHost;
 
     /// <summary>
@@ -109,9 +110,7 @@ public sealed partial class Stepper : Control
 
     static Stepper()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Stepper),
-            new FrameworkPropertyMetadata(typeof(Stepper)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Stepper));
     }
 
@@ -171,7 +170,7 @@ public sealed partial class Stepper : Control
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-        itemsHost = GetTemplateChild("PART_ItemsHost") as Panel;
+        ResolveTemplateParts();
         RebuildVisualTree();
     }
 

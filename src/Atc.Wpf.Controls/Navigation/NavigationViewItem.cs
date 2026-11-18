@@ -7,6 +7,7 @@ namespace Atc.Wpf.Controls.Navigation;
 /// Set <see cref="TargetViewModelType"/> to navigate through the view's <see cref="INavigationService"/>
 /// when the item is invoked, or handle <see cref="NavigationView.ItemInvoked"/> or <see cref="ButtonBase.Command"/>.
 /// </remarks>
+[DefaultStyleKey]
 public partial class NavigationViewItem : ButtonBase
 {
     /// <summary>
@@ -42,9 +43,7 @@ public partial class NavigationViewItem : ButtonBase
 
     static NavigationViewItem()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(NavigationViewItem),
-            new FrameworkPropertyMetadata(typeof(NavigationViewItem)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(NavigationViewItem));
     }
 

@@ -25,7 +25,7 @@ public partial class ImageToggledButton
 
     [DependencyProperty(
         DefaultValue = false,
-        PropertyChangedCallback = nameof(OnIsToggledChanged))]
+        GeneratePartialHooks = true)]
     private bool isToggled;
 
     [DependencyProperty]
@@ -66,10 +66,10 @@ public partial class ImageToggledButton
         SetCurrentValue(ImageLocationProperty, Controls.ImageLocation.Left);
     }
 
-    private static void OnIsToggledChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ImageToggledButton)d).RaiseIsToggledChanged();
+    partial void OnIsToggledChanged(
+        bool oldValue,
+        bool newValue)
+        => RaiseIsToggledChanged();
 
     private void RaiseIsToggledChanged()
         => IsToggledChanged?.Invoke(this, new RoutedEventArgs());

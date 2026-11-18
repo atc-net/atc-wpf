@@ -4,7 +4,7 @@ namespace Atc.Wpf.Controls.DataGrids.Internal;
 /// The funnel button in a filterable column header. Clicking it (or Alt+Down while it has focus) opens the column
 /// filter pop-up; it shows a filled accent funnel while the column has an active filter.
 /// </summary>
-internal sealed class DataGridFilterButton : Button
+internal sealed partial class DataGridFilterButton : Button
 {
     private const string OutlineFunnel = "M1,2 L15,2 L9.5,8.5 L9.5,14 L6.5,12 L6.5,8.5 Z";
 
@@ -13,6 +13,12 @@ internal sealed class DataGridFilterButton : Button
     private static readonly ControlTemplate ButtonTemplate = CreateTemplate();
 
     private readonly System.Windows.Shapes.Path funnel;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the column has an active filter.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false, GeneratePartialHooks = true)]
+    private bool isFilterActive;
 
     public DataGridFilterButton()
     {
@@ -48,26 +54,6 @@ internal sealed class DataGridFilterButton : Button
     /// Gets or sets the grid of <see cref="Column"/>.
     /// </summary>
     public DataGrid? Grid { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the column has an active filter.
-    /// </summary>
-    public bool IsFilterActive
-    {
-        get => (bool)GetValue(IsFilterActiveProperty);
-        set => SetValue(IsFilterActiveProperty, value);
-    }
-
-    /// <summary>
-    /// Identifies the <see cref="IsFilterActive"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IsFilterActiveProperty = DependencyProperty.Register(
-        nameof(IsFilterActive),
-        typeof(bool),
-        typeof(DataGridFilterButton),
-        new PropertyMetadata(
-            BooleanBoxes.FalseBox,
-            static (d, _) => ((DataGridFilterButton)d).UpdateFunnel()));
 
     /// <summary>
     /// Gets the pop-up content while the button's pop-up is open (for UI Automation), else <see langword="null"/>.
@@ -146,6 +132,11 @@ internal sealed class DataGridFilterButton : Button
         template.Seal();
         return template;
     }
+
+    partial void OnIsFilterActiveChanged(
+        bool oldValue,
+        bool newValue)
+        => UpdateFunnel();
 
     private void UpdateFunnel()
     {

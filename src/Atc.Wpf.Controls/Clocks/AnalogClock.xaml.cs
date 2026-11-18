@@ -19,7 +19,7 @@ public partial class AnalogClock
     /// The time of day shown by the clock (wrapped into 0:00:00 - 23:59:59).
     /// Updated every second while <see cref="FollowCurrentTime"/> is on and the clock is loaded.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnTimeChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private TimeSpan time;
 
     /// <summary>
@@ -226,10 +226,10 @@ public partial class AnalogClock
     internal static double GetSecondAngle(TimeSpan time)
         => ClockHelper.ToTimeOfDay(time).Seconds * 6;
 
-    private static void OnTimeChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((AnalogClock)d).UpdateHands();
+    partial void OnTimeChanged(
+        TimeSpan oldValue,
+        TimeSpan newValue)
+        => UpdateHands();
 
     private static void OnFollowCurrentTimeChanged(
         DependencyObject d,

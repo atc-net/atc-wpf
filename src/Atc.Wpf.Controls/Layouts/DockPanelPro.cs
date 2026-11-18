@@ -4,6 +4,7 @@ namespace Atc.Wpf.Controls.Layouts;
 /// An enhanced dock panel with resizable splitters, collapsible regions, tabbed panes, floating tool windows
 /// and layout persistence. Perfect for building IDE-style interfaces with tool windows.
 /// </summary>
+[DefaultStyleKey]
 public sealed partial class DockPanelPro : Panel
 {
     private const double SplitterKeyboardStep = 10;
@@ -80,9 +81,7 @@ public sealed partial class DockPanelPro : Panel
 
     static DockPanelPro()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(DockPanelPro),
-            new FrameworkPropertyMetadata(typeof(DockPanelPro)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(DockPanelPro));
         RegisterCommandBindings();
     }

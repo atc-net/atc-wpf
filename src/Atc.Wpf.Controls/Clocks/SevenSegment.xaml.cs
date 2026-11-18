@@ -9,15 +9,6 @@ public partial class SevenSegment
     private const double LitOpacity = 1.0;
     private const string DefaultNumberBrushKey = "AtcApps.Brushes.Accent";
 
-    /// <summary>Identifies the <see cref="Segments"/> dependency property.</summary>
-    public static readonly DependencyProperty SegmentsProperty = DependencyProperty.Register(
-        nameof(Segments),
-        typeof(SevenSegmentParts?),
-        typeof(SevenSegment),
-        new PropertyMetadata(
-            defaultValue: null,
-            OnSegmentsChanged));
-
     private static readonly SevenSegmentParts[] DigitParts =
     [
         SevenSegmentParts.All & ~SevenSegmentParts.Middle,
@@ -33,6 +24,13 @@ public partial class SevenSegment
     ];
 
     private bool isColonPulsing;
+
+    /// <summary>
+    /// Gets or sets the segments to light, overriding <see cref="Digit"/>; <see langword="null"/> (the default) shows <see cref="Digit"/>.
+    /// The decimal point is not a segment: use <see cref="ShowDot"/>.
+    /// </summary>
+    [DependencyProperty(PropertyChangedCallback = nameof(OnSegmentsChanged))]
+    private SevenSegmentParts? segments;
 
     /// <summary>
     /// The digit to show (0-9), or <see langword="null"/> to show no lit segments.
@@ -111,16 +109,6 @@ public partial class SevenSegment
         SetResourceReference(ColonColorProperty, DefaultNumberBrushKey);
 
         UpdateSegments(animate: false);
-    }
-
-    /// <summary>
-    /// Gets or sets the segments to light, overriding <see cref="Digit"/>; <see langword="null"/> (the default) shows <see cref="Digit"/>.
-    /// The decimal point is not a segment: use <see cref="ShowDot"/>.
-    /// </summary>
-    public SevenSegmentParts? Segments
-    {
-        get => (SevenSegmentParts?)GetValue(SegmentsProperty);
-        set => SetValue(SegmentsProperty, value);
     }
 
     /// <summary>

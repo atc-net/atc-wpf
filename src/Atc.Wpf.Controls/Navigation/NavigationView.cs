@@ -11,16 +11,21 @@ namespace Atc.Wpf.Controls.Navigation;
 /// keeps the previous selection.
 /// </remarks>
 [ContentProperty(nameof(MenuItems))]
-[TemplatePart(Name = "PART_MenuItemsHost", Type = typeof(Panel))]
-[TemplatePart(Name = "PART_FooterMenuItemsHost", Type = typeof(Panel))]
-[TemplatePart(Name = "PART_BackButton", Type = typeof(ButtonBase))]
+[DefaultStyleKey]
 public partial class NavigationView : Control
 {
     // The items whose Click this view listens to, so a Reset (Clear) can still unhook the removed ones.
     private readonly HashSet<NavigationViewItem> subscribedItems = [];
+
+    [TemplatePartField("PART_MenuItemsHost")]
     private Panel? menuItemsHost;
+
+    [TemplatePartField("PART_FooterMenuItemsHost")]
     private Panel? footerMenuItemsHost;
+
+    [TemplatePartField("PART_BackButton")]
     private ButtonBase? backButton;
+
     private bool isSyncingSelection;
     private bool isRevertingSelection;
 
@@ -102,9 +107,7 @@ public partial class NavigationView : Control
 
     static NavigationView()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(NavigationView),
-            new FrameworkPropertyMetadata(typeof(NavigationView)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(NavigationView));
     }
 
@@ -145,9 +148,7 @@ public partial class NavigationView : Control
 
         base.OnApplyTemplate();
 
-        menuItemsHost = GetTemplateChild("PART_MenuItemsHost") as Panel;
-        footerMenuItemsHost = GetTemplateChild("PART_FooterMenuItemsHost") as Panel;
-        backButton = GetTemplateChild("PART_BackButton") as ButtonBase;
+        ResolveTemplateParts();
 
         if (backButton is not null)
         {

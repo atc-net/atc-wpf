@@ -4,38 +4,30 @@ namespace Atc.Wpf.Controls.DataGrids.Internal;
 /// The root of the header template that <see cref="DataGridFilter"/> wraps around a column's own header template:
 /// the original header (with the original template) and the filter button at the right edge.
 /// </summary>
-internal sealed class DataGridFilterHeader : Grid
+internal sealed partial class DataGridFilterHeader : Grid
 {
-    /// <summary>
-    /// Identifies the <see cref="HeaderContent"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty HeaderContentProperty = DependencyProperty.Register(
-        nameof(HeaderContent),
-        typeof(object),
-        typeof(DataGridFilterHeader),
-        new PropertyMetadata(defaultValue: null, static (d, e) => ((DataGridFilterHeader)d).presenter.Content = e.NewValue));
-
-    /// <summary>
-    /// Identifies the <see cref="HeaderTemplate"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty HeaderTemplateProperty = DependencyProperty.Register(
-        nameof(HeaderTemplate),
-        typeof(DataTemplate),
-        typeof(DataGridFilterHeader),
-        new PropertyMetadata(defaultValue: null, static (d, e) => ((DataGridFilterHeader)d).presenter.ContentTemplate = (DataTemplate?)e.NewValue));
-
-    /// <summary>
-    /// Identifies the <see cref="HeaderTemplateSelector"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty HeaderTemplateSelectorProperty = DependencyProperty.Register(
-        nameof(HeaderTemplateSelector),
-        typeof(DataTemplateSelector),
-        typeof(DataGridFilterHeader),
-        new PropertyMetadata(defaultValue: null, static (d, e) => ((DataGridFilterHeader)d).presenter.ContentTemplateSelector = (DataTemplateSelector?)e.NewValue));
-
     private static readonly BooleanToVisibilityConverter BooleanToVisibilityConverterInstance = new();
 
     private readonly ContentPresenter presenter;
+
+    /// <summary>
+    /// Gets or sets the header content of the column.
+    /// </summary>
+    [DependencyProperty(GeneratePartialHooks = true)]
+    private object? headerContent;
+
+    /// <summary>
+    /// Gets or sets the column's own header template.
+    /// </summary>
+    [DependencyProperty(GeneratePartialHooks = true)]
+    private DataTemplate? headerTemplate;
+
+    /// <summary>
+    /// Gets or sets the column's own header template selector.
+    /// </summary>
+    [DependencyProperty(GeneratePartialHooks = true)]
+    private DataTemplateSelector? headerTemplateSelector;
+
     private DataGridColumnHeader? columnHeader;
     private HorizontalAlignment? savedAlignment;
 
@@ -55,32 +47,20 @@ internal sealed class DataGridFilterHeader : Grid
         Unloaded += OnUnloaded;
     }
 
-    /// <summary>
-    /// Gets or sets the header content of the column.
-    /// </summary>
-    public object? HeaderContent
-    {
-        get => GetValue(HeaderContentProperty);
-        set => SetValue(HeaderContentProperty, value);
-    }
+    partial void OnHeaderContentChanged(
+        object? oldValue,
+        object? newValue)
+        => presenter.Content = newValue;
 
-    /// <summary>
-    /// Gets or sets the column's own header template.
-    /// </summary>
-    public DataTemplate? HeaderTemplate
-    {
-        get => (DataTemplate?)GetValue(HeaderTemplateProperty);
-        set => SetValue(HeaderTemplateProperty, value);
-    }
+    partial void OnHeaderTemplateChanged(
+        DataTemplate? oldValue,
+        DataTemplate? newValue)
+        => presenter.ContentTemplate = newValue;
 
-    /// <summary>
-    /// Gets or sets the column's own header template selector.
-    /// </summary>
-    public DataTemplateSelector? HeaderTemplateSelector
-    {
-        get => (DataTemplateSelector?)GetValue(HeaderTemplateSelectorProperty);
-        set => SetValue(HeaderTemplateSelectorProperty, value);
-    }
+    partial void OnHeaderTemplateSelectorChanged(
+        DataTemplateSelector? oldValue,
+        DataTemplateSelector? newValue)
+        => presenter.ContentTemplateSelector = newValue;
 
     /// <summary>
     /// Gets the filter button.

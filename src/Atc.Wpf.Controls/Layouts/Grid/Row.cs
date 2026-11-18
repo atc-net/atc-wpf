@@ -1,21 +1,17 @@
 namespace Atc.Wpf.Controls.Layouts.Grid;
 
 /// <summary>A Bootstrap-style 24-cell row panel that lays out <see cref="Col"/> children, wrapping when the cells of a line are used up.</summary>
-public sealed class Row : Panel
+public sealed partial class Row : Panel
 {
     private double maxChildDesiredHeight;
     private double totalAutoWidth;
 
-    /// <summary>Identifies the <see cref="Gutter"/> dependency property.</summary>
-    public static readonly DependencyProperty GutterProperty = DependencyProperty.Register(
-        nameof(Gutter),
-        typeof(double),
-        typeof(Row),
-        new PropertyMetadata(
-            0.0,
-            propertyChangedCallback: null,
-            OnGutterCoerce),
-        IsInRangeOfPosDoubleIncludeZero);
+    /// <summary>Gets or sets the spacing between columns; each column gets a uniform margin of half the gutter.</summary>
+    [DependencyProperty(
+        DefaultValue = 0.0,
+        CoerceValueCallback = nameof(OnGutterCoerce),
+        ValidateValueCallback = nameof(IsInRangeOfPosDoubleIncludeZero))]
+    private double gutter;
 
     private static object OnGutterCoerce(
         DependencyObject d,
@@ -23,13 +19,6 @@ public sealed class Row : Panel
         => IsInRangeOfPosDoubleIncludeZero(baseValue)
             ? baseValue
             : 0.0;
-
-    /// <summary>Gets or sets the spacing between columns; each column gets a uniform margin of half the gutter.</summary>
-    public double Gutter
-    {
-        get => (double)GetValue(GutterProperty);
-        set => SetValue(GutterProperty, value);
-    }
 
     /// <inheritdoc />
     protected override Size MeasureOverride(Size availableSize)

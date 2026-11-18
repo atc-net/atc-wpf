@@ -13,7 +13,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// once; changes made to it from outside (or a new instance) only re-sync the segments and raise no event.
 /// </remarks>
 [ContentProperty(nameof(Items))]
-[TemplatePart(Name = "PART_ItemsHost", Type = typeof(Panel))]
+[DefaultStyleKey]
 public sealed partial class Segmented : Control
 {
     private readonly ObservableCollection<SegmentedItem> selectedItemsSource = [];
@@ -21,7 +21,10 @@ public sealed partial class Segmented : Control
     private readonly List<Border> separators = [];
     private readonly SelectedKeysCleanup modeTrim;
     private SegmentedItem? lastFocusedItem;
+
+    [TemplatePartField("PART_ItemsHost")]
     private Panel? itemsHost;
+
     private bool isUpdatingSelection;
     private bool isWritingSelectedKeys;
     private bool isSyncingFromKeys;
@@ -167,9 +170,7 @@ public sealed partial class Segmented : Control
 
     static Segmented()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Segmented),
-            new FrameworkPropertyMetadata(typeof(Segmented)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Segmented));
     }
 
@@ -189,7 +190,7 @@ public sealed partial class Segmented : Control
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-        itemsHost = GetTemplateChild("PART_ItemsHost") as Panel;
+        ResolveTemplateParts();
         RebuildVisualTree();
     }
 

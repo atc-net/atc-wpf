@@ -10,6 +10,7 @@ namespace Atc.Wpf.Controls.Progressing;
 [TemplateVisualState(Name = Internal.VisualStates.StateHidden, GroupName = Internal.VisualStates.GroupVisibility)]
 [StyleTypedProperty(Property = "OverlayStyle", StyleTargetType = typeof(Rectangle))]
 [StyleTypedProperty(Property = "ProgressBarStyle", StyleTargetType = typeof(ProgressBar))]
+[DefaultStyleKey]
 public partial class BusyOverlay : ContentControl
 {
     private readonly DispatcherTimer displayAfterTimer = new();
@@ -51,9 +52,7 @@ public partial class BusyOverlay : ContentControl
 
     static BusyOverlay()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(BusyOverlay),
-            new FrameworkPropertyMetadata(typeof(BusyOverlay)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(BusyOverlay));
     }
 

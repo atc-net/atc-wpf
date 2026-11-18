@@ -6,22 +6,12 @@ public partial class ZoomBox
 {
     private DispatcherTimer? edgeScrollTimer;
 
-    /// <summary>Identifies the <see cref="IsEdgeScrollingEnabled"/> dependency property.</summary>
-    public static readonly DependencyProperty IsEdgeScrollingEnabledProperty = DependencyProperty.Register(
-        nameof(IsEdgeScrollingEnabled),
-        typeof(bool),
-        typeof(ZoomBox),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox));
-
     /// <summary>
     /// Gets or sets a value indicating whether the viewport auto-pans when the
     /// mouse is near the edge during a drag operation.
     /// </summary>
-    public bool IsEdgeScrollingEnabled
-    {
-        get => (bool)GetValue(IsEdgeScrollingEnabledProperty);
-        set => SetValue(IsEdgeScrollingEnabledProperty, BooleanBoxes.Box(value));
-    }
+    [DependencyProperty(DefaultValue = false, MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata)]
+    private bool isEdgeScrollingEnabled;
 
     [DependencyProperty(DefaultValue = 40.0)]
     private double edgeScrollZoneWidth;

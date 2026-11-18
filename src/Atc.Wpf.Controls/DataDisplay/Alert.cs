@@ -5,9 +5,10 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// </summary>
 [ContentProperty(nameof(Content))]
 [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
-[TemplatePart(Name = "PART_Border", Type = typeof(Border))]
+[DefaultStyleKey]
 public sealed partial class Alert : ContentControl
 {
+    [TemplatePartField("PART_Border")]
     private Border? partBorder;
 
     /// <summary>
@@ -119,9 +120,7 @@ public sealed partial class Alert : ContentControl
 
     static Alert()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Alert),
-            new FrameworkPropertyMetadata(typeof(Alert)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Alert));
     }
 
@@ -141,7 +140,7 @@ public sealed partial class Alert : ContentControl
         base.OnApplyTemplate();
 
         StopPulseAnimation();
-        partBorder = GetTemplateChild("PART_Border") as Border;
+        ResolveTemplateParts();
 
         if (GetTemplateChild("PART_CloseButton") is Button closeButton)
         {

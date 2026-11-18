@@ -47,6 +47,11 @@ public sealed partial class CheckTreeNode : ObservableObject
     [ObservableProperty]
     private object? tag;
 
+    /// <summary>
+    /// Gets the check state, kept by the control: <see langword="true"/> (ticked), <see langword="false"/> (not ticked)
+    /// or <see langword="null"/> (only some of the children are ticked).
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private bool? isChecked = false;
 
     /// <summary>
@@ -78,25 +83,6 @@ public sealed partial class CheckTreeNode : ObservableObject
     /// Gets the child nodes.
     /// </summary>
     public ObservableCollection<CheckTreeNode> Children { get; } = [];
-
-    /// <summary>
-    /// Gets the check state, kept by the control: <see langword="true"/> (ticked), <see langword="false"/> (not ticked)
-    /// or <see langword="null"/> (only some of the children are ticked).
-    /// </summary>
-    public bool? IsChecked
-    {
-        get => isChecked;
-        internal set
-        {
-            if (isChecked == value)
-            {
-                return;
-            }
-
-            isChecked = value;
-            RaisePropertyChanged(nameof(IsChecked));
-        }
-    }
 
     /// <inheritdoc />
     public override string ToString()

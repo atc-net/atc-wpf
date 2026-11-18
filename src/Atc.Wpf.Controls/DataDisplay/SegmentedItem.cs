@@ -4,6 +4,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// Represents a single segment in a <see cref="Segmented"/>.
 /// </summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class SegmentedItem : ContentControl
 {
     /// <summary>
@@ -28,7 +29,7 @@ public sealed partial class SegmentedItem : ContentControl
     /// The key of this segment in <see cref="Segmented.SelectedKeys"/>. When not set, the text of
     /// <see cref="ContentControl.Content"/> is used.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnKeyChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private string? key;
 
     /// <summary>
@@ -82,9 +83,7 @@ public sealed partial class SegmentedItem : ContentControl
 
     static SegmentedItem()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(SegmentedItem),
-            new FrameworkPropertyMetadata(typeof(SegmentedItem)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(SegmentedItem));
     }
 
@@ -206,8 +205,8 @@ public sealed partial class SegmentedItem : ContentControl
         }
     }
 
-    private static void OnKeyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((SegmentedItem)d).Owner?.OnItemKeyChanged();
+    partial void OnKeyChanged(
+        string? oldValue,
+        string? newValue)
+        => Owner?.OnItemKeyChanged();
 }

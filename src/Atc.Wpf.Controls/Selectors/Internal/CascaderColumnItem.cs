@@ -6,34 +6,25 @@ namespace Atc.Wpf.Controls.Selectors;
 /// with children makes it active; a click anywhere on a leaf ticks it. Resting the mouse on it reports a hover to the
 /// owner (for <see cref="CascaderExpandTrigger.Hover"/>).
 /// </summary>
-internal sealed class CascaderColumnItem : ContentControl
+internal sealed partial class CascaderColumnItem : ContentControl
 {
     /// <summary>
-    /// Identifies the <see cref="IsActive"/> dependency property.
+    /// Gets or sets a value indicating whether the row is active: its children are shown in the next column.
     /// </summary>
-    public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
-        nameof(IsActive),
-        typeof(bool),
-        typeof(CascaderColumnItem),
-        new PropertyMetadata(BooleanBoxes.FalseBox, OnIsActiveChanged));
+    [DependencyProperty(DefaultValue = false, GeneratePartialHooks = true)]
+    private bool isActive;
 
     /// <summary>
-    /// Identifies the <see cref="IsFilterResult"/> dependency property.
+    /// Gets or sets a value indicating whether the row is a filter result (it shows the highlighted path).
     /// </summary>
-    public static readonly DependencyProperty IsFilterResultProperty = DependencyProperty.Register(
-        nameof(IsFilterResult),
-        typeof(bool),
-        typeof(CascaderColumnItem),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
+    [DependencyProperty(DefaultValue = false)]
+    private bool isFilterResult;
 
     /// <summary>
-    /// Identifies the <see cref="FilterContent"/> dependency property.
+    /// Gets or sets the content shown for a filter result (the path with the match highlighted).
     /// </summary>
-    public static readonly DependencyProperty FilterContentProperty = DependencyProperty.Register(
-        nameof(FilterContent),
-        typeof(object),
-        typeof(CascaderColumnItem),
-        new PropertyMetadata(defaultValue: null));
+    [DependencyProperty]
+    private object? filterContent;
 
     private bool? lastIsChecked;
 
@@ -79,33 +70,6 @@ internal sealed class CascaderColumnItem : ContentControl
     /// Gets or sets a value indicating whether this row is the "please wait" row of a column whose nodes are loading.
     /// </summary>
     public bool IsPlaceholder { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the row is active: its children are shown in the next column.
-    /// </summary>
-    public bool IsActive
-    {
-        get => (bool)GetValue(IsActiveProperty);
-        set => SetValue(IsActiveProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the row is a filter result (it shows the highlighted path).
-    /// </summary>
-    public bool IsFilterResult
-    {
-        get => (bool)GetValue(IsFilterResultProperty);
-        set => SetValue(IsFilterResultProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>
-    /// Gets or sets the content shown for a filter result (the path with the match highlighted).
-    /// </summary>
-    public object? FilterContent
-    {
-        get => GetValue(FilterContentProperty);
-        set => SetValue(FilterContentProperty, value);
-    }
 
     /// <inheritdoc />
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -172,19 +136,18 @@ internal sealed class CascaderColumnItem : ContentControl
         return false;
     }
 
-    private static void OnIsActiveChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    partial void OnIsActiveChanged(
+        bool oldValue,
+        bool newValue)
     {
-        var item = (CascaderColumnItem)d;
-        if (item.IsPlaceholder ||
-            item.Node is not { } node ||
+        if (IsPlaceholder ||
+            Node is not { } node ||
             !AutomationPeer.ListenerExists(AutomationEvents.PropertyChanged))
         {
             return;
         }
 
-        item.FindRowPeer(node)?.RaiseExpandCollapseStateChanged((bool)e.OldValue, (bool)e.NewValue);
+        FindRowPeer(node)?.RaiseExpandCollapseStateChanged(oldValue, newValue);
     }
 
     private void OnNodePropertyChanged(

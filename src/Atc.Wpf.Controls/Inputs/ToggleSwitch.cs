@@ -19,6 +19,7 @@ namespace Atc.Wpf.Controls.Inputs;
 [TemplateVisualState(GroupName = ToggleStatesGroup, Name = DraggingState)]
 [TemplateVisualState(GroupName = ToggleStatesGroup, Name = OffState)]
 [TemplateVisualState(GroupName = ToggleStatesGroup, Name = OnState)]
+[DefaultStyleKey]
 public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
 {
     private const string ContentStatesGroup = "ContentStates";
@@ -124,9 +125,7 @@ public partial class ToggleSwitch : HeaderedContentControl, ICommandSource
 
     static ToggleSwitch()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(ToggleSwitch),
-            new FrameworkPropertyMetadata(typeof(ToggleSwitch)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(ToggleSwitch));
 
         EventManager.RegisterClassHandler(

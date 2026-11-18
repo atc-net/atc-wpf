@@ -17,16 +17,17 @@ namespace Atc.Wpf.Controls.Selectors;
 /// </para>
 /// <para>Meant for a few cards (a soft limit of about 100): the cards are not virtualized.</para>
 /// </remarks>
+[DefaultStyleKey]
 public sealed partial class CardSelector : ListBox
 {
     /// <summary>
-    /// Identifies the <see cref="SelectionMode"/> dependency property.
+    /// Gets or sets how many cards can be selected: any number (default), exactly one, or at most one.
     /// </summary>
-    public static new readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
-        nameof(SelectionMode),
-        typeof(CardSelectionMode),
-        typeof(CardSelector),
-        new FrameworkPropertyMetadata(CardSelectionMode.Multiple, OnSelectionModeChanged));
+    [DependencyProperty(
+        DefaultValue = CardSelectionMode.Multiple,
+        MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata,
+        PropertyChangedCallback = nameof(OnSelectionModeChanged))]
+    private CardSelectionMode selectionMode;
 
     /// <summary>
     /// The path of the property that holds an item's key (e.g. <c>Id</c> or <c>Info.Id</c>). When set,
@@ -91,9 +92,7 @@ public sealed partial class CardSelector : ListBox
 
     static CardSelector()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(CardSelector),
-            new FrameworkPropertyMetadata(typeof(CardSelector)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(CardSelector));
 
         // The control enforces its own modes; the ListBox underneath always allows several items.
@@ -117,15 +116,6 @@ public sealed partial class CardSelector : ListBox
     /// card toggle, select all, clear, or item change that drops keys.
     /// </summary>
     public event EventHandler<ValueChangedEventArgs<IReadOnlyList<string>>>? SelectedKeysChanged;
-
-    /// <summary>
-    /// Gets or sets how many cards can be selected: any number (default), exactly one, or at most one.
-    /// </summary>
-    public new CardSelectionMode SelectionMode
-    {
-        get => (CardSelectionMode)GetValue(SelectionModeProperty);
-        set => SetValue(SelectionModeProperty, value);
-    }
 
     /// <summary>
     /// Selects every enabled card in one change. Does nothing when the selection limit has no room for them all,

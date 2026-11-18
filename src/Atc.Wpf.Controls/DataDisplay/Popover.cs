@@ -5,8 +5,7 @@ namespace Atc.Wpf.Controls.DataDisplay;
 /// with configurable placement, trigger modes, and optional arrow pointer.
 /// </summary>
 [ContentProperty(nameof(PopoverContent))]
-[TemplatePart(Name = PartPopup, Type = typeof(Popup))]
-[TemplatePart(Name = PartAnchor, Type = typeof(ContentPresenter))]
+[DefaultStyleKey]
 public sealed partial class Popover : Control
 {
     private const string PartPopup = "PART_Popup";
@@ -119,8 +118,12 @@ public sealed partial class Popover : Control
     [DependencyProperty(DefaultValue = "new Thickness(8)")]
     private Thickness popoverPadding;
 
+    [TemplatePartField(PartPopup)]
     private Popup? popup;
+
+    [TemplatePartField(PartAnchor)]
     private ContentPresenter? anchorPresenter;
+
     private DispatcherTimer? openTimer;
     private DispatcherTimer? closeTimer;
     private Window? dismissWindow;
@@ -137,9 +140,7 @@ public sealed partial class Popover : Control
 
     static Popover()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Popover),
-            new FrameworkPropertyMetadata(typeof(Popover)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(Popover));
     }
 
@@ -159,8 +160,7 @@ public sealed partial class Popover : Control
 
         UnwireEvents();
 
-        anchorPresenter = GetTemplateChild(PartAnchor) as ContentPresenter;
-        popup = GetTemplateChild(PartPopup) as Popup;
+        ResolveTemplateParts();
 
         if (popup is not null)
         {

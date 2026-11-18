@@ -25,6 +25,7 @@ public enum TimelineItemPosition
 /// Represents a single event in a <see cref="Timeline"/> control.
 /// </summary>
 [ContentProperty(nameof(Content))]
+[DefaultStyleKey]
 public sealed partial class TimelineItem : ContentControl
 {
     /// <summary>
@@ -87,9 +88,7 @@ public sealed partial class TimelineItem : ContentControl
 
     static TimelineItem()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(TimelineItem),
-            new FrameworkPropertyMetadata(typeof(TimelineItem)));
+        OverrideDefaultStyleKey();
         StyleCheck.Register(typeof(TimelineItem));
     }
 }
