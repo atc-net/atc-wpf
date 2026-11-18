@@ -54,6 +54,24 @@ public sealed class FlyoutCenterSizingTests
     }
 
     [StaFact]
+    public void CenterFlyout_WithRoundedCorners_RoundsTheTopCornersOfItsHeader()
+    {
+        // The header has its own background; with square corners it paints over the panel's rounded top corners.
+        using var sut = FlyoutWindow.Show();
+        var service = new FlyoutService(sut.Host);
+        var options = CenterOptions(height: double.NaN);
+        options.CornerRadius = new CornerRadius(8);
+
+        _ = service.ShowAsync("Rounded", new Border { Height = 60 }, options);
+        FlyoutWindow.Pump();
+
+        var flyout = Assert.IsType<Flyout>(sut.Host.Items[^1]);
+        var header = Assert.IsType<Border>(flyout.Template.FindName("HeaderBorder", flyout));
+        Assert.Equal(new CornerRadius(8, 8, 0, 0), header.CornerRadius);
+        service.CloseAllFlyouts();
+    }
+
+    [StaFact]
     public void ClosingAFlyout_GivesTheFocusBackToTheElementThatHadIt()
     {
         using var sut = FlyoutWindow.Show();

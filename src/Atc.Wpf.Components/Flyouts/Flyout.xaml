@@ -2,7 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
-    xmlns:flyouts="clr-namespace:Atc.Wpf.Components.Flyouts">
+    xmlns:enums="clr-namespace:Atc.Wpf.Theming;assembly=Atc.Wpf.Theming"
+    xmlns:flyouts="clr-namespace:Atc.Wpf.Components.Flyouts"
+    xmlns:valueConverters="clr-namespace:Atc.Wpf.Theming.ValueConverters;assembly=Atc.Wpf.Theming">
 
     <!--  Pin button style  -->
     <Style x:Key="AtcApps.Styles.Flyout.PinButton" TargetType="{x:Type ToggleButton}">
@@ -229,6 +231,7 @@
                                     Background="{TemplateBinding HeaderBackground}"
                                     BorderBrush="{TemplateBinding HeaderBorderBrush}"
                                     BorderThickness="0,0,0,1"
+                                    CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=CornerRadius, Converter={x:Static valueConverters:CornerRadiusBindingValueConverter.Instance}, ConverterParameter={x:Static enums:RadiusType.Bottom}}"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                     UseLayoutRounding="True">
                                     <Grid MinHeight="48">
