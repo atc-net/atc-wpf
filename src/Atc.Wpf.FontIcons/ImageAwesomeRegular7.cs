@@ -3,62 +3,10 @@ namespace Atc.Wpf.FontIcons;
 /// <summary>
 /// An image that renders a Font Awesome 7 Free (regular) icon, with support for spinning, rotation and flipping.
 /// </summary>
-public sealed class ImageAwesomeRegular7 : Image, ISpinable, IRotatable, IFlippable
+[UseDependencyPropertyTemplate(typeof(ImageIconMembers))]
+[UseDependencyPropertyTemplate(typeof(IconTransformMembers))]
+public sealed partial class ImageAwesomeRegular7 : Image, ISpinable, IRotatable, IFlippable
 {
-    /// <summary>
-    /// Identifies the Foreground dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(
-        nameof(Foreground),
-        typeof(Brush),
-        typeof(ImageAwesomeRegular7),
-        new PropertyMetadata(Brushes.Black, OnIconPropertyChanged));
-
-    /// <summary>
-    /// Identifies the Icon dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
-        nameof(Icon),
-        typeof(FontAwesomeRegular7Type),
-        typeof(ImageAwesomeRegular7),
-        new PropertyMetadata(FontAwesomeRegular7Type.None, OnIconPropertyChanged));
-
-    /// <summary>
-    /// Identifies the Spin dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SpinProperty = DependencyProperty.Register(
-        nameof(Spin),
-        typeof(bool),
-        typeof(ImageAwesomeRegular7),
-        new PropertyMetadata(false, OnSpinChanged));
-
-    /// <summary>
-    /// Identifies the Spin dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SpinDurationProperty = DependencyProperty.Register(
-        nameof(SpinDuration),
-        typeof(double),
-        typeof(ImageAwesomeRegular7),
-        new PropertyMetadata(1d, OnSpinDurationChanged, FontIconHelper.SpinDurationCoerceValue));
-
-    /// <summary>
-    /// Identifies the Rotation dependency property.
-    /// </summary>
-    public static readonly DependencyProperty RotationProperty = DependencyProperty.Register(
-        nameof(Rotation),
-        typeof(double),
-        typeof(ImageAwesomeRegular7),
-        new PropertyMetadata(0d, OnRotationChanged, FontIconHelper.RotationCoerceValue));
-
-    /// <summary>
-    /// Identifies the FlipOrientation dependency property.
-    /// </summary>
-    public static readonly DependencyProperty FlipOrientationProperty = DependencyProperty.Register(
-        nameof(FlipOrientation),
-        typeof(FlipOrientationType),
-        typeof(ImageAwesomeRegular7),
-        new PropertyMetadata(FlipOrientationType.Normal, OnFlipOrientationChanged));
-
     /// <summary>
     /// Typeface used to generate FontAwesome 7 Regular icon.
     /// </summary>
@@ -69,58 +17,10 @@ public sealed class ImageAwesomeRegular7 : Image, ISpinable, IRotatable, IFlippa
         FontStretches.Normal);
 
     /// <summary>
-    /// Gets or sets the foreground brush of the icon. Changing this property will cause the icon to be redrawn.
-    /// </summary>
-    public Brush Foreground
-    {
-        get => (Brush)GetValue(ForegroundProperty);
-        set => SetValue(ForegroundProperty, value);
-    }
-
-    /// <summary>
     /// Gets or sets the icon. Changing this property will cause the icon to be redrawn.
     /// </summary>
-    public FontAwesomeRegular7Type Icon
-    {
-        get => (FontAwesomeRegular7Type)GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the current spin (angle) animation of the icon.
-    /// </summary>
-    public bool Spin
-    {
-        get => (bool)GetValue(SpinProperty);
-        set => SetValue(SpinProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the duration of the spinning animation (in seconds). This will stop and start the spin animation.
-    /// </summary>
-    public double SpinDuration
-    {
-        get => (double)GetValue(SpinDurationProperty);
-        set => SetValue(SpinDurationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the current rotation (angle).
-    /// </summary>
-    public double Rotation
-    {
-        get => (double)GetValue(RotationProperty);
-        set => SetValue(RotationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the current orientation (horizontal, vertical).
-    /// </summary>
-    public FlipOrientationType FlipOrientation
-    {
-        get => (FlipOrientationType)GetValue(FlipOrientationProperty);
-        set => SetValue(FlipOrientationProperty, value);
-    }
+    [DependencyProperty(DefaultValue = FontAwesomeRegular7Type.None, PropertyChangedCallback = nameof(OnIconPropertyChanged))]
+    private FontAwesomeRegular7Type icon;
 
     /// <summary>
     /// Creates an image source that renders the specified Font Awesome 7 Free (regular) icon with the given foreground brush and em-size.

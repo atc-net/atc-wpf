@@ -3,97 +3,26 @@ namespace Atc.Wpf.FontIcons;
 /// <summary>
 /// A text block that renders a Weather Icons icon, with support for spinning, rotation and flipping.
 /// </summary>
-public sealed class FontWeather : TextBlock, ISpinable, IRotatable, IFlippable
+[UseDependencyPropertyTemplate(typeof(IconTransformMembers), Exclude = ["SpinDuration", "Rotation"])]
+public sealed partial class FontWeather : TextBlock, ISpinable, IRotatable, IFlippable
 {
-    /// <summary>
-    /// Identifies the Icon dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
-        nameof(Icon),
-        typeof(FontWeatherType),
-        typeof(FontWeather),
-        new PropertyMetadata(FontWeatherType.None, OnIconChanged));
-
-    /// <summary>
-    /// Identifies the Spin dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SpinProperty = DependencyProperty.Register(
-        nameof(Spin),
-        typeof(bool),
-        typeof(FontWeather),
-        new PropertyMetadata(false, OnSpinChanged));
-
-    /// <summary>
-    /// Identifies the Spin dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SpinDurationProperty = DependencyProperty.Register(
-        nameof(SpinDuration),
-        typeof(double),
-        typeof(FontWeather),
-        new PropertyMetadata(1d, OnSpinDurationChanged, CoerceSpinDuration));
-
-    /// <summary>
-    /// Identifies the Rotation dependency property.
-    /// </summary>
-    public static readonly DependencyProperty RotationProperty = DependencyProperty.Register(
-        nameof(Rotation),
-        typeof(double),
-        typeof(FontWeather),
-        new PropertyMetadata(0d, OnRotationChanged, CoerceRotation));
-
-    /// <summary>
-    /// Identifies the FlipOrientation dependency property.
-    /// </summary>
-    public static readonly DependencyProperty FlipOrientationProperty = DependencyProperty.Register(
-        nameof(FlipOrientation),
-        typeof(FlipOrientationType),
-        typeof(FontWeather),
-        new PropertyMetadata(FlipOrientationType.Normal, OnFlipOrientationChanged));
-
     /// <summary>
     /// Gets or sets the icon. Changing this property will cause the icon to be redrawn.
     /// </summary>
-    public FontWeatherType Icon
-    {
-        get => (FontWeatherType)GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the current spin (angle) animation of the icon.
-    /// </summary>
-    public bool Spin
-    {
-        get => (bool)GetValue(SpinProperty);
-        set => SetValue(SpinProperty, value);
-    }
+    [DependencyProperty(DefaultValue = FontWeatherType.None, PropertyChangedCallback = nameof(OnIconChanged))]
+    private FontWeatherType icon;
 
     /// <summary>
     /// Gets or sets the duration of the spinning animation (in seconds). This will stop and start the spin animation.
     /// </summary>
-    public double SpinDuration
-    {
-        get => (double)GetValue(SpinDurationProperty);
-        set => SetValue(SpinDurationProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 1d, PropertyChangedCallback = nameof(OnSpinDurationChanged), CoerceValueCallback = nameof(CoerceSpinDuration))]
+    private double spinDuration;
 
     /// <summary>
     /// Gets or sets the current rotation (angle).
     /// </summary>
-    public double Rotation
-    {
-        get => (double)GetValue(RotationProperty);
-        set => SetValue(RotationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the current orientation (horizontal, vertical).
-    /// </summary>
-    public FlipOrientationType FlipOrientation
-    {
-        get => (FlipOrientationType)GetValue(FlipOrientationProperty);
-        set => SetValue(FlipOrientationProperty, value);
-    }
+    [DependencyProperty(DefaultValue = 0d, PropertyChangedCallback = nameof(OnRotationChanged), CoerceValueCallback = nameof(CoerceRotation))]
+    private double rotation;
 
     [SuppressMessage("WpfAnalyzers.DependencyProperty", "WPF0020:Cast value to correct type.", Justification = "Reviewed.")]
     [SuppressMessage("WpfAnalyzers.DependencyProperty", "WPF0022:Cast value to correct type.", Justification = "Reviewed.")]
