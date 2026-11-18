@@ -83,11 +83,26 @@ var font = await inWindowDialogService.ShowFontPicker("Pick a font");
 | `ShowWarning(title, message)` | `Task<bool>` | OK | `true` for OK |
 | `ShowError(title, message)` | `Task<bool>` | OK | `true` for OK |
 | `ShowConfirmation(title, message)` | `Task<bool>` | Yes / No | `true` for Yes |
+| `ShowConfirmation(settings, message)` | `Task<bool>` | As the settings say | `true` for the affirmative button |
 | `ShowOkCancel(title, message)` | `Task<bool>` | OK / Cancel | `true` for OK |
 | `ShowInput(title, label, defaultValue)` | `Task<string?>` | OK / Cancel | The text, or `null` |
 | `ShowColorPicker(title, initialColor)` | `Task<Color?>` | OK / Cancel | The colour, or `null` |
 | `ShowFontPicker(title, initialFont)` | `Task<FontDescription?>` | OK / Cancel | The font, or `null` |
 | `ShowInputForm(title, form)` | `Task<bool>` | OK / Cancel | `true` for OK; OK only closes a valid form |
+
+`ShowConfirmation(settings, message)` takes the title, the button texts and the default button from a `DialogBoxSettings`. A question that deletes something can make No the default, so that Enter does not delete:
+
+```csharp
+var settings = DialogBoxSettings.Create(DialogBoxType.YesNo);
+settings.TitleBarText = "Delete file";
+settings.DefaultButton = DialogBoxButton.Negative;
+if (await dialogService.ShowConfirmation(settings, "Do you want to delete 'report.pdf'?"))
+{
+    // ...
+}
+```
+
+`DialogService` has the same method for a windowed dialog.
 
 Every method takes an optional `CancellationToken`: cancelling it closes the open dialog and cancels the task; an already cancelled token never shows the dialog.
 

@@ -102,6 +102,31 @@ public sealed class InWindowDialogServiceTests
     }
 
     [StaFact]
+    public void Confirmation_WithSettings_UsesTheirTitleAndTexts_AndFocusesTheirDefaultButton()
+    {
+        using var window = FlyoutWindow.Show();
+        var sut = new InWindowDialogService(new FlyoutService(window.Host));
+        var settings = DialogBoxSettings.Create(DialogBoxType.YesNo);
+        settings.TitleBarText = "Delete";
+        settings.AffirmativeButtonText = "Delete";
+        settings.NegativeButtonText = "Keep";
+        settings.DefaultButton = DialogBoxButton.Negative;
+
+        var task = sut.ShowConfirmation(settings, "Delete the file?");
+        var flyout = TopFlyout(window);
+        var no = Content(flyout).ButtonBar.GetButton(DialogBoxButton.Negative)!;
+
+        Assert.Equal("Delete", flyout.Header);
+        Assert.Equal("Delete", Content(flyout).ButtonBar.GetButton(DialogBoxButton.Affirmative)!.Content);
+        Assert.Equal("Keep", no.Content);
+        Assert.True(FlyoutWindow.WaitUntil(() => no.IsKeyboardFocused), "The settings' default button did not get the focus.");
+
+        Click(flyout, DialogBoxButton.Negative);
+
+        Assert.False(Result(task));
+    }
+
+    [StaFact]
     public void Input_ShowsTheDefaultValue_FocusesTheTextBox_AndOkReturnsTheText()
     {
         using var window = FlyoutWindow.Show();
