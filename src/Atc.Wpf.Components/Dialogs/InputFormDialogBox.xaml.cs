@@ -6,13 +6,10 @@ public partial class InputFormDialogBox
     private const int ScrollBarSize = 20;
 
     /// <summary>
-    /// Identifies the <see cref="HeaderControl"/> dependency property.
+    /// Gets or sets the optional header control shown above the form.
     /// </summary>
-    public static readonly DependencyProperty HeaderControlProperty = DependencyProperty.Register(
-        nameof(HeaderControl),
-        typeof(ContentControl),
-        typeof(InputFormDialogBox),
-        new PropertyMetadata(defaultValue: null, OnHeaderControlChanged));
+    [DependencyProperty(GeneratePartialHooks = true)]
+    private ContentControl? headerControl;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InputFormDialogBox"/> class with OK/Cancel buttons and the given form.
@@ -121,15 +118,6 @@ public partial class InputFormDialogBox
     public DialogBoxSettings Settings { get; }
 
     /// <summary>
-    /// Gets or sets the optional header control shown above the form.
-    /// </summary>
-    public ContentControl? HeaderControl
-    {
-        get => (ContentControl?)GetValue(HeaderControlProperty);
-        set => SetValue(HeaderControlProperty, value);
-    }
-
-    /// <summary>
     /// Gets the panel that renders the form.
     /// </summary>
     public LabelInputFormPanel LabelInputFormPanel { get; } = new();
@@ -203,14 +191,13 @@ public partial class InputFormDialogBox
         }
     }
 
-    private static void OnHeaderControlChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    partial void OnHeaderControlChanged(
+        ContentControl? oldValue,
+        ContentControl? newValue)
     {
-        var dialogBox = (InputFormDialogBox)d;
-        if (dialogBox.ContentCenter is not null)
+        if (ContentCenter is not null)
         {
-            dialogBox.UpdateWidthAndHeight();
+            UpdateWidthAndHeight();
         }
     }
 

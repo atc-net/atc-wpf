@@ -6,32 +6,24 @@ namespace Atc.Wpf.Components.Selectors;
 /// </content>
 public sealed partial class DualListSelector
 {
-    /// <summary>
-    /// Identifies the RowItemTemplate attached property: the selector's <see cref="ItemTemplate"/>, inherited by its rows.
-    /// </summary>
-    public static readonly DependencyProperty RowItemTemplateProperty = DependencyProperty.RegisterAttached(
-        "RowItemTemplate",
-        typeof(DataTemplate),
-        typeof(DualListSelector),
-        new FrameworkPropertyMetadata(defaultValue: null, FrameworkPropertyMetadataOptions.Inherits));
+    // The selector's ItemTemplate, ItemSelectionStyle and IsOneWay, inherited by its rows. The Get/Set methods
+    // stay hand-written: they have their own documentation each, and the generator would copy one text to both.
+    [AttachedProperty(
+        Flags = FrameworkPropertyMetadataOptions.Inherits,
+        GenerateClrAccessors = false)]
+    private static DataTemplate? rowItemTemplate;
 
-    /// <summary>
-    /// Identifies the RowSelectionStyle attached property: the selector's <see cref="ItemSelectionStyle"/>, inherited by its rows.
-    /// </summary>
-    public static readonly DependencyProperty RowSelectionStyleProperty = DependencyProperty.RegisterAttached(
-        "RowSelectionStyle",
-        typeof(DualListItemSelectionStyle),
-        typeof(DualListSelector),
-        new FrameworkPropertyMetadata(DualListItemSelectionStyle.Highlight, FrameworkPropertyMetadataOptions.Inherits));
+    [AttachedProperty(
+        DefaultValue = DualListItemSelectionStyle.Highlight,
+        Flags = FrameworkPropertyMetadataOptions.Inherits,
+        GenerateClrAccessors = false)]
+    private static DualListItemSelectionStyle rowSelectionStyle;
 
-    /// <summary>
-    /// Identifies the RowIsOneWay attached property: the selector's <see cref="IsOneWay"/>, inherited by its rows.
-    /// </summary>
-    public static readonly DependencyProperty RowIsOneWayProperty = DependencyProperty.RegisterAttached(
-        "RowIsOneWay",
-        typeof(bool),
-        typeof(DualListSelector),
-        new FrameworkPropertyMetadata(BooleanBoxes.FalseBox, FrameworkPropertyMetadataOptions.Inherits));
+    [AttachedProperty(
+        DefaultValue = false,
+        Flags = FrameworkPropertyMetadataOptions.Inherits,
+        GenerateClrAccessors = false)]
+    private static bool rowIsOneWay;
 
     /// <summary>
     /// Gets the item template a row inherits from its selector.

@@ -5,6 +5,7 @@ namespace Atc.Wpf.Components.Flyouts;
 /// Place this control at the root level of your window/page to enable flyout functionality.
 /// </summary>
 [ContentProperty(nameof(Items))]
+[DefaultStyleKey]
 public partial class FlyoutHost : ItemsControl
 {
     private readonly Stack<Flyout> openFlyouts = new();
@@ -26,13 +27,6 @@ public partial class FlyoutHost : ItemsControl
     /// </summary>
     [DependencyProperty(DefaultValue = false)]
     private bool isAnyFlyoutOpen;
-
-    static FlyoutHost()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(FlyoutHost),
-            new FrameworkPropertyMetadata(typeof(FlyoutHost)));
-    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FlyoutHost"/> class.

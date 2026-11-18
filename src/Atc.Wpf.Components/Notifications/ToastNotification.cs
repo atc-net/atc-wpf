@@ -5,6 +5,7 @@ namespace Atc.Wpf.Components.Notifications;
 /// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "OK.")]
 [TemplatePart(Name = "PART_CloseButton", Type = typeof(Button))]
+[DefaultStyleKey]
 public sealed partial class ToastNotification : ContentControl
 {
     private TimeSpan closingAnimationTime = TimeSpan.Zero;
@@ -14,7 +15,8 @@ public sealed partial class ToastNotification : ContentControl
     /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
-        HandlerType = typeof(RoutedEventHandler))]
+        HandlerType = typeof(RoutedEventHandler),
+        GenerateRaiseMethod = true)]
     private static readonly RoutedEvent notificationCloseInvoked;
 
     /// <summary>
@@ -22,7 +24,8 @@ public sealed partial class ToastNotification : ContentControl
     /// </summary>
     [RoutedEvent(
         RoutingStrategy.Bubble,
-        HandlerType = typeof(RoutedEventHandler))]
+        HandlerType = typeof(RoutedEventHandler),
+        GenerateRaiseMethod = true)]
     private static readonly RoutedEvent notificationClosed;
 
     /// <summary>
@@ -36,13 +39,6 @@ public sealed partial class ToastNotification : ContentControl
     /// Gets or sets a value indicating whether the notification is closing.
     /// </summary>
     public bool IsClosing { get; set; }
-
-    static ToastNotification()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(ToastNotification),
-            new FrameworkPropertyMetadata(typeof(ToastNotification)));
-    }
 
     /// <inheritdoc />
     [SuppressMessage("", "SA1118:The parameter spans multiple lines", Justification = "OK")]
@@ -93,9 +89,9 @@ public sealed partial class ToastNotification : ContentControl
 
         IsClosing = true;
 
-        RaiseEvent(new RoutedEventArgs(NotificationCloseInvokedEvent));
+        RaiseNotificationCloseInvoked();
         await Task.Delay(closingAnimationTime).ConfigureAwait(true);
-        RaiseEvent(new RoutedEventArgs(NotificationClosedEvent));
+        RaiseNotificationClosed();
     }
 
     /// <inheritdoc />

@@ -3,6 +3,7 @@ namespace Atc.Wpf.Components.Notifications;
 /// <summary>
 /// A named area that hosts and stacks toast notifications shown by <see cref="ToastNotificationManager"/>.
 /// </summary>
+[DefaultStyleKey]
 public sealed partial class ToastNotificationArea : Control
 {
     private readonly Lock itemsLock = new();
@@ -29,13 +30,6 @@ public sealed partial class ToastNotificationArea : Control
     {
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
-    }
-
-    static ToastNotificationArea()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(ToastNotificationArea),
-            new FrameworkPropertyMetadata(typeof(ToastNotificationArea)));
     }
 
     /// <inheritdoc />

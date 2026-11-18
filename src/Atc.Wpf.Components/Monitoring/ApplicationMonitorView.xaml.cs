@@ -86,7 +86,7 @@ public partial class ApplicationMonitorView
 
     [DependencyProperty(
         DefaultValue = true,
-        PropertyChangedCallback = nameof(OnEnableContextMenuChanged))]
+        GeneratePartialHooks = true)]
     private bool enableContextMenu;
 
     /// <summary>
@@ -262,10 +262,10 @@ public partial class ApplicationMonitorView
         }
     }
 
-    private static void OnEnableContextMenuChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((ApplicationMonitorView)d).ApplyContextMenuState();
+    partial void OnEnableContextMenuChanged(
+        bool oldValue,
+        bool newValue)
+        => ApplyContextMenuState();
 
     private void ApplyContextMenuState()
         => LvEntries.ContextMenu = EnableContextMenu

@@ -3,11 +3,30 @@ namespace Atc.Wpf.Components.Monitoring;
 /// <summary>
 /// Holds the filter settings (severities and text match) for the application monitor.
 /// </summary>
-public sealed class ApplicationFilterViewModel : ViewModelBase
+public sealed partial class ApplicationFilterViewModel : ViewModelBase
 {
+    /// <summary>
+    /// Gets or sets a value indicating whether information-level entries are shown.
+    /// </summary>
+    [ObservableProperty]
     private bool severityInformation;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether warning entries are shown.
+    /// </summary>
+    [ObservableProperty]
     private bool severityWarning;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether error and critical entries are shown.
+    /// </summary>
+    [ObservableProperty]
     private bool severityError;
+
+    /// <summary>
+    /// Gets or sets the text that an entry must contain (case-insensitive) to be shown; empty shows all entries.
+    /// </summary>
+    [ObservableProperty]
     private string matchOnTextInData = string.Empty;
 
     /// <summary>
@@ -19,77 +38,5 @@ public sealed class ApplicationFilterViewModel : ViewModelBase
         SeverityWarning = true;
         SeverityError = true;
         MatchOnTextInData = string.Empty;
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether information-level entries are shown.
-    /// </summary>
-    public bool SeverityInformation
-    {
-        get => severityInformation;
-        set
-        {
-            if (value == severityInformation)
-            {
-                return;
-            }
-
-            severityInformation = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether warning entries are shown.
-    /// </summary>
-    public bool SeverityWarning
-    {
-        get => severityWarning;
-        set
-        {
-            if (value == severityWarning)
-            {
-                return;
-            }
-
-            severityWarning = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether error and critical entries are shown.
-    /// </summary>
-    public bool SeverityError
-    {
-        get => severityError;
-        set
-        {
-            if (value == severityError)
-            {
-                return;
-            }
-
-            severityError = value;
-            RaisePropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the text that an entry must contain (case-insensitive) to be shown; empty shows all entries.
-    /// </summary>
-    public string MatchOnTextInData
-    {
-        get => matchOnTextInData;
-        set
-        {
-            if (value == matchOnTextInData)
-            {
-                return;
-            }
-
-            matchOnTextInData = value;
-            RaisePropertyChanged();
-        }
     }
 }

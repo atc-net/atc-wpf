@@ -3,22 +3,16 @@ namespace Atc.Wpf.Components.Dialogs;
 public partial class QuestionDialogBox
 {
     /// <summary>
-    /// Identifies the <see cref="HeaderControl"/> dependency property.
+    /// Gets or sets the optional header control shown above the content.
     /// </summary>
-    public static readonly DependencyProperty HeaderControlProperty = DependencyProperty.Register(
-        nameof(HeaderControl),
-        typeof(ContentControl),
-        typeof(QuestionDialogBox),
-        new PropertyMetadata(defaultValue: null));
+    [DependencyProperty]
+    private ContentControl? headerControl;
 
     /// <summary>
-    /// Identifies the <see cref="ContentControl"/> dependency property.
+    /// Gets or sets the control that displays the question content.
     /// </summary>
-    public static readonly DependencyProperty ContentControlProperty = DependencyProperty.Register(
-        nameof(ContentControl),
-        typeof(ContentControl),
-        typeof(QuestionDialogBox),
-        new PropertyMetadata(defaultValue: null));
+    [DependencyProperty]
+    private ContentControl contentControl;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="QuestionDialogBox"/> class with Yes/No buttons and the given content text.
@@ -119,24 +113,6 @@ public partial class QuestionDialogBox
     /// Gets the settings that control the dialog box appearance and buttons.
     /// </summary>
     public DialogBoxSettings Settings { get; }
-
-    /// <summary>
-    /// Gets or sets the optional header control shown above the content.
-    /// </summary>
-    public ContentControl? HeaderControl
-    {
-        get => (ContentControl?)GetValue(HeaderControlProperty);
-        set => SetValue(HeaderControlProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the control that displays the question content.
-    /// </summary>
-    public ContentControl ContentControl
-    {
-        get => (ContentControl)GetValue(ContentControlProperty);
-        set => SetValue(ContentControlProperty, value);
-    }
 
     /// <inheritdoc />
     protected override void OnPropertyChanged(
