@@ -13,39 +13,36 @@ public sealed partial class DualListSelector
     private bool areKeysDirty;
     private bool isKeySyncPending;
 
-    private static void OnMaxSelectedCountChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-    {
-        OnStateChanged(d, e);
-        ((DualListSelector)d).SyncMaxCount(MaxSelectionCountProperty, e.NewValue);
-    }
+    // Runs after OnStateChanged, the named callback of the property.
+    partial void OnMaxSelectedCountChanged(
+        int? oldValue,
+        int? newValue)
+        => SyncMaxCount(MaxSelectionCountProperty, newValue);
 
-    private static void OnMaxSelectionCountChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((DualListSelector)d).SyncMaxCount(MaxSelectedCountProperty, e.NewValue);
+    partial void OnMaxSelectionCountChanged(
+        int? oldValue,
+        int? newValue)
+        => SyncMaxCount(MaxSelectedCountProperty, newValue);
 
-    private static void OnSelectedKeysChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    partial void OnSelectedKeysChanged(
+        ObservableCollection<string>? oldValue,
+        ObservableCollection<string>? newValue)
     {
-        var selector = (DualListSelector)d;
-        if (selector.subscribedSelectedKeys is not null)
+        if (subscribedSelectedKeys is not null)
         {
-            CollectionChangedEventManager.RemoveHandler(selector.subscribedSelectedKeys, selector.OnSelectedKeysCollectionChanged);
+            CollectionChangedEventManager.RemoveHandler(subscribedSelectedKeys, OnSelectedKeysCollectionChanged);
         }
 
-        selector.subscribedSelectedKeys = e.NewValue as ObservableCollection<string>;
-        if (selector.subscribedSelectedKeys is not null)
+        subscribedSelectedKeys = newValue;
+        if (subscribedSelectedKeys is not null)
         {
-            CollectionChangedEventManager.AddHandler(selector.subscribedSelectedKeys, selector.OnSelectedKeysCollectionChanged);
+            CollectionChangedEventManager.AddHandler(subscribedSelectedKeys, OnSelectedKeysCollectionChanged);
         }
 
-        if (!selector.isWritingKeys)
+        if (!isWritingKeys)
         {
-            selector.areKeysDirty = true;
-            selector.ScheduleKeySync();
+            areKeysDirty = true;
+            ScheduleKeySync();
         }
     }
 

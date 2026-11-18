@@ -4,25 +4,16 @@ namespace Atc.Wpf.Components.Progressing;
 /// Manages the registration and activation of <see cref="BusyOverlay"/> controls.
 /// Use the <see cref="RegionNameProperty"/> attached property on a BusyOverlay to register it as a named region.
 /// </summary>
-public static class BusyIndicatorManager
+[AttachedProperty<string>("RegionName", PropertyChangedCallback = nameof(OnRegionNameChanged), GenerateClrAccessors = false)]
+public static partial class BusyIndicatorManager
 {
+    // Only the RegionNameProperty field is generated. The Get/Set methods stay hand-written: their element
+    // parameter is named obj and each has its own documentation.
     private static readonly ConcurrentDictionary<string, ConcurrentBag<WeakReference<BusyOverlay>>> Regions = new(StringComparer.Ordinal);
 
     private static readonly ConcurrentDictionary<Guid, BusySession> ActiveSessions = new();
 
     private static long sessionSequence;
-
-    /// <summary>
-    /// Attached property to register a BusyOverlay as a named region.
-    /// </summary>
-    public static readonly DependencyProperty RegionNameProperty =
-        DependencyProperty.RegisterAttached(
-            "RegionName",
-            typeof(string),
-            typeof(BusyIndicatorManager),
-            new PropertyMetadata(
-                defaultValue: null,
-                propertyChangedCallback: OnRegionNameChanged));
 
     /// <summary>
     /// Gets the region name the specified <see cref="BusyOverlay"/> is registered under.

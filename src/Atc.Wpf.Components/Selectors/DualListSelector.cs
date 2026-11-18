@@ -10,50 +10,49 @@ namespace Atc.Wpf.Components.Selectors;
 /// A dual-list transfer control that lets users move items between an Available list
 /// and a Selected list, with support for reordering.
 /// </summary>
-[TemplatePart(Name = PART_AvailableListBox, Type = typeof(ListBox))]
-[TemplatePart(Name = PART_SelectedListBox, Type = typeof(ListBox))]
-[TemplatePart(Name = PART_AvailableFilterTextBox, Type = typeof(TextBox))]
-[TemplatePart(Name = PART_SelectedFilterTextBox, Type = typeof(TextBox))]
-[TemplatePart(Name = PART_AvailableItemCount, Type = typeof(TextBlock))]
-[TemplatePart(Name = PART_SelectedItemCount, Type = typeof(TextBlock))]
-[TemplatePart(Name = PART_AvailableEmptyText, Type = typeof(TextBlock))]
-[TemplatePart(Name = PART_SelectedEmptyText, Type = typeof(TextBlock))]
-[TemplatePart(Name = PART_AvailableSelectAll, Type = typeof(CheckBox))]
-[TemplatePart(Name = PART_SelectedSelectAll, Type = typeof(CheckBox))]
-[TemplatePart(Name = PART_AvailableHeaderCount, Type = typeof(TextBlock))]
-[TemplatePart(Name = PART_SelectedHeaderCount, Type = typeof(TextBlock))]
+[DefaultStyleKey]
 public sealed partial class DualListSelector : Control
 {
-    private const string PART_AvailableSelectAll = "PART_AvailableSelectAll";
-    private const string PART_SelectedSelectAll = "PART_SelectedSelectAll";
-    private const string PART_AvailableHeaderCount = "PART_AvailableHeaderCount";
-    private const string PART_SelectedHeaderCount = "PART_SelectedHeaderCount";
-
-    private const string PART_AvailableListBox = "PART_AvailableListBox";
-    private const string PART_SelectedListBox = "PART_SelectedListBox";
-    private const string PART_AvailableFilterTextBox = "PART_AvailableFilterTextBox";
-    private const string PART_SelectedFilterTextBox = "PART_SelectedFilterTextBox";
-    private const string PART_AvailableItemCount = "PART_AvailableItemCount";
-    private const string PART_SelectedItemCount = "PART_SelectedItemCount";
-    private const string PART_AvailableEmptyText = "PART_AvailableEmptyText";
-    private const string PART_SelectedEmptyText = "PART_SelectedEmptyText";
-
+    [TemplatePartField("PART_AvailableListBox")]
     private ListBox? availableListBox;
+
+    [TemplatePartField("PART_SelectedListBox")]
     private ListBox? selectedListBox;
+
+    [TemplatePartField("PART_AvailableFilterTextBox")]
+    private TextBox? availableFilterTextBox;
+
+    [TemplatePartField("PART_SelectedFilterTextBox")]
+    private TextBox? selectedFilterTextBox;
+
+    [TemplatePartField("PART_AvailableItemCount")]
+    private TextBlock? availableItemCount;
+
+    [TemplatePartField("PART_SelectedItemCount")]
+    private TextBlock? selectedItemCount;
+
+    [TemplatePartField("PART_AvailableEmptyText")]
+    private TextBlock? availableEmptyText;
+
+    [TemplatePartField("PART_SelectedEmptyText")]
+    private TextBlock? selectedEmptyText;
+
+    [TemplatePartField("PART_AvailableSelectAll")]
+    private CheckBox? availableSelectAll;
+
+    [TemplatePartField("PART_SelectedSelectAll")]
+    private CheckBox? selectedSelectAll;
+
+    [TemplatePartField("PART_AvailableHeaderCount")]
+    private TextBlock? availableHeaderCount;
+
+    [TemplatePartField("PART_SelectedHeaderCount")]
+    private TextBlock? selectedHeaderCount;
+
     private ListCollectionView? availableView;
     private ListCollectionView? selectedView;
     private List<DualListSelectorItem>? keptAvailableHighlight;
     private List<DualListSelectorItem>? keptSelectedHighlight;
-    private TextBox? availableFilterTextBox;
-    private TextBox? selectedFilterTextBox;
-    private TextBlock? availableItemCount;
-    private TextBlock? selectedItemCount;
-    private TextBlock? availableEmptyText;
-    private TextBlock? selectedEmptyText;
-    private CheckBox? availableSelectAll;
-    private CheckBox? selectedSelectAll;
-    private TextBlock? availableHeaderCount;
-    private TextBlock? selectedHeaderCount;
     private bool isGroupingPending;
     private bool isSyncingSelectAll;
     private int transferDepth;
@@ -205,14 +204,14 @@ public sealed partial class DualListSelector : Control
     /// A transfer that would exceed the limit is blocked (buttons disabled, drop refused),
     /// and the selected list footer shows "{0} of max {1}".
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnMaxSelectedCountChanged))]
+    [DependencyProperty(PropertyChangedCallback = nameof(OnStateChanged), GeneratePartialHooks = true)]
     private int? maxSelectedCount;
 
     /// <summary>
     /// The same limit as <see cref="MaxSelectedCount"/>, under the name the other multi-select controls use
     /// (<c>CheckListBox</c>, <c>MultiSelectComboBox</c>, ...); setting either one sets the other.
     /// </summary>
-    [DependencyProperty(PropertyChangedCallback = nameof(OnMaxSelectionCountChanged))]
+    [DependencyProperty(GeneratePartialHooks = true)]
     private int? maxSelectionCount;
 
     /// <summary>
@@ -224,7 +223,7 @@ public sealed partial class DualListSelector : Control
     /// </summary>
     [DependencyProperty(
         Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-        PropertyChangedCallback = nameof(OnSelectedKeysChanged))]
+        GeneratePartialHooks = true)]
     private ObservableCollection<string>? selectedKeys;
 
     /// <summary>
@@ -296,9 +295,7 @@ public sealed partial class DualListSelector : Control
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK - Command registrations.")]
     static DualListSelector()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(DualListSelector),
-            new FrameworkPropertyMetadata(typeof(DualListSelector)));
+        OverrideDefaultStyleKey();
 
         CommandManager.RegisterClassCommandBinding(
             typeof(DualListSelector),
@@ -362,18 +359,7 @@ public sealed partial class DualListSelector : Control
     {
         base.OnApplyTemplate();
 
-        availableListBox = GetTemplateChild(PART_AvailableListBox) as ListBox;
-        selectedListBox = GetTemplateChild(PART_SelectedListBox) as ListBox;
-        availableFilterTextBox = GetTemplateChild(PART_AvailableFilterTextBox) as TextBox;
-        selectedFilterTextBox = GetTemplateChild(PART_SelectedFilterTextBox) as TextBox;
-        availableItemCount = GetTemplateChild(PART_AvailableItemCount) as TextBlock;
-        selectedItemCount = GetTemplateChild(PART_SelectedItemCount) as TextBlock;
-        availableEmptyText = GetTemplateChild(PART_AvailableEmptyText) as TextBlock;
-        selectedEmptyText = GetTemplateChild(PART_SelectedEmptyText) as TextBlock;
-        availableSelectAll = GetTemplateChild(PART_AvailableSelectAll) as CheckBox;
-        selectedSelectAll = GetTemplateChild(PART_SelectedSelectAll) as CheckBox;
-        availableHeaderCount = GetTemplateChild(PART_AvailableHeaderCount) as TextBlock;
-        selectedHeaderCount = GetTemplateChild(PART_SelectedHeaderCount) as TextBlock;
+        ResolveTemplateParts();
 
         if (availableSelectAll is not null)
         {

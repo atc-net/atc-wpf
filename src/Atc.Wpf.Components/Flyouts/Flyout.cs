@@ -15,26 +15,27 @@ namespace Atc.Wpf.Components.Flyouts;
 ///   <item>Theme support (light/dark)</item>
 /// </list>
 /// </remarks>
-[TemplatePart(Name = PartOverlay, Type = typeof(Border))]
-[TemplatePart(Name = PartFlyoutPanel, Type = typeof(Border))]
-[TemplatePart(Name = PartCloseButton, Type = typeof(Button))]
-[TemplatePart(Name = PartPinButton, Type = typeof(ToggleButton))]
-[TemplatePart(Name = PartResizeGrip, Type = typeof(Thumb))]
 [TemplatePart(Name = PartContentPresenter, Type = typeof(ContentPresenter))]
+[DefaultStyleKey]
 public sealed partial class Flyout : ContentControl
 {
-    private const string PartOverlay = "PART_Overlay";
-    private const string PartFlyoutPanel = "PART_FlyoutPanel";
-    private const string PartCloseButton = "PART_CloseButton";
-    private const string PartPinButton = "PART_PinButton";
-    private const string PartResizeGrip = "PART_ResizeGrip";
     private const string PartContentPresenter = "PART_ContentPresenter";
 
+    [TemplatePartField("PART_Overlay")]
     private Border? overlayBorder;
+
+    [TemplatePartField("PART_FlyoutPanel")]
     private Border? flyoutPanel;
+
+    [TemplatePartField("PART_CloseButton")]
     private Button? closeButton;
+
+    [TemplatePartField("PART_PinButton")]
     private ToggleButton? pinButton;
+
+    [TemplatePartField("PART_ResizeGrip")]
     private Thumb? resizeGrip;
+
     private TranslateTransform? slideTransform;
     private ScaleTransform? scaleTransform;
 
@@ -49,47 +50,41 @@ public sealed partial class Flyout : ContentControl
     private IInputElement? previouslyFocusedElement;
     private Window? parentWindow;
 
+    /// <summary>
+    /// Occurs before the flyout opens. Can be cancelled.
+    /// </summary>
+    [RoutedEvent(
+        RoutingStrategy.Bubble,
+        HandlerType = typeof(EventHandler<FlyoutOpeningEventArgs>),
+        GenerateRaiseMethod = true)]
+    private static readonly RoutedEvent opening;
+
+    /// <summary>
+    /// Occurs after the flyout has fully opened.
+    /// </summary>
+    [RoutedEvent(RoutingStrategy.Bubble, GenerateRaiseMethod = true)]
+    private static readonly RoutedEvent opened;
+
+    /// <summary>
+    /// Occurs before the flyout closes. Can be cancelled.
+    /// </summary>
+    [RoutedEvent(
+        RoutingStrategy.Bubble,
+        HandlerType = typeof(EventHandler<FlyoutClosingEventArgs>),
+        GenerateRaiseMethod = true)]
+    private static readonly RoutedEvent closing;
+
+    /// <summary>
+    /// Occurs after the flyout has fully closed.
+    /// </summary>
+    [RoutedEvent(RoutingStrategy.Bubble, GenerateRaiseMethod = true)]
+    private static readonly RoutedEvent closed;
+
     // The open flyouts on this UI thread in the order they were opened. The last open entry in a window is
     // that window's topmost flyout, the only one Escape acts on. Weak references, so a flyout that is never
     // closed does not stay alive; entries are also removed on close.
     [ThreadStatic]
     private static List<WeakReference<Flyout>>? openFlyoutsInOpenOrder;
-
-    /// <summary>
-    /// Identifies the Opening routed event.
-    /// </summary>
-    public static readonly RoutedEvent OpeningEvent = EventManager.RegisterRoutedEvent(
-        nameof(Opening),
-        RoutingStrategy.Bubble,
-        typeof(EventHandler<FlyoutOpeningEventArgs>),
-        typeof(Flyout));
-
-    /// <summary>
-    /// Identifies the Opened routed event.
-    /// </summary>
-    public static readonly RoutedEvent OpenedEvent = EventManager.RegisterRoutedEvent(
-        nameof(Opened),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(Flyout));
-
-    /// <summary>
-    /// Identifies the Closing routed event.
-    /// </summary>
-    public static readonly RoutedEvent ClosingEvent = EventManager.RegisterRoutedEvent(
-        nameof(Closing),
-        RoutingStrategy.Bubble,
-        typeof(EventHandler<FlyoutClosingEventArgs>),
-        typeof(Flyout));
-
-    /// <summary>
-    /// Identifies the Closed routed event.
-    /// </summary>
-    public static readonly RoutedEvent ClosedEvent = EventManager.RegisterRoutedEvent(
-        nameof(Closed),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(Flyout));
 
     /// <summary>
     /// Gets or sets whether the flyout is currently open.
@@ -274,49 +269,6 @@ public sealed partial class Flyout : ContentControl
     private bool isFocusTrapEnabled;
 
     /// <summary>
-    /// Occurs before the flyout opens. Can be cancelled.
-    /// </summary>
-    public event EventHandler<FlyoutOpeningEventArgs> Opening
-    {
-        add => AddHandler(OpeningEvent, value);
-        remove => RemoveHandler(OpeningEvent, value);
-    }
-
-    /// <summary>
-    /// Occurs after the flyout has fully opened.
-    /// </summary>
-    public event RoutedEventHandler Opened
-    {
-        add => AddHandler(OpenedEvent, value);
-        remove => RemoveHandler(OpenedEvent, value);
-    }
-
-    /// <summary>
-    /// Occurs before the flyout closes. Can be cancelled.
-    /// </summary>
-    public event EventHandler<FlyoutClosingEventArgs> Closing
-    {
-        add => AddHandler(ClosingEvent, value);
-        remove => RemoveHandler(ClosingEvent, value);
-    }
-
-    /// <summary>
-    /// Occurs after the flyout has fully closed.
-    /// </summary>
-    public event RoutedEventHandler Closed
-    {
-        add => AddHandler(ClosedEvent, value);
-        remove => RemoveHandler(ClosedEvent, value);
-    }
-
-    static Flyout()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(Flyout),
-            new FrameworkPropertyMetadata(typeof(Flyout)));
-    }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="Flyout"/> class.
     /// </summary>
     public Flyout()
@@ -332,11 +284,7 @@ public sealed partial class Flyout : ContentControl
 
         UnhookEvents();
 
-        overlayBorder = GetTemplateChild(PartOverlay) as Border;
-        flyoutPanel = GetTemplateChild(PartFlyoutPanel) as Border;
-        closeButton = GetTemplateChild(PartCloseButton) as Button;
-        pinButton = GetTemplateChild(PartPinButton) as ToggleButton;
-        resizeGrip = GetTemplateChild(PartResizeGrip) as Thumb;
+        ResolveTemplateParts();
         _ = GetTemplateChild(PartContentPresenter) as ContentPresenter;
 
         if (flyoutPanel?.RenderTransform is TransformGroup transformGroup)
@@ -723,7 +671,7 @@ public sealed partial class Flyout : ContentControl
             IsLightDismiss = true,
         };
 
-        RaiseEvent(args);
+        RaiseClosing(args);
 
         if (args.Cancel)
         {
@@ -766,7 +714,7 @@ public sealed partial class Flyout : ContentControl
     private void OnOpening()
     {
         var args = new FlyoutOpeningEventArgs(OpeningEvent, this);
-        RaiseEvent(args);
+        RaiseOpening(args);
 
         if (args.Cancel)
         {
@@ -798,7 +746,7 @@ public sealed partial class Flyout : ContentControl
             IsLightDismiss = false,
         };
 
-        RaiseEvent(args);
+        RaiseClosing(args);
 
         if (args.Cancel)
         {
@@ -826,7 +774,7 @@ public sealed partial class Flyout : ContentControl
         if (flyoutPanel is null)
         {
             Visibility = Visibility.Visible;
-            RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
+            RaiseOpened();
             return;
         }
 
@@ -870,7 +818,7 @@ public sealed partial class Flyout : ContentControl
         if (slideTransform is null)
         {
             Visibility = Visibility.Visible;
-            RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
+            RaiseOpened();
             return;
         }
 
@@ -890,7 +838,7 @@ public sealed partial class Flyout : ContentControl
         slideAnimation.Completed += (_, _) =>
         {
             isAnimating = false;
-            RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
+            RaiseOpened();
             _ = Focus();
         };
 
@@ -940,7 +888,7 @@ public sealed partial class Flyout : ContentControl
         if (flyoutPanel is null)
         {
             isAnimating = false;
-            RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
+            RaiseOpened();
             _ = Focus();
             return;
         }
@@ -976,7 +924,7 @@ public sealed partial class Flyout : ContentControl
         opacityAnimation.Completed += (_, _) =>
         {
             isAnimating = false;
-            RaiseEvent(new RoutedEventArgs(OpenedEvent, this));
+            RaiseOpened();
             _ = Focus();
         };
 
@@ -991,7 +939,7 @@ public sealed partial class Flyout : ContentControl
         {
             Visibility = Visibility.Collapsed;
             RestoreFocus();
-            RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
+            RaiseClosed();
             return;
         }
 
@@ -1039,7 +987,7 @@ public sealed partial class Flyout : ContentControl
         {
             Visibility = Visibility.Collapsed;
             RestoreFocus();
-            RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
+            RaiseClosed();
             return;
         }
 
@@ -1059,7 +1007,7 @@ public sealed partial class Flyout : ContentControl
             isAnimating = false;
             Visibility = Visibility.Collapsed;
             RestoreFocus();
-            RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
+            RaiseClosed();
         };
 
         slideTransform.BeginAnimation(property, slideAnimation);
@@ -1073,7 +1021,7 @@ public sealed partial class Flyout : ContentControl
         {
             Visibility = Visibility.Collapsed;
             RestoreFocus();
-            RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
+            RaiseClosed();
             return;
         }
 
@@ -1106,7 +1054,7 @@ public sealed partial class Flyout : ContentControl
             isAnimating = false;
             Visibility = Visibility.Collapsed;
             RestoreFocus();
-            RaiseEvent(new RoutedEventArgs(ClosedEvent, this));
+            RaiseClosed();
         };
 
         scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnimation);

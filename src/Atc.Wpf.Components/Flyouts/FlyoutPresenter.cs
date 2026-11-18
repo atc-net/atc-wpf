@@ -16,6 +16,7 @@ namespace Atc.Wpf.Components.Flyouts;
 [TemplatePart(Name = PartContent, Type = typeof(ContentPresenter))]
 [TemplatePart(Name = PartFooter, Type = typeof(ContentPresenter))]
 [TemplatePart(Name = PartScrollViewer, Type = typeof(ScrollViewer))]
+[DefaultStyleKey]
 public partial class FlyoutPresenter : ContentControl
 {
     private const string PartHeader = "PART_Header";
@@ -142,13 +143,6 @@ public partial class FlyoutPresenter : ContentControl
     /// </summary>
     [DependencyProperty(DefaultValue = 1.0)]
     private double separatorThickness;
-
-    static FlyoutPresenter()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(FlyoutPresenter),
-            new FrameworkPropertyMetadata(typeof(FlyoutPresenter)));
-    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FlyoutPresenter"/> class.

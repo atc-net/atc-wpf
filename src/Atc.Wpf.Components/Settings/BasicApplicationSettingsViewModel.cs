@@ -4,11 +4,26 @@ namespace Atc.Wpf.Components.Settings;
 /// View model for the basic application settings (theme, language and opening the recent file on startup),
 /// tracking changes through <c>IsDirty</c>.
 /// </summary>
-public class BasicApplicationSettingsViewModel : ViewModelBase
+public partial class BasicApplicationSettingsViewModel : ViewModelBase
 {
+    /// <summary>
+    /// Gets or sets a value indicating whether the theme and accent setting is shown.
+    /// </summary>
+    [ObservableProperty]
     private bool showThemeAndAccent = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the language setting is shown.
+    /// </summary>
+    [ObservableProperty]
     private bool showLanguage = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the open-recent-file-on-startup setting is shown.
+    /// </summary>
+    [ObservableProperty]
     private bool showOpenRecentFileOnStartup = true;
+
     private string theme = string.Empty;
     private string language = string.Empty;
     private bool openRecentFileOnStartup;
@@ -31,60 +46,6 @@ public class BasicApplicationSettingsViewModel : ViewModelBase
         theme = applicationOptions.Theme;
         language = applicationOptions.Language;
         openRecentFileOnStartup = applicationOptions.OpenRecentFileOnStartup;
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the theme and accent setting is shown.
-    /// </summary>
-    public bool ShowThemeAndAccent
-    {
-        get => showThemeAndAccent;
-        set
-        {
-            if (value == showThemeAndAccent)
-            {
-                return;
-            }
-
-            showThemeAndAccent = value;
-            OnPropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the language setting is shown.
-    /// </summary>
-    public bool ShowLanguage
-    {
-        get => showLanguage;
-        set
-        {
-            if (value == showLanguage)
-            {
-                return;
-            }
-
-            showLanguage = value;
-            OnPropertyChanged();
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the open-recent-file-on-startup setting is shown.
-    /// </summary>
-    public bool ShowOpenRecentFileOnStartup
-    {
-        get => showOpenRecentFileOnStartup;
-        set
-        {
-            if (value == showOpenRecentFileOnStartup)
-            {
-                return;
-            }
-
-            showOpenRecentFileOnStartup = value;
-            RaisePropertyChanged(() => ShowOpenRecentFileOnStartup);
-        }
     }
 
     /// <summary>

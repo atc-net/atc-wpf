@@ -3,38 +3,24 @@ namespace Atc.Wpf.Components.Flyouts;
 /// <summary>
 /// Provides attached properties for associating flyouts with UI elements.
 /// </summary>
-public static class FlyoutBase
+public static partial class FlyoutBase
 {
-    /// <summary>
-    /// Identifies the AttachedFlyout attached property.
-    /// </summary>
-    public static readonly DependencyProperty AttachedFlyoutProperty =
-        DependencyProperty.RegisterAttached(
-            "AttachedFlyout",
-            typeof(Flyout),
-            typeof(FlyoutBase),
-            new PropertyMetadata(null));
+    // The Get/Set methods stay hand-written: they have their own documentation each, and the generator
+    // would copy one text to both.
+    [AttachedProperty(GenerateClrAccessors = false)]
+    private static Flyout? attachedFlyout;
 
-    /// <summary>
-    /// Identifies the IsOpen attached property for triggering flyout open/close.
-    /// </summary>
-    public static readonly DependencyProperty IsOpenProperty =
-        DependencyProperty.RegisterAttached(
-            "IsOpen",
-            typeof(bool),
-            typeof(FlyoutBase),
-            new PropertyMetadata(false, OnIsOpenChanged));
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnIsOpenChanged),
+        GenerateClrAccessors = false)]
+    private static bool isOpen;
 
-    /// <summary>
-    /// Identifies the OpenOnClick attached property.
-    /// When true, clicking the element opens the attached flyout.
-    /// </summary>
-    public static readonly DependencyProperty OpenOnClickProperty =
-        DependencyProperty.RegisterAttached(
-            "OpenOnClick",
-            typeof(bool),
-            typeof(FlyoutBase),
-            new PropertyMetadata(false, OnOpenOnClickChanged));
+    [AttachedProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnOpenOnClickChanged),
+        GenerateClrAccessors = false)]
+    private static bool openOnClick;
 
     /// <summary>
     /// Gets the attached flyout for the specified element.
@@ -152,8 +138,7 @@ public static class FlyoutBase
             return;
         }
 
-        var isOpen = (bool)e.NewValue;
-        if (isOpen)
+        if ((bool)e.NewValue)
         {
             ShowAttachedFlyout(element);
         }
@@ -172,8 +157,7 @@ public static class FlyoutBase
             return;
         }
 
-        var openOnClick = (bool)e.NewValue;
-        if (openOnClick)
+        if ((bool)e.NewValue)
         {
             element.PreviewMouseLeftButtonUp += OnElementClick;
         }

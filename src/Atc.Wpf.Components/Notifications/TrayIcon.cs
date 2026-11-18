@@ -11,23 +11,18 @@ namespace Atc.Wpf.Components.Notifications;
 /// </remarks>
 public partial class TrayIcon : FrameworkElement, IDisposable
 {
-    private static readonly DependencyPropertyKey IsCreatedPropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(IsCreated),
-        typeof(bool),
-        typeof(TrayIcon),
-        new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    /// <summary>
-    /// Identifies the <see cref="IsCreated"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IsCreatedProperty = IsCreatedPropertyKey.DependencyProperty;
-
     private readonly Func<ITrayIconHost> hostFactory;
     private ITrayIconHost? host;
     private Dispatcher? shutdownDispatcher;
     private bool isActive;
     private bool isUnloaded;
     private bool isDisposed;
+
+    /// <summary>
+    /// Gets a value indicating whether the icon is currently shown in the notification area.
+    /// </summary>
+    [DependencyProperty(DefaultValue = false, IsReadOnly = true)]
+    private bool isCreated;
 
     /// <summary>
     /// The image shown in the notification area; the application icon when <see langword="null"/>.
@@ -90,15 +85,6 @@ public partial class TrayIcon : FrameworkElement, IDisposable
     /// Occurs when the icon is double-clicked.
     /// </summary>
     public event EventHandler? DoubleClick;
-
-    /// <summary>
-    /// Gets a value indicating whether the icon is currently shown in the notification area.
-    /// </summary>
-    public bool IsCreated
-    {
-        get => (bool)GetValue(IsCreatedProperty);
-        private set => SetValue(IsCreatedPropertyKey, BooleanBoxes.Box(value));
-    }
 
     /// <summary>
     /// Gets or sets the service used by <see cref="ShowNotification"/>; a <see cref="ToastNotificationService"/>

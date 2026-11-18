@@ -3,22 +3,16 @@ namespace Atc.Wpf.Components.Dialogs;
 public partial class InputDialogBox
 {
     /// <summary>
-    /// Identifies the <see cref="HeaderControl"/> dependency property.
+    /// Gets or sets the optional header control shown above the input control.
     /// </summary>
-    public static readonly DependencyProperty HeaderControlProperty = DependencyProperty.Register(
-        nameof(HeaderControl),
-        typeof(ContentControl),
-        typeof(InputDialogBox),
-        new PropertyMetadata(defaultValue: null));
+    [DependencyProperty]
+    private ContentControl? headerControl;
 
     /// <summary>
-    /// Identifies the <see cref="ContentControl"/> dependency property.
+    /// Gets or sets the control that hosts the input control.
     /// </summary>
-    public static readonly DependencyProperty ContentControlProperty = DependencyProperty.Register(
-        nameof(ContentControl),
-        typeof(ContentControl),
-        typeof(InputDialogBox),
-        new PropertyMetadata(defaultValue: null));
+    [DependencyProperty]
+    private ContentControl contentControl;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InputDialogBox"/> class with OK/Cancel buttons and the given input control.
@@ -99,24 +93,6 @@ public partial class InputDialogBox
     /// Gets the settings that control the dialog box appearance and buttons.
     /// </summary>
     public DialogBoxSettings Settings { get; }
-
-    /// <summary>
-    /// Gets or sets the optional header control shown above the input control.
-    /// </summary>
-    public ContentControl? HeaderControl
-    {
-        get => (ContentControl?)GetValue(HeaderControlProperty);
-        set => SetValue(HeaderControlProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the control that hosts the input control.
-    /// </summary>
-    public ContentControl ContentControl
-    {
-        get => (ContentControl)GetValue(ContentControlProperty);
-        set => SetValue(ContentControlProperty, value);
-    }
 
     /// <summary>
     /// Gets the input control whose value the user edits.

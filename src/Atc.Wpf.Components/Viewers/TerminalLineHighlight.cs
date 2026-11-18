@@ -6,98 +6,23 @@ namespace Atc.Wpf.Components.Viewers;
 /// renderer with optional timestamp / line-number / pin prefixes. The block's
 /// <see cref="TextBlock.Inlines"/> are rebuilt whenever any input changes.
 /// </summary>
-public static class TerminalLineHighlight
+[AttachedProperty<string>("SourceText", PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<string>("SearchPattern", PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<bool>("UseRegex", DefaultValue = false, PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<Brush>("HighlightBackground", DefaultValueExpression = "System.Windows.Media.Brushes.Gold", PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<bool>("ShowTimestamp", DefaultValue = false, PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<DateTimeOffset>("Timestamp", PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<bool>("ShowLineNumber", DefaultValue = false, PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<int>("LineNumber", DefaultValue = 0, PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<bool>("IsPinned", DefaultValue = false, PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<Brush>("MutedBrush", DefaultValueExpression = "System.Windows.Media.Brushes.Gray", PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+[AttachedProperty<IReadOnlyList<TerminalRun>>("Runs", PropertyChangedCallback = nameof(OnAnyChanged), GenerateClrAccessors = false)]
+public static partial class TerminalLineHighlight
 {
+    // Only the ...Property fields are generated. The Get/Set methods stay hand-written: their element
+    // parameter is named obj and each has its own documentation.
     private const string TimestampFormat = "HH:mm:ss.fff";
     private const string PinGlyph = "★ ";
-
-    /// <summary>Identifies the <c>SourceText</c> attached property: the line text to render.</summary>
-    public static readonly DependencyProperty SourceTextProperty =
-        DependencyProperty.RegisterAttached(
-            "SourceText",
-            typeof(string),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(defaultValue: null, OnAnyChanged));
-
-    /// <summary>Identifies the <c>SearchPattern</c> attached property: the text or regular expression whose matches are highlighted.</summary>
-    public static readonly DependencyProperty SearchPatternProperty =
-        DependencyProperty.RegisterAttached(
-            "SearchPattern",
-            typeof(string),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(defaultValue: null, OnAnyChanged));
-
-    /// <summary>Identifies the <c>UseRegex</c> attached property: whether the search pattern is a regular expression.</summary>
-    public static readonly DependencyProperty UseRegexProperty =
-        DependencyProperty.RegisterAttached(
-            "UseRegex",
-            typeof(bool),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(defaultValue: false, OnAnyChanged));
-
-    /// <summary>Identifies the <c>HighlightBackground</c> attached property: the background brush of search matches.</summary>
-    public static readonly DependencyProperty HighlightBackgroundProperty =
-        DependencyProperty.RegisterAttached(
-            "HighlightBackground",
-            typeof(Brush),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(System.Windows.Media.Brushes.Gold, OnAnyChanged));
-
-    /// <summary>Identifies the <c>ShowTimestamp</c> attached property: whether the timestamp prefix is shown.</summary>
-    public static readonly DependencyProperty ShowTimestampProperty =
-        DependencyProperty.RegisterAttached(
-            "ShowTimestamp",
-            typeof(bool),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(defaultValue: false, OnAnyChanged));
-
-    /// <summary>Identifies the <c>Timestamp</c> attached property: the time shown in the timestamp prefix.</summary>
-    public static readonly DependencyProperty TimestampProperty =
-        DependencyProperty.RegisterAttached(
-            "Timestamp",
-            typeof(DateTimeOffset),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(default(DateTimeOffset), OnAnyChanged));
-
-    /// <summary>Identifies the <c>ShowLineNumber</c> attached property: whether the line-number prefix is shown.</summary>
-    public static readonly DependencyProperty ShowLineNumberProperty =
-        DependencyProperty.RegisterAttached(
-            "ShowLineNumber",
-            typeof(bool),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(defaultValue: false, OnAnyChanged));
-
-    /// <summary>Identifies the <c>LineNumber</c> attached property: the number shown in the line-number prefix.</summary>
-    public static readonly DependencyProperty LineNumberProperty =
-        DependencyProperty.RegisterAttached(
-            "LineNumber",
-            typeof(int),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(defaultValue: 0, OnAnyChanged));
-
-    /// <summary>Identifies the <c>IsPinned</c> attached property: whether a pin glyph prefix is shown.</summary>
-    public static readonly DependencyProperty IsPinnedProperty =
-        DependencyProperty.RegisterAttached(
-            "IsPinned",
-            typeof(bool),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(defaultValue: false, OnAnyChanged));
-
-    /// <summary>Identifies the <c>MutedBrush</c> attached property: the foreground brush of the timestamp and line-number prefixes.</summary>
-    public static readonly DependencyProperty MutedBrushProperty =
-        DependencyProperty.RegisterAttached(
-            "MutedBrush",
-            typeof(Brush),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(System.Windows.Media.Brushes.Gray, OnAnyChanged));
-
-    /// <summary>Identifies the <c>Runs</c> attached property: optional pre-parsed ANSI styled runs rendered instead of the source text.</summary>
-    public static readonly DependencyProperty RunsProperty =
-        DependencyProperty.RegisterAttached(
-            "Runs",
-            typeof(IReadOnlyList<TerminalRun>),
-            typeof(TerminalLineHighlight),
-            new PropertyMetadata(defaultValue: null, OnAnyChanged));
 
     /// <summary>Gets the line text to render.</summary>
     public static string? GetSourceText(DependencyObject obj)
