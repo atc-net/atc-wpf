@@ -7,23 +7,56 @@ namespace Atc.Wpf.Theming.Controls;
     "WpfAnalyzers.TemplatePart",
     "WPF0132:Use PART prefix",
     Justification = "OK.")]
-[TemplatePart(
-    Name = PreviousContentPresentationSitePartName,
-    Type = typeof(ContentPresenter))]
-[TemplatePart(
-    Name = CurrentContentPresentationSitePartName,
-    Type = typeof(ContentPresenter))]
-public class TransitioningContentControl : ContentControl
+public partial class TransitioningContentControl : ContentControl
 {
     internal const string PresentationGroup = "PresentationStates";
     internal const string HiddenState = "Hidden";
     internal const string PreviousContentPresentationSitePartName = "PreviousContentPresentationSite";
     internal const string CurrentContentPresentationSitePartName = "CurrentContentPresentationSite";
 
-    private ContentPresenter? currentContentPresentationSite;
+    [TemplatePartField(PreviousContentPresentationSitePartName)]
     private ContentPresenter? previousContentPresentationSite;
+
+    [TemplatePartField(CurrentContentPresentationSitePartName)]
+    private ContentPresenter? currentContentPresentationSite;
+
     private bool allowIsTransitioningPropertyWrite;
     private Storyboard? currentTransition;
+
+    [DependencyProperty(
+        DefaultValue = false,
+        GeneratePartialHooks = true,
+        GenerateClrAccessors = false)]
+    private bool isTransitioning;
+
+    /// <summary>
+    /// Gets or sets the transition type.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = TransitionType.Default,
+        Flags = FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.Inherits,
+        GeneratePartialHooks = true)]
+    private TransitionType transition;
+
+    /// <summary>
+    /// Gets or sets whether if the transition should restart after the content change.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = false,
+        PropertyChangedCallback = nameof(OnRestartTransitionOnContentChangePropertyChanged))]
+    private bool restartTransitionOnContentChange;
+
+    /// <summary>
+    /// Gets or sets customized visual states to use as transition.
+    /// </summary>
+    [DependencyProperty]
+    private ObservableCollection<VisualState>? customVisualStates;
+
+    /// <summary>
+    /// Gets or sets the name of a custom transition visual state.
+    /// </summary>
+    [DependencyProperty(DefaultValue = "CustomTransition")]
+    private string customVisualStatesName;
 
     /// <summary>
     /// Occurs when a content transition has completed.
@@ -34,15 +67,6 @@ public class TransitioningContentControl : ContentControl
     /// The default transition type.
     /// </summary>
     public const TransitionType DefaultTransitionState = TransitionType.Default;
-
-    /// <summary>Identifies the <see cref="IsTransitioning"/> dependency property.</summary>
-    public static readonly DependencyProperty IsTransitioningProperty = DependencyProperty.Register(
-        nameof(IsTransitioning),
-        typeof(bool),
-        typeof(TransitioningContentControl),
-        new PropertyMetadata(
-            BooleanBoxes.FalseBox,
-            OnIsTransitioningPropertyChanged));
 
     /// <summary>
     /// Gets whether if the content is transitioning.
@@ -66,93 +90,6 @@ public class TransitioningContentControl : ContentControl
         }
     }
 
-    /// <summary>Identifies the <see cref="Transition"/> dependency property.</summary>
-    public static readonly DependencyProperty TransitionProperty = DependencyProperty.Register(
-        nameof(Transition),
-        typeof(TransitionType),
-        typeof(TransitioningContentControl),
-        new FrameworkPropertyMetadata(
-            TransitionType.Default,
-            FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.Inherits,
-            OnTransitionPropertyChanged));
-
-    /// <summary>
-    /// Gets or sets the transition type.
-    /// </summary>
-    public TransitionType Transition
-    {
-        get => (TransitionType)GetValue(TransitionProperty);
-        set
-        {
-            SetValue(
-            TransitionProperty,
-            value);
-        }
-    }
-
-    /// <summary>Identifies the <see cref="RestartTransitionOnContentChange"/> dependency property.</summary>
-    public static readonly DependencyProperty RestartTransitionOnContentChangeProperty = DependencyProperty.Register(
-        nameof(RestartTransitionOnContentChange),
-        typeof(bool),
-        typeof(TransitioningContentControl),
-        new PropertyMetadata(
-            BooleanBoxes.FalseBox,
-            OnRestartTransitionOnContentChangePropertyChanged));
-
-    /// <summary>
-    /// Gets or sets whether if the transition should restart after the content change.
-    /// </summary>
-    public bool RestartTransitionOnContentChange
-    {
-        get => (bool)GetValue(RestartTransitionOnContentChangeProperty);
-        set
-        {
-            SetValue(
-            RestartTransitionOnContentChangeProperty,
-            BooleanBoxes.Box(value));
-        }
-    }
-
-    /// <summary>Identifies the <see cref="CustomVisualStates"/> dependency property.</summary>
-    public static readonly DependencyProperty CustomVisualStatesProperty = DependencyProperty.Register(
-        nameof(CustomVisualStates),
-        typeof(ObservableCollection<VisualState>),
-        typeof(TransitioningContentControl),
-        new PropertyMetadata(propertyChangedCallback: null));
-
-    /// <summary>
-    /// Gets or sets customized visual states to use as transition.
-    /// </summary>
-    public ObservableCollection<VisualState>? CustomVisualStates
-    {
-        get =>
-            (ObservableCollection<VisualState>?)GetValue(CustomVisualStatesProperty);
-        set => SetValue(
-            CustomVisualStatesProperty,
-            value);
-    }
-
-    /// <summary>Identifies the <see cref="CustomVisualStatesName"/> dependency property.</summary>
-    public static readonly DependencyProperty CustomVisualStatesNameProperty = DependencyProperty.Register(
-        nameof(CustomVisualStatesName),
-        typeof(string),
-        typeof(TransitioningContentControl),
-        new PropertyMetadata("CustomTransition"));
-
-    /// <summary>
-    /// Gets or sets the name of a custom transition visual state.
-    /// </summary>
-    public string CustomVisualStatesName
-    {
-        get => (string)GetValue(CustomVisualStatesNameProperty);
-        set
-        {
-            SetValue(
-            CustomVisualStatesNameProperty,
-            value);
-        }
-    }
-
     internal Storyboard? CurrentTransition
     {
         get => currentTransition;
@@ -173,52 +110,46 @@ public class TransitioningContentControl : ContentControl
         }
     }
 
-    private static void OnIsTransitioningPropertyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    partial void OnIsTransitioningChanged(
+        bool oldValue,
+        bool newValue)
     {
-        var source = (TransitioningContentControl)d;
-
-        if (!source.allowIsTransitioningPropertyWrite)
+        if (!allowIsTransitioningPropertyWrite)
         {
-            source.IsTransitioning = (bool)e.OldValue;
+            IsTransitioning = oldValue;
             throw new InvalidOperationException();
         }
     }
 
-    private static void OnTransitionPropertyChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
+    partial void OnTransitionChanged(
+        TransitionType oldValue,
+        TransitionType newValue)
     {
-        var source = (TransitioningContentControl)d;
-        var oldTransition = (TransitionType)e.OldValue;
-        var newTransition = (TransitionType)e.NewValue;
-
-        if (source.IsTransitioning)
+        if (IsTransitioning)
         {
-            source.AbortTransition();
+            AbortTransition();
         }
 
-        var newStoryboard = source.GetStoryboard(newTransition);
+        var newStoryboard = GetStoryboard(newValue);
 
         if (newStoryboard is null)
         {
             if (VisualStates.TryGetVisualStateGroup(
-                    source,
+                    this,
                     PresentationGroup) is null)
             {
-                source.CurrentTransition = null;
+                CurrentTransition = null;
             }
             else
             {
-                source.SetValue(
+                SetValue(
                     TransitionProperty,
-                    oldTransition);
+                    oldValue);
             }
         }
         else
         {
-            source.CurrentTransition = newStoryboard;
+            CurrentTransition = newStoryboard;
         }
     }
 
@@ -275,12 +206,11 @@ public class TransitioningContentControl : ContentControl
 
         base.OnApplyTemplate();
 
-        previousContentPresentationSite = GetTemplateChild(PreviousContentPresentationSitePartName) as ContentPresenter;
-        currentContentPresentationSite = GetTemplateChild(CurrentContentPresentationSitePartName) as ContentPresenter;
+        ResolveTemplateParts();
 
-        var transition = GetStoryboard(Transition);
-        CurrentTransition = transition;
-        if (transition is null)
+        var storyboard = GetStoryboard(Transition);
+        CurrentTransition = storyboard;
+        if (storyboard is null)
         {
             var invalidTransition = Transition;
             Transition = DefaultTransitionState;

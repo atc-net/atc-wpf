@@ -3,18 +3,12 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 public partial class NiceWindow
 {
     /// <summary>
-    /// Identifies the <see cref="IsBackdropActive"/> dependency property key.
+    /// Gets a value indicating whether Windows applied the <see cref="BackdropType"/> to this window.
     /// </summary>
-    private static readonly DependencyPropertyKey IsBackdropActivePropertyKey = DependencyProperty.RegisterReadOnly(
-        nameof(IsBackdropActive),
-        typeof(bool),
-        typeof(NiceWindow),
-        new PropertyMetadata(defaultValue: false));
-
-    /// <summary>
-    /// Identifies the <see cref="IsBackdropActive"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IsBackdropActiveProperty = IsBackdropActivePropertyKey.DependencyProperty;
+    [DependencyProperty(
+        DefaultValue = false,
+        IsReadOnly = true)]
+    private readonly bool isBackdropActive;
 
     /// <summary>
     /// The Windows 11 system backdrop (Mica, Acrylic or Tabbed) drawn behind the window.
@@ -25,11 +19,6 @@ public partial class NiceWindow
         DefaultValue = WindowBackdropType.None,
         PropertyChangedCallback = nameof(OnBackdropTypePropertyChanged))]
     private WindowBackdropType backdropType;
-
-    /// <summary>
-    /// Gets a value indicating whether Windows applied the <see cref="BackdropType"/> to this window.
-    /// </summary>
-    public bool IsBackdropActive => (bool)GetValue(IsBackdropActiveProperty);
 
     /// <inheritdoc />
     protected override void OnPropertyChanged(

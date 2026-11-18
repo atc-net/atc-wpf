@@ -10,17 +10,11 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "OK.")]
 [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "OK.")]
 [TemplatePart(Name = PART_Icon, Type = typeof(UIElement))]
-[TemplatePart(Name = PART_TitleBar, Type = typeof(UIElement))]
-[TemplatePart(Name = PART_WindowTitleBackground, Type = typeof(UIElement))]
-[TemplatePart(Name = PART_WindowTitleThumb, Type = typeof(Thumb))]
 [TemplatePart(Name = PART_LeftWindowCommands, Type = typeof(ContentPresenter))]
 [TemplatePart(Name = PART_RightWindowCommands, Type = typeof(ContentPresenter))]
 [TemplatePart(Name = PART_WindowButtonCommands, Type = typeof(ContentPresenter))]
-[TemplatePart(Name = PART_OverlayBox, Type = typeof(Grid))]
-[TemplatePart(Name = PART_NiceActiveDialogContainer, Type = typeof(Grid))]
-[TemplatePart(Name = PART_NiceInactiveDialogsContainer, Type = typeof(Grid))]
-[TemplatePart(Name = PART_FlyoutHost, Type = typeof(Grid))]
 [TemplatePart(Name = PART_Content, Type = typeof(NiceContentControl))]
+[DefaultStyleKey]
 public partial class NiceWindow : WindowChromeWindow
 {
     private const string PART_Icon = "PART_Icon";
@@ -37,18 +31,33 @@ public partial class NiceWindow : WindowChromeWindow
     private const string PART_Content = "PART_Content";
 
     private FrameworkElement? icon;
+
+    [TemplatePartField(PART_TitleBar)]
     private UIElement? titleBar;
+
+    [TemplatePartField(PART_WindowTitleBackground)]
     private UIElement? titleBarBackground;
+
+    [TemplatePartField(PART_WindowTitleThumb)]
     private Thumb? windowTitleThumb;
+
     private IInputElement? restoreFocus;
     internal ContentPresenter? LeftWindowCommandsPresenter;
     internal ContentPresenter? RightWindowCommandsPresenter;
     internal ContentPresenter? WindowButtonCommandsPresenter;
 
+    [TemplatePartField(PART_OverlayBox)]
     internal Grid? OverlayBox;
+
+    [TemplatePartField(PART_NiceActiveDialogContainer)]
     internal Grid? NiceActiveDialogContainer;
+
+    [TemplatePartField(PART_NiceInactiveDialogsContainer)]
     internal Grid? NiceInactiveDialogContainer;
+
+    [TemplatePartField(PART_FlyoutHost)]
     internal Grid? FlyoutHostContainer;
+
     private Storyboard? overlayStoryboard;
 
     private EventHandler? onOverlayFadeInStoryboardCompleted;
@@ -411,9 +420,7 @@ public partial class NiceWindow : WindowChromeWindow
     [SuppressMessage("Minor Code Smell", "S3963:\"static\" fields should be initialized inline", Justification = "OK.")]
     static NiceWindow()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(NiceWindow),
-            new FrameworkPropertyMetadata(typeof(NiceWindow)));
+        OverrideDefaultStyleKey();
 
         EventManager.RegisterClassHandler(
             typeof(NiceWindow),
@@ -497,15 +504,10 @@ public partial class NiceWindow : WindowChromeWindow
         RightWindowCommands.SetValue(WindowCommands.ParentWindowPropertyKey, this);
         WindowButtonCommands.SetValue(WindowButtonCommands.ParentWindowPropertyKey, this);
 
-        OverlayBox = GetTemplateChild(PART_OverlayBox) as Grid;
-        NiceActiveDialogContainer = GetTemplateChild(PART_NiceActiveDialogContainer) as Grid;
-        NiceInactiveDialogContainer = GetTemplateChild(PART_NiceInactiveDialogsContainer) as Grid;
-        FlyoutHostContainer = GetTemplateChild(PART_FlyoutHost) as Grid;
+        // The window command presenters above stay assigned by hand: they must be set before the commands are created.
+        ResolveTemplateParts();
 
         icon = GetTemplateChild(PART_Icon) as FrameworkElement;
-        titleBar = GetTemplateChild(PART_TitleBar) as UIElement;
-        titleBarBackground = GetTemplateChild(PART_WindowTitleBackground) as UIElement;
-        windowTitleThumb = GetTemplateChild(PART_WindowTitleThumb) as Thumb;
 
         UpdateTitleBarElementsVisibility();
 

@@ -4,28 +4,21 @@ namespace Atc.Wpf.Theming.Controls.Icons;
 /// <summary>
 /// Represents an icon that uses a vector path as its content.
 /// </summary>
-[TemplatePart(Name = nameof(PART_Path), Type = typeof(Path))]
-public sealed class PathIcon : IconElement
+[DefaultStyleKey]
+public sealed partial class PathIcon : IconElement
 {
-    private Path? PART_Path { get; set; }
-
-    /// <summary>Identifies the <see cref="Data"/> dependency property.</summary>
-    public static readonly DependencyProperty DataProperty = Path.DataProperty.AddOwner(
-        typeof(PathIcon),
-        new FrameworkPropertyMetadata(propertyChangedCallback: null));
-
     /// <summary>
     /// Gets or sets a Geometry that specifies the shape to be drawn. In XAML this can also be set using the Path Markup Syntax.
     /// </summary>
-    public Geometry? Data
-    {
-        get => (Geometry?)GetValue(DataProperty);
-        set => SetValue(DataProperty, value);
-    }
+    [DependencyProperty(AddOwnerOf = typeof(Path), MetadataType = DependencyPropertyMetadataType.FrameworkPropertyMetadata)]
+    private Geometry? data;
+
+    [TemplatePartField("PART_Path")]
+    private Path? pathPart;
 
     static PathIcon()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(PathIcon), new FrameworkPropertyMetadata(typeof(PathIcon)));
+        OverrideDefaultStyleKey();
         FocusableProperty.OverrideMetadata(typeof(PathIcon), new FrameworkPropertyMetadata(false));
     }
 
@@ -34,11 +27,11 @@ public sealed class PathIcon : IconElement
     {
         base.OnApplyTemplate();
 
-        PART_Path = GetTemplateChild(nameof(PART_Path)) as Path;
+        ResolveTemplateParts();
 
-        if (PART_Path is not null && InheritsForegroundFromVisualParent)
+        if (pathPart is not null && InheritsForegroundFromVisualParent)
         {
-            PART_Path.Fill = VisualParentForeground;
+            pathPart.Fill = VisualParentForeground;
         }
     }
 
@@ -48,15 +41,15 @@ public sealed class PathIcon : IconElement
     {
         base.OnInheritsForegroundFromVisualParentPropertyChanged(e);
 
-        if (PART_Path is not null)
+        if (pathPart is not null)
         {
             if (InheritsForegroundFromVisualParent)
             {
-                PART_Path.Fill = VisualParentForeground;
+                pathPart.Fill = VisualParentForeground;
             }
             else
             {
-                PART_Path.ClearValue(Shape.FillProperty);
+                pathPart.ClearValue(Shape.FillProperty);
             }
         }
     }
@@ -67,9 +60,9 @@ public sealed class PathIcon : IconElement
     {
         base.OnVisualParentForegroundPropertyChanged(e);
 
-        if (PART_Path is not null && InheritsForegroundFromVisualParent)
+        if (pathPart is not null && InheritsForegroundFromVisualParent)
         {
-            PART_Path.Fill = e.NewValue as Brush;
+            pathPart.Fill = e.NewValue as Brush;
         }
     }
 }

@@ -5,14 +5,52 @@ namespace Atc.Wpf.Theming.Controls.Windows;
 /// A toolbar of commands hosted in the title bar of a window.
 /// </summary>
 [StyleTypedProperty(Property = nameof(ItemContainerStyle), StyleTargetType = typeof(WindowCommands))]
-public sealed class WindowCommands : ToolBar
+[DefaultStyleKey]
+public sealed partial class WindowCommands : ToolBar
 {
-    /// <summary>Identifies the <see cref="Theme"/> dependency property.</summary>
-    public static readonly DependencyProperty ThemeProperty = DependencyProperty.Register(
-        nameof(Theme),
-        typeof(string),
-        typeof(WindowCommands),
-        new PropertyMetadata(ThemeManager.BaseColorLight, OnThemePropertyChanged));
+    /// <summary>
+    /// Gets or sets the value indicating the current theme.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValueExpression = "ThemeManager.BaseColorLight",
+        PropertyChangedCallback = nameof(OnThemePropertyChanged))]
+    private string theme;
+
+    /// <summary>
+    /// Gets or sets the value indicating the light theme ControlTemplate.
+    /// </summary>
+    [DependencyProperty]
+    private ControlTemplate? lightTemplate;
+
+    /// <summary>
+    /// Gets or sets the value indicating the light theme ControlTemplate.
+    /// </summary>
+    [DependencyProperty]
+    private ControlTemplate? darkTemplate;
+
+    /// <summary>
+    /// Gets or sets the value indicating whether to show the separators or not.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = true,
+        Flags = FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnShowSeparatorsPropertyChanged))]
+    private bool showSeparators;
+
+    /// <summary>
+    /// Gets or sets the value indicating whether to show the last separator or not.
+    /// </summary>
+    [DependencyProperty(
+        DefaultValue = true,
+        Flags = FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        PropertyChangedCallback = nameof(OnShowLastSeparatorPropertyChanged))]
+    private bool showLastSeparator;
+
+    [DependencyProperty(
+        DefaultValue = 15d,
+        Flags = FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
+        GenerateClrAccessors = false)]
+    private double separatorHeight;
 
     private static void OnThemePropertyChanged(
         DependencyObject d,
@@ -46,57 +84,6 @@ public sealed class WindowCommands : ToolBar
         }
     }
 
-    /// <summary>
-    /// Gets or sets the value indicating the current theme.
-    /// </summary>
-    public string Theme
-    {
-        get => (string)GetValue(ThemeProperty);
-        set => SetValue(ThemeProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="LightTemplate"/> dependency property.</summary>
-    public static readonly DependencyProperty LightTemplateProperty = DependencyProperty.Register(
-        nameof(LightTemplate),
-        typeof(ControlTemplate),
-        typeof(WindowCommands),
-        new PropertyMetadata(propertyChangedCallback: null));
-
-    /// <summary>
-    /// Gets or sets the value indicating the light theme ControlTemplate.
-    /// </summary>
-    public ControlTemplate? LightTemplate
-    {
-        get => (ControlTemplate?)GetValue(LightTemplateProperty);
-        set => SetValue(LightTemplateProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="DarkTemplate"/> dependency property.</summary>
-    public static readonly DependencyProperty DarkTemplateProperty = DependencyProperty.Register(
-        nameof(DarkTemplate),
-        typeof(ControlTemplate),
-        typeof(WindowCommands),
-        new PropertyMetadata(propertyChangedCallback: null));
-
-    /// <summary>
-    /// Gets or sets the value indicating the light theme ControlTemplate.
-    /// </summary>
-    public ControlTemplate? DarkTemplate
-    {
-        get => (ControlTemplate?)GetValue(DarkTemplateProperty);
-        set => SetValue(DarkTemplateProperty, value);
-    }
-
-    /// <summary>Identifies the <see cref="ShowSeparators"/> dependency property.</summary>
-    public static readonly DependencyProperty ShowSeparatorsProperty = DependencyProperty.Register(
-        nameof(ShowSeparators),
-        typeof(bool),
-        typeof(WindowCommands),
-        new FrameworkPropertyMetadata(
-            BooleanBoxes.TrueBox,
-            FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-            OnShowSeparatorsPropertyChanged));
-
     private static void OnShowSeparatorsPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -109,25 +96,6 @@ public sealed class WindowCommands : ToolBar
         ((WindowCommands)d).ResetSeparators();
     }
 
-    /// <summary>
-    /// Gets or sets the value indicating whether to show the separators or not.
-    /// </summary>
-    public bool ShowSeparators
-    {
-        get => (bool)GetValue(ShowSeparatorsProperty);
-        set => SetValue(ShowSeparatorsProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="ShowLastSeparator"/> dependency property.</summary>
-    public static readonly DependencyProperty ShowLastSeparatorProperty = DependencyProperty.Register(
-        nameof(ShowLastSeparator),
-        typeof(bool),
-        typeof(WindowCommands),
-        new FrameworkPropertyMetadata(
-            BooleanBoxes.TrueBox,
-            FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender,
-            OnShowLastSeparatorPropertyChanged));
-
     private static void OnShowLastSeparatorPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
@@ -139,24 +107,6 @@ public sealed class WindowCommands : ToolBar
 
         ((WindowCommands)d).ResetSeparators(false);
     }
-
-    /// <summary>
-    /// Gets or sets the value indicating whether to show the last separator or not.
-    /// </summary>
-    public bool ShowLastSeparator
-    {
-        get => (bool)GetValue(ShowLastSeparatorProperty);
-        set => SetValue(ShowLastSeparatorProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="SeparatorHeight"/> dependency property.</summary>
-    public static readonly DependencyProperty SeparatorHeightProperty = DependencyProperty.Register(
-        nameof(SeparatorHeight),
-        typeof(double),
-        typeof(WindowCommands),
-        new FrameworkPropertyMetadata(
-            15d,
-            FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender));
 
     /// <summary>
     /// Gets or sets the value indicating the height of the separators.
@@ -184,11 +134,6 @@ public sealed class WindowCommands : ToolBar
     {
         get => (Window?)GetValue(ParentWindowProperty);
         set => SetValue(ParentWindowPropertyKey, value);
-    }
-
-    static WindowCommands()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(WindowCommands), new FrameworkPropertyMetadata(typeof(WindowCommands)));
     }
 
     /// <summary>
