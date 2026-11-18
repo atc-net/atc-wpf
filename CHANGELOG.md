@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 From 4.0.216 onwards this file is maintained by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.0](https://github.com/atc-net/atc-wpf/compare/v4.5.1...v4.6.0) (2026-11-18)
+
+
+### New features
+
+* **components:** show a confirmation from dialog settings so the default button can be No ([5ff999c](https://github.com/atc-net/atc-wpf/commit/5ff999c37d23e8fb06f2ef06c815bc2624466072))
+* **sample:** show a confirmation where No is the default button ([d22b8f6](https://github.com/atc-net/atc-wpf/commit/d22b8f6508a524a866b24f37efba4188c8cd85c0))
+
 ## [4.5.1](https://github.com/atc-net/atc-wpf/compare/v4.5.0...v4.5.1) (2026-11-18)
 
 
