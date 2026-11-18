@@ -27,6 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Used inside the library only (source generators); see the note in Atc.Wpf.csproj. -->
+    <PackageReference Include="Atc.XamlToolkit" Version="4.0.0" PrivateAssets="compile;contentfiles;analyzers;build" />
+    <PackageReference Include="Atc.XamlToolkit.Wpf" Version="4.0.0" PrivateAssets="compile;contentfiles;analyzers;build" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Atc.Wpf\Atc.Wpf.csproj" />
   </ItemGroup>
 
