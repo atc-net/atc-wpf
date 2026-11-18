@@ -5,6 +5,13 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class AudioDeviceInfo : ObservableObject, IDeviceInfo
 {
+    /// <summary>
+    /// Gets a value indicating whether the endpoint is the system default for its kind.
+    /// Follows the Windows setting while the service is watching.
+    /// </summary>
+    [ObservableProperty(
+        DependentPropertyNames = [nameof(DisplayName)],
+        SetterAccessModifier = PropertyAccessModifier.Internal)]
     private bool isDefault;
 
     /// <summary>
@@ -44,26 +51,6 @@ public sealed partial class AudioDeviceInfo : ObservableObject, IDeviceInfo
     /// Gets a value indicating whether the endpoint interface is enabled.
     /// </summary>
     public bool IsEnabled { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether the endpoint is the system default for its kind.
-    /// Follows the Windows setting while the service is watching.
-    /// </summary>
-    public bool IsDefault
-    {
-        get => isDefault;
-        internal set
-        {
-            if (value == isDefault)
-            {
-                return;
-            }
-
-            isDefault = value;
-            RaisePropertyChanged();
-            RaisePropertyChanged(nameof(DisplayName));
-        }
-    }
 
     /// <summary>
     /// Gets the text shown for the endpoint: its name, with a ★ when it is the system default.

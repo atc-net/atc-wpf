@@ -11,33 +11,15 @@ internal sealed partial class LiveAudioOutputTester : UserControl, IDisposable, 
     private const int WavSampleRate = 44100;
     private const double TestAmplitude = 0.4;
 
-    public static readonly DependencyProperty DeviceIdProperty = DependencyProperty.Register(
-        nameof(DeviceId),
-        typeof(string),
-        typeof(LiveAudioOutputTester),
-        new PropertyMetadata(defaultValue: null, OnDeviceIdChanged));
-
-    public string? DeviceId
-    {
-        get => (string?)GetValue(DeviceIdProperty);
-        set => SetValue(DeviceIdProperty, value);
-    }
-
-    public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
-        nameof(IsActive),
-        typeof(bool),
-        typeof(LiveAudioOutputTester),
-        new PropertyMetadata(defaultValue: false, OnIsActiveChanged));
-
-    public bool IsActive
-    {
-        get => (bool)GetValue(IsActiveProperty);
-        set => SetValue(IsActiveProperty, value);
-    }
-
     private readonly float[] ring = new float[RingCapacity];
     private readonly WaveformPointBuffers waveformPoints = new(RingCapacity);
     private readonly DispatcherTimer renderTimer;
+
+    [DependencyProperty(PropertyChangedCallback = nameof(OnDeviceIdChanged))]
+    private string? deviceId;
+
+    [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnIsActiveChanged))]
+    private bool isActive;
 
     private int ringHead;
     private float currentPeak;

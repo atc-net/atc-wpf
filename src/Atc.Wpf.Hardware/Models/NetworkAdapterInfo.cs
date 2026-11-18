@@ -5,7 +5,18 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class NetworkAdapterInfo : ObservableObject, IDeviceInfo
 {
+    /// <summary>
+    /// Gets the connection name of the adapter, for example "Ethernet" or "Wi-Fi".
+    /// </summary>
+    [ObservableProperty(
+        DependentPropertyNames = [nameof(FriendlyName)],
+        SetterAccessModifier = PropertyAccessModifier.Internal)]
     private string name;
+
+    /// <summary>
+    /// Gets the link speed in bits per second, or <see langword="null"/> when it is not known.
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private long? speed;
 
     /// <summary>
@@ -40,25 +51,6 @@ public sealed partial class NetworkAdapterInfo : ObservableObject, IDeviceInfo
     public string DeviceId { get; }
 
     /// <summary>
-    /// Gets the connection name of the adapter, for example "Ethernet" or "Wi-Fi".
-    /// </summary>
-    public string Name
-    {
-        get => name;
-        internal set
-        {
-            if (string.Equals(value, name, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            name = value;
-            RaisePropertyChanged();
-            RaisePropertyChanged(nameof(FriendlyName));
-        }
-    }
-
-    /// <summary>
     /// Gets the description of the adapter, typically the hardware name.
     /// </summary>
     public string Description { get; }
@@ -78,24 +70,6 @@ public sealed partial class NetworkAdapterInfo : ObservableObject, IDeviceInfo
     /// Gets the physical (MAC) address of the adapter.
     /// </summary>
     public string MacAddress { get; }
-
-    /// <summary>
-    /// Gets the link speed in bits per second, or <see langword="null"/> when it is not known.
-    /// </summary>
-    public long? Speed
-    {
-        get => speed;
-        internal set
-        {
-            if (value == speed)
-            {
-                return;
-            }
-
-            speed = value;
-            RaisePropertyChanged();
-        }
-    }
 
     /// <summary>
     /// Gets a value indicating whether the adapter is a loopback interface.

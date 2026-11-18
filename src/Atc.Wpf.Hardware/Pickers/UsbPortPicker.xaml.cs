@@ -3,6 +3,7 @@ namespace Atc.Wpf.Hardware.Pickers;
 
 [SuppressMessage("Naming", "CA1721:Property names should not match get methods", Justification = "OK.")]
 [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "OK.")]
+[UseDependencyPropertyTemplate(typeof(DevicePickerMembers))]
 public partial class UsbPortPicker : IDevicePickerHost<UsbDeviceInfo>
 {
     /// <summary>
@@ -37,161 +38,43 @@ public partial class UsbPortPicker : IDevicePickerHost<UsbDeviceInfo>
         HandlerType = typeof(EventHandler<DeviceStateChangedRoutedEventArgs>))]
     private static readonly RoutedEvent deviceStateChanged;
 
-    /// <summary>
-    /// Identifies the <see cref="DeviceError"/> routed event.
-    /// </summary>
-    public static readonly RoutedEvent DeviceErrorEvent = DevicePickerEvents.DeviceErrorEvent.AddOwner(typeof(UsbPortPicker));
-
-    /// <summary>
-    /// Occurs when the picker could not start watching for device changes or could not read its device list.
-    /// </summary>
-    public event EventHandler<DeviceErrorRoutedEventArgs> DeviceError
-    {
-        add => AddHandler(DeviceErrorEvent, value);
-        remove => RemoveHandler(DeviceErrorEvent, value);
-    }
-
-    /// <summary>
-    /// Identifies the <see cref="Value"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-        nameof(Value),
-        typeof(UsbDeviceInfo),
-        typeof(UsbPortPicker),
-        new FrameworkPropertyMetadata(
-            defaultValue: null,
-            FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            OnValuePropertyChanged));
+    private readonly IUsbDeviceService service;
+    private readonly DevicePickerController<UsbDeviceInfo> controller;
 
     /// <summary>
     /// Gets or sets the selected USB device.
     /// </summary>
-    public UsbDeviceInfo? Value
-    {
-        get => (UsbDeviceInfo?)GetValue(ValueProperty);
-        set => SetValue(ValueProperty, value);
-    }
-
-    [DependencyProperty(DefaultValue = "")]
-    private string watermarkText;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool showRefreshButton;
-
-    [DependencyProperty(DefaultValue = true, PropertyChangedCallback = nameof(OnAutoRefreshOnDeviceChangeChanged))]
-    private bool autoRefreshOnDeviceChange;
+    [DependencyProperty(
+        Flags = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        PropertyChangedCallback = nameof(OnValuePropertyChanged))]
+    private UsbDeviceInfo? value;
 
     [DependencyProperty(DefaultValue = false)]
     private bool detectInUseState;
-
-    [DependencyProperty(DefaultValue = false)]
-    private bool clearValueOnDisconnect;
-
-    [DependencyProperty(DefaultValue = true)]
-    private bool autoRebindOnReconnect;
-
-    [DependencyProperty(DefaultValue = false)]
-    private bool autoSelectFirstAvailable;
 
     [DependencyProperty(DefaultValue = UsbDeviceClassFilter.None, PropertyChangedCallback = nameof(OnClassFilterChanged))]
     private UsbDeviceClassFilter classFilter;
 
     /// <summary>
-    /// Identifies the <see cref="ItemTemplate"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-        nameof(ItemTemplate),
-        typeof(DataTemplate),
-        typeof(UsbPortPicker),
-        new PropertyMetadata(defaultValue: null, OnItemTemplateChanged));
-
-    /// <summary>
     /// Gets or sets the template used to display each device; when <see langword="null"/> the default template is used.
     /// </summary>
-    public DataTemplate? ItemTemplate
-    {
-        get => (DataTemplate?)GetValue(ItemTemplateProperty);
-        set => SetValue(ItemTemplateProperty, value);
-    }
-
-    /// <summary>
-    /// Identifies the <see cref="ResolvedItemTemplate"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty ResolvedItemTemplateProperty = DependencyProperty.Register(
-        nameof(ResolvedItemTemplate),
-        typeof(DataTemplate),
-        typeof(UsbPortPicker),
-        new PropertyMetadata(defaultValue: null));
-
-    /// <summary>
-    /// Gets the item template in effect: <see cref="ItemTemplate"/> when set, otherwise the default template.
-    /// </summary>
-    public DataTemplate? ResolvedItemTemplate
-    {
-        get => (DataTemplate?)GetValue(ResolvedItemTemplateProperty);
-        private set => SetValue(ResolvedItemTemplateProperty, value);
-    }
-
-    /// <summary>
-    /// Identifies the <see cref="SelectedStateMessage"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SelectedStateMessageProperty = DependencyProperty.Register(
-        nameof(SelectedStateMessage),
-        typeof(string),
-        typeof(UsbPortPicker),
-        new PropertyMetadata(defaultValue: string.Empty, OnSelectedStateMessageChanged));
+    [DependencyProperty(PropertyChangedCallback = nameof(OnItemTemplateChanged))]
+    private DataTemplate? itemTemplate;
 
     /// <summary>
     /// Gets the state message for the selected device (for example "In use" or "Disconnected"), or an empty string.
     /// </summary>
-    public string SelectedStateMessage
-    {
-        get => (string)GetValue(SelectedStateMessageProperty);
-        private set => SetValue(SelectedStateMessageProperty, value);
-    }
-
-    /// <summary>
-    /// Identifies the <see cref="HasSelectedStateMessage"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty HasSelectedStateMessageProperty = DependencyProperty.Register(
-        nameof(HasSelectedStateMessage),
-        typeof(bool),
-        typeof(UsbPortPicker),
-        new PropertyMetadata(defaultValue: false));
-
-    /// <summary>
-    /// Gets a value indicating whether <see cref="SelectedStateMessage"/> is not empty.
-    /// </summary>
-    public bool HasSelectedStateMessage
-    {
-        get => (bool)GetValue(HasSelectedStateMessageProperty);
-        private set => SetValue(HasSelectedStateMessageProperty, value);
-    }
-
-    /// <summary>
-    /// When <c>true</c> (default) the selected device's state ("In use", "Disconnected")
-    /// is shown inline below the ComboBox. Set to <c>false</c> when the picker is hosted
-    /// inside a labelled wrapper that surfaces the message via <c>ValidationText</c> —
-    /// otherwise the inline message grows the picker's height and pushes neighbouring
-    /// controls down.
-    /// </summary>
-    public static readonly DependencyProperty ShowSelectedStateMessageProperty = DependencyProperty.Register(
-        nameof(ShowSelectedStateMessage),
-        typeof(bool),
-        typeof(UsbPortPicker),
-        new PropertyMetadata(defaultValue: true));
+    [DependencyProperty(
+        DefaultValue = "",
+        PropertyChangedCallback = nameof(OnSelectedStateMessageChanged),
+        SetterAccessModifier = PropertyAccessModifier.Private)]
+    private string selectedStateMessage;
 
     /// <summary>
     /// Gets or sets a value indicating whether the selected device's state message is shown inline below the drop-down.
     /// </summary>
-    public bool ShowSelectedStateMessage
-    {
-        get => (bool)GetValue(ShowSelectedStateMessageProperty);
-        set => SetValue(ShowSelectedStateMessageProperty, value);
-    }
-
-    private readonly IUsbDeviceService service;
-    private readonly DevicePickerController<UsbDeviceInfo> controller;
+    [DependencyProperty(DefaultValue = true)]
+    private bool showSelectedStateMessage;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UsbPortPicker"/> class.
@@ -252,10 +135,10 @@ public partial class UsbPortPicker : IDevicePickerHost<UsbDeviceInfo>
         }
     }
 
-    private static void OnAutoRefreshOnDeviceChangeChanged(
-        DependencyObject d,
-        DependencyPropertyChangedEventArgs e)
-        => ((UsbPortPicker)d).controller.AutoRefreshOnDeviceChangeChanged();
+    partial void OnAutoRefreshOnDeviceChangeChanged(
+        bool oldValue,
+        bool newValue)
+        => controller.AutoRefreshOnDeviceChangeChanged();
 
     private static void OnClassFilterChanged(
         DependencyObject d,

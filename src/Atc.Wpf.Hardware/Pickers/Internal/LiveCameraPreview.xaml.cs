@@ -3,46 +3,20 @@ namespace Atc.Wpf.Hardware.Pickers.Internal;
 
 internal sealed partial class LiveCameraPreview : UserControl, IDisposable, IAsyncDisposable
 {
-    public static readonly DependencyProperty DeviceIdProperty = DependencyProperty.Register(
-        nameof(DeviceId),
-        typeof(string),
-        typeof(LiveCameraPreview),
-        new PropertyMetadata(defaultValue: null, OnDeviceIdChanged));
-
-    public string? DeviceId
-    {
-        get => (string?)GetValue(DeviceIdProperty);
-        set => SetValue(DeviceIdProperty, value);
-    }
-
-    public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
-        nameof(IsActive),
-        typeof(bool),
-        typeof(LiveCameraPreview),
-        new PropertyMetadata(defaultValue: false, OnIsActiveChanged));
-
-    public bool IsActive
-    {
-        get => (bool)GetValue(IsActiveProperty);
-        set => SetValue(IsActiveProperty, value);
-    }
-
-    public static readonly DependencyProperty PreferredFormatProperty = DependencyProperty.Register(
-        nameof(PreferredFormat),
-        typeof(UsbCameraFormat),
-        typeof(LiveCameraPreview),
-        new PropertyMetadata(defaultValue: null, OnPreferredFormatChanged));
-
-    public UsbCameraFormat? PreferredFormat
-    {
-        get => (UsbCameraFormat?)GetValue(PreferredFormatProperty);
-        set => SetValue(PreferredFormatProperty, value);
-    }
-
     public event EventHandler<CameraFormatsAvailableEventArgs>? FormatsAvailable;
 
     private readonly DeviceSessionCoordinator session;
     private readonly LatestFrameSlot<CameraPreviewFrame> frameSlot = new();
+
+    [DependencyProperty(PropertyChangedCallback = nameof(OnDeviceIdChanged))]
+    private string? deviceId;
+
+    [DependencyProperty(DefaultValue = false, PropertyChangedCallback = nameof(OnIsActiveChanged))]
+    private bool isActive;
+
+    [DependencyProperty(PropertyChangedCallback = nameof(OnPreferredFormatChanged))]
+    private UsbCameraFormat? preferredFormat;
+
     [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Disposed by the teardown Dispose starts (StopAsync / DisposeMediaAsync).")]
     private Windows.Media.Capture.MediaCapture? mediaCapture;
     private Windows.Media.Capture.Frames.MediaFrameReader? frameReader;

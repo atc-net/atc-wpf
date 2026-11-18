@@ -5,6 +5,10 @@ namespace Atc.Wpf.Hardware.Models;
 /// </summary>
 public sealed partial class DiskDriveInfo : ObservableObject, IDeviceInfo
 {
+    /// <summary>
+    /// Gets the free space available on the volume in bytes, or <see langword="null"/> when the drive is not ready.
+    /// </summary>
+    [ObservableProperty(SetterAccessModifier = PropertyAccessModifier.Internal)]
     private long? availableFreeSpace;
 
     /// <summary>
@@ -52,24 +56,6 @@ public sealed partial class DiskDriveInfo : ObservableObject, IDeviceInfo
     /// Gets the total size of the volume in bytes, or <see langword="null"/> when the drive is not ready.
     /// </summary>
     public long? TotalSize { get; }
-
-    /// <summary>
-    /// Gets the free space available on the volume in bytes, or <see langword="null"/> when the drive is not ready.
-    /// </summary>
-    public long? AvailableFreeSpace
-    {
-        get => availableFreeSpace;
-        internal set
-        {
-            if (value == availableFreeSpace)
-            {
-                return;
-            }
-
-            availableFreeSpace = value;
-            RaisePropertyChanged();
-        }
-    }
 
     /// <summary>
     /// The current state of the drive.
