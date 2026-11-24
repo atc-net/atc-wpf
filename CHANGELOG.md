@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 From 4.0.216 onwards this file is maintained by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.6.1](https://github.com/atc-net/atc-wpf/compare/v4.6.0...v4.6.1) (2026-11-24)
+
+
+### Bug fixes
+
+* **components:** give flyouts default styles so they show without an app resource merge ([e1d78f8](https://github.com/atc-net/atc-wpf/commit/e1d78f8e4cda13c3ae1e05d06cae9c7368695184))
+* **components:** keep the DataContext of a view passed to FlyoutService.ShowAsync ([138aa3a](https://github.com/atc-net/atc-wpf/commit/138aa3ad2e99836600e69bc0ae9bf8377bf15f78))
+
 ## [4.6.0](https://github.com/atc-net/atc-wpf/compare/v4.5.1...v4.6.0) (2026-11-18)
 
 
