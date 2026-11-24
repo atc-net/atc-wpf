@@ -550,6 +550,7 @@ For consistent theming across your application, define brushes in resources:
 - The header area is hidden when `Header` is null
 - Border thickness automatically adjusts based on position
 - Drop shadow direction changes based on slide-in position
+- `Flyout`, `FlyoutHost` and `FlyoutPresenter` have default styles in the assembly's theme dictionary (`Themes/Generic.xaml`), so they are drawn without any resource merge. Merging `pack://application:,,,/Atc.Wpf.Components;component/Styles/Controls.xaml` still works and is still needed for the other components' styles (toasts, `DualListSelector`)
 
 ## 🗃️ FlyoutHost
 

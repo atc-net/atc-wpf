@@ -115,6 +115,7 @@ Every method takes an optional `CancellationToken`: cancelling it closes the ope
 - The dialog follows the window's `FlowDirection` (right-to-left).
 - **No host:** when the `FlyoutService` has no host (neither `SetFlyoutHost` nor `SetHostPanel` was called), the dialogs are shown as windows by the fallback service (a `DialogService` unless another is passed to the constructor) and one warning is written to `System.Diagnostics.Trace`.
 - `FlyoutService.IsHostConfigured` tells whether a host has been set.
+- **Styles:** the flyouts that show the dialogs have default styles in `Atc.Wpf.Components` itself, so no resource merge is needed for them. The theme brushes come from `Atc.Wpf.Theming`; merging `pack://application:,,,/Atc.Wpf.Components;component/Styles/Controls.xaml` keeps working.
 
 ## 🔗 Related Controls
 
