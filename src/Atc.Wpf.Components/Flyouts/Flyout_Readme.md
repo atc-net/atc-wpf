@@ -764,6 +764,8 @@ else if (!result.IsValid)
 | `RegisterView<TViewModel, TView>()`          | Register View-ViewModel mapping  |
 | `RegisterViewFactory<TViewModel>(factory)`   | Register view factory            |
 
+A view model passed to `ShowAsync<TViewModel>` is shown in its registered (or convention-found) view, which gets the view model as its `DataContext`. A view (`FrameworkElement`) passed as content is shown as it is and keeps its own `DataContext`; C# picks the generic overload for a view, so no `(object)` cast is needed.
+
 ## 📎 FlyoutBase (Attached Properties)
 
 `FlyoutBase` provides attached properties for associating flyouts with UI elements.

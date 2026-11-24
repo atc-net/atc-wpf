@@ -113,7 +113,12 @@ public class FlyoutService : IFlyoutService
         EnsureHostConfigured();
 
         var view = ResolveView(viewModel);
-        view.DataContext = viewModel;
+
+        // A view passed as content keeps its own DataContext (its view model); only a resolved view gets one.
+        if (!ReferenceEquals(view, viewModel))
+        {
+            view.DataContext = viewModel;
+        }
 
         options ??= FlyoutOptions.Default;
         var flyout = CreateFlyout(header, view, options);

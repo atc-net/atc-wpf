@@ -30,7 +30,9 @@ public interface IFlyoutService
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Shows a flyout with the specified ViewModel. The view is resolved automatically.
+    /// Shows a flyout with the specified ViewModel. The view is resolved automatically and gets the
+    /// ViewModel as its DataContext. A <see cref="FrameworkElement"/> passed here (C# picks this overload
+    /// for a view) is shown as it is and keeps its own DataContext.
     /// </summary>
     /// <typeparam name="TViewModel">The type of the ViewModel.</typeparam>
     /// <param name="header">The flyout header.</param>
