@@ -10,7 +10,7 @@ public sealed class FlyoutServiceHostTrackingTests
     public void ShowAsync_WithFlyoutHost_HostTracksTheOpenFlyout()
     {
         // Arrange
-        var host = new FlyoutHost();
+        var host = UntemplatedFlyouts.Apply(new FlyoutHost());
         var service = new FlyoutService(host);
 
         // Act
@@ -36,7 +36,7 @@ public sealed class FlyoutServiceHostTrackingTests
     public void ShowAsync_WithAViewAsContent_ShowsThatInstance()
     {
         // Arrange
-        var host = new FlyoutHost();
+        var host = UntemplatedFlyouts.Apply(new FlyoutHost());
         var service = new FlyoutService(host);
         var view = new TextBlock { Text = "Configured" };
 
@@ -52,7 +52,7 @@ public sealed class FlyoutServiceHostTrackingTests
     public void ShowAsync_WithFlyoutHost_HostEnforcesMaxNestingDepth()
     {
         // Arrange
-        var host = new FlyoutHost { MaxNestingDepth = 1 };
+        var host = UntemplatedFlyouts.Apply(new FlyoutHost { MaxNestingDepth = 1 });
         var service = new FlyoutService(host);
         _ = service.ShowAsync("First", new TextBlock());
 
@@ -71,7 +71,7 @@ public sealed class FlyoutServiceHostTrackingTests
     public void ShowAsync_ManyCyclesWithOneLongLivedToken_ClosedFlyoutsAreCollected()
     {
         // Arrange
-        var host = new FlyoutHost();
+        var host = UntemplatedFlyouts.Apply(new FlyoutHost());
         var service = new FlyoutService(host);
         using var cts = new CancellationTokenSource();
 
@@ -90,7 +90,7 @@ public sealed class FlyoutServiceHostTrackingTests
     public void ShowAsync_TokenCancelledAfterClose_DoesNotThrowOrReopen()
     {
         // Arrange
-        var host = new FlyoutHost();
+        var host = UntemplatedFlyouts.Apply(new FlyoutHost());
         var service = new FlyoutService(host);
         var cts = new CancellationTokenSource();
         var task = service.ShowAsync("Header", new TextBlock(), cancellationToken: cts.Token);

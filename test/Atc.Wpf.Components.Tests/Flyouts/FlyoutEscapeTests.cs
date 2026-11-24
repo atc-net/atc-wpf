@@ -154,7 +154,7 @@ public sealed class FlyoutEscapeTests : IDisposable
         Flyout newer)
     {
         // The older flyout is loaded first, so it subscribes to the window's key events first.
-        var root = new Grid();
+        var root = UntemplatedFlyouts.Apply(new Grid());
         root.Children.Add(older);
         root.Children.Add(newer);
 
