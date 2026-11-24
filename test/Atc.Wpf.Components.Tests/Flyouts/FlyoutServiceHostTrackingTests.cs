@@ -48,6 +48,60 @@ public sealed class FlyoutServiceHostTrackingTests
         service.CloseAllFlyouts();
     }
 
+    // A view passed as content keeps the view model it was given; it is not made its own DataContext.
+    [StaFact]
+    public void ShowAsync_WithAView_KeepsTheViewsDataContext()
+    {
+        // Arrange
+        var host = UntemplatedFlyouts.Apply(new FlyoutHost());
+        var service = new FlyoutService(host);
+        var viewModel = new TestViewModel();
+        var view = new Border { DataContext = viewModel };
+
+        // Act
+        _ = service.ShowAsync("Header", view);
+
+        // Assert
+        Assert.Same(viewModel, view.DataContext);
+        service.CloseAllFlyouts();
+    }
+
+    [StaFact]
+    public void ShowAsync_WithAViewAndAResultType_KeepsTheViewsDataContext()
+    {
+        // Arrange
+        var host = UntemplatedFlyouts.Apply(new FlyoutHost());
+        var service = new FlyoutService(host);
+        var viewModel = new TestViewModel();
+        var view = new Border { DataContext = viewModel };
+
+        // Act
+        _ = service.ShowAsync<Border, string>("Header", view);
+
+        // Assert
+        Assert.Same(viewModel, view.DataContext);
+        service.CloseAllFlyouts();
+    }
+
+    [StaFact]
+    public void ShowAsync_WithAViewModel_SetsTheResolvedViewsDataContext()
+    {
+        // Arrange
+        var host = UntemplatedFlyouts.Apply(new FlyoutHost());
+        var service = new FlyoutService(host);
+        var view = new Border();
+        service.RegisterViewFactory<TestViewModel>(() => view);
+        var viewModel = new TestViewModel();
+
+        // Act
+        _ = service.ShowAsync("Header", viewModel);
+
+        // Assert
+        Assert.Same(view, Assert.IsType<Flyout>(host.Items[0]).Content);
+        Assert.Same(viewModel, view.DataContext);
+        service.CloseAllFlyouts();
+    }
+
     [StaFact]
     public void ShowAsync_WithFlyoutHost_HostEnforcesMaxNestingDepth()
     {
@@ -124,4 +178,6 @@ public sealed class FlyoutServiceHostTrackingTests
 
         return references;
     }
+
+    private sealed class TestViewModel;
 }
