@@ -553,6 +553,8 @@
   items:
   - name: Overview
     href: ../../src/Atc.Wpf.Controls.Sample/Readme.md
+  - name: SampleExplorer
+    href: ../../src/Atc.Wpf.Controls.Sample/SampleExplorer_Readme.md
 - name: Atc.Wpf.Displays
   items:
   - name: Overview
