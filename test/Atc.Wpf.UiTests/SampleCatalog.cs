@@ -7,42 +7,35 @@ namespace Atc.Wpf.UiTests;
 internal static class SampleCatalog
 {
     private const string SampleProjectFolder = "sample/Atc.Wpf.Sample";
-    private const string XamlNamespace = "http://schemas.microsoft.com/winfx/2006/xaml";
 
     /// <summary>
     /// Gets every sample as (tree view automation id, header, sample path).
     /// </summary>
     /// <returns>
-    /// The samples in the order of the tabs in <c>SamplesTabControl</c> (Wpf first, Wpf.UndoRedo last),
+    /// The samples in the order of the sample categories in <c>MainWindow.xaml</c> (Wpf first, Wpf.UndoRedo last),
     /// and within a tab from the top of its tree to the bottom.
     /// </returns>
     public static IReadOnlyList<SampleEntry> Load()
     {
         var sampleFolder = Path.Combine(FindRepositoryRoot(), SampleProjectFolder);
-        var mainWindowFile = Path.Combine(sampleFolder, "MainWindow.xaml");
-        var treeNames = LoadTreeViewNames(mainWindowFile);
-        var treeTypes = LoadTreeViewTypesInTabOrder(mainWindowFile);
+        var categories = LoadCategories(Path.Combine(sampleFolder, "MainWindow.xaml"));
 
         var treeFiles = Directory
             .EnumerateFiles(sampleFolder, "Samples*TreeView.xaml")
             .Select(Path.GetFileNameWithoutExtension)
             .ToHashSet(StringComparer.Ordinal);
-        var treeFilesWithoutTab = treeFiles.Except(treeTypes, StringComparer.Ordinal).ToList();
-        if (treeFilesWithoutTab.Count > 0)
+        var treeFilesWithoutCategory = treeFiles
+            .Except(categories.Select(x => x.TreeType), StringComparer.Ordinal)
+            .ToList();
+        if (treeFilesWithoutCategory.Count > 0)
         {
-            throw new InvalidOperationException($"SamplesTabControl in MainWindow.xaml has no tab for {string.Join(", ", treeFilesWithoutTab)}, so its samples cannot be reached.");
+            throw new InvalidOperationException($"MainWindow.xaml has no SampleCategory for {string.Join(", ", treeFilesWithoutCategory)}, so its samples cannot be reached.");
         }
 
         var samples = new List<SampleEntry>();
-        foreach (var treeType in treeTypes.Where(treeFiles.Contains))
+        foreach (var (treeType, treeName) in categories.Where(x => treeFiles.Contains(x.TreeType)))
         {
-            var file = Path.Combine(sampleFolder, treeType + ".xaml");
-            if (!treeNames.TryGetValue(treeType, out var treeName))
-            {
-                throw new InvalidOperationException($"MainWindow.xaml has no named {treeType}, so its samples cannot be reached.");
-            }
-
-            var document = System.Xml.Linq.XDocument.Load(file);
+            var document = System.Xml.Linq.XDocument.Load(Path.Combine(sampleFolder, treeType + ".xaml"));
             samples.AddRange(document
                 .Descendants()
                 .Where(x => string.Equals(x.Name.LocalName, "SampleTreeViewItem", StringComparison.Ordinal))
@@ -56,38 +49,33 @@ internal static class SampleCatalog
         return samples;
     }
 
-    private static List<string> LoadTreeViewTypesInTabOrder(
+    /// <summary>
+    /// Reads the sample categories of <c>MainWindow.xaml</c> in their order:
+    /// <c>&lt;atcSample:SampleCategory Key="WpfControls" TreeType="{x:Type sample:SamplesWpfControlsTreeView}" /&gt;</c>
+    /// gives the tree type <c>SamplesWpfControlsTreeView</c> and the tree automation id <c>StvSamplesWpfControls</c>.
+    /// </summary>
+    private static List<(string TreeType, string TreeName)> LoadCategories(
         string mainWindowFile)
     {
-        // <TabControl x:Name="SamplesTabControl"> <TabItem x:Name="TabWpfControls" Tag="WpfControls"> => SamplesWpfControlsTreeView
-        var document = System.Xml.Linq.XDocument.Load(mainWindowFile);
-        var tabControl = document
+        var categories = System.Xml.Linq.XDocument
+            .Load(mainWindowFile)
             .Descendants()
-            .FirstOrDefault(x => string.Equals(x.Name.LocalName, "TabControl", StringComparison.Ordinal) &&
-                                 string.Equals((string?)x.Attribute(System.Xml.Linq.XName.Get("Name", XamlNamespace)), "SamplesTabControl", StringComparison.Ordinal))
-            ?? throw new InvalidOperationException("MainWindow.xaml has no TabControl named SamplesTabControl.");
-
-        return tabControl
-            .Elements()
-            .Where(x => string.Equals(x.Name.LocalName, "TabItem", StringComparison.Ordinal))
-            .Select(x => (string?)x.Attribute("Tag"))
-            .Where(x => !string.IsNullOrEmpty(x))
-            .Select(x => $"Samples{x}TreeView")
+            .Where(x => string.Equals(x.Name.LocalName, "SampleCategory", StringComparison.Ordinal))
+            .Select(x => (
+                TreeType: TreeTypeName((string?)x.Attribute("TreeType")),
+                TreeName: "StvSamples" + (string?)x.Attribute("Key")))
             .ToList();
+
+        return categories.Count > 0
+            ? categories
+            : throw new InvalidOperationException("MainWindow.xaml has no SampleCategory.");
     }
 
-    private static Dictionary<string, string> LoadTreeViewNames(
-        string mainWindowFile)
+    private static string TreeTypeName(string? treeType)
     {
-        // <sample:SamplesWpfControlsTreeView x:Name="StvSampleWpfControls" ... />
-        var document = System.Xml.Linq.XDocument.Load(mainWindowFile);
-        return document
-            .Descendants()
-            .Where(x => x.Name.LocalName.StartsWith("Samples", StringComparison.Ordinal) &&
-                        x.Name.LocalName.EndsWith("TreeView", StringComparison.Ordinal))
-            .Select(x => (Type: x.Name.LocalName, Name: (string?)x.Attribute(System.Xml.Linq.XName.Get("Name", XamlNamespace))))
-            .Where(x => x.Name is not null)
-            .ToDictionary(x => x.Type, x => x.Name!, StringComparer.Ordinal);
+        // "{x:Type sample:SamplesWpfControlsTreeView}" => "SamplesWpfControlsTreeView"
+        var name = (treeType ?? string.Empty).Trim('{', '}').Split(' ', StringSplitOptions.RemoveEmptyEntries).LastOrDefault() ?? string.Empty;
+        return name[(name.IndexOf(':', StringComparison.Ordinal) + 1)..];
     }
 
     private static string FindRepositoryRoot()

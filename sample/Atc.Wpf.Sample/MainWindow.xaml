@@ -1,410 +1,56 @@
-<atc:NiceWindow
+<atcSample:SampleMainWindow
     x:Class="Atc.Wpf.Sample.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:atc="https://github.com/atc-net/atc-wpf/tree/main/schemas"
-    xmlns:atcTranslation="https://github.com/atc-net/atc-wpf/tree/main/schemas/translations"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dataDisplay="clr-namespace:Atc.Wpf.Controls.DataDisplay;assembly=Atc.Wpf.Controls"
-    xmlns:layouts="clr-namespace:Atc.Wpf.Controls.Layouts;assembly=Atc.Wpf.Controls"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:atcSample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
     xmlns:sample="clr-namespace:Atc.Wpf.Sample"
-    xmlns:sampleControls="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
-    xmlns:themingControls="clr-namespace:Atc.Wpf.Theming.Controls;assembly=Atc.Wpf.Theming"
     Title="..:: Atc.Wpf.Sample ::.."
-    Width="1600"
-    Height="1000"
-    MinWidth="1024"
-    MinHeight="768"
-    d:DataContext="{d:DesignInstance Type=sample:MainWindowViewModel}"
-    Icon="Assets\atc.png"
-    WindowStartupLocation="CenterScreen"
-    WindowState="{Binding Path=WindowState}"
-    mc:Ignorable="d">
+    Icon="Assets\atc.png">
 
-    <atc:GridEx
-        Margin="0,1,0,0"
-        Columns="500,5,*"
-        Rows="Auto,*,Auto">
-        <DockPanel Grid.Row="1" Grid.Column="0">
-            <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
-                <TextBox
-                    x:Name="TbSampleFilter"
-                    Margin="8,20,5,10"
-                    atc:TextBoxHelper.ClearTextButton="True"
-                    atc:TextBoxHelper.Watermark="Filter"
-                    Focusable="True"
-                    TextChanged="FilterOnTextChanged">
-                    <TextBox.ToolTip>
-                        <TextBlock>
-                            <Run FontWeight="Bold">Filter Samples</Run>
-                            <LineBreak />
-                            <LineBreak />
-                            <Run FontWeight="SemiBold">Text search</Run>
-                            <Run>(case-insensitive)</Run>
-                            <LineBreak />
-                            <Run>button    → AuthenticationButton, ImageButton, ...</Run>
-                            <LineBreak />
-                            <Run>color     → ColorPicker, LabelColorPicker, ...</Run>
-                            <LineBreak />
-                            <LineBreak />
-                            <Run FontWeight="SemiBold">PascalCase initials</Run>
-                            <Run>(2+ uppercase letters)</Run>
-                            <LineBreak />
-                            <Run>NW        → NiceWindow</Run>
-                            <LineBreak />
-                            <Run>RC        → RelayCommand</Run>
-                            <LineBreak />
-                            <Run>TS        → ToggleSwitch, ThemeSelector, ...</Run>
-                            <LineBreak />
-                            <Run>LTS       → LabelToggleSwitch, LabelThemeSelector</Run>
-                        </TextBlock>
-                    </TextBox.ToolTip>
-                </TextBox>
-                <atc:UniformSpacingPanel
-                    Margin="10,5,5,15"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal"
-                    Spacing="10">
-                    <Button Click="SampleExpandAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=ExpandAll}">
-                        <atc:SvgImage
-                            Width="16"
-                            Height="16"
-                            OverrideColor="DarkOrange"
-                            Source="/Atc.Wpf.Controls;component/Resources/Icons/expand.svg" />
-                    </Button>
-                    <Button Click="SampleCollapseAll" ToolTip="{atcTranslation:Resx ResxName=Atc.Wpf.Resources.Miscellaneous, Key=CollapseAll}">
-                        <atc:SvgImage
-                            Width="16"
-                            Height="16"
-                            OverrideColor="DarkOrange"
-                            Source="/Atc.Wpf.Controls;component/Resources/Icons/collapse.svg" />
-                    </Button>
-                </atc:UniformSpacingPanel>
-            </StackPanel>
+    <!--  The UI tests read the categories from here: Key names the tab (Tab{Key}) and the tree (StvSamples{Key})  -->
+    <atcSample:SampleCategory
+        Header="Wpf"
+        Key="Wpf"
+        TreeType="{x:Type sample:SamplesWpfTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.Components"
+        Key="WpfComponents"
+        TreeType="{x:Type sample:SamplesWpfComponentsTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.Controls"
+        Key="WpfControls"
+        TreeType="{x:Type sample:SamplesWpfControlsTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.Displays"
+        Key="WpfDisplays"
+        TreeType="{x:Type sample:SamplesWpfDisplaysTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.FontIcons"
+        Key="WpfFontIcons"
+        TreeType="{x:Type sample:SamplesWpfFontIconsTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.Forms"
+        Key="WpfForms"
+        TreeType="{x:Type sample:SamplesWpfFormsTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.Hardware"
+        Key="WpfHardware"
+        TreeType="{x:Type sample:SamplesWpfHardwareTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.Network"
+        Key="WpfNetwork"
+        TreeType="{x:Type sample:SamplesWpfNetworkTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.SourceGenerators"
+        Key="WpfSourceGenerators"
+        TreeType="{x:Type sample:SamplesWpfSourceGeneratorsTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.Theming"
+        Key="WpfTheming"
+        TreeType="{x:Type sample:SamplesWpfThemingTreeView}" />
+    <atcSample:SampleCategory
+        Header="Wpf.UndoRedo"
+        Key="WpfUndoRedo"
+        TreeType="{x:Type sample:SamplesWpfUndoRedoTreeView}" />
 
-            <!--  Grid with TabControl headers on left, TreeViews on right  -->
-            <atc:GridEx
-                Margin="0,0,5,10"
-                Columns="Auto,*"
-                DockPanel.Dock="Bottom">
-
-                <!--  TabControl for styled category headers (no content)  -->
-                <TabControl
-                    x:Name="SamplesTabControl"
-                    Grid.Column="0"
-                    atc:TabControlHelper.UnderlineMargin="0"
-                    atc:TabControlHelper.UnderlinePlacement="Left"
-                    atc:TabControlHelper.Underlined="SelectedTabItem"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    SelectionChanged="TabControlOnSelectionChanged"
-                    TabStripPlacement="Left">
-                    <TabItem
-                        x:Name="TabWpf"
-                        Width="200"
-                        Tag="Wpf">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpf"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfComponents" Tag="WpfComponents">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.Components" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfComponents"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfControls" Tag="WpfControls">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.Controls" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfControls"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfDisplays" Tag="WpfDisplays">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.Displays" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfDisplays"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfFontIcons" Tag="WpfFontIcons">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.FontIcons" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfFontIcons"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfForms" Tag="WpfForms">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.Forms" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfForms"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfHardware" Tag="WpfHardware">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.Hardware" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfHardware"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfNetwork" Tag="WpfNetwork">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.Network" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfNetwork"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfSourceGenerators" Tag="WpfSourceGenerators">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.SourceGenerators" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfSourceGenerators"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfTheming" Tag="WpfTheming">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.Theming" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfTheming"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                    <TabItem x:Name="TabWpfUndoRedo" Tag="WpfUndoRedo">
-                        <TabItem.Header>
-                            <atc:GridEx
-                                Columns="*,Auto"
-                                TextElement.FontFamily="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontFamily}"
-                                TextElement.FontSize="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontSize}"
-                                TextElement.FontWeight="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=FontWeight}"
-                                TextElement.Foreground="{Binding RelativeSource={RelativeSource AncestorType=themingControls:ContentControlEx}, Path=(TextElement.Foreground)}">
-                                <TextBlock Grid.Column="0" Text="Wpf.UndoRedo" />
-                                <dataDisplay:Badge
-                                    x:Name="BadgeWpfUndoRedo"
-                                    Grid.Column="1"
-                                    Margin="5,0,0,0"
-                                    VerticalAlignment="Center"
-                                    BadgePlacementMode="Right" />
-                            </atc:GridEx>
-                        </TabItem.Header>
-                    </TabItem>
-                </TabControl>
-
-                <!--  All TreeViews stacked in ScrollViewer  -->
-                <Border
-                    Grid.Column="1"
-                    Margin="5,0,0,0"
-                    Padding="2"
-                    BorderBrush="{DynamicResource AtcApps.Brushes.Gray8}"
-                    BorderThickness="1"
-                    CornerRadius="5">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
-                            <sample:SamplesWpfTreeView
-                                x:Name="StvSampleWpf"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfControlsTreeView
-                                x:Name="StvSampleWpfControls"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfFormsTreeView
-                                x:Name="StvSampleWpfForms"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfComponentsTreeView
-                                x:Name="StvSampleWpfComponents"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfDisplaysTreeView
-                                x:Name="StvSampleWpfDisplays"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfNetworkTreeView
-                                x:Name="StvSampleWpfNetwork"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfHardwareTreeView
-                                x:Name="StvSampleWpfHardware"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfUndoRedoTreeView
-                                x:Name="StvSampleWpfUndoRedo"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfThemingTreeView
-                                x:Name="StvSampleWpfTheming"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfSourceGeneratorsTreeView
-                                x:Name="StvSamplesWpfSourceGenerators"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                            <sample:SamplesWpfFontIconsTreeView
-                                x:Name="StvSampleWpfFontIcons"
-                                BorderThickness="0"
-                                SelectedItemChanged="TreeViewOnSelectionChanged" />
-                        </StackPanel>
-                    </ScrollViewer>
-                </Border>
-            </atc:GridEx>
-        </DockPanel>
-
-        <Grid
-            Grid.Row="1"
-            Grid.Column="2"
-            Grid.ColumnSpan="2"
-            Margin="10">
-            <atc:GridEx Columns="*,10,Auto,Auto" Rows="Auto,*">
-                <CheckBox
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    AutomationProperties.AutomationId="SampleRightToLeft"
-                    Content="Right to left"
-                    IsChecked="{Binding ElementName=SampleViewer, Path=IsSampleRightToLeft}"
-                    ToolTip="Show the sample in a right-to-left layout, as for Arabic or Hebrew" />
-                <atc:LabelLanguageSelector
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Width="250"
-                    LabelWidthNumber="80"
-                    LabelWidthSizeDefinition="Pixel"
-                    Orientation="Horizontal" />
-                <atc:LabelThemeAndAccentColorSelectors
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Width="500"
-                    LabelWidthNumber="50"
-                    LabelWidthSizeDefinition="Pixel" />
-                <sampleControls:SampleViewerView
-                    x:Name="SampleViewer"
-                    Grid.Row="1"
-                    Grid.ColumnSpan="5"
-                    Foreground="{DynamicResource AtcApps.Brushes.Text}"
-                    HeaderForeground="{DynamicResource AtcApps.Brushes.Accent}" />
-            </atc:GridEx>
-        </Grid>
-
-        <StatusBar Grid.Row="3" Grid.ColumnSpan="4">
-            <StatusBarItem>
-                <TextBlock Text="." />
-            </StatusBarItem>
-        </StatusBar>
-    </atc:GridEx>
-
-</atc:NiceWindow>
+</atcSample:SampleMainWindow>

@@ -3,12 +3,6 @@ namespace Atc.Wpf.Sample;
 
 public partial class App
 {
-    /// <summary>
-    /// The environment variable that, set to <c>1</c>, shows every data binding error in a dialog
-    /// (as when a debugger is attached). The UI tests set it to catch binding errors.
-    /// </summary>
-    public const string TraceBindingErrorsVariable = "ATC_WPF_SAMPLE_TRACE_BINDING_ERRORS";
-
     private readonly IHost host;
     private IConfiguration? configuration;
 
@@ -46,77 +40,9 @@ public partial class App
                     .ValidateOnStart();
 
                 services.AddSingleton<IToastNotificationService, ToastNotificationService>();
-                services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
                 services.AddSingleton<MainWindow>();
             })
             .Build();
-    }
-
-    /// <summary>
-    /// Raises the Startup event.
-    /// </summary>
-    /// <param name="e">The <see cref="StartupEventArgs"/> instance containing the event data.</param>
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        ArgumentNullException.ThrowIfNull(e);
-
-        // Hook on error before app really starts
-        AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
-        Current.DispatcherUnhandledException += ApplicationOnDispatcherUnhandledException;
-        base.OnStartup(e);
-
-        if (Debugger.IsAttached)
-        {
-            BindingErrorTraceListener.StartTrace();
-        }
-        else if (string.Equals(Environment.GetEnvironmentVariable(TraceBindingErrorsVariable), "1", StringComparison.Ordinal))
-        {
-            // UI tests opt in through the environment. Without a debugger WPF does not trace data binding
-            // until the trace sources are refreshed and given a level.
-            PresentationTraceSources.Refresh();
-            PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Error;
-            BindingErrorTraceListener.StartTrace();
-        }
-    }
-
-    /// <summary>
-    /// An exception on another thread ends the process: the report is saved, copied and shown in the native
-    /// message box, which does not need the (possibly broken) UI thread.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="e">The <see cref="UnhandledExceptionEventArgs"/> instance containing the event data.</param>
-    private static void CurrentDomainUnhandledException(
-        object sender,
-        UnhandledExceptionEventArgs e)
-    {
-        if (e is not { ExceptionObject: Exception ex })
-        {
-            return;
-        }
-
-        _ = ExceptionReport.ShowMessageBox(ex, "CurrentDomain Unhandled Exception");
-    }
-
-    /// <summary>
-    /// An exception on the UI thread: shown in the error dialog (full report under Details, Ctrl+C or the copy
-    /// button copies it), then the app closes.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="e">The <see cref="DispatcherUnhandledExceptionEventArgs"/> instance containing the event data.</param>
-    private void ApplicationOnDispatcherUnhandledException(
-        object sender,
-        DispatcherUnhandledExceptionEventArgs e)
-    {
-        if (ExceptionReport.IsKnownHarmlessWpfBindingError(e.Exception))
-        {
-            e.Handled = true;
-            return;
-        }
-
-        ExceptionDialog.Show(e.Exception, "Dispatcher Unhandled Exception");
-
-        e.Handled = true;
-        Shutdown(-1);
     }
 
     [SuppressMessage("Design", "MA0051:Method is too long", Justification = "OK.")]

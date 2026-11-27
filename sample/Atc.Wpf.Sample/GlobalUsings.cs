@@ -94,7 +94,6 @@ global using Atc.Wpf.UndoRedo;
 global using Atc.Wpf.ValueConverters;
 global using Atc.XamlToolkit.Command;
 global using Atc.XamlToolkit.Controls.Attributes;
-global using Atc.XamlToolkit.Diagnostics;
 global using Atc.XamlToolkit.Messaging;
 global using Atc.XamlToolkit.Metadata;
 global using Atc.XamlToolkit.Mvvm;

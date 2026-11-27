@@ -7,7 +7,7 @@ namespace Atc.Wpf.UiTests;
 internal static class BindingErrorWindows
 {
     /// <summary>
-    /// The environment variable the sample app reads (mirrors <c>App.TraceBindingErrorsVariable</c>).
+    /// The environment variable the sample app reads (the <c>TraceBindingErrorsVariable</c> in its <c>App.xaml</c>).
     /// </summary>
     public const string TraceBindingErrorsVariable = "ATC_WPF_SAMPLE_TRACE_BINDING_ERRORS";
 
