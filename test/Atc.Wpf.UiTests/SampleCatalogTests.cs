@@ -15,17 +15,17 @@ public sealed class SampleCatalogTests
 
         Assert.Equal(
             [
-                "StvSampleWpf",
-                "StvSampleWpfComponents",
-                "StvSampleWpfControls",
-                "StvSampleWpfDisplays",
-                "StvSampleWpfFontIcons",
-                "StvSampleWpfForms",
-                "StvSampleWpfHardware",
-                "StvSampleWpfNetwork",
+                "StvSamplesWpf",
+                "StvSamplesWpfComponents",
+                "StvSamplesWpfControls",
+                "StvSamplesWpfDisplays",
+                "StvSamplesWpfFontIcons",
+                "StvSamplesWpfForms",
+                "StvSamplesWpfHardware",
+                "StvSamplesWpfNetwork",
                 "StvSamplesWpfSourceGenerators",
-                "StvSampleWpfTheming",
-                "StvSampleWpfUndoRedo",
+                "StvSamplesWpfTheming",
+                "StvSamplesWpfUndoRedo",
             ],
             treeNames);
     }
@@ -34,7 +34,7 @@ public sealed class SampleCatalogTests
     public void Load_returns_the_samples_of_a_tree_from_top_to_bottom()
     {
         var networkHeaders = SampleCatalog.Load()
-            .Where(x => string.Equals(x.TreeName, "StvSampleWpfNetwork", StringComparison.Ordinal))
+            .Where(x => string.Equals(x.TreeName, "StvSamplesWpfNetwork", StringComparison.Ordinal))
             .Select(x => x.Header)
             .ToList();
 

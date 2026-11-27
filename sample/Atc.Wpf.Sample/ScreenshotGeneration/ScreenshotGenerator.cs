@@ -42,7 +42,7 @@ internal sealed class ScreenshotGenerator
         this.solutionRoot = solutionRoot;
     }
 
-    public void GenerateAll(TreeView[] treeViews)
+    public void GenerateAll(IReadOnlyList<TreeView> treeViews)
     {
         var items = CollectScreenshotItems(treeViews);
         System.Console.WriteLine($"[Screenshots] Found {items.Count} controls to capture.");
@@ -157,7 +157,7 @@ internal sealed class ScreenshotGenerator
     }
 
     private static List<ScreenshotItem> CollectScreenshotItems(
-        TreeView[] treeViews)
+        IReadOnlyList<TreeView> treeViews)
     {
         var items = new List<ScreenshotItem>();
 
