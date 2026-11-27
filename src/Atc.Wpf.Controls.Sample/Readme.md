@@ -8,6 +8,10 @@ Building blocks for a WPF "control explorer" application - the same pieces the `
 
 | Type | Purpose |
 |------|---------|
+| `SampleApplication` | Application base for a sample app: merges the Atc style dictionaries, sets culture and theme, traces binding errors and shows unhandled exceptions in the `ExceptionDialog`. |
+| `SampleMainWindow` | `NiceWindow` that hosts a `SampleExplorer`; the app's `MainWindow.xaml` only lists its `SampleCategory` items. |
+| `SampleExplorer` / `SampleCategory` | The whole shell: filter (text or PascalCase initials), category tabs with match counts, sample trees, expand/collapse, right-to-left, language and theme selectors, viewer and status bar. |
+| `SampleTreeFilter` / `SampleExplorerIds` | The filter rules for sample trees, and the automation IDs UI tests can rely on. |
 | `SampleViewerView` / `SampleViewerViewModel` | The tabbed viewer (Sample / XAML / CodeBehind / ViewModel / Readme). Loads the source files of the selected sample and renders the matching `*_Readme.md` / `@Readme.md` as markdown. |
 | `SampleTreeViewItem` | `TreeViewItem` with a `SamplePath` property that identifies the sample view to show. |
 | `SampleItemMessage` | Messenger message (`Header`, `SampleItemPath`) sent when a sample is selected. |
@@ -21,6 +25,34 @@ Building blocks for a WPF "control explorer" application - the same pieces the `
 ```xml
 <PackageReference Include="Atc.Wpf.Controls.Sample" Version="4.*" />
 ```
+
+## 🚀 Build a sample gallery
+
+```xml
+<!-- App.xaml -->
+<atcSample:SampleApplication
+    x:Class="MyGallery.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcSample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    Culture="en-US"
+    StartupUri="MainWindow.xaml"
+    Theme="Dark.Blue" />
+
+<!-- MainWindow.xaml -->
+<atcSample:SampleMainWindow
+    x:Class="MyGallery.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:atcSample="clr-namespace:Atc.Wpf.Controls.Sample;assembly=Atc.Wpf.Controls.Sample"
+    xmlns:local="clr-namespace:MyGallery"
+    Title="My control explorer">
+    <atcSample:SampleCategory Key="Wpf" Header="Wpf" TreeType="{x:Type local:SamplesWpfTreeView}" />
+</atcSample:SampleMainWindow>
+```
+
+See [SampleExplorer_Readme.md](SampleExplorer_Readme.md) for the sample trees and pages, the filter rules, the
+automation IDs and all properties.
 
 ## 📝 Notes
 
