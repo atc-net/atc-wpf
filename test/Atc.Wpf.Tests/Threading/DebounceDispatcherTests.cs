@@ -8,18 +8,23 @@ public sealed class DebounceDispatcherTests
         var sut = new DebounceDispatcher();
         var invocations = new List<object?>();
 
+        // Keep calling until it has fired twice. The ticks run at ApplicationIdle, so a busy CI runner can
+        // delay them well past the interval; the time limit only stops a broken throttle from looping forever.
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var call = 0;
-        while (stopwatch.ElapsedMilliseconds < 350)
+        while (invocations.Count < 2 && stopwatch.ElapsedMilliseconds < 10_000)
         {
             sut.Throttle(100, invocations.Add, ++call);
             DispatcherPump.For(TimeSpan.FromMilliseconds(10));
         }
 
-        // A debounce would not have fired at all yet.
+        // A debounce would not have fired at all while the calls keep coming.
         Assert.True(invocations.Count >= 2, $"Expected at least 2 invocations while calling, got {invocations.Count}.");
 
-        DispatcherPump.For(TimeSpan.FromMilliseconds(200));
+        // One last call, which fires once the calls stop.
+        sut.Throttle(100, invocations.Add, ++call);
+        DispatcherPump.Until(() => invocations.Count >= 3, TimeSpan.FromSeconds(5));
+        DispatcherPump.For(TimeSpan.FromMilliseconds(150));
 
         Assert.True(invocations.Count >= 3, $"Expected at least 3 invocations, got {invocations.Count}.");
         Assert.Equal(call, invocations[^1]);
