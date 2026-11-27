@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 From 4.0.216 onwards this file is maintained by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.7.0](https://github.com/atc-net/atc-wpf/compare/v4.6.1...v4.7.0) (2026-11-27)
+
+
+### New features
+
+* **sample:** add a ready-made sample app shell ([580f668](https://github.com/atc-net/atc-wpf/commit/580f6689d90efc2f43ace653770d66754a235b16))
+
+
+### Bug fixes
+
+* **sample:** take a sample's class name from its type, not ToString() ([85d500b](https://github.com/atc-net/atc-wpf/commit/85d500bc4bb122759ac767123bc3a3d476adf41c))
+
+
+### Code refactoring
+
+* **sample:** build the sample app on SampleApplication and SampleMainWindow ([c3f8a70](https://github.com/atc-net/atc-wpf/commit/c3f8a70143f35f70dbb7b67dcec7c3ac0a6e866e))
+
+
+### Documentation
+
+* list the SampleExplorer readme in the controls table of contents ([9f741af](https://github.com/atc-net/atc-wpf/commit/9f741af47b762d049b99dae3270584eccd4ca09e))
+* **sample:** document the sample app shell ([983e367](https://github.com/atc-net/atc-wpf/commit/983e36751babbdf49d743f0d7dbd942e8a159d85))
+
 ## [4.6.1](https://github.com/atc-net/atc-wpf/compare/v4.6.0...v4.6.1) (2026-11-24)
 
 
