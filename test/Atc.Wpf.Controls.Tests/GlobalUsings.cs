@@ -14,6 +14,7 @@ global using System.Text.Json;
 global using System.Threading;
 global using System.Threading.Tasks;
 global using System.Windows;
+global using System.Windows.Automation;
 global using System.Windows.Automation.Peers;
 global using System.Windows.Automation.Provider;
 global using System.Windows.Controls;
@@ -50,6 +51,7 @@ global using Atc.Wpf.Controls.Zoom.ValueConverters;
 global using Atc.Wpf.Helpers;
 global using Atc.Wpf.Navigation;
 global using Atc.XamlToolkit.Messaging;
+global using Atc.XamlToolkit.Mvvm;
 global using Atc.XUnit;
 
 global using ICSharpCode.AvalonEdit;
