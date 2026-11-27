@@ -64,4 +64,36 @@ public sealed class SampleViewerViewModelTests
         Assert.Null(sut.SampleReference);
         Assert.False(sut.CopySampleReferenceCommand.CanExecute(parameter: null));
     }
+
+    // A UserControl's ToString() adds the text of its content; with a dot in it the old lookup took a fragment of that text.
+    [Fact]
+    public void GetSampleClassName_UsesTheTypeName_NotToString()
+        => Assert.Equal(
+            nameof(DottedTextSampleView),
+            SampleViewerViewModel.GetSampleClassName(typeof(DottedTextSampleView)));
+
+    [StaFact]
+    public void GetViewModelClassName_WithoutDataContextOrWithTheViewerViewModel_IsNull()
+    {
+        Assert.Null(SampleViewerViewModel.GetViewModelClassName(dataContext: null));
+        Assert.Null(SampleViewerViewModel.GetViewModelClassName(new SampleViewerViewModel()));
+    }
+
+    [Fact]
+    public void GetViewModelClassName_UsesTheTypeName_NotToString()
+        => Assert.Equal(
+            nameof(DottedTextViewModel),
+            SampleViewerViewModel.GetViewModelClassName(new DottedTextViewModel()));
+
+    private sealed class DottedTextSampleView : UserControl
+    {
+        public override string ToString()
+            => "X.Y.DotSampleView Content:v1.2";
+    }
+
+    private sealed class DottedTextViewModel
+    {
+        public override string ToString()
+            => "a.b Content:1.5";
+    }
 }

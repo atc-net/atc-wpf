@@ -253,7 +253,7 @@ public sealed partial class SampleViewerViewModel : ViewModelBase
             return;
         }
 
-        var classViewName = ExtractClassName(instance.ToString()!);
+        var classViewName = GetSampleClassName(sampleType);
         var sampleLocation = ExtractSamplePath(baseLocation, classViewName, sampleType);
         if (sampleLocation is null)
         {
@@ -276,18 +276,10 @@ public sealed partial class SampleViewerViewModel : ViewModelBase
         XamlCode = ReadFileText(xamlFilePath);
         CodeBehindCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewName + ".xaml.cs"));
 
-        if (instance.DataContext is null ||
-            nameof(SampleViewerViewModel).Equals(
-                ExtractClassName(instance.DataContext.ToString()!),
-                StringComparison.Ordinal))
-        {
-            ViewModelCode = null;
-        }
-        else
-        {
-            var classViewModelName = ExtractClassName(instance.DataContext.ToString()!);
-            ViewModelCode = ReadFileText(Path.Combine(sampleLocation.FullName, classViewModelName + ".cs"));
-        }
+        var classViewModelName = GetViewModelClassName(instance.DataContext);
+        ViewModelCode = classViewModelName is null
+            ? null
+            : ReadFileText(Path.Combine(sampleLocation.FullName, classViewModelName + ".cs"));
 
         LoadAndRenderMarkdownDocumentIfPossible(sampleLocation, classViewName);
     }
@@ -489,11 +481,25 @@ public sealed partial class SampleViewerViewModel : ViewModelBase
         return null;
     }
 
-    [SuppressMessage("Performance", "MA0098:Use indexer instead of LINQ methods", Justification = "OK.")]
-    private static string ExtractClassName(string classFullName)
-        => classFullName
-            .Split('.')
-            .Last();
+    /// <summary>
+    /// Gets the class name of a sample view: the name of its type (its <c>.xaml</c> file has the same name).
+    /// Not <see cref="object.ToString"/>, which for a <see cref="ContentControl"/> adds the text of its content.
+    /// </summary>
+    /// <param name="sampleType">The sample view type.</param>
+    /// <returns>The class name.</returns>
+    internal static string GetSampleClassName(Type sampleType)
+        => sampleType.Name;
+
+    /// <summary>
+    /// Gets the class name of a sample's view model, or <see langword="null"/> when the sample has none
+    /// (no DataContext, or the DataContext inherited from the sample viewer).
+    /// </summary>
+    /// <param name="dataContext">The DataContext of the sample view.</param>
+    /// <returns>The class name, or <see langword="null"/>.</returns>
+    internal static string? GetViewModelClassName(object? dataContext)
+        => dataContext is null or SampleViewerViewModel
+            ? null
+            : dataContext.GetType().Name;
 
     private static DirectoryInfo? ExtractBasePath(DirectoryInfo path)
     {
